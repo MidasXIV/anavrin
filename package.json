@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint --fix . && echo 'Lint complete.'",
-    "prettier": "prettier --check ./**/*.jsx",
-    "prettier:fix": "prettier --write ./**/*.jsx"
+    "prettier": "prettier --check ./**/*.{ts,tsx}",
+    "prettier:fix": "prettier --write ./**/*.{ts,tsx}"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.21",
