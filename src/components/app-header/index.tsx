@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DropdownMenu, Menu } from "./";
+import { DropdownMenu, Menu } from "..";
 import Link from "next/link";
 
 export default function AppHeader({
