@@ -1,4 +1,4 @@
-export { default as DropdownMenu } from "./DropdownMenu";
-export { default as Loading } from "./Loading";
-export { default as Menu } from "./Menu";
-export { default as AppHeader } from "./AppHeader";
+export { default as DropdownMenu } from "./dropdown-menu";
+export { default as Loading } from "./loading";
+export { default as Menu } from "./menu";
+export { default as AppHeader } from "./app-header";

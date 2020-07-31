@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import useOutsideClick from "../util/useOutsideClick";
+import useOutsideClick from "../../util/useOutsideClick";
 
 const Menu = ({ children, onOutsideClick, ...props }) => {
   const wrapperRef = useRef(null);
