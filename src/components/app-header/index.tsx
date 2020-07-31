@@ -31,8 +31,8 @@ export default function AppHeader({
             <Link href={currentPage.path}>
               <a>{currentPage.label}</a>
             </Link>
-            {otherPages.map((page) => (
-              <Link href={page.path}>
+            {otherPages.map((page, index) => (
+              <Link href={page.path} key={index}>
                 <a>{page.label}</a>
               </Link>
             ))}

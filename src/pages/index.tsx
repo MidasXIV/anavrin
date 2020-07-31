@@ -1,10 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/client";
 import { DropdownMenu, Menu } from "../components";
 
 export default function Home() {
-  const [session, loading] = useSession();
   const [menuOpened, setMenuOpened] = useState(false);
 
   return (
@@ -21,35 +19,10 @@ export default function Home() {
           <a href="#support" className="mr-1">
             Support
           </a>
-          {session ? (
-            <DropdownMenu
-              button={
-                <img
-                  src={session.user.image}
-                  alt={session.user.name}
-                  onClick={() => setMenuOpened(!menuOpened)}
-                  onKeyUp={(e) => {
-                    if (e.keyCode === 32) setMenuOpened(!menuOpened);
-                  }}
-                  className="avatar"
-                  tabIndex={0}
-                />
-              }
-              menu={
-                <Menu onOutsideClick={() => setMenuOpened(false)}>
-                  <Link href="/dashboard">
-                    <a>Dashboard</a>
-                  </Link>
-                  <button className="unstyled" onClick={signOut}>
-                    Sign Out
-                  </button>
-                </Menu>
-              }
-              opened={menuOpened}
-            />
-          ) : (
-            <button onClick={signIn}>Sign In</button>
-          )}
+
+          <Link href="/dashboard">
+            <a className="btn">Open App</a>
+          </Link>
         </nav>
       </header>
       <div className="landing">
@@ -58,9 +31,9 @@ export default function Home() {
           with real data.
         </h1>
         <div className="landing-buttons">
-          <button className="mr-half">
-            {session ? "Go to dashboard" : "Sign Up"}
-          </button>
+          <Link href="/dashboard">
+            <a className="mr-half btn">Open the app</a>
+          </Link>
           <button className="ghost">Learn More</button>
         </div>
       </div>
