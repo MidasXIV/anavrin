@@ -1,0 +1,23 @@
+{
+  "name": "anavrin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@types/cheerio": "^0.22.21",
+    "cheerio": "^1.0.0-rc.3",
+    "next": "9.5.1",
+    "next-auth": "^3.0.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.43",
+    "typescript": "^3.9.7"
+  }
+}
