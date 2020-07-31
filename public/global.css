@@ -110,7 +110,8 @@ img:focus {
 
 /* Buttons */
 
-button {
+button,
+.btn {
   display: block;
 
   font-family: inherit;
@@ -126,12 +127,14 @@ button {
   transition: all 200ms ease;
 }
 
-button:hover {
+button:hover,
+.btn:hover {
   cursor: pointer;
   background: #18191d;
 }
 
-button:active {
+button:active,
+.btn:active {
   background: #1d1e22;
 }
 
