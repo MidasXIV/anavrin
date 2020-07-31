@@ -1,3 +1,8 @@
+<div align="center">
+    <h1>Anavrin</h1>
+    <p>Simple tracking & simulation for your portfolio</p>
+</div>
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
