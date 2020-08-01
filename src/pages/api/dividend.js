@@ -1,4 +1,4 @@
-import { DividendController } from "../../controllers/dividendController";
+import DividendController from "../../controllers/dividendController";
 
 const dividendController = new DividendController();
 
