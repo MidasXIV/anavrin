@@ -383,10 +383,10 @@ export default class DividendController {
 
       console.debug("fetching Info");
 
-      const yahooFinancedividendProfileURL = DividendController.getYahooFinancedividendProfileURL(
+      const yahooFinancedividendHistoryURL = DividendController.getYahooFinanceDividendHistoryURL(
         ticker
       );
-      DividendController.makeRequest(yahooFinancedividendProfileURL).then(html => {
+      DividendController.makeRequest(yahooFinancedividendHistoryURL).then(html => {
         console.debug(`fetched Dividend Information for ${ticker}`);
 
         const $ = cheerio.load(html);
