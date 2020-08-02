@@ -1,14 +1,17 @@
-import { AppHeader, Loading } from "../components";
+import { FC } from "react";
+import AppHeader from "../components/app-header";
 
-export default function Dashboard() {
+const Dashboard: FC = () => {
   return (
     <main>
       <AppHeader
-        title='Hello there'
+        title="Hello there"
         description="You can see your portfolios estimated value & progress below:"
         currentPage={{ label: "Home", path: "/dashboard" }}
         otherPages={[{ label: "Portfolio", path: "/dashboard/portfolio" }]}
       />
     </main>
-  )
-}
+  );
+};
+
+export default Dashboard;

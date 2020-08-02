@@ -67,43 +67,46 @@ interface AnnualDividendGrowthItemInterface {
   growth: number;
 }
 
-export class DividendController {
+export default class DividendController {
   nameQuerySelector = "h1.D\\(ib\\)";
+
   quoteQuerySelector = ".Fz\\(36px\\)";
-  exchangeQuerySelector =
-    ".Mt\\(-5px\\) > div:nth-child(2) > span:nth-child(1)";
-  dividendCurrencyQuerySelector =
-    "div.Mt\\(20px\\) > span:nth-child(1) > span:nth-child(1)";
+
+  exchangeQuerySelector = ".Mt\\(-5px\\) > div:nth-child(2) > span:nth-child(1)";
+
+  dividendCurrencyQuerySelector = "div.Mt\\(20px\\) > span:nth-child(1) > span:nth-child(1)";
+
   dividendHistoryTableQuerySelector = "table tbody";
+
   stockSummaryQuerySelector = "table.M\\(0\\):nth-child(1) tbody";
 
-  /*****************************************************************************************
+  /** ***************************************************************************************
    *
    *                                  Private Methods
    *
-   *****************************************************************************************/
+   **************************************************************************************** */
 
-  private getYahooFinanceDividendHistoryURL(ticker: string): string {
+  private static getYahooFinanceDividendHistoryURL(ticker: string): string {
     /** function to get Yahoo Finance Dividend History Page URL corresponding to input ticker */
     return `https://finance.yahoo.com/quote/${ticker}/history?period1=345427200&period2=1585353600&interval=div%7Csplit&filter=div&frequency=1d`;
   }
 
-  private getYahooFinancedividendProfileURL(ticker: string): string {
+  private static getYahooFinancedividendProfileURL(ticker: string): string {
     /** function to get Yahoo Finance Summary Page URL corresponding to input ticker */
     return `https://finance.yahoo.com/quote/${ticker}?p=${ticker}`;
   }
 
-  private makeRequest(url: string): Promise<string> {
+  private static makeRequest(url: string): Promise<string> {
     /** function to make request to appropriate Yahoo Finance page */
     return new Promise<string>((resolve, reject) => {
       requestjs(
         {
           method: "GET",
-          url: url,
+          url,
           headers: {
             "User-Agent":
-              "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
-          },
+              "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36"
+          }
         },
         (error, response, html) => {
           if (error) reject(error);
@@ -111,7 +114,7 @@ export class DividendController {
           if (response && response.statusCode !== 200) {
             reject({
               response,
-              statusCode: response.statusCode,
+              statusCode: response.statusCode
             });
           }
 
@@ -121,9 +124,9 @@ export class DividendController {
     });
   }
 
-  /*****************************************************************************************
+  /** ***************************************************************************************
    *                                  Helper Methods
-   *****************************************************************************************/
+   **************************************************************************************** */
 
   private parseStockName($: CheerioStatic): string {
     return $(this.nameQuerySelector).text().toString().split("(")[0].trim();
@@ -142,57 +145,57 @@ export class DividendController {
   }
 
   private parseStockSummary($: CheerioStatic): StockSummaryInterface {
-    const defaultStringValue = "value Not Found",
-      defaultNumericValue = -1;
+    const defaultStringValue = "value Not Found";
+    const defaultNumericValue = -1;
 
-    let marketCap: string = defaultStringValue,
-      beta: number = defaultNumericValue,
-      peRatio: number = defaultNumericValue,
-      EPS: number = defaultNumericValue,
-      paymentDate: string = defaultStringValue,
-      exDividendDate: string = defaultStringValue,
-      dividendAmount: number = defaultNumericValue,
-      dividendYeild: string = defaultStringValue,
-      dividendPayoutRatio: number = defaultNumericValue;
+    let marketCap: string = defaultStringValue;
+    let beta: number = defaultNumericValue;
+    let peRatio: number = defaultNumericValue;
+    let EPS: number = defaultNumericValue;
+    let paymentDate: string = defaultStringValue;
+    let exDividendDate: string = defaultStringValue;
+    let dividendAmount: number = defaultNumericValue;
+    let dividendYeild: string = defaultStringValue;
+    let dividendPayoutRatio: number = defaultNumericValue;
 
     $(this.stockSummaryQuerySelector)
       .children("tr")
-      .each(function (index, row) {
+      .each((index, row) => {
         const rowInfo = $(row)
           .children("td")
-          .map(function (_index, col) {
+          .map((_index, col) => {
             return $(col).text();
           })
           .get();
 
-        switch (rowInfo[0]) {
+        const [rowKey, rowValue] = rowInfo;
+        switch (rowKey) {
           case "Market Cap":
-            marketCap = rowInfo[1];
+            marketCap = rowValue;
             break;
           case "Beta (5Y Monthly)":
-            beta = parseFloat(rowInfo[1]);
+            beta = parseFloat(rowValue);
             break;
           case "PE Ratio (TTM)":
-            peRatio = parseFloat(rowInfo[1]);
+            peRatio = parseFloat(rowValue);
             break;
           case "EPS (TTM)":
-            EPS = parseFloat(rowInfo[1]);
+            EPS = parseFloat(rowValue);
             break;
           case "Earnings Date":
-            paymentDate = rowInfo[1];
+            paymentDate = rowValue;
             break;
           case "Ex-Dividend Date":
-            exDividendDate = rowInfo[1];
+            exDividendDate = rowValue;
             break;
           case "Forward Dividend & Yield": {
-            const dividendValueandYeild = rowInfo[1]
-              .replace("(", "")
-              .replace(")", "")
-              .split(" ");
+            const dividendValueandYeild = rowValue.replace("(", "").replace(")", "").split(" ");
             dividendAmount = parseFloat(dividendValueandYeild[0]);
-            dividendYeild = dividendValueandYeild[1];
+            [, dividendYeild] = dividendValueandYeild;
             break;
           }
+          default:
+            break;
         }
       });
 
@@ -209,18 +212,16 @@ export class DividendController {
       exDividendDate,
       dividendAmount,
       dividendYeild,
-      dividendPayoutRatio,
+      dividendPayoutRatio
     };
   }
 
-  private parseDividendHistory(
-    $: CheerioStatic
-  ): Array<DividendInformationItemInterface> {
+  private parseDividendHistory($: CheerioStatic): Array<DividendInformationItemInterface> {
     const dividendInformation: Array<DividendInformationItemInterface> = [];
 
     $(this.dividendHistoryTableQuerySelector)
       .children("tr")
-      .each(function (index, row) {
+      .each((index, row) => {
         const rowInfo = $(row)
           .children("td")
           .map((_index, col) => $(col).text())
@@ -228,28 +229,28 @@ export class DividendController {
         /** in special cases no dividend value is present hence default value 0 */
         dividendInformation.push({
           date: new Date(rowInfo[0]).getTime(),
-          dividend: parseFloat(rowInfo[1].replace("Dividend", "").trim()) || 0,
+          dividend: parseFloat(rowInfo[1].replace("Dividend", "").trim()) || 0
         });
       });
     return dividendInformation;
   }
 
-  private getAnnualDividends(
+  private static getAnnualDividends(
     DividendHistory: Array<DividendInformationItemInterface>,
     dividendAmount: number
   ): AnnualDividendInterface {
     const currentYear = new Date().getFullYear().toString();
     const AnnualDividends: AnnualDividendInterface = {};
-    DividendHistory.forEach(
-      (DividendHistoryItem: DividendInformationItemInterface) => {
-        const dividendYear = new Date(DividendHistoryItem.date)
-          .getFullYear()
-          .toString();
-        AnnualDividends[dividendYear]
-          ? (AnnualDividends[dividendYear] += DividendHistoryItem.dividend)
-          : (AnnualDividends[dividendYear] = DividendHistoryItem.dividend);
+
+    DividendHistory.forEach((DividendHistoryItem: DividendInformationItemInterface) => {
+      const dividendYear = new Date(DividendHistoryItem.date).getFullYear().toString();
+
+      if (dividendYear in AnnualDividends) {
+        AnnualDividends[dividendYear] += DividendHistoryItem.dividend;
+      } else {
+        AnnualDividends[dividendYear] = DividendHistoryItem.dividend;
       }
-    );
+    });
 
     /** if dividendAmount is not provided remove it from Annual Dividend Object */
     if (dividendAmount) {
@@ -261,13 +262,10 @@ export class DividendController {
     return AnnualDividends;
   }
 
-  private getAnnualDividendGrowth(
+  private static getAnnualDividendGrowth(
     AnnualDividends: AnnualDividendInterface
   ): AnnualDividendGrowthInterface {
-    const dividendGrowth = (
-      newDividend: number,
-      oldDividend: number
-    ): number => {
+    const dividendGrowth = (newDividend: number, oldDividend: number): number => {
       return ((newDividend - oldDividend) / oldDividend) * 100;
     };
 
@@ -281,60 +279,54 @@ export class DividendController {
      * initial year of paying dividends
      * previous year no dividend was paid
      */
-    AnnualDividendYearsArray.forEach(
-      (AnnualDividendYear: number, index: number) => {
-        const currentDividends = AnnualDividends[AnnualDividendYear];
+    AnnualDividendYearsArray.forEach((AnnualDividendYear: number, index: number) => {
+      const currentDividends = AnnualDividends[AnnualDividendYear];
 
-        const previousYear = AnnualDividendYear - 1;
-        const previousYearEntry = AnnualDividendYearsArray[index - 1];
+      const previousYear = AnnualDividendYear - 1;
+      const previousYearEntry = AnnualDividendYearsArray[index - 1];
 
-        const skipCalculation =
-          index === 0 || previousYear !== previousYearEntry;
+      const skipCalculation = index === 0 || previousYear !== previousYearEntry;
 
-        if (skipCalculation) {
-          /** the first ever dividend year has no growth */
-          AnnualDividendGrowth[AnnualDividendYear] = {
-            dividend: currentDividends,
-          };
-        }
-
-        const previousDividends = AnnualDividends[previousYearEntry];
+      if (skipCalculation) {
+        /** the first ever dividend year has no growth */
         AnnualDividendGrowth[AnnualDividendYear] = {
-          dividend: currentDividends,
-          growth: dividendGrowth(currentDividends, previousDividends),
+          dividend: currentDividends
         };
       }
-    );
+
+      const previousDividends = AnnualDividends[previousYearEntry];
+      AnnualDividendGrowth[AnnualDividendYear] = {
+        dividend: currentDividends,
+        growth: dividendGrowth(currentDividends, previousDividends)
+      };
+    });
 
     return AnnualDividendGrowth;
   }
 
-  /*****************************************************************************************
+  /** ***************************************************************************************
    *
    *                            Public / Router Endpoint Methods
    *
-   *****************************************************************************************/
+   **************************************************************************************** */
 
-  public getDividendInfo(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    return new Promise((resolve) => {
+  public getDividendInfo(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+    return new Promise(resolve => {
       const ticker = Array.isArray(request.query.ticker)
         ? request.query.ticker[0]
         : request.query.ticker;
-      const yahooFinancedividendProfileURL = this.getYahooFinancedividendProfileURL(
+      const yahooFinancedividendProfileURL = DividendController.getYahooFinancedividendProfileURL(
         ticker
       );
 
-      let symbol: string,
-        name: string,
-        price: number,
-        exchange: string,
-        stockSummary: StockSummaryInterface;
+      let symbol: string;
+      let name: string;
+      let price: number;
+      let exchange: string;
+      let stockSummary: StockSummaryInterface;
 
-      this.makeRequest(yahooFinancedividendProfileURL)
-        .then((html) => {
+      DividendController.makeRequest(yahooFinancedividendProfileURL)
+        .then(html => {
           console.debug(`fetched Dividend Information for ${ticker}`);
           const $ = cheerio.load(html);
 
@@ -344,24 +336,22 @@ export class DividendController {
           exchange = this.parseExchangeName($);
           stockSummary = this.parseStockSummary($);
 
-          const yahooFinancedividendProfileURL = this.getYahooFinanceDividendHistoryURL(
+          const yahooFinancedividendHistoryURL = DividendController.getYahooFinanceDividendHistoryURL(
             ticker
           );
-          return this.makeRequest(yahooFinancedividendProfileURL);
+          return DividendController.makeRequest(yahooFinancedividendHistoryURL);
         })
-        .then((html) => {
+        .then(html => {
           console.debug(`fetched Dividend History Information for ${ticker}`);
           const $ = cheerio.load(html);
 
           const dividendCurrency = this.parseStockCurrency($);
           const DividendHistory = this.parseDividendHistory($);
-          const AnnualDividends = this.getAnnualDividends(
+          const AnnualDividends = DividendController.getAnnualDividends(
             DividendHistory,
             stockSummary.dividendAmount
           );
-          const AnnualDividendGrowth = this.getAnnualDividendGrowth(
-            AnnualDividends
-          );
+          const AnnualDividendGrowth = DividendController.getAnnualDividendGrowth(AnnualDividends);
 
           response.json({
             symbol,
@@ -371,7 +361,7 @@ export class DividendController {
             ...stockSummary,
             dividendCurrency,
             AnnualDividends,
-            AnnualDividendGrowth,
+            AnnualDividendGrowth
           });
 
           resolve();
@@ -379,63 +369,54 @@ export class DividendController {
     });
   }
 
-  public getDividendHistory(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    return new Promise((resolve) => {
+  /** Endpoint Deprecated */
+  // eslint-disable-next-line class-methods-use-this
+  public getDividendHistory(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+    return new Promise(resolve => {
       /*
        ** Todo - error handling when ticker symbol is invalid
        ** Todo - do not hard code time intervals.
        */
-      const yahooFinanceDividendHistoryURL = (ticker: string): string =>
-        `https://finance.yahoo.com/quote/${ticker}/history?period1=345427200&period2=1585353600&interval=div%7Csplit&filter=div&frequency=1d`;
       const ticker = Array.isArray(request.query.ticker)
         ? request.query.ticker[0]
         : request.query.ticker;
+
       console.debug("fetching Info");
-      requestjs(
-        {
-          method: "GET",
-          url: yahooFinanceDividendHistoryURL(ticker),
-          headers: {
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
-          },
-        },
-        (err, res, html) => {
-          console.debug("fetched Info");
-          if (err) return console.error(err);
 
-          const $ = cheerio.load(html);
-
-          const dividendInformation: Array<DividendInformationItemInterface> = [];
-          const dividendCurrency: string = $(
-            "div.Mt\\(20px\\) > span:nth-child(1) > span:nth-child(1)"
-          ).text();
-
-          $("table tbody")
-            .children("tr")
-            .each(function (index, row) {
-              const rowInfo = $(row)
-                .children("td")
-                .map((_index, col) => $(col).text())
-                .get();
-              dividendInformation.push({
-                date: new Date(rowInfo[0]).getTime(),
-                dividend: parseFloat(rowInfo[1].replace("Dividend", "").trim()),
-              });
-            });
-
-          const dividendHistoryReturnObject = {
-            currency: dividendCurrency,
-            dividendHistory: dividendInformation,
-          };
-
-          response.json(dividendHistoryReturnObject);
-          resolve();
-        }
+      const yahooFinancedividendHistoryURL = DividendController.getYahooFinanceDividendHistoryURL(
+        ticker
       );
+      DividendController.makeRequest(yahooFinancedividendHistoryURL).then(html => {
+        console.debug(`fetched Dividend Information for ${ticker}`);
+
+        const $ = cheerio.load(html);
+
+        const dividendInformation: Array<DividendInformationItemInterface> = [];
+        const dividendCurrency: string = $(
+          "div.Mt\\(20px\\) > span:nth-child(1) > span:nth-child(1)"
+        ).text();
+
+        $("table tbody")
+          .children("tr")
+          .each((index, row) => {
+            const rowInfo = $(row)
+              .children("td")
+              .map((_index, col) => $(col).text())
+              .get();
+            dividendInformation.push({
+              date: new Date(rowInfo[0]).getTime(),
+              dividend: parseFloat(rowInfo[1].replace("Dividend", "").trim())
+            });
+          });
+
+        const dividendHistoryReturnObject = {
+          currency: dividendCurrency,
+          dividendHistory: dividendInformation
+        };
+
+        response.json(dividendHistoryReturnObject);
+        resolve();
+      });
     });
   }
 }

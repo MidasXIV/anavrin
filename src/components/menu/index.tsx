@@ -1,15 +1,21 @@
-import React, { useRef } from "react";
+import React, { useRef, FC, CSSProperties } from "react";
 import useOutsideClick from "../../util/useOutsideClick";
 
-const Menu = ({ children, onOutsideClick, ...props }) => {
+type MenuProps = {
+  children: JSX.Element[];
+  onOutsideClick: () => void;
+  style: CSSProperties;
+};
+
+const Menu: FC<MenuProps> = ({ children, onOutsideClick, style }) => {
   const wrapperRef = useRef(null);
   useOutsideClick(wrapperRef, onOutsideClick);
 
   return (
-    <div ref={wrapperRef} className="container" {...props}>
+    <div ref={wrapperRef} className="container" style={style}>
       <div className="menu">
-        {children.map((child, index) => (
-          <div className="menu-item" key={index}>
+        {children.map(child => (
+          <div className="menu-item" key={child.toString()}>
             {child}
           </div>
         ))}

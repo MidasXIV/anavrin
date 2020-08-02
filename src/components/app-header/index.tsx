@@ -1,13 +1,21 @@
-import { useState } from "react";
-import { DropdownMenu, Menu } from "..";
+import { useState, FC } from "react";
 import Link from "next/link";
+import DropdownMenu from "../dropdown-menu";
+import Menu from "../menu";
 
-export default function AppHeader({
-  title,
-  description,
-  currentPage,
-  otherPages,
-}) {
+type Page = {
+  label: string;
+  path: string;
+};
+
+type AppHeaderProps = {
+  title: string;
+  description: string;
+  currentPage: Page;
+  otherPages: Page[];
+};
+
+const AppHeader: FC<AppHeaderProps> = ({ title, description, currentPage, otherPages }) => {
   const [menuOpened, setMenuOpened] = useState(false);
 
   return (
@@ -18,24 +26,23 @@ export default function AppHeader({
       </div>
       <DropdownMenu
         button={
-          <button onClick={() => setMenuOpened(!menuOpened)}>
+          <button onClick={() => setMenuOpened(!menuOpened)} type="button">
             {currentPage.label}
             {"  "}↓
           </button>
         }
         menu={
-          <Menu
-            onOutsideClick={() => setMenuOpened(false)}
-            style={{ top: "2.5rem" }}
-          >
+          <Menu onOutsideClick={() => setMenuOpened(false)} style={{ top: "2.5rem" }}>
             <Link href={currentPage.path}>
               <a>{currentPage.label}</a>
             </Link>
-            {otherPages.map((page, index) => (
-              <Link href={page.path} key={index}>
-                <a>{page.label}</a>
-              </Link>
-            ))}
+            <>
+              {otherPages.map(page => (
+                <Link href={page.path} key={page.path + page.label}>
+                  <a>{page.label}</a>
+                </Link>
+              ))}
+            </>
           </Menu>
         }
         opened={menuOpened}
@@ -61,4 +68,6 @@ export default function AppHeader({
       `}</style>
     </header>
   );
-}
+};
+
+export default AppHeader;
