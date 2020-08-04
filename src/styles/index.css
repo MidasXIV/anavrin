@@ -1,5 +1,10 @@
-/* Shift global.css here */
+@import "https://rsms.me/inter/inter.css";
+
 @tailwind base;
 @tailwind components;
+
+*:focus {
+  @apply shadow-outline outline-none rounded-sm !important;
+}
 
 @tailwind utilities;
