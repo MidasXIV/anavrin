@@ -19,14 +19,14 @@ const AppHeader: FC<AppHeaderProps> = ({ title, description, currentPage, otherP
   const [menuOpened, setMenuOpened] = useState(false);
 
   return (
-    <header>
-      <div className="intro">
-        <h3>{title}</h3>
-        <p>{description}</p>
+    <header className="flex px-10 py-12 lg:px-56">
+      <div className="mr-auto">
+        <h3 className="text-xl">{title}</h3>
+        <p className="my-4 text-sm max-w-xs">{description}</p>
       </div>
       <DropdownMenu
         button={
-          <button onClick={() => setMenuOpened(!menuOpened)} type="button">
+          <button onClick={() => setMenuOpened(!menuOpened)} type="button" className="h-12">
             {currentPage.label}
             {"  "}↓
           </button>
@@ -47,25 +47,6 @@ const AppHeader: FC<AppHeaderProps> = ({ title, description, currentPage, otherP
         }
         opened={menuOpened}
       />
-
-      <style jsx>{`
-        header {
-          display: flex;
-        }
-
-        header button {
-          height: 3rem;
-        }
-
-        .intro {
-          margin-right: auto;
-          max-width: 25rem;
-        }
-
-        p {
-          margin: 1rem 0;
-        }
-      `}</style>
     </header>
   );
 };

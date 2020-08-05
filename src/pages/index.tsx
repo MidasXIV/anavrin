@@ -2,17 +2,17 @@ import { FC } from "react";
 import Link from "next/link";
 
 const Home: FC = () => (
-  <main>
-    <header>
+  <div>
+    <header className="flex items-center px-10 py-12 lg:px-56">
       <a href="#about">
-        <h4 className="logo">Anavrin</h4>
+        <h4 className="text-xl">Anavrin</h4>
       </a>
 
-      <nav className="links">
-        <a href="#about" className="mr-1">
+      <nav className="ml-auto text-sm">
+        <a href="#about" className="mr-6">
           About
         </a>
-        <a href="#support" className="mr-1">
+        <a href="#support" className="mr-6">
           Support
         </a>
 
@@ -21,68 +21,25 @@ const Home: FC = () => (
         </Link>
       </nav>
     </header>
-    <div className="landing">
-      <h1>
+    <div className="px-10 py-32 lg:py-42 lg:px-56">
+      <h1 className="text-3xl max-w-2xl mb-8">
         Simple tracking & simulation for your portfolio. Make better decisions with real data.
       </h1>
-      <div className="landing-buttons">
+      <div className="flex">
         <Link href="/dashboard">
-          <a className="mr-half btn">Open the app</a>
+          <a className="bg-gray-900 hover:bg-gray-800 font-medium py-3 px-5 rounded-full mr-6">
+            Open the app
+          </a>
         </Link>
-        <button className="ghost" type="button">
+        <button
+          className="bg-black hover:bg-gray-900 font-medium py-3 px-5 rounded-full"
+          type="button"
+        >
           Learn More
         </button>
       </div>
     </div>
-
-    <style jsx>{`
-      .landing {
-        max-width: 47.5rem;
-        padding: 15% 5%;
-      }
-
-      @media (max-width: 768px) {
-        .landing {
-          width: 100%;
-        }
-      }
-
-      header {
-        display: flex;
-        align-items: center;
-      }
-
-      header nav {
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-      }
-
-      .landing-buttons {
-        display: flex;
-        align-items: center;
-        margin-top: 2.5rem;
-      }
-
-      .avatar {
-        width: 2.5rem;
-        border-radius: 50%;
-      }
-    `}</style>
-  </main>
+  </div>
 );
-
-/*
-
-  --- Sketching out the structure of the app ---
-
-  index.js => 
-    landing page where users can login (will be only one page with sections)
-  dashboard.js => 
-    authenticated page where the user can see their overview
-  dashboard/portfolio.js => 
-    authenticated page where the user can see their portfolio + it's growth
-
-*/
 
 export default Home;

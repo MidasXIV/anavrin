@@ -12,45 +12,20 @@ const Menu: FC<MenuProps> = ({ children, onOutsideClick, style }) => {
   useOutsideClick(wrapperRef, onOutsideClick);
 
   return (
-    <div ref={wrapperRef} className="container" style={style}>
-      <div className="menu">
+    <div ref={wrapperRef} className="relative" style={style}>
+      <div
+        className="bg-gray-900 shadow-lg rounded-sm absolute py-2"
+        style={{ top: "0", right: "2rem" }}
+      >
         {children.map(child => (
-          <div className="menu-item" key={child.toString()}>
+          <div
+            className="px-4 py-2 m-0 text-white text-sm block hover:bg-gray-800"
+            key={child.toString()}
+          >
             {child}
           </div>
         ))}
       </div>
-      <style jsx>
-        {`
-          .container {
-            position: relative;
-          }
-
-          .menu {
-            background-color: #0e0f13;
-            box-shadow: 1rem 3rem 4rem 1rem rgba(0, 0, 0, 0.2);
-            border-radius: 0.25rem;
-            position: absolute;
-            top: 1rem;
-            right: 2rem;
-            padding: 0.5rem 0;
-          }
-
-          .menu-item {
-            display: block;
-            padding: 0.4rem 1rem;
-            background-image: none;
-            margin: 0;
-            color: #fff;
-            font-size: 0.9rem;
-          }
-
-          .menu-item:hover {
-            background-color: #141519;
-            background-image: none;
-          }
-        `}
-      </style>
     </div>
   );
 };
