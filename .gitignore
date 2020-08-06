@@ -35,3 +35,6 @@ logs
 
 # vercel
 .vercel
+
+# app layout profile
+/profile-layout

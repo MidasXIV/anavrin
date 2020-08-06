@@ -10,6 +10,7 @@
 const puppeteer = require("puppeteer-core");
 const stdio = require("stdio");
 const fs = require("fs");
+const rimraf = require("rimraf");
 const APP_PAGES_LIST = require("../public/sitemap.json");
 
 const LAYOUT_PROFILE_DIRECTORY = "profile-layout";
@@ -95,10 +96,12 @@ const formatMessage = (message, type) => {
     case "m":
       console.log(`\x1b[35m`, message, `\x1b[0m`);
       break;
+    case "t":
+      console.table(message);
+      break;
     default:
       console.log(message);
   }
-  // console.log(`\x1b[0m`); // reset console color
 };
 
 /** *************************************************************
@@ -106,36 +109,31 @@ const formatMessage = (message, type) => {
  ************************************************************** */
 
 async function closeHeadlesssChrome(browserObj) {
-  formatMessage("-- Trying to Close Chome Headless Window");
+  formatMessage("-- Trying to Close Chome Headless Window", "m");
   await browserObj.close();
 }
 
-async function setChromeViewport(pageObj) {
-  formatMessage("-- Trying to Update page viewPort");
-  await pageObj.setViewport({
-    width: 414,
-    height: 763,
-    deviceScaleFactor: 1,
-    isMobile: true,
-    hasTouch: false,
-    isLandscape: false
-  });
+async function setChromeViewport(pageObj, viewport) {
+  // formatMessage("-- Trying to Update page viewPort");
+  await pageObj.setViewport(viewport);
 }
 
 async function setUserAgent(pageObj) {
-  formatMessage("-- Setting User Agent");
+  // formatMessage("-- Setting User Agent");
   pageObj.setUserAgent(
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
   );
 }
 
-const takeScreenshot = async (pageObj, srcUrl) => {
-  formatMessage(`-- Trying to Load Web Page ${srcUrl}`);
+const takeScreenshot = async (pageObj, viewport, srcUrl) => {
+  // formatMessage(`-- Trying to Load Web Page ${srcUrl}`);
   await pageObj.goto(srcUrl);
+  // causes the program to break for some reason
+  // await pageObj.waitForNavigation({ waitUntil: "networkidle2" });
 
-  formatMessage("-- Trying to Take Screenshot");
+  formatMessage(`-- Trying to Take Screenshot in ${viewport}`);
   await pageObj.screenshot({
-    path: `${LAYOUT_PROFILE_DIRECTORY}/default.png`,
+    path: `${LAYOUT_PROFILE_DIRECTORY}/${viewport}/default.png`,
     fullPage: true
   });
 };
@@ -144,9 +142,14 @@ const takeScreenshot = async (pageObj, srcUrl) => {
  *                     Main Workflow
  ************************************************************** */
 
+rimraf.sync(LAYOUT_PROFILE_DIRECTORY);
+
 if (!fs.existsSync(LAYOUT_PROFILE_DIRECTORY)) {
   formatMessage(`creating layout-profile directory`, "s");
   fs.mkdirSync(LAYOUT_PROFILE_DIRECTORY);
+  Object.keys(VIEWPORTS).forEach(viewport => {
+    fs.mkdirSync(`${LAYOUT_PROFILE_DIRECTORY}/${viewport}`);
+  });
 }
 
 formatMessage(`Base URL of app :: ${appBaseURL}`);
@@ -160,18 +163,36 @@ const createServer = async url => {
   };
 
   const browser = await puppeteer.launch(launchOptions);
-  const page = await browser.newPage();
-
   formatMessage(await browser.version(), "m");
 
-  // set viewport and user agent (just in case for nice viewing)
-  await setChromeViewport(page);
-  await setUserAgent(page);
+  // iterate over each viewport
 
-  // go to the target web
-  await takeScreenshot(page, "https://dev.to");
-  // close the browser
-  await closeHeadlesssChrome(browser);
+  let promises = [];
+  promises = Object.keys(VIEWPORTS).map(async viewport => {
+    return new Promise((resolve, reject) => {
+      resolve(
+        browser
+          .newPage()
+          .then(async page => {
+            await setChromeViewport(page, VIEWPORTS[viewport]);
+            await setUserAgent(page);
+            await takeScreenshot(page, viewport, "https://developer.mozilla.org/en-US/");
+          })
+          .catch(error => reject(error))
+      );
+    });
+  });
+
+  Promise.all(promises)
+    .then(_promises => {
+      formatMessage(`promsies :: ${_promises.length}`);
+      formatMessage([["promises", _promises.length]], "t");
+    })
+    .then(() => {
+      // close the browser
+      closeHeadlesssChrome(browser);
+    })
+    .catch(error => console.error(error));
 };
 
 createServer(appBaseURL);

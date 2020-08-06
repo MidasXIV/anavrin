@@ -40,6 +40,7 @@
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.0.5",
     "puppeteer-core": "^5.2.1",
+    "rimraf": "^3.0.2",
     "stdio": "^2.1.1",
     "typescript": "^3.9.7"
   }
