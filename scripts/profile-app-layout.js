@@ -13,6 +13,56 @@ const fs = require("fs");
 const APP_PAGES_LIST = require("../public/sitemap.json");
 
 const LAYOUT_PROFILE_DIRECTORY = "profile-layout";
+const VIEWPORTS = {
+  phone: {
+    width: 360,
+    height: 740,
+    deviceScaleFactor: 1,
+    isMobile: true,
+    hasTouch: true,
+    isLandscape: false
+  },
+  landscape: {
+    width: 740,
+    height: 360,
+    deviceScaleFactor: 1,
+    isMobile: true,
+    hasTouch: true,
+    isLandscape: true
+  },
+  ipad: {
+    width: 768,
+    height: 1024,
+    deviceScaleFactor: 1,
+    isMobile: false,
+    hasTouch: false,
+    isLandscape: false
+  },
+  tablet: {
+    width: 1280,
+    height: 800,
+    deviceScaleFactor: 1,
+    isMobile: false,
+    hasTouch: true,
+    isLandscape: true
+  },
+  laptop: {
+    width: 1440,
+    height: 900,
+    deviceScaleFactor: 1,
+    isMobile: false,
+    hasTouch: false,
+    isLandscape: false
+  },
+  desktop: {
+    width: 1920,
+    height: 1080,
+    deviceScaleFactor: 1,
+    isMobile: false,
+    hasTouch: false,
+    isLandscape: false
+  }
+};
 
 /**
  * usage example
@@ -21,7 +71,11 @@ const LAYOUT_PROFILE_DIRECTORY = "profile-layout";
  */
 
 const options = stdio.getopt({
-  url: { key: "u", args: 1, description: "base URL of app to profile" }
+  url: {
+    key: "u",
+    args: 1,
+    description: "base URL of app to profile"
+  }
 });
 
 /**
@@ -59,10 +113,10 @@ async function closeHeadlesssChrome(browserObj) {
 async function setChromeViewport(pageObj) {
   formatMessage("-- Trying to Update page viewPort");
   await pageObj.setViewport({
-    width: 1366,
-    height: 738,
+    width: 414,
+    height: 763,
     deviceScaleFactor: 1,
-    isMobile: false,
+    isMobile: true,
     hasTouch: false,
     isLandscape: false
   });
@@ -82,12 +136,7 @@ const takeScreenshot = async (pageObj, srcUrl) => {
   formatMessage("-- Trying to Take Screenshot");
   await pageObj.screenshot({
     path: `${LAYOUT_PROFILE_DIRECTORY}/default.png`,
-    clip: {
-      x: 0,
-      y: 0,
-      width: 795,
-      height: 1125
-    }
+    fullPage: true
   });
 };
 
@@ -102,7 +151,7 @@ if (!fs.existsSync(LAYOUT_PROFILE_DIRECTORY)) {
 
 formatMessage(`Base URL of app :: ${appBaseURL}`);
 
-const createServer = async html => {
+const createServer = async url => {
   const launchOptions = {
     headless: true,
     // because we are using puppeteer-core so we must define executablePath option
@@ -120,10 +169,9 @@ const createServer = async html => {
   await setUserAgent(page);
 
   // go to the target web
-  await page.goto("https://google.com");
-  await takeScreenshot(page, "https://google.com");
+  await takeScreenshot(page, "https://dev.to");
   // close the browser
   await closeHeadlesssChrome(browser);
 };
 
-createServer();
+createServer(appBaseURL);
