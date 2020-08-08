@@ -1,5 +1,18 @@
 /**
- * WORKFLOW
+ * NOTE:
+ * To run this script you require: Node v - 12.9.0 or above
+ *
+ * USAGE:
+ * > npm run profile-layout:dev
+ * > npm run profile-layout -- -u <site-url>
+ *
+ * For specific viewport
+ * > npm run profile-layout:dev -- -v desktop
+ *
+ * OPTIONS:
+ * -u => to define the url of the page
+ *
+ * WORKFLOW:
  * 1. import sitemap
  * 2. goto each endpoint mentioned in sitemap
  * 3. cature each page in different view ports
@@ -76,14 +89,26 @@ const options = stdio.getopt({
     key: "u",
     args: 1,
     description: "base URL of app to profile"
+  },
+  viewport: {
+    key: "v",
+    args: 1,
+    required: false,
+    default: "NOT_PROVIDED",
+    description: "select a viewport, defaults to all"
   }
 });
+console.log(options);
 
-/**
- * Loading Application Config
- */
-const appBaseURL = options.url;
+/** *************************************************************
+ *                     Script config
+ ************************************************************** */
 
+const APP_BASE_URL = options.url;
+let APP_VIEWPORT = Object.keys(VIEWPORTS).filter(viewport => viewport === options.viewport);
+if (APP_VIEWPORT.length < 1) {
+  APP_VIEWPORT = Object.keys(VIEWPORTS);
+}
 /** *************************************************************
  *                     Helper functions
  ************************************************************** */
@@ -125,15 +150,22 @@ async function setUserAgent(pageObj) {
   );
 }
 
-const takeScreenshot = async (pageObj, viewport, srcUrl) => {
-  // formatMessage(`-- Trying to Load Web Page ${srcUrl}`);
-  await pageObj.goto(srcUrl);
+const takeScreenshot = async (pageObj, viewport, endpoint, srcUrl) => {
+  formatMessage(`-- Trying to Load Web Page ${srcUrl}`);
+  await pageObj.goto(srcUrl).catch(error => {
+    throw error;
+  });
   // causes the program to break for some reason
   // await pageObj.waitForNavigation({ waitUntil: "networkidle2" });
 
-  formatMessage(`-- Trying to Take Screenshot in ${viewport}`);
+  if (endpoint === "") {
+    // eslint-disable-next-line no-param-reassign
+    endpoint = "index";
+  }
+
+  formatMessage(`-- ${viewport}/t- ${srcUrl}`);
   await pageObj.screenshot({
-    path: `${LAYOUT_PROFILE_DIRECTORY}/${viewport}/default.png`,
+    path: `${LAYOUT_PROFILE_DIRECTORY}/${viewport}/${endpoint}.png`,
     fullPage: true
   });
 };
@@ -152,7 +184,7 @@ if (!fs.existsSync(LAYOUT_PROFILE_DIRECTORY)) {
   });
 }
 
-formatMessage(`Base URL of app :: ${appBaseURL}`);
+formatMessage(`Base URL of app :: ${APP_BASE_URL}`);
 
 const createServer = async url => {
   const launchOptions = {
@@ -165,34 +197,57 @@ const createServer = async url => {
   const browser = await puppeteer.launch(launchOptions);
   formatMessage(await browser.version(), "m");
 
+  const promises = [];
   // iterate over each viewport
-
-  let promises = [];
-  promises = Object.keys(VIEWPORTS).map(async viewport => {
-    return new Promise((resolve, reject) => {
-      resolve(
-        browser
-          .newPage()
-          .then(async page => {
-            await setChromeViewport(page, VIEWPORTS[viewport]);
-            await setUserAgent(page);
-            await takeScreenshot(page, viewport, "https://developer.mozilla.org/en-US/");
-          })
-          .catch(error => reject(error))
+  APP_VIEWPORT.forEach(viewport => {
+    // iterate over each endpoint
+    APP_PAGES_LIST.endpoints.map(async endpoint => {
+      const resourceURL = `${APP_BASE_URL}/${endpoint}`;
+      promises.push(
+        new Promise((resolve, reject) => {
+          browser
+            .newPage()
+            .then(async page => {
+              await setChromeViewport(page, VIEWPORTS[viewport]);
+              await setUserAgent(page);
+              await takeScreenshot(page, viewport, endpoint, resourceURL);
+              resolve({ page: resourceURL, status: "success", viewport });
+            })
+            .catch(error => {
+              // Error constructor only supports string, pass rest as properties
+              const err = new Error(error.message);
+              err.page = resourceURL;
+              err.status = "failed";
+              err.viewport = viewport;
+              reject(err);
+            });
+        })
       );
     });
   });
 
-  Promise.all(promises)
+  Promise.allSettled(promises)
     .then(_promises => {
+      const compiledStatus = _promises.map(promise => {
+        if (promise.status === "rejected") {
+          const e = promise.reason;
+          return {
+            page: e.page,
+            status: e.status,
+            message: e.message,
+            viewport: e.viewport
+          };
+        }
+        return promise.value;
+      });
       formatMessage(`promsies :: ${_promises.length}`);
-      formatMessage([["promises", _promises.length]], "t");
+      formatMessage(compiledStatus, "t");
     })
     .then(() => {
       // close the browser
       closeHeadlesssChrome(browser);
     })
-    .catch(error => console.error(error));
+    .catch(error => console.log(`Error in Promise.allSettled() Handler`));
 };
 
-createServer(appBaseURL);
+createServer(APP_BASE_URL);
