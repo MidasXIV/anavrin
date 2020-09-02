@@ -1,13 +1,25 @@
+/* eslint-disable no-console */
 /**
  * NOTE:
  * To run this script you require: Node v - 12.9.0 or above
  *
  * USAGE:
+ * + To generate layout of each viewport during local dev run
  * > npm run profile-layout:dev
+ *
+ * + To generate layout of each viewport during prod run
  * > npm run profile-layout -- -u <site-url>
  *
- * For specific viewport
+ * + To generate layout of specific viewport [local]
  * > npm run profile-layout:dev -- -v desktop
+ *
+ * + local profile-layout shorthand
+ * > npm run pl:dev:phone
+ * > npm run pl:dev:landscape
+ * > npm run pl:dev:ipad
+ * > npm run pl:dev:tablet
+ * > npm run pl:dev:laptop
+ * > npm run pl:dev:desktop
  *
  * OPTIONS:
  * -u => to define the url of the page
@@ -98,7 +110,6 @@ const options = stdio.getopt({
     description: "select a viewport, defaults to all"
   }
 });
-console.log(options);
 
 /** *************************************************************
  *                     Script config
@@ -109,6 +120,7 @@ let APP_VIEWPORT = Object.keys(VIEWPORTS).filter(viewport => viewport === option
 if (APP_VIEWPORT.length < 1) {
   APP_VIEWPORT = Object.keys(VIEWPORTS);
 }
+
 /** *************************************************************
  *                     Helper functions
  ************************************************************** */
@@ -163,7 +175,7 @@ const takeScreenshot = async (pageObj, viewport, endpoint, srcUrl) => {
     endpoint = "index";
   }
 
-  formatMessage(`-- ${viewport}/t- ${srcUrl}`);
+  formatMessage(`-- ${viewport} - ${srcUrl}`);
   await pageObj.screenshot({
     path: `${LAYOUT_PROFILE_DIRECTORY}/${viewport}/${endpoint}.png`,
     fullPage: true
@@ -174,17 +186,30 @@ const takeScreenshot = async (pageObj, viewport, endpoint, srcUrl) => {
  *                     Main Workflow
  ************************************************************** */
 
-rimraf.sync(LAYOUT_PROFILE_DIRECTORY);
+formatMessage(`APP BASE URL  :: ${APP_BASE_URL}`, "m");
+formatMessage(`APP VIEWPORT  :: ${APP_VIEWPORT}`, "m");
+formatMessage(`APP PAGES     :: ${JSON.stringify(APP_PAGES_LIST.endpoints)}`, "m");
 
+// Remove older directories
+APP_VIEWPORT.forEach(viewport => {
+  rimraf.sync(`${LAYOUT_PROFILE_DIRECTORY}/${viewport}`);
+  formatMessage(`deleted ${LAYOUT_PROFILE_DIRECTORY}/${viewport} directory`, "s");
+});
+
+// Create profile-layout directory if doesn't exist
 if (!fs.existsSync(LAYOUT_PROFILE_DIRECTORY)) {
   formatMessage(`creating layout-profile directory`, "s");
   fs.mkdirSync(LAYOUT_PROFILE_DIRECTORY);
-  Object.keys(VIEWPORTS).forEach(viewport => {
-    fs.mkdirSync(`${LAYOUT_PROFILE_DIRECTORY}/${viewport}`);
-  });
 }
 
-formatMessage(`Base URL of app :: ${APP_BASE_URL}`);
+// create viewport directories if doesn't exist
+APP_VIEWPORT.forEach(viewport => {
+  const directory = `${LAYOUT_PROFILE_DIRECTORY}/${viewport}`;
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory);
+    formatMessage(`created ${directory} directory`, "s");
+  }
+});
 
 const createServer = async url => {
   const launchOptions = {
@@ -202,7 +227,7 @@ const createServer = async url => {
   APP_VIEWPORT.forEach(viewport => {
     // iterate over each endpoint
     APP_PAGES_LIST.endpoints.map(async endpoint => {
-      const resourceURL = `${APP_BASE_URL}/${endpoint}`;
+      const resourceURL = `${url}/${endpoint}`;
       promises.push(
         new Promise((resolve, reject) => {
           browser
@@ -211,7 +236,11 @@ const createServer = async url => {
               await setChromeViewport(page, VIEWPORTS[viewport]);
               await setUserAgent(page);
               await takeScreenshot(page, viewport, endpoint, resourceURL);
-              resolve({ page: resourceURL, status: "success", viewport });
+              resolve({
+                page: resourceURL,
+                status: "success",
+                viewport
+              });
             })
             .catch(error => {
               // Error constructor only supports string, pass rest as properties
@@ -247,7 +276,7 @@ const createServer = async url => {
       // close the browser
       closeHeadlesssChrome(browser);
     })
-    .catch(error => console.log(`Error in Promise.allSettled() Handler`));
+    .catch(error => console.log(`Error in Promise.allSettled() Handler`, error));
 };
 
 createServer(APP_BASE_URL);
