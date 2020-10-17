@@ -10,7 +10,7 @@
   "dependencies": {
     "@types/cheerio": "^0.22.21",
     "cheerio": "^1.0.0-rc.3",
-    "next": "9.5.1",
+    "next": "9.5.4",
     "next-auth": "^3.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
