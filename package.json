@@ -6,10 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    
     "lint": "eslint .",
     "lint:fix": "eslint --fix . && echo 'Lint complete.'",
     "prettier": "prettier --check ./**/*.{ts,tsx}",
-    "prettier:fix": "prettier --write ./**/*.{ts,tsx}"
+    "prettier:fix": "prettier --write ./**/*.{ts,tsx}",
+    
+    "profile-layout": "node scripts/profile-app-layout",
+    "profile-layout:dev": "npm run profile-layout -- -u http://localhost:3000",
+    "clean:profile-layout": "rimraf ./profile-layout",
+    "pl:dev:phone": "npm run profile-layout:dev -- -v phone",
+    "pl:dev:landscape": "npm run profile-layout:dev -- -v landscape",
+    "pl:dev:ipad": "npm run profile-layout:dev -- -v ipad",
+    "pl:dev:tablet": "npm run profile-layout:dev -- -v tablet",
+    "pl:dev:laptop": "npm run profile-layout:dev -- -v laptop",
+    "pl:dev:desktop": "npm run profile-layout:dev -- -v desktop"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.21",
@@ -22,6 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "^14.0.27",
+    "@types/puppeteer-core": "^2.0.0",
     "@types/react": "^16.9.43",
     "@typescript-eslint/eslint-plugin": "^3.7.1",
     "@typescript-eslint/parser": "^3.7.1",
@@ -36,6 +48,9 @@
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.0.5",
+    "puppeteer-core": "^5.2.1",
+    "rimraf": "^3.0.2",
+    "stdio": "^2.1.1",
     "typescript": "^3.9.7"
   }
 }
