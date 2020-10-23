@@ -6,8 +6,8 @@ const Dashboard: FC = () => {
   return (
     <>
       <DefaultLayout
-        title="Dashbord"
-        description="You can see your portfolios estimated value & progress below:"
+        title="Dashboard"
+        description="You can see your portfolios estimated value & progress below"
       />
     </>
   );

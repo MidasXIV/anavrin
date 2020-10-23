@@ -29,18 +29,18 @@ const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, children })
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>Anavrin | {title}</title>
       </Head>
-      {/* <AppHeader
-        title={title}
-        description={description}
-        currentPage={{ label: "Home", path: "/dashboard" }}
-        otherPages={[{ label: "Portfolio", path: "/portfolio" }]}
-      /> */}
       <div className="flex flex-row">
         <Sidebar />
         <div className="w-full flex flex-col">
-          <Header />
+          {/* <AppHeader
+            title={title}
+            description={description}
+            currentPage={{ label: "Home", path: "/dashboard" }}
+            otherPages={[{ label: "Portfolio", path: "/portfolio" }]}
+          /> */}
+          <Header title={title} description={description} />
           <div className="w-full h-full flex flex-row">
             <div className={styles.primary}>Main Panel</div>
             <div className={styles.secondary}>Secondary Panel</div>
