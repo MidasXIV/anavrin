@@ -1,6 +1,6 @@
 .primary {
-  @apply w-8/12 bg-gray-300 p-2; 
-  background-color: #2b2b2b;
+  @apply w-8/12 bg-gray-300 p-2 border-r border-gray-400; 
+  /* background-color: #2b2b2b; */
 }
 .secondary {
   @apply w-4/12 bg-gray-200 p-2; 

@@ -2,6 +2,7 @@ import { FC } from "react";
 import Head from "next/head";
 import Router from "next/router";
 import AppHeader from "../../components/app-header";
+import Header from "../../components/header";
 import Sidebar from "../../components/sidebar";
 
 import styles from "./index.module.css";
@@ -38,11 +39,15 @@ const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, children })
       /> */}
       <div className="flex flex-row">
         <Sidebar />
-        <div className="w-full flex flex-row">
-          <div className={styles.primary}>Main Panel</div>
-          <div className={styles.secondary}>Secondary Panel</div>
+        <div className="w-full flex flex-col">
+          <Header />
+          <div className="w-full h-full flex flex-row">
+            <div className={styles.primary}>Main Panel</div>
+            <div className={styles.secondary}>Secondary Panel</div>
+          </div>
         </div>
-        {children}
+
+        {/* {children} */}
       </div>
     </>
   );

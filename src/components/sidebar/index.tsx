@@ -9,7 +9,7 @@ const Sidebar: FC<SidebarProps> = () => {
   return (
     <nav className={styles.sidebar}>
       <div className="flex flex-col justify-between h-full">
-        <ul className="nav flex flex-col">
+        <ul className="nav flex flex-col border-b border-gray-900">
           <li className={styles.icon}>
             <a href="/overview">
               <svg
