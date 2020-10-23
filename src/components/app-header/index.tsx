@@ -19,7 +19,7 @@ const AppHeader: FC<AppHeaderProps> = ({ title, description, currentPage, otherP
   const [menuOpened, setMenuOpened] = useState(false);
 
   return (
-    <header className="flex px-10 py-12 lg:px-56">
+    <header className="flex px-10 py-12 lg:px-56 box-border border">
       <div className="mr-auto">
         <h3 className="text-xl">{title}</h3>
         <p className="my-4 text-sm max-w-xs">{description}</p>

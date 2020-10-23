@@ -5,6 +5,17 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Stack
+
+* Frontend Framework - Next JS
+* CSS Framework - Tailwind CSS
+* Frontend Components -Chakra UI
+* Frontend API connection - React Query
+* Backend API - Next.js API Routes 
+* Auth - NextAuth.js
+* Hosting - Vercel
+* Testing - Jest
+
 ## Getting Started
 
 First, run the development server:
