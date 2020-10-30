@@ -6,12 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    
     "lint": "eslint .",
     "lint:fix": "eslint --fix . && echo 'Lint complete.'",
     "prettier": "prettier --check ./**/*.{ts,tsx}",
     "prettier:fix": "prettier --write ./**/*.{ts,tsx}",
-    
     "profile-layout": "node scripts/profile-app-layout",
     "profile-layout:dev": "npm run profile-layout -- -u http://localhost:3000",
     "clean:profile-layout": "rimraf ./profile-layout",
@@ -25,6 +23,7 @@
   "dependencies": {
     "@types/cheerio": "^0.22.21",
     "cheerio": "^1.0.0-rc.3",
+    "classnames": "^2.2.6",
     "next": "9.5.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",

@@ -1,16 +1,17 @@
 import { FC } from "react";
+import cn from "classnames";
 import styles from "./index.module.css";
 
 type SidebarProps = {
-  title?: string;
+  select: string;
 };
 
-const Sidebar: FC<SidebarProps> = () => {
+const Sidebar: FC<SidebarProps> = ({ select }) => {
   return (
     <nav className={styles.sidebar}>
       <div className="flex flex-col justify-between h-full">
         <ul className="nav flex flex-col border-b border-gray-900">
-          <li className={styles.icon}>
+          <li className={cn(styles.icon, { [styles.active]: select === "overview" })}>
             <a href="/overview">
               <svg
                 className="bi bi-view-list icon"
@@ -31,7 +32,7 @@ const Sidebar: FC<SidebarProps> = () => {
         </ul>
 
         <ul className="nav flex-column">
-          <li className={styles.icon}>
+          <li className={cn(styles.icon, { [styles.active]: select === "dashboard" })}>
             <a href="/">
               <svg
                 className="bi bi-house icon"
@@ -54,7 +55,7 @@ const Sidebar: FC<SidebarProps> = () => {
               </svg>
             </a>
           </li>
-          <li className={styles.icon}>
+          <li className={cn(styles.icon, { [styles.active]: select === "portfolio" })}>
             <a href="/portfolio">
               <svg
                 className="bi bi-bullseye icon"
@@ -83,7 +84,7 @@ const Sidebar: FC<SidebarProps> = () => {
               </svg>
             </a>
           </li>
-          <li className={styles.icon}>
+          <li className={cn(styles.icon, { [styles.active]: select === "simulator" })}>
             <svg
               className="bi bi-collection icon"
               width="1em"
@@ -102,7 +103,7 @@ const Sidebar: FC<SidebarProps> = () => {
         </ul>
 
         <ul className="nav flex-column">
-          <li className={styles.icon}>
+          <li className={cn(styles.icon, { [styles.active]: select === "news" })}>
             <a href="/register">
               <svg
                 className="bi bi-file-earmark-text icon"

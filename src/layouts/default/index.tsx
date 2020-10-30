@@ -1,11 +1,8 @@
 import { FC } from "react";
 import Head from "next/head";
-import Router from "next/router";
-import AppHeader from "../../components/app-header";
 import Header from "../../components/header";
 import Sidebar from "../../components/sidebar";
 
-import styles from "./index.module.css";
 // import NProgress from "nprogress";
 
 // NProgress.configure({ showSpinner: false });
@@ -22,17 +19,18 @@ type Page = {
 type DefaultLayoutProps = {
   title: string;
   description: string;
+  sidebar: string;
   children?: any;
 };
 
-const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, children }) => {
+const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, sidebar, children }) => {
   return (
     <>
       <Head>
         <title>Anavrin | {title}</title>
       </Head>
       <div className="flex flex-row">
-        <Sidebar />
+        <Sidebar select={sidebar} />
         <div className="w-full flex flex-col">
           {/* <AppHeader
             title={title}
@@ -41,13 +39,8 @@ const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, children })
             otherPages={[{ label: "Portfolio", path: "/portfolio" }]}
           /> */}
           <Header title={title} description={description} />
-          <div className="w-full h-full flex flex-row">
-            <div className={styles.primary}>Main Panel</div>
-            <div className={styles.secondary}>Secondary Panel</div>
-          </div>
+          {children}
         </div>
-
-        {/* {children} */}
       </div>
     </>
   );
