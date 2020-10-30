@@ -16,8 +16,14 @@
 }
 
 .rightHeader {
-  @apply w-4/12 h-full;
+  @apply w-4/12 h-full flex content-center items-center justify-end;
   background-color: #404040;
+  background: linear-gradient(90deg, #2b2b2b 0%, #404040 50%);
+}
+
+.rightContentPanel {
+  @apply flex flex-row justify-end p-1;
+  @apply px-4;
 }
 
 .content {
