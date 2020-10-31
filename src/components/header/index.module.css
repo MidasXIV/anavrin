@@ -1,0 +1,48 @@
+.header {
+  @apply flex flex-row content-center items-center; 
+  @apply border-b border-gray-400;
+  @apply text-gray-300;
+  font-size: 1.2em;
+}
+
+.leftHeader {
+  @apply w-8/12 p-2;
+  background-color: #2b2b2b;
+}
+
+.leftContentPanel {
+  @apply flex flex-col items-start justify-start content-start;
+  @apply px-4;
+}
+
+.rightHeader {
+  @apply w-4/12 h-full flex content-center items-center justify-end;
+  background-color: #404040;
+  background: linear-gradient(90deg, #2b2b2b 0%, #404040 50%);
+}
+
+.rightContentPanel {
+  @apply flex flex-row justify-end p-1;
+  @apply px-4;
+}
+
+.content {
+  /* @apply flex content-center items-center; */
+  height: 3em;
+}
+
+.rightBtnPanel {
+  @apply flex flex-col h-full;
+}
+
+.headerBtn {
+  @apply text-center text-sm;
+  @apply w-full h-full;
+  @apply border-l border-r border-opacity-25;
+  border-width: 1px;
+  border-color: #2b2b2b;
+}
+
+.headerBtn:hover {
+  background-color: #2b2b2b;
+}
