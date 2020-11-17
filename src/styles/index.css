@@ -21,3 +21,12 @@
 .portfolio-primary-panel {
   @apply w-full h-full bg-gray-300 p-2 border-r border-gray-400;
 }
+
+.rdt_TableHeadRow {
+  @apply font-mono bg-red-600;
+  margin-right: 12px;
+}
+
+.rdt_TableRow {
+  @apply font-mono bg-red-600 text-xs;
+}
