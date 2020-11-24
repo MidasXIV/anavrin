@@ -337,7 +337,31 @@ const Portfolio: FC = () => {
       >
         <div className="portfolio-primary-panel overflow-y-hidden">
           <div className="h-20 bg-gray-800 flex flex-row">
-            <div className="w-2/3 bg-red-400 h-full" />
+            <div className="w-2/3 bg-red-100 h-full flex items-center p-4 justify-between">
+              <div className="flex flex-col">
+                <span className="text-xs m-1 uppercase  text-gray-700">INVESTED AMOUNT</span>
+                <div className="flex w-full items-end">
+                  <span className="block leading-none text-3xl text-gray-800">22.325,50</span>
+                  {/* <span className="block leading-5 text-sm ml-4 text-green-500">
+                    {" "}
+                    {2.325 - 2.215 < 0 ? "▼" : "▲"} {(2.325 - 2.215).toFixed(3)}(
+                    {((2.325 / 2.215) * 100 - 100).toFixed(3)} %)
+                  </span> */}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs m-1 uppercase  text-gray-700">PROFIT</span>
+                <div className="flex w-full items-end">
+                  <span className="block leading-none text-3xl text-gray-800">22.325,50</span>
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs m-1 uppercase  text-gray-700">PORTFOLIO VALUE</span>
+                <div className="flex w-full items-end">
+                  <span className="block leading-none text-3xl text-gray-800">22.325,50</span>
+                </div>
+              </div>
+            </div>
             <div className="w-1/3 bg-red-500 h-full" />
           </div>
           <DataTable
