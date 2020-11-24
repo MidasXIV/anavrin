@@ -2,8 +2,8 @@ import { FC } from "react";
 import Link from "next/link";
 
 const Home: FC = () => (
-  <div>
-    <header className="flex items-center px-10 py-12 lg:px-56">
+  <div className="w-full h-screen bg-gray-200">
+    {/* <header className="flex items-center px-10 py-12 lg:px-56">
       <a href="#about">
         <h4 className="text-xl">Anavrin</h4>
       </a>
@@ -37,6 +37,34 @@ const Home: FC = () => (
         >
           Learn More
         </button>
+      </div>
+    </div> */}
+    <div className="bg-gray-100 flex justify-center">
+      <div className="flex flex-col text-center p-8 md:p-16 max-w-xl">
+        <h6 className="uppercase text-xs text-gray-600">coming soon</h6>
+        <p className="pt-5">
+          Simple tracking & simulation for your portfolio. Make better decisions with real data.
+          Simple tracking & simulation for your portfolio. Make better decisions with real data.
+        </p>
+
+        <div className="pt-8">
+          <p className="font-semibold text-left">Get notified when we launch</p>
+          <div className="flex flex-col md:flex-row md:space-x-3">
+            <input
+              className="shadow-inner rounded-lg mb-2 p-2 flex-1 w-full md:w-3/4 md:mb-0 border"
+              id="email"
+              type="email"
+              aria-label="email address"
+              placeholder="Enter your email address"
+            />
+            <button
+              className="bg-gray-900 hover:bg-gray-800 py-2 rounded-lg text-white w-full md:w-1/4 text-sm"
+              type="button"
+            >
+              Subscribe
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
