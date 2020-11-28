@@ -106,7 +106,12 @@ const RowComponent = row => (
   </div>
 );
 // The row data is composed into your custom expandable component via the data prop
-const ExpandableComponent = ({ data }) => <img alt="" src={data.image} />;
+const ExpandableComponent = ({ data }) => {
+  if (!data) {
+    return null;
+  }
+  return <img alt="" width="200px" src={data.image} />;
+};
 
 const columns = [
   {
@@ -280,15 +285,15 @@ const customStyles2 = {
       marginBottom: "5px"
     }
   },
-  headCells: {
-    // style: {
-    //   "&:not(:last-of-type)": {
-    //     borderRightStyle: "solid",
-    //     borderRightWidth: "1px",
-    //     borderRightColor: defaultThemes.default.divider.default
-    //   }
-    // }
-  },
+  // headCells: {
+  // style: {
+  //   "&:not(:last-of-type)": {
+  //     borderRightStyle: "solid",
+  //     borderRightWidth: "1px",
+  //     borderRightColor: defaultThemes.default.divider.default
+  //   }
+  // }
+  // },
   rows: {
     style: {
       backgroundColor: "rgb(230, 244, 244)",
@@ -303,16 +308,16 @@ const customStyles2 = {
       borderRadius: "5px",
       outline: "1px solid #FFFFFF"
     }
-  },
-  cells: {
-    // style: {
-    //   "&:not(:last-of-type)": {
-    //     borderRightStyle: "solid",
-    //     borderRightWidth: "1px",
-    //     borderRightColor: defaultThemes.default.divider.default
-    //   }
-    // }
   }
+  // cells: {
+  // style: {
+  //   "&:not(:last-of-type)": {
+  //     borderRightStyle: "solid",
+  //     borderRightWidth: "1px",
+  //     borderRightColor: defaultThemes.default.divider.default
+  //   }
+  // }
+  // }
 };
 
 const TableAction = data => {
@@ -365,11 +370,11 @@ const Portfolio: FC = () => {
             <div className="w-1/3 bg-red-500 h-full" />
           </div>
           <DataTable
-            title="Arnold Movies"
+            title="Portfolio"
             columns={columns}
             data={dataStore}
             expandableRows
-            expandableRowsComponent={<ExpandableComponent />}
+            expandableRowsComponent={<ExpandableComponent data={null} />}
             overflowY
             persistTableHead
             fixedHeader
