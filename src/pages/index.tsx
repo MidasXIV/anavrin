@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import Link from "next/link";
 
 const Home: FC = () => {
-  const sliderRef = useRef();
+  const sliderRef = useRef(null);
 
   const settings = {
     infinite: true,
