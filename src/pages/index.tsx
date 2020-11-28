@@ -45,7 +45,14 @@ const Home: FC = () => {
       <div className="flex-1">
         <div className="flex flex-col md:flex-row h-full">
           <div className="p-8 md:p-12 flex md:w-4/12 flex-col">
-            <h3 className="font-semibold">Check out Anavrin Beta</h3>
+            <h3 className="font-semibold mb-2">Check out Anavrin Beta</h3>
+            <p className="text-sm mb-2">
+              The interface balances ease of use with powerful integration and analytical features
+              that help you automate your tracking process smoothly.
+              <br />
+              Anavrin helps You track your dividends even in the most sophisticated of portfolios
+              with ease.
+            </p>
             <button
               type="button"
               className="block bg-gray-900 rounded-lg p-2 font-semibold text-gray-100"
@@ -96,6 +103,7 @@ const Home: FC = () => {
           <div className="md:w-6/12 bg-gray-100">
             <Slider {...settings} ref={sliderRef}>
               <div className="border flex justify-center p-4 pt-8 md:pt-12">
+                <h3 className="font-semibold mb-2">Track Profit</h3>
                 <p className="text-sm">
                   How much income is my portfolio going to generate this month?
                   <br />
@@ -104,20 +112,30 @@ const Home: FC = () => {
               </div>
 
               <div className="border flex justify-center p-4 pt-8 md:pt-12">
+                <h3 className="font-semibold mb-2">Analyze Portfolio</h3>
                 <p className="text-sm">
                   Which stocks am I depending on the most for my annual dividend income?
                 </p>
               </div>
 
               <div className="border flex justify-center p-4 pt-8 md:pt-12">
+                <h3 className="font-semibold mb-2">Diversify portfolio</h3>
                 <p className="text-sm">
                   Am I taking on too much risk with my portfolio?
-                  <br /> Am i diversified enough?
+                  <br /> Am I diversified enough?
                 </p>
               </div>
 
               <div className="border flex justify-center p-4 pt-8 md:pt-12">
+                <h3 className="font-semibold mb-2">Simulation tool</h3>
                 <p className="text-sm">Research new oppurtunities with the simulation tool.</p>
+              </div>
+
+              <div className="border flex justify-center p-4 pt-8 md:pt-12">
+                <h3 className="font-semibold mb-2">Easy Onboarding</h3>
+                <p className="text-sm">
+                  Import spreadsheets to quickly update or analyze a portfolio.
+                </p>
               </div>
             </Slider>
           </div>
