@@ -29,7 +29,7 @@ const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, sidebar, ch
       <Head>
         <title>Anavrin | {title}</title>
       </Head>
-      <div className="flex flex-row">
+      <div className="flex flex-row overflow-hidden w-screen h-screen">
         <Sidebar select={sidebar} />
         <div className="w-full flex flex-col">
           {/* <AppHeader
