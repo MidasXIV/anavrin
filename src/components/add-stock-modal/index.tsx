@@ -7,15 +7,19 @@ type AddStockModalProps = {
 };
 
 const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
-  console.log(isShowing);
   return (
     <div
-      className={cn("absolute px-4 md:flex md:items-center md:justify-center z-10", {
+      className={cn("fixed px-4 md:flex md:items-center md:justify-center z-10 inset-0", {
         hidden: !isShowing,
         "md:hidden": !isShowing
       })}
     >
-      <div className="bg-black opacity-75 w-full absolute z-10 inset-0" />
+      <div
+        className="bg-black opacity-75 w-full absolute z-10 inset-0"
+        onClick={cancel}
+        onKeyDown={cancel}
+        aria-hidden="true"
+      />
       <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
         <div className="md:flex items-center">
           <div className="rounded-full border border-gray-300 flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
