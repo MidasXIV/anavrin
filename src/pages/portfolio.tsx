@@ -367,7 +367,28 @@ const Portfolio: FC = () => {
                 </div>
               </div>
             </div>
-            <div className="w-1/3 bg-red-500 h-full" />
+            <div className="w-1/3 bg-gray-200 h-full p-4 flex align-middle">
+              <button
+                type="button"
+                className="bg-red-500 hover:bg-red-400 focus:bg-red-600 focus:outline-none focus:shadow-none outline-none text-white p-2 rounded transform hover:scale-105 motion-reduce:transform-none"
+                onClick={toggle}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="w-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
           <DataTable
             title="Portfolio"
