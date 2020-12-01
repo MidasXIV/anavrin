@@ -10,12 +10,25 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
+    customForms: theme => ({
+      default: {
+        button: {
+          "&:focus": {
+            outline: "none",
+            boxShadow: "none",
+            borderColor: "none"
+          }
+        }
+      }
+    }),
     extend: {
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans]
       }
     }
   },
-  variants: {},
+  variants: {
+    backgroundColor: ["responsive", "hover", "focus", "active"]
+  },
   plugins: []
 };

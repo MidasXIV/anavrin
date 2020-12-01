@@ -1,5 +1,7 @@
 import { FC } from "react";
 import DataTable, { createTheme, defaultThemes } from "react-data-table-component";
+import AddStockModal from "../components/add-stock-modal";
+import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
 
 createTheme("solarized", {
@@ -321,7 +323,6 @@ const customStyles2 = {
 };
 
 const TableAction = data => {
-  console.log(data);
   return (
     <div>
       <div style={{ fontWeight: 700 }}>Hello</div>
@@ -330,9 +331,7 @@ const TableAction = data => {
 };
 
 const Portfolio: FC = () => {
-  // <div className="px-10 py-12 lg:px-56 flex justify-center">
-  //   <Loading />
-  // </div>
+  const { isShowing, toggle } = useModal(false);
   return (
     <>
       <DefaultLayout
@@ -340,6 +339,7 @@ const Portfolio: FC = () => {
         sidebar="portfolio"
         description="You can see your portfolios estimated value & progress below"
       >
+        <AddStockModal isShowing={isShowing} cancel={toggle} />
         <div className="portfolio-primary-panel overflow-y-hidden">
           <div className="h-20 bg-gray-800 flex flex-row">
             <div className="w-2/3 bg-red-100 h-full flex items-center p-4 justify-between">
@@ -367,7 +367,28 @@ const Portfolio: FC = () => {
                 </div>
               </div>
             </div>
-            <div className="w-1/3 bg-red-500 h-full" />
+            <div className="w-1/3 bg-gray-200 h-full p-4 flex align-middle">
+              <button
+                type="button"
+                className="bg-red-500 hover:bg-red-400 focus:bg-red-600 focus:outline-none focus:shadow-none outline-none text-white p-2 rounded transform hover:scale-105 motion-reduce:transform-none"
+                onClick={toggle}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="w-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
           <DataTable
             title="Portfolio"
