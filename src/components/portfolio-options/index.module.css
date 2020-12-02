@@ -28,7 +28,5 @@
 
 
 .active, .icon:hover {
-  /* background-color: #404040; */
   @apply bg-charcoal-300;
-  background-color: #2b2b2b;
 }
