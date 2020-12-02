@@ -10,18 +10,14 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    customForms: theme => ({
-      default: {
-        button: {
-          "&:focus": {
-            outline: "none",
-            boxShadow: "none",
-            borderColor: "none"
-          }
-        }
-      }
-    }),
     extend: {
+      colors: {
+        charcoal: {
+          300: "#404040",
+          400: "#2b2b2b",
+          900: "#151515"
+        }
+      },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans]
       }
