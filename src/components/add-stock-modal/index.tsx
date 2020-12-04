@@ -37,60 +37,69 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
         aria-hidden="true"
       />
       <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
-        {/* <div className="md:flex items-center">
-          <div className="rounded-full border border-gray-300 flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
-            <i className="bx bx-error text-3xl" />
-          </div>
-          <div className="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-            <p className="font-bold">Delete your account</p>
-            <p className="text-sm text-gray-700 mt-1">
-              You will lose all of your data by deleting your account. This action cannot be undone.
-              undone. undone. undone. undone. undone.
-            </p>
-          </div>
-        </div> */}
         <div className="px-2 py-5 sm:px-6 flex flex-col">
           <h3 className="text-lg leading-6 font-medium text-gray-900">Stock Information</h3>
-          {/* <p className="mt-1 max-w-2xl text-sm text-gray-600">Personal details and application.</p> */}
         </div>
         <div className="border-t border-gray-200">
           <dl>
             <div className="bg-gray-50 p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-600">Ticker</dt>
-              {/* <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">Margot Foster</dd> */}
-              <dd className="text-sm text-gray-900 sm:mt-0 sm:col-span-2 border  border-gray-600 rounded-md">
+              <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
+                Ticker
+              </dt>
+              <dd className="text-sm text-gray-900 sm:mt-0 sm:col-span-2 rounded-md flex flex-row relative">
                 <input
                   type="text"
-                  name="first_name"
-                  id="first_name"
-                  autoComplete="given-name"
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  name="stock"
+                  id="modal_input_stock"
+                  className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
                   onChange={e => setSearchTerm(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
+                <span className="absolute right-0 flex justify-end items-center text-gray-500 py-2 px-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </span>
               </dd>
             </div>
             <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 text-gray-600">
-              <dt className="text-sm font-medium text-gray-600">Shares</dt>
-              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 border border-gray-600 rounded-md">
+              <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
+                Shares
+              </dt>
+              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 rounded-md">
                 <input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  autoComplete="given-name"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  type="number"
+                  name="shares"
+                  id="modal_input_shares"
+                  min="0"
+                  className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
                 />
               </dd>
             </div>
             <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 text-gray-600">
-              <dt className="text-sm font-medium text-gray-600">Buy Price</dt>
-              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 border border-gray-600 rounded-md">
+              <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
+                Buy Price
+              </dt>
+              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 rounded-md">
                 <input
-                  type="text"
-                  name="first_name"
-                  id="first_name"
-                  autoComplete="given-name"
-                  className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  type="number"
+                  name="market_price"
+                  id="modal_input_market_price"
+                  min="0"
+                  step="0.01"
+                  inputMode="decimal"
+                  className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
                 />
               </dd>
             </div>
