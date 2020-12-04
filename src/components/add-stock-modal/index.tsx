@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import cn from "classnames";
+import getStockInformation from "../../util/getStockInformation";
+import useStockInformation from "../../hooks/useStockInformation";
 
 type AddStockModalProps = {
   isShowing: boolean;
@@ -8,10 +10,13 @@ type AddStockModalProps = {
 
 const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [ticker, setTicker] = useState("");
+  const { stock, isLoading, isError } = useStockInformation(ticker || null);
+  console.log(stock, isError, isLoading);
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      console.log(searchTerm);
-      // Send Axios request here
+      setTicker(searchTerm);
     }, 3000);
 
     return () => clearTimeout(delayDebounceFn);
@@ -49,6 +54,8 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
             </p>
           </div>
         </div> */}
+
+        {isLoading ? <div>Loading ...</div> : null}
         <div className="px-2 py-5 sm:px-6 flex flex-col">
           <h3 className="text-lg leading-6 font-medium text-gray-900">Stock Information</h3>
           {/* <p className="mt-1 max-w-2xl text-sm text-gray-600">Personal details and application.</p> */}
@@ -98,41 +105,43 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
               <div className="flex w-full text-xs">
                 <div className="flex w-5/12">
                   <div className="flex-1 pr-3 text-left font-semibold">Dividend</div>
-                  <div className="flex-1 px-3 text-right">0</div>
+                  <div className="flex-1 px-3 text-right">{stock?.dividendAmount || 0}</div>
                 </div>
                 <div className="flex w-7/12">
-                  <div className="flex-1 px-3 text-left font-semibold">Cost Basis</div>
-                  <div className="flex-1 pl-3 text-right">0</div>
+                  <div className="flex-1 px-3 text-left font-semibold">Payout Ratio</div>
+                  <div className="flex-1 pl-3 text-right">
+                    {stock?.dividendPayoutRatio.toFixed(3) || 0}
+                  </div>
                 </div>
               </div>
               <div className="flex w-full text-xs">
                 <div className="flex w-5/12">
-                  <div className="flex-1 pr-3 text-left font-semibold">Open</div>
-                  <div className="flex-1 px-3 text-right">0</div>
+                  <div className="flex-1 pr-3 text-left font-semibold">Price</div>
+                  <div className="flex-1 px-3 text-right">{stock?.price || 0}</div>
                 </div>
                 <div className="flex w-7/12">
                   <div className="flex-1 px-3 text-left font-semibold">Market Cap</div>
-                  <div className="flex-1 pl-3 text-right">0</div>
+                  <div className="flex-1 pl-3 text-right">{stock?.marketCap || 0}</div>
                 </div>
               </div>
               <div className="flex w-full text-xs">
                 <div className="flex w-5/12">
-                  <div className="flex-1 pr-3 text-left font-semibold">High</div>
-                  <div className="px-3 text-right">0</div>
+                  <div className="flex-1 pr-3 text-left font-semibold">beta</div>
+                  <div className="px-3 text-right">{stock?.beta || 0}</div>
                 </div>
                 <div className="flex w-7/12">
                   <div className="flex-1 px-3 text-left font-semibold">P/E ratio</div>
-                  <div className="pl-3 text-right">0</div>
+                  <div className="pl-3 text-right">{stock?.peRatio || 0}</div>
                 </div>
               </div>
               <div className="flex w-full text-xs">
                 <div className="flex w-5/12">
-                  <div className="flex-1 pr-3 text-left font-semibold">Low</div>
-                  <div className="px-3 text-right">0</div>
+                  <div className="flex-1 pr-3 text-left font-semibold">EPS</div>
+                  <div className="px-3 text-right">{stock?.EPS || 0}</div>
                 </div>
                 <div className="flex w-7/12">
                   <div className="flex-1 px-3 text-left font-semibold">Dividend yield</div>
-                  <div className="pl-3 text-right">0%</div>
+                  <div className="pl-3 text-right">{stock?.dividendYeild || "0%"}</div>
                 </div>
               </div>
             </div>
