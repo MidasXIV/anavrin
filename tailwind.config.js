@@ -11,11 +11,20 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        charcoal: {
+          300: "#404040",
+          400: "#2b2b2b",
+          900: "#151515"
+        }
+      },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans]
       }
     }
   },
-  variants: {},
+  variants: {
+    backgroundColor: ["responsive", "hover", "focus", "active"]
+  },
   plugins: []
 };
