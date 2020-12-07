@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import cn from "classnames";
+import StockSearchCombobox from "../stock-search-combobox";
 
 type AddStockModalProps = {
   isShowing: boolean;
@@ -7,22 +8,6 @@ type AddStockModalProps = {
 };
 
 const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      console.log(searchTerm);
-      // Send Axios request here
-    }, 3000);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
-
-  const handleKeyDown = e => {
-    if (e.keyCode === 13) {
-      console.log("call API");
-    }
-  };
-
   return (
     <div
       className={cn("fixed px-4 md:flex md:items-center md:justify-center z-10 inset-0", {
@@ -47,30 +32,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                 Ticker
               </dt>
               <dd className="text-sm text-gray-900 sm:mt-0 sm:col-span-2 rounded-md flex flex-row relative">
-                <input
-                  type="text"
-                  name="stock"
-                  id="modal_input_stock"
-                  className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
-                  onChange={e => setSearchTerm(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                <span className="absolute right-0 flex justify-end items-center text-gray-500 py-2 px-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </span>
+                <StockSearchCombobox />
               </dd>
             </div>
             <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 text-gray-600">
