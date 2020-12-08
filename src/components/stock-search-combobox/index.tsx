@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import cn from "classnames";
 import useModal from "../../hooks/useModal";
 
@@ -62,9 +62,19 @@ const tempStockSearchData = {
   ]
 };
 
+const SPACEBAR_KEY_CODE = [0, 32];
+const ENTER_KEY_CODE = 13;
+const DOWN_ARROW_KEY_CODE = 40;
+const UP_ARROW_KEY_CODE = 38;
+const ESCAPE_KEY_CODE = 27;
+
+const ModalStockSearchInputID = "modal_input_stock";
+
 const StockSearchCombobox: FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { isShowing, toggle } = useModal(false);
+  const [stockOption, setStockOption] = useState("");
+  const stockSearchOptions = useRef();
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -76,8 +86,33 @@ const StockSearchCombobox: FC = () => {
   }, [searchTerm]);
 
   const handleKeyDown = e => {
-    if (e.keyCode === 13) {
-      console.log("call API");
+    if (document.activeElement.id === ModalStockSearchInputID) {
+      stockSearchOptions.current.firstChild.focus();
+    }
+    switch (e.keyCode) {
+      case ENTER_KEY_CODE:
+        // setSelectedListItem(e);
+        // closeList();
+        console.log("Enter");
+        break;
+
+      case DOWN_ARROW_KEY_CODE:
+        // focusNextListItem(DOWN_ARROW_KEY_CODE);
+        console.log("Down");
+        break;
+
+      case UP_ARROW_KEY_CODE:
+        // focusNextListItem(UP_ARROW_KEY_CODE);
+        console.log("Up");
+        break;
+
+      case ESCAPE_KEY_CODE:
+        // closeList();
+        console.log("Escape");
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -95,8 +130,52 @@ const StockSearchCombobox: FC = () => {
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => {
     return (
       <li
-        className="block px-4 py-2 text-gray-800 hover:bg-gray-300 rounded-lg text-xs"
+        className="block px-4 py-2 text-gray-800 rounded-lg text-xs focus:bg-gray-300 hover:bg-gray-300 cursor-pointer"
+        aria-labelledby="dropdown-label"
+        aria-selected="false"
         key={suggestion.symbol}
+        role="option"
+        tabIndex={0}
+        data-ticker={suggestion.symbol}
+        onClick={e => {
+          console.log((e.target as HTMLLIElement).dataset.ticker);
+        }}
+        onKeyDown={e => {
+          console.log((e.target as HTMLLIElement).dataset.ticker);
+          switch (e.keyCode) {
+            case ENTER_KEY_CODE:
+              // setSelectedListItem(e);
+              // closeList();
+              break;
+
+            case DOWN_ARROW_KEY_CODE: {
+              const { nextSibling } = document.activeElement;
+              if (nextSibling) {
+                (nextSibling as HTMLLIElement).focus();
+              } else {
+                stockSearchOptions.current.firstChild.focus();
+              }
+              break;
+            }
+
+            case UP_ARROW_KEY_CODE: {
+              const { previousSibling } = document.activeElement;
+              if (previousSibling) {
+                (previousSibling as HTMLLIElement).focus();
+              } else {
+                stockSearchOptions.current.lastChild.focus();
+              }
+              break;
+            }
+
+            case ESCAPE_KEY_CODE:
+              // closeList();
+              break;
+
+            default:
+              break;
+          }
+        }}
       >
         {suggestion.symbol} - {suggestion.name}
       </li>
@@ -108,12 +187,12 @@ const StockSearchCombobox: FC = () => {
       <input
         type="text"
         name="stock"
-        id="modal_input_stock"
+        id={ModalStockSearchInputID}
         className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
         onChange={e => setSearchTerm(e.target.value)}
         onKeyDown={handleKeyDown}
         onFocus={toggle}
-        onBlur={toggle}
+        // onBlur={toggle}
       />
       <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
         <svg
@@ -132,6 +211,7 @@ const StockSearchCombobox: FC = () => {
         </svg>
       </span>
       <ul
+        ref={stockSearchOptions}
         className={cn("absolute w-full max-w-md -mt-1 p-2 bg-white rounded-lg shadow-lg", {
           hidden: !isShowing
         })}
