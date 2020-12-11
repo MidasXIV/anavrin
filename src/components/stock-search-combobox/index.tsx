@@ -130,7 +130,7 @@ const StockSearchCombobox: FC = () => {
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => {
     return (
       <li
-        className="block px-4 py-2 text-gray-800 rounded-lg text-xs focus:bg-gray-300 hover:bg-gray-300 cursor-pointer"
+        className="focus:outline-none focus:flex-col px-4 py-2 text-gray-800 rounded-lg text-xs focus:bg-gray-300 hover:bg-gray-300 cursor-pointer flex flex-row justify-between text"
         aria-labelledby="dropdown-label"
         aria-selected="false"
         key={suggestion.symbol}
@@ -177,7 +177,22 @@ const StockSearchCombobox: FC = () => {
           }
         }}
       >
-        {suggestion.symbol} - {suggestion.name}
+        <span className="font-semibold">{suggestion.symbol}</span>
+        <p className="">{suggestion.name}</p>
+        <span className="text-xs text-gray-500 flex flex-row items-center md:hidden">
+          Select
+          <svg
+            id="Capa_1"
+            enableBackground="new 0 0 374.706 374.706"
+            height="512"
+            viewBox="0 0 374.706 374.706"
+            width="512"
+            xmlns="http://www.w3.org/2000/svg"
+            className="fill-current text-white stroke-current stroke-0 w-6 h-6 p-1 bg-gray-500 rounded-md ml-2"
+          >
+            <path d="m321.176 53.529h-107.058v53.529h107.059v80.294l-214.111-.007 40.141-40.141-40.147-40.147-107.06 107.061 107.059 107.059 40.147-40.147-40.153-40.153 214.124-.02c29.522 0 53.529-24.007 53.529-53.529v-80.268c0-29.523-24.007-53.53-53.53-53.531z" />
+          </svg>
+        </span>
       </li>
     );
   });
