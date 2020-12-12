@@ -1,70 +1,26 @@
-import { FC, useRef, useState } from "react";
+import { FC, useRef } from "react";
 import cn from "classnames";
 import useModal from "../../hooks/useModal";
+
+type StockSuggestionItem = {
+  "1. symbol": string;
+  "2. name": string;
+  "3. type": string;
+  "4. region": string;
+  "5. marketOpen": string;
+  "6. marketClose": string;
+  "7. timezone": string;
+  "8. currency": string;
+};
 
 type StockSearchComboboxProps = {
   searchTerm: string;
   setSearchTerm: (ticker: string) => void;
+  stockSuggestions: { bestMatches: Array<StockSuggestionItem> };
 };
 
 const tempStockSearchData = {
-  bestMatches: [
-    {
-      "1. symbol": "TSCDY",
-      "2. name": "Tesco PLC",
-      "3. type": "Equity",
-      "4. region": "United States",
-      "5. marketOpen": "09:30",
-      "6. marketClose": "16:00",
-      "7. timezone": "UTC-05",
-      "8. currency": "USD",
-      "9. matchScore": "0.7273"
-    },
-    {
-      "1. symbol": "TSCDF",
-      "2. name": "Tesco PLC",
-      "3. type": "Equity",
-      "4. region": "United States",
-      "5. marketOpen": "09:30",
-      "6. marketClose": "16:00",
-      "7. timezone": "UTC-05",
-      "8. currency": "USD",
-      "9. matchScore": "0.7143"
-    },
-    {
-      "1. symbol": "TSCO.LON",
-      "2. name": "Tesco PLC",
-      "3. type": "Equity",
-      "4. region": "United Kingdom",
-      "5. marketOpen": "08:00",
-      "6. marketClose": "16:30",
-      "7. timezone": "UTC+00",
-      "8. currency": "GBP",
-      "9. matchScore": "0.7143"
-    },
-    {
-      "1. symbol": "TCO.DEX",
-      "2. name": "Tesco PLC",
-      "3. type": "Equity",
-      "4. region": "XETRA",
-      "5. marketOpen": "08:00",
-      "6. marketClose": "20:00",
-      "7. timezone": "UTC+01",
-      "8. currency": "EUR",
-      "9. matchScore": "0.7143"
-    },
-    {
-      "1. symbol": "TCO1.FRK",
-      "2. name": "Tesco PLC",
-      "3. type": "Equity",
-      "4. region": "Frankfurt",
-      "5. marketOpen": "08:00",
-      "6. marketClose": "20:00",
-      "7. timezone": "UTC+01",
-      "8. currency": "EUR",
-      "9. matchScore": "0.7143"
-    }
-  ]
+  bestMatches: []
 };
 
 const SPACEBAR_KEY_CODE = [0, 32];
@@ -75,9 +31,14 @@ const ESCAPE_KEY_CODE = 27;
 
 const ModalStockSearchInputID = "modal_input_stock";
 
-const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSearchTerm }) => {
+const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
+  searchTerm,
+  setSearchTerm,
+  stockSuggestions
+}) => {
   const { isShowing, open, close } = useModal(false);
   const stockSearchOptions = useRef<HTMLUListElement>();
+  const stockSearchInput = useRef<HTMLInputElement>();
 
   const handleKeyDown = e => {
     switch (e.keyCode) {
@@ -87,6 +48,10 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
 
       case DOWN_ARROW_KEY_CODE:
         // focus Next List Item
+        if (!isShowing) {
+          // if modal not showing -> open modal
+          open();
+        }
         if (document.activeElement.id === ModalStockSearchInputID) {
           const SearchOptionList = stockSearchOptions.current;
           if (SearchOptionList && SearchOptionList.firstChild) {
@@ -117,16 +82,18 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
     }, 1);
   };
 
-  const stockSearchSuggestionsData = tempStockSearchData.bestMatches.map(stock => {
-    return {
-      symbol: stock["1. symbol"],
-      name: stock["2. name"],
-      type: stock["3. type"],
-      region: stock["4. region"],
-      currency: stock["8. currency"],
-      matchScore: stock["9. matchScore"]
-    };
-  });
+  const stockSearchSuggestionsData = (stockSuggestions || tempStockSearchData).bestMatches.map(
+    stock => {
+      return {
+        symbol: stock["1. symbol"],
+        name: stock["2. name"],
+        type: stock["3. type"],
+        region: stock["4. region"],
+        currency: stock["8. currency"],
+        matchScore: stock["9. matchScore"]
+      };
+    }
+  );
 
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => {
     return (
@@ -147,6 +114,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
           const { ticker } = target.dataset;
           if (ticker) {
             setSearchTerm(ticker);
+            stockSearchInput.current.focus();
             close();
           }
         }}
@@ -154,6 +122,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
           switch (e.keyCode) {
             case ENTER_KEY_CODE:
               setSearchTerm((e.target as HTMLLIElement).dataset.ticker);
+              stockSearchInput.current.focus();
               close();
               break;
 
@@ -214,6 +183,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
         name="stock"
         id={ModalStockSearchInputID}
         className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+        ref={stockSearchInput}
         onChange={e => setSearchTerm(e.target.value)}
         value={searchTerm}
         onKeyDown={handleKeyDown}

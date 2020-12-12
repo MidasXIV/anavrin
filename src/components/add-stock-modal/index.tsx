@@ -3,6 +3,7 @@ import cn from "classnames";
 import getStockInformation from "../../util/getStockInformation";
 import useStockInformation from "../../hooks/useStockInformation";
 import StockSearchCombobox from "../stock-search-combobox";
+import useStockSearch from "../../hooks/useStockSearch";
 
 type AddStockModalProps = {
   isShowing: boolean;
@@ -14,12 +15,13 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
   const [ticker, setTicker] = useState("");
   // const { stock, isLoading, isError } = useStockInformation(ticker || null);
   const { stock, isLoading, isError } = useStockInformation(null);
+  const { stockSuggestions, _isLoading, _isError } = useStockSearch(ticker || null);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       console.log("Setting Ticker");
       setTicker(searchTerm);
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
@@ -48,7 +50,11 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                 Ticker
               </dt>
               <dd className="text-sm text-gray-900 sm:mt-0 sm:col-span-2 rounded-md flex flex-row relative">
-                <StockSearchCombobox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                <StockSearchCombobox
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  stockSuggestions={stockSuggestions}
+                />
               </dd>
             </div>
             <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 text-gray-600">
