@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import cn from "classnames";
 import useModal from "../../hooks/useModal";
 
@@ -76,42 +76,28 @@ const ESCAPE_KEY_CODE = 27;
 const ModalStockSearchInputID = "modal_input_stock";
 
 const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSearchTerm }) => {
-  const { isShowing, open, close, toggle } = useModal(false);
-  const [stockOption, setStockOption] = useState("");
-  const stockSearchOptions = useRef();
+  const { isShowing, open, close } = useModal(false);
+  const stockSearchOptions = useRef<HTMLUListElement>();
 
   const handleKeyDown = e => {
-    // blocks from making an input
-    // if (document.activeElement.id === ModalStockSearchInputID) {
-    //   stockSearchOptions.current.firstChild.focus();
-    //   console.log(document.activeElement.id);
-    // }
     switch (e.keyCode) {
       case ENTER_KEY_CODE:
-        // setSelectedListItem(e);
-        // closeList();
         console.log("Calling API");
-        console.log("Enter");
         break;
 
       case DOWN_ARROW_KEY_CODE:
-        // focusNextListItem(DOWN_ARROW_KEY_CODE);
-        console.log("Down");
+        // focus Next List Item
         if (document.activeElement.id === ModalStockSearchInputID) {
-          stockSearchOptions.current.firstChild.focus();
-          console.log(document.activeElement.id);
+          const SearchOptionList = stockSearchOptions.current;
+          if (SearchOptionList && SearchOptionList.firstChild) {
+            (SearchOptionList.firstChild as HTMLLIElement).focus();
+          }
         }
         break;
 
-      case UP_ARROW_KEY_CODE:
-        // focusNextListItem(UP_ARROW_KEY_CODE);
-        console.log("Up");
-        break;
-
       case ESCAPE_KEY_CODE:
-        // closeList();
+        // close List
         close();
-        console.log("Escape");
         break;
 
       default:
@@ -122,7 +108,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
   const handleBlur = ev => {
     // Use timeout to delay examination of activeElement until after blur/focus
     // events have been processed.
-    setTimeout(function () {
+    setTimeout(() => {
       const target = ev.explicitOriginalTarget || document.activeElement;
       const targetTag = target.tagName;
       if (targetTag !== "LI") {
@@ -153,7 +139,8 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
         tabIndex={0}
         data-ticker={suggestion.symbol}
         onClick={e => {
-          let target = e.target as HTMLLIElement;
+          let target;
+          target = e.target as HTMLLIElement;
           if (target.tagName !== "LI") {
             target = (e.target as HTMLLIElement).parentElement;
           }
@@ -164,11 +151,9 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
           }
         }}
         onKeyDown={e => {
-          console.log((e.target as HTMLLIElement).dataset.ticker);
           switch (e.keyCode) {
             case ENTER_KEY_CODE:
               setSearchTerm((e.target as HTMLLIElement).dataset.ticker);
-              console.log((e.target as HTMLLIElement).dataset.ticker);
               close();
               break;
 
@@ -177,7 +162,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
               if (nextSibling) {
                 (nextSibling as HTMLLIElement).focus();
               } else {
-                stockSearchOptions.current.firstChild.focus();
+                (stockSearchOptions.current.firstChild as HTMLLIElement).focus();
               }
               break;
             }
@@ -187,7 +172,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({ searchTerm, setSear
               if (previousSibling) {
                 (previousSibling as HTMLLIElement).focus();
               } else {
-                stockSearchOptions.current.lastChild.focus();
+                (stockSearchOptions.current.lastChild as HTMLLIElement).focus();
               }
               break;
             }
