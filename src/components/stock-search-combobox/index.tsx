@@ -17,6 +17,7 @@ type StockSearchComboboxProps = {
   searchTerm: string;
   setSearchTerm: (ticker: string) => void;
   stockSuggestions: { bestMatches: Array<StockSuggestionItem> };
+  fetchStock: (ticker: string) => void;
 };
 
 const tempStockSearchData = {
@@ -34,7 +35,8 @@ const ModalStockSearchInputID = "modal_input_stock";
 const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
   searchTerm,
   setSearchTerm,
-  stockSuggestions
+  stockSuggestions,
+  fetchStock
 }) => {
   const { isShowing, open, close } = useModal(false);
   const stockSearchOptions = useRef<HTMLUListElement>();
@@ -44,6 +46,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
     switch (e.keyCode) {
       case ENTER_KEY_CODE:
         console.log("Calling API");
+        fetchStock(searchTerm);
         break;
 
       case DOWN_ARROW_KEY_CODE:
@@ -115,6 +118,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
           if (ticker) {
             setSearchTerm(ticker);
             stockSearchInput.current.focus();
+            fetchStock(ticker);
             close();
           }
         }}
@@ -123,6 +127,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
             case ENTER_KEY_CODE:
               setSearchTerm((e.target as HTMLLIElement).dataset.ticker);
               stockSearchInput.current.focus();
+              fetchStock((e.target as HTMLLIElement).dataset.ticker);
               close();
               break;
 

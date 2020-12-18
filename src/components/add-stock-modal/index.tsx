@@ -10,12 +10,66 @@ type AddStockModalProps = {
   cancel: () => void;
 };
 
+const StockInformationTable = ({ stock }) => (
+  <div className="bg-gray-50 py-2 px-6 text-gray-600">
+    <div className="flex w-full text-xs">
+      <div className="flex w-5/12">
+        <div className="flex-1 pr-3 text-left font-semibold">Dividend</div>
+        <div className="flex-1 px-3 text-right">{stock?.dividendAmount || 0}</div>
+      </div>
+      <div className="flex w-7/12">
+        <div className="flex-1 px-3 text-left font-semibold">Payout Ratio</div>
+        <div className="flex-1 pl-3 text-right">{stock?.dividendPayoutRatio?.toFixed(3) || 0}</div>
+      </div>
+    </div>
+    <div className="flex w-full text-xs">
+      <div className="flex w-5/12">
+        <div className="flex-1 pr-3 text-left font-semibold">Price</div>
+        <div className="flex-1 px-3 text-right">{stock?.price || 0}</div>
+      </div>
+      <div className="flex w-7/12">
+        <div className="flex-1 px-3 text-left font-semibold">Market Cap</div>
+        <div className="flex-1 pl-3 text-right">{stock?.marketCap || 0}</div>
+      </div>
+    </div>
+    <div className="flex w-full text-xs">
+      <div className="flex w-5/12">
+        <div className="flex-1 pr-3 text-left font-semibold">beta</div>
+        <div className="px-3 text-right">{stock?.beta || 0}</div>
+      </div>
+      <div className="flex w-7/12">
+        <div className="flex-1 px-3 text-left font-semibold">P/E ratio</div>
+        <div className="pl-3 text-right">{stock?.peRatio || 0}</div>
+      </div>
+    </div>
+    <div className="flex w-full text-xs">
+      <div className="flex w-5/12">
+        <div className="flex-1 pr-3 text-left font-semibold">EPS</div>
+        <div className="px-3 text-right">{stock?.EPS || 0}</div>
+      </div>
+      <div className="flex w-7/12">
+        <div className="flex-1 px-3 text-left font-semibold">Dividend yield</div>
+        <div className="pl-3 text-right">{stock?.dividendYeild || "0%"}</div>
+      </div>
+    </div>
+  </div>
+);
+
 const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [ticker, setTicker] = useState("");
   // const { stock, isLoading, isError } = useStockInformation(ticker || null);
-  const { stock, isLoading, isError } = useStockInformation(null);
+  const [stock, setStock] = useState(null);
   const { stockSuggestions, _isLoading, _isError } = useStockSearch(ticker || null);
+
+  const fetchStock = stockTicker => {
+    getStockInformation(stockTicker).then(({ status, data: stockData }) => {
+      console.log(stockData);
+      if (status === 200) {
+        setStock(stockData);
+      }
+    });
+  };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -54,6 +108,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                   searchTerm={searchTerm}
                   setSearchTerm={setSearchTerm}
                   stockSuggestions={stockSuggestions}
+                  fetchStock={fetchStock}
                 />
               </dd>
             </div>
@@ -87,50 +142,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                 />
               </dd>
             </div>
-            <div className="bg-gray-50 py-2 px-6 text-gray-600">
-              <div className="flex w-full text-xs">
-                <div className="flex w-5/12">
-                  <div className="flex-1 pr-3 text-left font-semibold">Dividend</div>
-                  <div className="flex-1 px-3 text-right">{stock?.dividendAmount || 0}</div>
-                </div>
-                <div className="flex w-7/12">
-                  <div className="flex-1 px-3 text-left font-semibold">Payout Ratio</div>
-                  <div className="flex-1 pl-3 text-right">
-                    {stock?.dividendPayoutRatio.toFixed(3) || 0}
-                  </div>
-                </div>
-              </div>
-              <div className="flex w-full text-xs">
-                <div className="flex w-5/12">
-                  <div className="flex-1 pr-3 text-left font-semibold">Price</div>
-                  <div className="flex-1 px-3 text-right">{stock?.price || 0}</div>
-                </div>
-                <div className="flex w-7/12">
-                  <div className="flex-1 px-3 text-left font-semibold">Market Cap</div>
-                  <div className="flex-1 pl-3 text-right">{stock?.marketCap || 0}</div>
-                </div>
-              </div>
-              <div className="flex w-full text-xs">
-                <div className="flex w-5/12">
-                  <div className="flex-1 pr-3 text-left font-semibold">beta</div>
-                  <div className="px-3 text-right">{stock?.beta || 0}</div>
-                </div>
-                <div className="flex w-7/12">
-                  <div className="flex-1 px-3 text-left font-semibold">P/E ratio</div>
-                  <div className="pl-3 text-right">{stock?.peRatio || 0}</div>
-                </div>
-              </div>
-              <div className="flex w-full text-xs">
-                <div className="flex w-5/12">
-                  <div className="flex-1 pr-3 text-left font-semibold">EPS</div>
-                  <div className="px-3 text-right">{stock?.EPS || 0}</div>
-                </div>
-                <div className="flex w-7/12">
-                  <div className="flex-1 px-3 text-left font-semibold">Dividend yield</div>
-                  <div className="pl-3 text-right">{stock?.dividendYeild || "0%"}</div>
-                </div>
-              </div>
-            </div>
+            {stock ? <StockInformationTable stock={stock} /> : null}
           </dl>
         </div>
         <div className="text-center md:text-right mt-4 md:flex md:justify-end">
@@ -149,6 +161,47 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
             Cancel
           </button>
         </div>
+        <dl className="p-2 text-xs border-t border-gray-200 flex flex-row justify-around">
+          <dt className="flex flex-row items-center space-x-2">
+            <kbd className="bg-charcoal-400 p-2 rounded-md text-sm text-gray-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="w-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </kbd>
+            <kbd className="bg-charcoal-400 p-2 rounded-md text-sm text-gray-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="w-4"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </kbd>
+            <dd>to navigate.</dd>
+          </dt>
+          <dt className="flex flex-row items-center space-x-2">
+            <kbd className="bg-charcoal-400 py-1 px-3 rounded-md text-sm text-gray-300">ENTER</kbd>
+            <dd>to select.</dd>
+          </dt>
+          <dt className="flex flex-row items-center space-x-2">
+            <kbd className="bg-charcoal-400 py-1 px-3 rounded-md text-sm text-gray-300">ESC</kbd>
+            <dd>to cancel.</dd>
+          </dt>
+        </dl>
       </div>
     </div>
   );
