@@ -13,11 +13,25 @@ type StockSuggestionItem = {
   "8. currency": string;
 };
 
+enum SearchState {
+  STABLE = "STABLE",
+  SUCCESS = "SUCCESS",
+  PENDING = "PENDING",
+  FAILURE = "FAILURE"
+}
+
+/**
+ * This is equivalent to:
+ * type LogLevelStrings = 'STABLE' | 'SUCCESS' | 'PENDING' | 'FAILURE';
+ */
+type SearchStateType = keyof typeof SearchState;
+
 type StockSearchComboboxProps = {
   searchTerm: string;
   setSearchTerm: (ticker: string) => void;
   stockSuggestions: { bestMatches: Array<StockSuggestionItem> };
   fetchStock: (ticker: string) => void;
+  searchState: SearchStateType;
 };
 
 const tempStockSearchData = {
@@ -32,11 +46,87 @@ const ESCAPE_KEY_CODE = 27;
 
 const ModalStockSearchInputID = "modal_input_stock";
 
+const SearchIconComponent = () => (
+  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      className="w-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      />
+    </svg>
+  </span>
+);
+
+const SuccessIconComponent = () => (
+  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      className="w-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+  </span>
+);
+
+const FailureIconComponent = () => (
+  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      className="w-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+  </span>
+);
+
+const PendingIconComponent = () => (
+  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+    <svg
+      className="animate-spin text-white h-5 w-5"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />{" "}
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
+    </svg>
+  </span>
+);
+
 const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
   searchTerm,
   setSearchTerm,
   stockSuggestions,
-  fetchStock
+  fetchStock,
+  searchState
 }) => {
   const { isShowing, open, close } = useModal(false);
   const stockSearchOptions = useRef<HTMLUListElement>();
@@ -98,6 +188,8 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
     }
   );
 
+  console.log(stockSearchSuggestionsData);
+  console.log(searchState);
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => {
     return (
       <li
@@ -195,22 +287,10 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
         onFocus={open}
         onBlur={handleBlur}
       />
-      <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </span>
+      {searchState === SearchState.STABLE ? <SearchIconComponent /> : null}
+      {searchState === SearchState.PENDING ? <PendingIconComponent /> : null}
+      {searchState === SearchState.SUCCESS ? <SuccessIconComponent /> : null}
+      {searchState === SearchState.FAILURE ? <FailureIconComponent /> : null}
       <ul
         ref={stockSearchOptions}
         className={cn("absolute w-full max-w-md -mt-1 p-2 bg-white rounded-lg shadow-lg", {

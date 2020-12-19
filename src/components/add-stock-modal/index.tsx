@@ -10,6 +10,13 @@ type AddStockModalProps = {
   cancel: () => void;
 };
 
+enum SearchState {
+  STABLE = "STABLE",
+  SUCCESS = "SUCCESS",
+  PENDING = "PENDING",
+  FAILURE = "FAILURE"
+}
+
 const StockInformationTable = ({ stock }) => (
   <div className="bg-gray-50 py-2 px-6 text-gray-600">
     <div className="flex w-full text-xs">
@@ -105,23 +112,33 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
   // const { stock, isLoading, isError } = useStockInformation(ticker || null);
   const [stock, setStock] = useState(null);
   const { stockSuggestions, _isLoading, _isError } = useStockSearch(ticker || null);
+  const [searchState, setSearchState] = useState(SearchState.STABLE);
 
   const fetchStock = stockTicker => {
+    setSearchState(SearchState.PENDING);
     getStockInformation(stockTicker)
       .then(({ status, data: stockData }) => {
         console.log(stockData);
         if (status === 200) {
+          setSearchState(SearchState.SUCCESS);
+          console.log(searchState);
           setStock(stockData);
         }
       })
       .catch(e => {
         console.error(e);
+        setSearchState(SearchState.FAILURE);
+        console.log(searchState);
+      })
+      .finally(() => {
+        console.log("request completed");
       });
   };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       console.log("Setting Ticker");
+      setSearchState(SearchState.STABLE);
       setTicker(searchTerm);
     }, 1000);
 
@@ -141,13 +158,13 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
         onKeyDown={cancel}
         aria-hidden="true"
       />
-      <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
-        <div className="px-2 py-5 sm:px-6 flex flex-col">
+      <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-2 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
+        <div className="px-2 py-5 sm:px-4 flex flex-col">
           <h3 className="text-lg leading-6 font-medium text-gray-900">Stock Information</h3>
         </div>
-        <div className="border-t border-gray-200">
+        <div className="border-t border-gray-200 py-2">
           <dl>
-            <div className="bg-gray-50 p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <div className="bg-gray-50 p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
               <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
                 Ticker
               </dt>
@@ -157,10 +174,11 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                   setSearchTerm={setSearchTerm}
                   stockSuggestions={stockSuggestions}
                   fetchStock={fetchStock}
+                  searchState={searchState}
                 />
               </dd>
             </div>
-            <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 text-gray-600">
+            <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 text-gray-600">
               <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
                 Shares
               </dt>
@@ -174,7 +192,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                 />
               </dd>
             </div>
-            <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 text-gray-600">
+            <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 text-gray-600">
               <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
                 Buy Price
               </dt>
@@ -190,10 +208,10 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                 />
               </dd>
             </div>
-            {stock ? <StockInformationTable stock={stock} /> : null}
+            {/* {stock ? <StockInformationTable stock={stock} /> : null} */}
           </dl>
         </div>
-        <div className="text-center md:text-right mt-4 md:flex md:justify-end">
+        <div className="text-center md:text-right mt-4 md:flex md:justify-end hidden md:hidden">
           <button
             type="button"
             className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-red-200 text-red-700 rounded-lg font-semibold text-sm md:ml-2 md:order-2"
