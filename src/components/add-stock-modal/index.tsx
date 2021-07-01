@@ -63,7 +63,7 @@ const StockInformationTable = ({ stock }) => (
 );
 
 const UtilityFooter = () => (
-  <dl className="p-2 text-xs border-t border-gray-200 hidden sm:flex flex-row justify-around">
+  <dl className="p-2 text-xs border-t border-gray-200 hidden sm:flex flex-row justify-between">
     <dt className="flex flex-row items-center space-x-2">
       <kbd className="bg-charcoal-400 p-2 rounded-md text-sm text-gray-300">
         <svg
@@ -106,39 +106,146 @@ const UtilityFooter = () => (
   </dl>
 );
 
+const ButtonPanel = ({ cancel, formState, formValid }) => (
+  // <div className="text-center md:text-right mt-4 md:flex md:justify-end">
+  <div className="bg-charcoal-900 mx-2 p-2 h-full flex flex-row align-middle justify-between items-center rounded-lg font-light">
+    <ul className="nav flex flex-row items-center text-xs">
+      <button
+        type="button"
+        className={cn(
+          "py-2 pl-1 pr-2 inline-block w-auto text-gray-500 rounded-lg font-semibold text-xs",
+          {
+            "animate-bounce": formValid
+          }
+        )}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="w-6 h-6 p-1 mr-2 inline-flex bg-charcoal-300 text-charcoal-900 rounded-md"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+        </svg>
+        Click to Proceed{" "}
+      </button>
+    </ul>
+    <ul className="nav flex flex-row text-xs space-x-3">
+      {/* <button
+        type="button"
+        className="block w-full md:inline-block pr-3 md:w-auto bg-charcoal-400 text-gray-500 hover:bg-green-300 hover:text-charcoal-900 rounded-md font-semibold text-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="w-8 p-2 mr-2 inline-flex bg-green-300 text-charcoal-900 rounded-md"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Add Stock{" "}
+      </button> */}
+      <button
+        type="button"
+        className="py-2 pl-1 pr-2 inline-block w-auto bg-charcoal-400 text-gray-500 hover:bg-green-300 hover:text-charcoal-900 rounded-lg font-semibold text-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="w-6 p-1 mr-1 inline-flex bg-green-300 text-charcoal-900 rounded-md"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Add Stock{" "}
+      </button>
+      <button
+        type="button"
+        className="py-2 pl-1 pr-2 inline-block w-auto bg-charcoal-400 text-gray-500 hover:bg-red-300 hover:text-charcoal-900 rounded-lg font-semibold"
+        onClick={cancel}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="w-6 p-1 mr-1 inline-flex bg-red-300 text-charcoal-900 rounded-md"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>{" "}
+        Cancel
+      </button>
+    </ul>
+  </div>
+);
+
 const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [stockQuantity, setStockQuantity] = useState("");
+  const [stockShares, setStockShares] = useState("");
   const [ticker, setTicker] = useState("");
-  // const { stock, isLoading, isError } = useStockInformation(ticker || null);
+
   const [stock, setStock] = useState(null);
   const { stockSuggestions, _isLoading, _isError } = useStockSearch(ticker || null);
+
   const [searchState, setSearchState] = useState(SearchState.STABLE);
+  const [isStockQuantityValid, setStockQuantityValidity] = useState(false);
+  const [isStockSharesValid, setStockSharesValidity] = useState(false);
+
+  const [formState, setFormState] = useState(0);
+  const [formValid, setFormValid] = useState(false);
+
+  const isFormValid = () => {
+    const isformValid =
+      searchState === SearchState.SUCCESS && isStockQuantityValid && isStockSharesValid;
+    setFormValid(!!isformValid);
+    console.log(searchState, isStockQuantityValid, isStockSharesValid,isformValid, formValid);
+  };
 
   const fetchStock = stockTicker => {
     setSearchState(SearchState.PENDING);
     getStockInformation(stockTicker)
       .then(({ status, data: stockData }) => {
-        console.log(stockData);
         if (status === 200) {
           setSearchState(SearchState.SUCCESS);
-          console.log(searchState);
+          isFormValid();
           setStock(stockData);
         }
       })
       .catch(e => {
         console.error(e);
         setSearchState(SearchState.FAILURE);
-        console.log(searchState);
       })
       .finally(() => {
         console.log("request completed");
       });
   };
 
+  const onStockQuantityChange = e => {
+    setStockQuantity(e.target.value);
+    setStockQuantityValidity(e.target.checkValidity());
+    isFormValid();
+  };
+
+  const onStockSharesChange = e => {
+    setStockShares(e.target.value);
+    setStockSharesValidity(e.target.checkValidity());
+    isFormValid();
+  };
+
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       console.log("Setting Ticker");
-      setSearchState(SearchState.STABLE);
+      // setSearchState(SearchState.STABLE);
       setTicker(searchTerm);
     }, 1000);
 
@@ -158,7 +265,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
         onKeyDown={cancel}
         aria-hidden="true"
       />
-      <div className="bg-white rounded-lg md:max-w-md md:mx-auto p-2 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
+      <div className="bg-white rounded-lg md:max-w-lg md:w-full md:mx-auto p-2 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
         <div className="px-2 py-5 sm:px-4 flex flex-col">
           <h3 className="text-lg leading-6 font-medium text-gray-900">Stock Information</h3>
         </div>
@@ -189,6 +296,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                   id="modal_input_shares"
                   min="0"
                   className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+                  onChange={onStockQuantityChange}
                 />
               </dd>
             </div>
@@ -205,28 +313,15 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                   step="0.01"
                   inputMode="decimal"
                   className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+                  onChange={onStockSharesChange}
                 />
               </dd>
             </div>
             {/* {stock ? <StockInformationTable stock={stock} /> : null} */}
           </dl>
         </div>
-        <div className="text-center md:text-right mt-4 md:flex md:justify-end hidden md:hidden">
-          <button
-            type="button"
-            className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-red-200 text-red-700 rounded-lg font-semibold text-sm md:ml-2 md:order-2"
-          >
-            Add Stock
-          </button>
-          <button
-            type="button"
-            className="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4
-          md:mt-0 md:order-1"
-            onClick={cancel}
-          >
-            Cancel
-          </button>
-        </div>
+
+        <ButtonPanel cancel={cancel} formState={formState} formValid={formValid} />
         <UtilityFooter />
       </div>
     </div>

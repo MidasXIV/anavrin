@@ -188,8 +188,6 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
     }
   );
 
-  console.log(stockSearchSuggestionsData);
-  console.log(searchState);
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => {
     return (
       <li
