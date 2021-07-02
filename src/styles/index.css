@@ -3,10 +3,6 @@
 @tailwind base;
 @tailwind components;
 
-*:focus {
-  @apply shadow-outline outline-none rounded-sm !important;
-}
-
 @tailwind utilities;
 
 .dashboard-primary-panel {

@@ -4,6 +4,9 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
+  // corePlugins: {
+  //   outline: false
+  // },
   purge: [
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/layouts/**/*.{js,ts,jsx,tsx}",
