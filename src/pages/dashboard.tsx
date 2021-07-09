@@ -1,26 +1,22 @@
-import { AppHeader, Loading } from "../components";
-import { signIn, signOut, useSession } from "next-auth/client";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { FC } from "react";
 
-export default function Dashboard() {
-  const router = useRouter();
-  const [session, loading] = useSession();
+import DefaultLayout from "../layouts/default";
 
-  useEffect(() => {
-    if (!session && !loading) router.push("/");
-  }, [session, loading]);
+const Dashboard: FC = () => {
+  return (
+    <>
+      <DefaultLayout
+        title="Dashboard"
+        sidebar="dashboard"
+        description="You can see your portfolios estimated value & progress below"
+      >
+        <div className="w-full h-full flex flex-row">
+          <div className="dashboard-primary-panel" />
+          <div className="dashboard-secondary-panel">Secondary Panel</div>
+        </div>
+      </DefaultLayout>
+    </>
+  );
+};
 
-  return session ? (
-    <main>
-      <AppHeader
-        title={`Hello there, ${session.user.name}`}
-        description="You can see your portfolios estimated value & progress below:"
-        currentPage={{ label: "Home", path: "/dashboard" }}
-        otherPages={[{ label: "Portfolio", path: "/dashboard/portfolio" }]}
-      />
-    </main>
-  ) : loading ? (
-    <Loading />
-  ) : null;
-}
+export default Dashboard;

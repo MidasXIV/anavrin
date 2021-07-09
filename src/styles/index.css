@@ -1,0 +1,28 @@
+@import "https://rsms.me/inter/inter.css";
+
+@tailwind base;
+@tailwind components;
+
+@tailwind utilities;
+
+.dashboard-primary-panel {
+  @apply w-8/12 bg-gray-300 p-2 border-r border-gray-400;
+}
+
+.dashboard-secondary-panel {
+  @apply w-4/12 bg-gray-200 p-2; 
+  background-color: #eaeaea;
+}
+
+.portfolio-primary-panel {
+  @apply w-full h-full bg-gray-300 p-2 border-r border-gray-400;
+}
+
+.rdt_TableHeadRow {
+  @apply font-mono bg-red-600;
+  margin-right: 12px;
+}
+
+.rdt_TableRow {
+  @apply font-mono bg-red-600 text-xs;
+}

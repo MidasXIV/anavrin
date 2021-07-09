@@ -5,6 +5,21 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Stack
+
+* Frontend Framework - Next JS
+* CSS Framework - Tailwind CSS
+* Frontend Components -Chakra UI
+* Frontend API connection - React Query
+* Backend API - Next.js API Routes 
+* Auth - NextAuth.js
+* Hosting - Vercel
+* Testing - Jest
+
+# Note
+
+Project uses [qoomon/git-conventional-commits](https://github.com/qoomon/git-conventional-commits) (refer [doc](https://gist.github.com/MidasXIV/080e017ccfec9d0c37aff3fb78f1e43b)) to use this you must set git hook directory to `.githooks` using `git config core.hooksPath '.git-hooks'`.
+
 ## Getting Started
 
 First, run the development server:
