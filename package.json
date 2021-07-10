@@ -27,6 +27,7 @@
     "classnames": "^2.2.6",
     "next": "9.5.4",
     "next-auth": "^3.3.0",
+    "next-pwa": "^5.2.23",
     "react": "16.13.1",
     "react-data-table-component": "^6.11.5",
     "react-dom": "16.13.1",
