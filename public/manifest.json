@@ -1,6 +1,12 @@
 {
   "name": "Anavrin",
   "short_name": "Anavrin",
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
   "icons": [{
       "src": "icons/manifest-icon-192.png",
       "sizes": "192x192",
@@ -14,10 +20,5 @@
       "purpose": "maskable any"
     }
   ],
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
-  "start_url": "/",
-  "display": "standalone",
-  "orientation": "portrait",
   "splash_pages": null
 }
