@@ -15,5 +15,13 @@ module.exports = withPWA({
   webpack: config => {
     config.resolve.modules.push(path.resolve("./"));
     return config;
-  }
+  },
+
+  eslint: {
+    // Warning: Dangerously allow production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true
+  },
+
+  webpack5: true
 });
