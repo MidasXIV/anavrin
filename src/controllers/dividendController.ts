@@ -128,23 +128,23 @@ export default class DividendController {
    *                                  Helper Methods
    **************************************************************************************** */
 
-  private parseStockName($: CheerioStatic): string {
+  private parseStockName($: cheerio.Selector): string {
     return $(this.nameQuerySelector).text().toString().split("(")[0].trim();
   }
 
-  private parseExchangeName($: CheerioStatic): string {
+  private parseExchangeName($: cheerio.Selector): string {
     return $(this.exchangeQuerySelector).text().toString().split("-")[0].trim();
   }
 
-  private parseStockPrice($: CheerioStatic): number {
+  private parseStockPrice($: cheerio.Selector): number {
     return parseFloat($(this.quoteQuerySelector).text());
   }
 
-  private parseStockCurrency($: CheerioStatic): string {
+  private parseStockCurrency($: cheerio.Selector): string {
     return $(this.dividendCurrencyQuerySelector).text();
   }
 
-  private parseStockSummary($: CheerioStatic): StockSummaryInterface {
+  private parseStockSummary($: cheerio.Selector): StockSummaryInterface {
     const defaultStringValue = "value Not Found";
     const defaultNumericValue = -1;
 
@@ -216,7 +216,7 @@ export default class DividendController {
     };
   }
 
-  private parseDividendHistory($: CheerioStatic): Array<DividendInformationItemInterface> {
+  private parseDividendHistory($: cheerio.Selector): Array<DividendInformationItemInterface> {
     const dividendInformation: Array<DividendInformationItemInterface> = [];
 
     $(this.dividendHistoryTableQuerySelector)
