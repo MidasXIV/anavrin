@@ -21,15 +21,64 @@ export default class BinanceController {
     });
   }
 
-  public async accountCoins(request: NextApiRequest, response: NextApiResponse): Promise<void> {
-    const coins = await this.client.accountCoins();
+  public async assetDetail(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+    const asset = await this.client.assetDetail();
     response.json({
-      coins
+      asset
+    });
+  }
+
+  public async accountCoins(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+    const coins = await this.client.accountCoins({
+      useServerTime: true
+    });
+    // filter coins which have value 0
+    const validCoins = coins.filter(coin => coin.free !== "0");
+    response.json({
+      coins,
+      validCoins
+    });
+  }
+
+  public async accountInfo(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+    const accountInfo = await this.client.accountInfo({
+      useServerTime: true
+    });
+    response.json({
+      accountInfo
+    });
+  }
+
+  public async tradesHistory(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+    const tradeHistory = await this.client.tradesHistory({
+      symbol: "ETHUSDT"
+    });
+    response.json({
+      tradeHistory
+    });
+  }
+
+  public async myTrades(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+    const tradeHistory = await this.client.myTrades({
+      symbol: "LINKUSDT"
+    });
+    response.json({
+      tradeHistory
     });
   }
 
   public async depositHistory(request: NextApiRequest, response: NextApiResponse): Promise<void> {
     const history = await this.client.depositHistory();
+    response.json({
+      history
+    });
+  }
+
+  public async universalTransferHistory(
+    request: NextApiRequest,
+    response: NextApiResponse
+  ): Promise<void> {
+    const history = await this.client.universalTransferHistory({ type: "MAIN_PAY" });
     response.json({
       history
     });
