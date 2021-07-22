@@ -9,8 +9,8 @@ type SidebarProps = {
 const Sidebar: FC<SidebarProps> = ({ select }) => {
   return (
     <nav className={styles.sidebar}>
-      <div className="flex flex-col justify-between h-full">
-        <ul className="nav flex flex-col border-b border-gray-900">
+      <div className="flex flex-row sm:flex-col justify-between w-full sm:w-auto h-auto sm:h-full">
+        <ul className="nav flex flex-col border-r sm:border-b border-gray-900">
           <li className={cn(styles.icon, { [styles.active]: select === "overview" })}>
             <a href="/overview">
               <svg
@@ -31,7 +31,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
           </li>
         </ul>
 
-        <ul className="nav flex-column">
+        <ul className="nav flex flex-row sm:flex-col">
           <li className={cn(styles.icon, { [styles.active]: select === "dashboard" })}>
             <a href="/">
               <svg
@@ -102,7 +102,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
           </li>
         </ul>
 
-        <ul className="nav flex-column">
+        <ul className="nav flex flex-row sm:flex-col">
           <li className={cn(styles.icon, { [styles.active]: select === "news" })}>
             <a href="/register">
               <svg

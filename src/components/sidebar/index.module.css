@@ -1,7 +1,7 @@
 .sidebar {
-  @apply box-border border-r text-gray-500 h-screen;
+  @apply box-border border-r text-gray-500 h-auto sm:h-screen w-full sm:w-auto;
 
-  max-width: max-content;
+  /* max-width: max-content; */
   background-color: #151515;
   border-color: #2b2b2b;
   padding: 0.5em;
@@ -9,6 +9,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @apply fixed sm:relative bottom-0
 }
 
 .icon {
@@ -22,7 +24,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
+  @apply mx-2 sm:mb-2 sm:mx-0
 }
 
 
