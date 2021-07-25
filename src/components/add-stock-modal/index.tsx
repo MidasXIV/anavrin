@@ -208,7 +208,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
     const isformValid =
       searchState === SearchState.SUCCESS && isStockQuantityValid && isStockSharesValid;
     setFormValid(!!isformValid);
-    console.log(searchState, isStockQuantityValid, isStockSharesValid,isformValid, formValid);
+    console.log(searchState, isStockQuantityValid, isStockSharesValid, isformValid, formValid);
   };
 
   const fetchStock = stockTicker => {

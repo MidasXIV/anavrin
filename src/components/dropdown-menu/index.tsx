@@ -6,13 +6,11 @@ type DropdownMenuProps = {
   opened: boolean;
 };
 
-const DropdownMenu: FC<DropdownMenuProps> = ({ button, menu, opened }) => {
-  return (
-    <>
-      {button}
-      {opened ? menu : null}
-    </>
-  );
-};
+const DropdownMenu: FC<DropdownMenuProps> = ({ button, menu, opened }) => (
+  <>
+    {button}
+    {opened ? menu : null}
+  </>
+);
 
 export default DropdownMenu;

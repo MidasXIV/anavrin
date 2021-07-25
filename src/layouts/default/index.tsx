@@ -23,27 +23,25 @@ type DefaultLayoutProps = {
   children?: any;
 };
 
-const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, sidebar, children }) => {
-  return (
-    <>
-      <Head>
-        <title>Anavrin | {title}</title>
-      </Head>
-      <div className="flex flex-col sm:flex-row overflow-hidden w-screen h-screen">
-        <Sidebar select={sidebar} />
-        <div className="w-full flex flex-col">
-          {/* <AppHeader
+const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, sidebar, children }) => (
+  <>
+    <Head>
+      <title>Anavrin | {title}</title>
+    </Head>
+    <div className="flex flex-col sm:flex-row overflow-hidden w-screen h-screen">
+      <Sidebar select={sidebar} />
+      <div className="w-full flex flex-col">
+        {/* <AppHeader
             title={title}
             description={description}
             currentPage={{ label: "Home", path: "/dashboard" }}
             otherPages={[{ label: "Portfolio", path: "/portfolio" }]}
           /> */}
-          <Header title={title} description={description} />
-          {children}
-        </div>
+        <Header title={title} description={description} />
+        {children}
       </div>
-    </>
-  );
-};
+    </div>
+  </>
+);
 
 export default DefaultLayout;
