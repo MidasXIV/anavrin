@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/client";
 import { FC } from "react";
 import { Menu, MenuItem, Divider, Text } from "@mantine/core";
+import Link from "next/link";
 import styles from "./index.module.css";
 
 type HeaderProps = {
@@ -39,8 +40,12 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
             }
             menuPosition={{ top: 53, right: 0 }}
           >
-            <MenuItem>Settings</MenuItem>
-            <MenuItem>Messages</MenuItem>
+            <MenuItem>
+              <Link href="./user-settings">Settings</Link>
+            </MenuItem>
+            <MenuItem>
+              <a href="./user-settings">Messages</a>
+            </MenuItem>
             <MenuItem>Gallery</MenuItem>
             <MenuItem
               rightSection={
