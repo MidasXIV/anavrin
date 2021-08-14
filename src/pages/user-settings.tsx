@@ -3,6 +3,7 @@ import { useSession, signIn, signOut } from "next-auth/client";
 import { InputWrapper, Input, Button } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import DefaultLayout from "../layouts/default";
+import { encrypt, decrypt } from "../lib/crypto";
 
 const Overview: FC = () => {
   const [session, loading] = useSession();
@@ -31,7 +32,15 @@ const Overview: FC = () => {
           <div className="dashboard-primary-panel">
             <h1 className="text-2xl mb-2">Connect anavrin to an exchange account.</h1>
             <p className="text-md text-gray-600">We currently only support Binance exchange.</p>
-            <form onSubmit={form.onSubmit(values => console.log(values))}>
+            <form
+              onSubmit={form.onSubmit(values => {
+                console.log(values);
+                const encryptedAPIKey = encrypt(values.binanceAPI);
+                console.log(`Encrypted message: ${encryptedAPIKey}`);
+                const decryptedAPIKey = decrypt(encryptedAPIKey);
+                console.log(`Decrypted message: ${decryptedAPIKey}`);
+              })}
+            >
               <section className="py-8">
                 <InputWrapper
                   id="binance-api-key"
