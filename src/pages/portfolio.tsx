@@ -323,13 +323,11 @@ const customStyles2 = {
   // }
 };
 
-const TableAction = data => {
-  return (
-    <div>
-      <div style={{ fontWeight: 700 }}>Hello</div>
-    </div>
-  );
-};
+const TableAction = data => (
+  <div>
+    <div style={{ fontWeight: 700 }}>Hello</div>
+  </div>
+);
 
 const Portfolio: FC = () => {
   const { isShowing, toggle } = useModal(false);
