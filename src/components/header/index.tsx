@@ -16,7 +16,7 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
   const userImage = loading ? defaultUserImage : session?.user?.image ?? defaultUserImage;
 
   return (
-    <div className={styles.header}>
+    <div className={`${styles.header} flex`}>
       <div className={styles.leftHeader}>
         <div className={`${styles.leftContentPanel} ${styles.content}`}>
           <h3 className="text-2xl font-black">{title}</h3>

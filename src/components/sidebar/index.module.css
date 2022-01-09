@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
 
-  @apply fixed sm:relative bottom-0
+  /* @apply fixed sm:relative bottom-0 */
 }
 
 .icon {
