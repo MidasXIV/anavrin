@@ -31,7 +31,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
 
             <meta name="application-name" content="Anavrin App" />
             <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
             <meta name="apple-mobile-web-app-title" content="Anavrin" />
             <meta name="description" content="Crypto portfolio manager" />
             <meta name="format-detection" content="telephone=no" />
@@ -39,7 +39,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
             <meta name="msapplication-config" content="/icons/browserconfig.xml" />
             <meta name="msapplication-TileColor" content="#2B5797" />
             <meta name="msapplication-tap-highlight" content="no" />
-            <meta name="theme-color" content="#000000" />
+            <meta name="theme-color" content="#2b2b2b" />
 
             <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
 

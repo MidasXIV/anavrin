@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Menu, MenuItem, Divider, Text } from "@mantine/core";
 import Link from "next/link";
 import styles from "./index.module.css";
+import cn from "classnames";
 
 type HeaderProps = {
   title: string;
@@ -16,15 +17,15 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
   const userImage = loading ? defaultUserImage : session?.user?.image ?? defaultUserImage;
 
   return (
-    <div className={styles.header}>
+    <div className={cn(styles.header, "flex")}>
       <div className={styles.leftHeader}>
-        <div className={`${styles.leftContentPanel} ${styles.content}`}>
+        <div className={cn(styles.leftContentPanel, styles.content)}>
           <h3 className="text-2xl font-black">{title}</h3>
           <p className="text-xs font-thin font-sans">{description}</p>
         </div>
       </div>
       <div className={styles.rightHeader}>
-        <div className={`${styles.content} ${styles.rightContentPanel}`}>
+        <div className={cn(styles.content, styles.rightContentPanel)}>
           <Menu
             // trigger="hover"
             controlRefProp="ref"

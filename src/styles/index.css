@@ -6,11 +6,12 @@
 @tailwind utilities;
 
 .dashboard-primary-panel {
-  @apply w-8/12 bg-gray-300 p-2 border-r border-gray-400;
+  @apply sm:w-8/12 bg-gray-300 p-2 border-r border-gray-400;
 }
 
 .dashboard-secondary-panel {
-  @apply w-4/12 bg-gray-200 p-2; 
+  @apply sm:w-4/12 bg-gray-200 p-2; 
+  @apply hidden sm:block;
   background-color: #eaeaea;
 }
 
