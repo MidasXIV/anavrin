@@ -10,7 +10,7 @@ const Dashboard: FC = () => (
       sidebar="dashboard"
       description="You can see your portfolios estimated value & progress below"
     >
-      <div className="w-full flex flex-1 flex-row overflow-auto">
+      <div className="w-full flex flex-1 flex-row overflow-auto rounded-t-lg">
         <div className="dashboard-primary-panel overflow-y-auto">
           <LoremIpsum />
           <LoremIpsum />

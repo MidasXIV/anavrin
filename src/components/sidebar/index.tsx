@@ -8,7 +8,7 @@ type SidebarProps = {
 };
 
 const Sidebar: FC<SidebarProps> = ({ select }) => (
-  <nav className={`${styles.sidebar} flex`}>
+  <nav className={cn(styles.sidebar, "flex")}>
     <div className="flex flex-row sm:flex-col justify-between w-full sm:w-auto h-auto sm:h-full">
       <ul className="nav flex flex-col border-r sm:border-b border-gray-900">
         <li className={cn(styles.icon, { [styles.active]: select === "overview" })}>
