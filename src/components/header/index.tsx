@@ -2,8 +2,8 @@ import { useSession } from "next-auth/client";
 import { FC } from "react";
 import { Menu, MenuItem, Divider, Text } from "@mantine/core";
 import Link from "next/link";
-import cn from "classnames";
 import styles from "./index.module.css";
+import cn from "classnames";
 
 type HeaderProps = {
   title: string;
