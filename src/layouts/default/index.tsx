@@ -3,14 +3,6 @@ import Head from "next/head";
 import Header from "../../components/header";
 import Sidebar from "../../components/sidebar";
 
-// import NProgress from "nprogress";
-
-// NProgress.configure({ showSpinner: false });
-
-// Router.onRouteChangeStart = () => NProgress.start();
-// Router.onRouteChangeComplete = () => NProgress.done();
-// Router.onRouteChangeError = () => NProgress.done();
-
 type Page = {
   label: string;
   path: string;
@@ -20,7 +12,8 @@ type DefaultLayoutProps = {
   title: string;
   description: string;
   sidebar: string;
-  children?: any;
+  // eslint-disable-next-line react/require-default-props
+  children?: unknown;
 };
 
 const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, sidebar, children }) => (

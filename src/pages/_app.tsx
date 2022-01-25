@@ -8,6 +8,16 @@ import { Provider } from "next-auth/client";
 import { JssProvider, createGenerateId } from "react-jss";
 import { MantineProvider, NormalizeCSS, GlobalStyles } from "@mantine/core";
 
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+
+import Router from "next/router";
+
+NProgress.configure({ showSpinner: false });
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
+
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
     const jssStyles = document.getElementById("mantine-ssr-styles");
