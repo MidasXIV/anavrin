@@ -27,7 +27,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
       </button>
     </ul>
 
-    <ul className="nav flex flex-row space-x-5">
+    <ul className="hidden nav md:flex flex-row space-x-5">
       <button type="button" className={styles.icon}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
       </button>
     </ul>
 
-    <ul className="nav flex flex-row">
+    <ul className="hidden nav md:flex flex-row">
       <button type="button" className={styles.icon}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -76,6 +76,24 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
             strokeLinejoin="round"
             strokeWidth="1"
             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+          />
+        </svg>
+      </button>
+    </ul>
+    <ul className="flex nav md:hidden flex-row">
+      <button type="button" className={styles.icon}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1"
+            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
           />
         </svg>
       </button>
