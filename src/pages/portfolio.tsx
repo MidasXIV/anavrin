@@ -341,7 +341,7 @@ const Portfolio: FC = () => {
         <AddStockModal isShowing={isShowing} cancel={toggle} />
         <div className="portfolio-primary-panel overflow-y-hidden">
           <div className="h-20 flex flex-row">
-            <div className="w-3/4 md:w-2/3 bg-red-100 h-full flex flex-col md:flex-row items-center p-2 md:p-4 md:justify-evenly">
+            <div className="w-2/3 bg-red-100 h-full flex flex-col md:flex-row items-center p-2 md:p-4 md:justify-evenly">
               <div className="flex flex-col w-full">
                 <span className="hidden md:block text-xs m-1 uppercase text-gray-700">
                   INVESTED AMOUNT
@@ -374,7 +374,7 @@ const Portfolio: FC = () => {
                 </div>
               </div>
             </div>
-            <div className="w-1/4 md:w-1/3">
+            <div className="w-1/3">
               <PortfolioOptions openAddStockModal={toggle} />
             </div>
           </div>
