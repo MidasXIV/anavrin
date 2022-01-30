@@ -1,18 +1,19 @@
 import { FC } from "react";
 import cn from "classnames";
+import Link from "next/link";
 import styles from "./index.module.css";
 
 type SidebarProps = {
   select: string;
 };
 
-const Sidebar: FC<SidebarProps> = ({ select }) => {
-  return (
-    <nav className={styles.sidebar}>
-      <div className="flex flex-col justify-between h-full">
-        <ul className="nav flex flex-col border-b border-gray-900">
-          <li className={cn(styles.icon, { [styles.active]: select === "overview" })}>
-            <a href="/overview">
+const Sidebar: FC<SidebarProps> = ({ select }) => (
+  <nav className={cn(styles.sidebar, "flex")}>
+    <div className="flex flex-row sm:flex-col justify-between w-full sm:w-auto h-auto sm:h-full">
+      <ul className="nav flex flex-col border-r sm:border-b border-gray-900">
+        <li className={cn(styles.icon, { [styles.active]: select === "overview" })}>
+          <Link href="/overview">
+            <a>
               <svg
                 className="bi bi-view-list icon"
                 width="1em"
@@ -28,12 +29,14 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
                 />
               </svg>
             </a>
-          </li>
-        </ul>
+          </Link>
+        </li>
+      </ul>
 
-        <ul className="nav flex-column">
-          <li className={cn(styles.icon, { [styles.active]: select === "dashboard" })}>
-            <a href="/">
+      <ul className="nav flex flex-row sm:flex-col">
+        <li className={cn(styles.icon, { [styles.active]: select === "dashboard" })}>
+          <Link href="/">
+            <a>
               <svg
                 className="bi bi-house icon"
                 width="1em"
@@ -54,9 +57,11 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
                 />
               </svg>
             </a>
-          </li>
-          <li className={cn(styles.icon, { [styles.active]: select === "portfolio" })}>
-            <a href="/portfolio">
+          </Link>
+        </li>
+        <li className={cn(styles.icon, { [styles.active]: select === "portfolio" })}>
+          <Link href="/portfolio">
+            <a>
               <svg
                 className="bi bi-bullseye icon"
                 width="1em"
@@ -83,28 +88,30 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
                 <path d="M9.5 8a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
               </svg>
             </a>
-          </li>
-          <li className={cn(styles.icon, { [styles.active]: select === "simulator" })}>
-            <svg
-              className="bi bi-collection icon"
-              width="1em"
-              height="1em"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </li>
-        </ul>
+          </Link>
+        </li>
+        <li className={cn(styles.icon, { [styles.active]: select === "simulator" })}>
+          <svg
+            className="bi bi-collection icon"
+            width="1em"
+            height="1em"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </li>
+      </ul>
 
-        <ul className="nav flex-column">
-          <li className={cn(styles.icon, { [styles.active]: select === "news" })}>
-            <a href="/register">
+      <ul className="nav flex flex-row sm:flex-col">
+        <li className={cn(styles.icon, { [styles.active]: select === "news" })}>
+          <Link href="/register">
+            <a>
               <svg
                 className="bi bi-file-earmark-text icon"
                 width="1em"
@@ -122,11 +129,11 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
                 />
               </svg>
             </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
-};
+          </Link>
+        </li>
+      </ul>
+    </div>
+  </nav>
+);
 
 export default Sidebar;

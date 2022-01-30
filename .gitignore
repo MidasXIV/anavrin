@@ -38,3 +38,9 @@ logs
 
 # app layout profile
 /profile-layout
+
+# PWA resources
+**/public/workbox-*.js
+**/public/sw.js
+**/public/*.js.map
+**/public/fallback-*.js

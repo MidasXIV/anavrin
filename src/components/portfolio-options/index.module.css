@@ -14,10 +14,9 @@
 
 .icon {
   @apply bg-charcoal-400 rounded-lg text-gray-500;
+  @apply w-10 md:w-12 h-10 md:h-12;
   text-align: center;
   cursor: pointer;
-  height: 3em;
-  width: 3em;
   font-size: 1em;
   display: flex;
   align-items: center;

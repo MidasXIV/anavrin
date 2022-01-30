@@ -128,23 +128,23 @@ export default class DividendController {
    *                                  Helper Methods
    **************************************************************************************** */
 
-  private parseStockName($: CheerioStatic): string {
+  private parseStockName($: cheerio.Selector): string {
     return $(this.nameQuerySelector).text().toString().split("(")[0].trim();
   }
 
-  private parseExchangeName($: CheerioStatic): string {
+  private parseExchangeName($: cheerio.Selector): string {
     return $(this.exchangeQuerySelector).text().toString().split("-")[0].trim();
   }
 
-  private parseStockPrice($: CheerioStatic): number {
+  private parseStockPrice($: cheerio.Selector): number {
     return parseFloat($(this.quoteQuerySelector).text());
   }
 
-  private parseStockCurrency($: CheerioStatic): string {
+  private parseStockCurrency($: cheerio.Selector): string {
     return $(this.dividendCurrencyQuerySelector).text();
   }
 
-  private parseStockSummary($: CheerioStatic): StockSummaryInterface {
+  private parseStockSummary($: cheerio.Selector): StockSummaryInterface {
     const defaultStringValue = "value Not Found";
     const defaultNumericValue = -1;
 
@@ -163,9 +163,7 @@ export default class DividendController {
       .each((index, row) => {
         const rowInfo = $(row)
           .children("td")
-          .map((_index, col) => {
-            return $(col).text();
-          })
+          .map((_index, col) => $(col).text())
           .get();
 
         const [rowKey, rowValue] = rowInfo;
@@ -216,7 +214,7 @@ export default class DividendController {
     };
   }
 
-  private parseDividendHistory($: CheerioStatic): Array<DividendInformationItemInterface> {
+  private parseDividendHistory($: cheerio.Selector): Array<DividendInformationItemInterface> {
     const dividendInformation: Array<DividendInformationItemInterface> = [];
 
     $(this.dividendHistoryTableQuerySelector)
@@ -265,9 +263,8 @@ export default class DividendController {
   private static getAnnualDividendGrowth(
     AnnualDividends: AnnualDividendInterface
   ): AnnualDividendGrowthInterface {
-    const dividendGrowth = (newDividend: number, oldDividend: number): number => {
-      return ((newDividend - oldDividend) / oldDividend) * 100;
-    };
+    const dividendGrowth = (newDividend: number, oldDividend: number): number =>
+      ((newDividend - oldDividend) / oldDividend) * 100;
 
     /** get Annual Dividends in ascending order */
     const AnnualDividendYearsArray = Object.keys(AnnualDividends)
@@ -315,9 +312,8 @@ export default class DividendController {
       const ticker = Array.isArray(request.query.ticker)
         ? request.query.ticker[0]
         : request.query.ticker;
-      const yahooFinancedividendProfileURL = DividendController.getYahooFinancedividendProfileURL(
-        ticker
-      );
+      const yahooFinancedividendProfileURL =
+        DividendController.getYahooFinancedividendProfileURL(ticker);
 
       let symbol: string;
       let name: string;
@@ -336,9 +332,8 @@ export default class DividendController {
           exchange = this.parseExchangeName($);
           stockSummary = this.parseStockSummary($);
 
-          const yahooFinancedividendHistoryURL = DividendController.getYahooFinanceDividendHistoryURL(
-            ticker
-          );
+          const yahooFinancedividendHistoryURL =
+            DividendController.getYahooFinanceDividendHistoryURL(ticker);
           return DividendController.makeRequest(yahooFinancedividendHistoryURL);
         })
         .then(html => {
@@ -383,9 +378,8 @@ export default class DividendController {
 
       console.debug("fetching Info");
 
-      const yahooFinancedividendHistoryURL = DividendController.getYahooFinanceDividendHistoryURL(
-        ticker
-      );
+      const yahooFinancedividendHistoryURL =
+        DividendController.getYahooFinanceDividendHistoryURL(ticker);
       DividendController.makeRequest(yahooFinancedividendHistoryURL).then(html => {
         console.debug(`fetched Dividend Information for ${ticker}`);
 
