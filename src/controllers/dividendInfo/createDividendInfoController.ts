@@ -7,7 +7,7 @@ export default class CreateDividendInfoController {
     this.useCase = useCase;
   }
 
-  public async execute(request: NextApiRequest, response: NextApiResponse) {
+  public async execute(request: NextApiRequest, response: NextApiResponse): Promise<void> {
     const ticker = Array.isArray(request.query.ticker)
       ? request.query.ticker[0]
       : request.query.ticker;
@@ -25,17 +25,20 @@ export default class CreateDividendInfoController {
       switch (result.type) {
         case "NoDividendInfo":
           response.status(400).json(result);
+          break;
         case "InvalidTicker":
           response.status(400).json(result);
+          break;
         case "UnexpectedError":
           response.status(500).json(result);
+          break;
         default:
           response.status(200).json(result);
       }
     } catch (err) {
       // Report the error to metrics + logging app
 
-      return response.status(500);
+      response.status(500);
     }
   }
 }

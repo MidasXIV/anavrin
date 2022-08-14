@@ -2,7 +2,6 @@ import { defineFeature, loadFeature } from "jest-cucumber";
 import * as path from "path";
 import YahooFinanceRepo from "../../repositories/yahooFinanceRepo";
 import DividendInfo from "./dividendInfo";
-import CreateDividendInfoController from "./createDividendInfoController";
 
 const feature = loadFeature(path.join(__dirname, "./dividendInfo.feature"));
 

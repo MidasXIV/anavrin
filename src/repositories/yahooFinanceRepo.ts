@@ -2,74 +2,8 @@
  * Handles Fetching and parseing of data from Yahoo Finance
  */
 import axios from "axios";
-import cheerio from "cheerio";
 
-interface DividendInformationInterface {
-  symbol: string;
-  exchange: string;
-  name: string;
-  currency: string;
-  latestPrice: number;
-  industry: string;
-  sector: string;
-
-  paymentDate: string;
-  exDividendDate: string;
-
-  recordDate: number;
-  declaredDate: number;
-
-  dividendAmount: number;
-  dividendYeild: string;
-  dividendPayoutRatio: number;
-  frequency: string;
-
-  peRatio: number;
-  EPS: number;
-}
-
-interface DividendInformationInterface {
-  symbol: string;
-  name: string;
-  price: number;
-  exchange: string;
-}
-
-interface StockSummaryInterface {
-  marketCap: string;
-  beta: number;
-  peRatio: number;
-  EPS: number;
-  paymentDate: string;
-  exDividendDate: string;
-  dividendAmount: number;
-  dividendYeild: string;
-  dividendPayoutRatio: number;
-}
-
-interface DividendInformationItemInterface {
-  date: number;
-  dividend: number;
-}
-
-interface AnnualDividendInterface {
-  [key: string]: number;
-}
-
-interface AnnualDividendGrowthInterface {
-  [key: string]: {
-    dividend: number;
-    growth?: number;
-  };
-}
-
-interface AnnualDividendGrowthItemInterface {
-  date: number;
-  dividend: number;
-  growth: number;
-}
-
-class YahooFinanceRepo {
+class YahooFinanceRepo implements DividendInfoScraper {
   nameQuerySelector = "h1.D\\(ib\\)";
 
   quoteQuerySelector = ".Fz\\(36px\\)";
@@ -298,7 +232,7 @@ class YahooFinanceRepo {
     return this.makeRequest(url);
   }
 
-  public parsePrimaryInformation(parser: cheerio.Root) {
+  public parsePrimaryInformation(parser: cheerio.Root): PrimaryDividendInformationDTO {
     const name = this.parseStockName(parser);
     const price = this.parseStockPrice(parser);
     const exchange = this.parseExchangeName(parser);
@@ -312,7 +246,10 @@ class YahooFinanceRepo {
     };
   }
 
-  public parseDividendInformation(parser: cheerio.Root, stockSummary) {
+  public parseDividendInformation(
+    parser: cheerio.Root,
+    stockSummary: StockSummaryInterface
+  ): ParseDividendInformationDTO {
     const dividendCurrency = this.parseStockCurrency(parser);
     const DividendHistory = this.parseDividendHistory(parser);
     const AnnualDividends = this.getAnnualDividends(DividendHistory, stockSummary.dividendAmount);
