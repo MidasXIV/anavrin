@@ -1,10 +1,11 @@
 import cheerio from "cheerio";
+import Result from "../../lib/result";
 
 export default class DividendInfo implements IDividendInfo {
-  private userRepo;
+  private dividendInfoScrapper;
 
-  constructor(userRepo) {
-    this.userRepo = userRepo;
+  constructor(dividendInfoScrapper: DividendInfoScraper) {
+    this.dividendInfoScrapper = dividendInfoScrapper;
   }
 
   /** ***************************************************************************************
@@ -34,35 +35,37 @@ export default class DividendInfo implements IDividendInfo {
 
     const symbol: string = ticker;
 
-    const dividendProfilePage = await this.userRepo.fetchHTML(yahooFinancedividendProfileURL);
+    const dividendProfilePage = await this.dividendInfoScrapper.fetchHTML(
+      yahooFinancedividendProfileURL
+    );
     const dividendProfilePageParser = cheerio.load(dividendProfilePage);
     const { name, price, exchange, stockSummary }: PrimaryDividendInformationDTO =
-      this.userRepo.parsePrimaryInformation(dividendProfilePageParser);
+      this.dividendInfoScrapper.parsePrimaryInformation(dividendProfilePageParser);
 
     if (name === "" && Number.isNaN(price)) {
-      return { left: { type: "InvalidTicker" } };
+      return Result.fail({ type: "InvalidTicker" });
     }
     if (Number.isNaN(stockSummary.dividendAmount)) {
-      return { left: { type: "NoDividendInfo" } };
+      return Result.fail({ type: "NoDividendInfo" });
     }
     const yahooFinanceDividendHistoryURL = this.getYahooFinanceDividendHistoryURL(ticker);
 
-    const dividendHistoryPage = await this.userRepo.fetchHTML(yahooFinanceDividendHistoryURL);
+    const dividendHistoryPage = await this.dividendInfoScrapper.fetchHTML(
+      yahooFinanceDividendHistoryURL
+    );
     const dividendHistoryPageParser = cheerio.load(dividendHistoryPage);
     const { dividendCurrency, AnnualDividends, AnnualDividendGrowth }: ParseDividendInformationDTO =
-      this.userRepo.parseDividendInformation(dividendHistoryPageParser, stockSummary);
+      this.dividendInfoScrapper.parseDividendInformation(dividendHistoryPageParser, stockSummary);
 
-    return {
-      right: {
-        symbol,
-        name,
-        price,
-        exchange,
-        ...stockSummary,
-        dividendCurrency,
-        AnnualDividends,
-        AnnualDividendGrowth
-      }
-    };
+    return Result.ok({
+      symbol,
+      name,
+      price,
+      exchange,
+      ...stockSummary,
+      dividendCurrency,
+      AnnualDividends,
+      AnnualDividendGrowth
+    });
   }
 }
