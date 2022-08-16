@@ -1,12 +1,6 @@
 // Helpers for Either Type
 
 export default class Result {
-  public isSuccess: boolean;
-
-  public isFailure: boolean;
-
-  public error: string;
-
   public static getValue<T, U>(result: Either<T, U>): U {
     if (Result.isFail) {
       throw new Error(`Cant retrieve the value from a failed result.`);
