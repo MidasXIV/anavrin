@@ -2,7 +2,7 @@
 
 export default class Result {
   public static getValue<T, U>(result: Either<T, U>): U {
-    if (Result.isFail) {
+    if (Result.isFail(result)) {
       throw new Error(`Cant retrieve the value from a failed result.`);
     }
 
@@ -10,7 +10,7 @@ export default class Result {
   }
 
   public static getError<T, U>(result: Either<T, U>): T {
-    if (Result.isOk) {
+    if (Result.isOk(result)) {
       throw new Error(`No failure to return.`);
     }
 

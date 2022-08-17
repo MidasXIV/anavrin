@@ -1,5 +1,6 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import * as path from "path";
+import Result from "../../lib/result";
 import YahooFinanceRepo from "../../repositories/yahooFinanceRepo";
 import DividendInfo from "./dividendInfo";
 
@@ -7,9 +8,9 @@ const feature = loadFeature(path.join(__dirname, "./dividendInfo.feature"));
 
 defineFeature(feature, test => {
   let ticker: string;
-  let yahooFinanceRepo;
-  let dividendInfo;
-  let result;
+  let yahooFinanceRepo: DividendInfoScraper;
+  let dividendInfo: IDividendInfo;
+  let result: DividendInfoResponse;
 
   test("Getting Dividend Info", ({ given, when, then }) => {
     given("I provide a ticker", () => {
@@ -26,7 +27,15 @@ defineFeature(feature, test => {
 
     then("Appropriate dividend information is recieved", () => {
       // Assert
-      expect(result).toEqual(
+
+      if (Result.isFail(result)) {
+        const resultError = Result.getError(result);
+        throw Error(resultError.type);
+      }
+
+      const resultSuccess = Result.getValue(result);
+
+      expect(resultSuccess).toEqual(
         expect.objectContaining({
           AnnualDividendGrowth: expect.any(Object),
           AnnualDividends: expect.any(Object),
@@ -63,8 +72,10 @@ defineFeature(feature, test => {
     });
 
     then("Appropriate Error is recieved", () => {
+      const resultError = Result.getError(result);
+
       // Assert
-      expect(result.type).toEqual("InvalidTicker");
+      expect(resultError.type).toEqual("InvalidTicker");
     });
   });
 
@@ -83,7 +94,9 @@ defineFeature(feature, test => {
 
     then("Appropriate Error is recieved", () => {
       // Assert
-      expect(result.type).toEqual("NoDividendInfo");
+      const resultError = Result.getError(result);
+
+      expect(resultError.type).toEqual("NoDividendInfo");
     });
   });
 });
