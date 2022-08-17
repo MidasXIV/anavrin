@@ -8,7 +8,8 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
     disable: false,
-    runtimeCaching
+    runtimeCaching,
+    customWorkerDir: "src/service-worker"
   },
 
   // This is not required to make it into a PWA, but is a nice way to clean up your imports
