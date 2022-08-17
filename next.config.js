@@ -12,6 +12,8 @@ module.exports = withPWA({
     customWorkerDir: "src/service-worker"
   },
 
+  swcMinify: true,
+
   // This is not required to make it into a PWA, but is a nice way to clean up your imports
   webpack: config => {
     config.resolve.modules.push(path.resolve("./"));
