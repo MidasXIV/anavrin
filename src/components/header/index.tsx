@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { FC } from "react";
 import { Menu, MenuItem, Divider, Text } from "@mantine/core";
 import Link from "next/link";
@@ -11,7 +11,8 @@ type HeaderProps = {
 };
 
 const Header: FC<HeaderProps> = ({ title, description }) => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
   const defaultUserImage =
     "//images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80";
   const userImage = loading ? defaultUserImage : session?.user?.image ?? defaultUserImage;

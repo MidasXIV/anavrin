@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "../styles/index.css";
 import { useEffect, FC } from "react";
 import Head from "next/head";
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 import { JssProvider, createGenerateId } from "react-jss";
 import { MantineProvider, NormalizeCSS, GlobalStyles } from "@mantine/core";
 
@@ -27,7 +27,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   }, []);
   return (
     <>
-      <Provider session={pageProps.session}>
+      <SessionProvider session={pageProps.session}>
         <JssProvider generateId={createGenerateId({ minify: true })}>
           <Head>
             <meta
@@ -207,7 +207,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
             </main>
           </MantineProvider>
         </JssProvider>
-      </Provider>
+      </SessionProvider>
     </>
   );
 };

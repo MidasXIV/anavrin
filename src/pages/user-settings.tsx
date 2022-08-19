@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Divider, Drawer } from "@mantine/core";
-import { useSession, signIn, signOut } from "next-auth/client";
+import { useSession, signIn, signOut } from "next-auth/react";
 import DefaultLayout from "../layouts/default";
 import * as exchanges from "../components/exchanges-form";
 import ExchangeFormFactory from "../components/exchange-form-factory";
@@ -9,7 +9,8 @@ import WebPushSubscription from "../components/webpush-subscription";
 import PushNotificationPanel from "../components/push-notification-panel";
 
 const Overview: FC = () => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
   const [opened, setOpened] = useState(false);
   const isSignedIn = loading ? "" : Boolean(session?.user) ?? false;
   const [exchangeKey, exchangeKeyPanel] = useState<exchanges.ExchangeKeys>(null);

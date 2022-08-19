@@ -1,9 +1,10 @@
 import { FC } from "react";
-import { useSession, signIn, signOut } from "next-auth/client";
+import { useSession, signIn, signOut } from "next-auth/react";
 import DefaultLayout from "../layouts/default";
 
 const Overview: FC = () => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
   return (
     <>
       <DefaultLayout
