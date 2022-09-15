@@ -16,6 +16,7 @@ const options = {
       return true;
     }
   },
+  secret: process.env.NEXTAUTH_SECRET,
   events: {
     async signIn(message) {
       /* on successful sign in */ console.log(message);
