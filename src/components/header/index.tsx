@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { FC } from "react";
 import { Menu, MenuItem, Divider, Text } from "@mantine/core";
 import Link from "next/link";
@@ -66,7 +66,11 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
             </MenuItem>
             <Divider />
             <MenuItem disabled>Delete my data</MenuItem>
-            <MenuItem color="red">Delete account</MenuItem>
+            {session ? (
+              <MenuItem color="red">Sign out</MenuItem>
+            ) : (
+              <MenuItem color="green">Sign in</MenuItem>
+            )}
           </Menu>
         </div>
       </div>
