@@ -11,6 +11,9 @@ module.exports = withPWA({
     runtimeCaching,
     customWorkerDir: "src/service-worker"
   },
+  images: {
+    domains: ["images.unsplash.com", "lh3.googleusercontent.com"]
+  },
 
   swcMinify: true,
 

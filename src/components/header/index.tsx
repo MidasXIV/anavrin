@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Menu, MenuItem, Divider, Text } from "@mantine/core";
 import Link from "next/link";
 import cn from "classnames";
+import Image from "next/image";
 import styles from "./index.module.css";
 
 type HeaderProps = {
@@ -14,7 +15,7 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const defaultUserImage =
-    "//images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80";
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80";
   const userImage = loading ? defaultUserImage : session?.user?.image ?? defaultUserImage;
 
   return (
@@ -32,10 +33,13 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
             controlRefProp="ref"
             control={
               <button className="relative inline-block" type="button">
-                <img
+                <Image
                   className="inline-block w-12 h-12 object-cover rounded-lg"
                   src={userImage}
                   alt="Profile"
+                  layout="intrinsic"
+                  width={48}
+                  height={48}
                 />
                 <span className="absolute bottom-0 right-0 inline-block w-3 h-3 -mr-1 bg-green-600 border-2 border-white rounded-full" />
               </button>
