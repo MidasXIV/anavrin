@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Divider, Drawer } from "@mantine/core";
+import { Accordion, Divider, Drawer } from "@mantine/core";
 import { useSession, signIn, signOut } from "next-auth/react";
 import DefaultLayout from "../layouts/default";
 import * as exchanges from "../components/exchanges-form";
@@ -36,20 +36,23 @@ const Overview: FC = () => {
         <div className="w-full h-full flex flex-row">
           <div className="dashboard-primary-panel">
             {!isSignedIn ? <h1 className="text-2xl mb-2">Please Login.</h1> : null}
-            <h1 className="text-2xl mb-2">
-              Connect <span className="font-semibold">Anavrin</span> to an exchange account.
-            </h1>
-            <p className="text-md text-gray-600">We currently only support Binance exchange.</p>
-            <section className="grid grid-cols-4 gap-4 my-4">{Exchanges}</section>
-
-            <Divider size="md" label="Web push subscriptions" labelPosition="center" />
-
-            <button
-              type="button"
-              className="my-2 p-4 w-full border-t border-b border-gray-400 hover:bg-gray-400 "
-            >
-              Web Push Notifications
-            </button>
+            <Accordion initialItem={-1} className="border-t-0 border-b border-gray-400">
+              <Accordion.Item
+                className="font-normal border-t-0 border-b border-gray-400"
+                label={
+                  <h1 className="text-2xl mb-2">
+                    Connect <span className="font-semibold">Anavrin</span> to an exchange account.
+                  </h1>
+                }
+              >
+                <p className="text-md text-gray-600">We currently only support Binance exchange.</p>
+                <section className="grid grid-cols-4 gap-4 my-4">{Exchanges}</section>
+              </Accordion.Item>
+              <Accordion.Item
+                label={<h1 className="text-2xl mb-2">Authorize webpush subscriptions.</h1>}
+              />
+            </Accordion>
+            
           </div>
           <div className="dashboard-secondary-panel">
             <ExchangeFormFactory exchange={exchangeKey} />
