@@ -67,9 +67,13 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
             <Divider />
             <MenuItem disabled>Delete my data</MenuItem>
             {session ? (
-              <MenuItem color="red">Sign out</MenuItem>
+              <MenuItem color="red" onClick={() => signOut()}>
+                Sign out
+              </MenuItem>
             ) : (
-              <MenuItem color="green">Sign in</MenuItem>
+              <MenuItem color="green" onClick={() => signIn()}>
+                Sign in
+              </MenuItem>
             )}
           </Menu>
         </div>
