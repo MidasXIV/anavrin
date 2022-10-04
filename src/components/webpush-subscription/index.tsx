@@ -16,6 +16,7 @@ const WebpushSubscription: FC<unknown> = () => {
   const [subscribed, setSubscribed] = useState(false);
   const [subscription, setSubscriptisubscription] = useState({});
   const [isDenied, setDenied] = useState(false);
+  const [device, setDevice] = useState<string>("Unknown");
 
   const notificationSubscriptionChanged = async (subscribedStatus: boolean) => {
     if (!subscribedStatus) {
