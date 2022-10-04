@@ -1,25 +1,15 @@
-import { Code, Checkbox, CheckboxProps } from "@mantine/core";
+import { Code, Checkbox, CheckboxProps, Divider } from "@mantine/core";
 import { FC, useEffect, useRef, useState } from "react";
 import {
   isNotificationPermissionDenied,
   isServiceWorkerSupported,
   getDeviceSubscription,
   isUserSubscribed,
-  isWebPushSupported
+  isWebPushSupported,
+  subscribeDevice,
+  unsubscribeDevice
 } from "../../lib/webpush-notification";
-
-const base64ToUint8Array = base64 => {
-  const padding = "=".repeat((4 - (base64.length % 4)) % 4);
-  const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
-
-  const rawData = window.atob(b64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-};
+import DeleteIcon from "../icons/deleteIcon";
 
 const WebpushSubscription: FC<unknown> = () => {
   const [isIndeterminate, setIsIndeterminate] = useState(true);
@@ -27,48 +17,27 @@ const WebpushSubscription: FC<unknown> = () => {
   const [subscription, setSubscriptisubscription] = useState({});
   const [isDenied, setDenied] = useState(false);
 
-  const vapid = {
-    publicKey:
-      "BAi3lOgTgflyTZzJOyVCDSCQDK9xH4pE-wnYvP9B3TRSKnAKLTcASjNnGp-pCZMwVH7PnZmv5LQicf0gNi2O0n4",
-    privateKey: "2NgDFU4MbXNXEVWz-sty5KnVNPdC7-nP5dzWBu2jeF4"
-  };
   const notificationSubscriptionChanged = async (subscribedStatus: boolean) => {
-    try {
-      if (!isServiceWorkerSupported()) {
-        // Service Worker isn't supported on this browser, disable or hide UI.
-        return;
-      }
+    if (!subscribedStatus) {
+      // delete subscription.
+      unsubscribeDevice();
+      setSubscribed(false);
+      setSubscriptisubscription(undefined);
+      return;
+    }
 
-      if (!isWebPushSupported()) {
-        // Push isn't supported on this browser, disable or hide UI.
-        return;
-      }
-
-      const swRegistration = await navigator.serviceWorker.ready;
-
-      const swSubscription = await swRegistration.pushManager.getSubscription();
-
-      if (swSubscription) {
-        // setSubscription(sub)
-        // setIsSubscribed(true)
-
-        await swSubscription.unsubscribe();
-      }
-
-      const pushSubscription = await swRegistration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64ToUint8Array(vapid.publicKey)
-      });
-
-      console.log("Received PushSubscription: ", JSON.stringify(pushSubscription));
+    // Freeze UI
+    const pushSubscription = await subscribeDevice();
+    if (pushSubscription) {
       setSubscriptisubscription(pushSubscription);
-    } catch (e) {
-      console.error(e);
+      setSubscribed(true);
+    } else {
+      setSubscribed(false);
+    }
+    // Unfreeze UI
 
-      if (isNotificationPermissionDenied()) {
-        setDenied(true);
-      }
-    } finally {
+    if (isNotificationPermissionDenied()) {
+      setDenied(true);
     }
   };
 
@@ -88,19 +57,28 @@ const WebpushSubscription: FC<unknown> = () => {
     });
   }, []);
 
+  const SubscriptionCard = _subscription => (
+    <div className="mt-2 p-2 bg-gray-900 rounded-md">
+      <div className="pb-2 text-gray-500 flex flex-row justify-between items-center">
+        <h2 className="align-middle">{device}</h2>
+        <DeleteIcon onClick={() => {}} />
+      </div>
+      <Code block>{JSON.stringify(_subscription, null, 2)}</Code>
+    </div>
+  );
   return (
     <>
       <Checkbox
         disabled={isDenied}
         indeterminate={isIndeterminate}
         checked={subscribed}
-        label="Allow Anavrin to send push notifications."
+        label="Allow Anavrin to send push notifications on this device."
         onChange={event => notificationSubscriptionChanged(event.currentTarget.checked)}
       />
       {isDenied ? (
-        <p className="text-xs text-red-500">Permission to send webpush is blocked</p>
+        <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>
       ) : null}
-      {subscription ? <Code block>{JSON.stringify(subscription)}</Code> : null}
+      {subscription ? <SubscriptionCard subscription={subscription} /> : null}
     </>
   );
 };
