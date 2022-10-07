@@ -18,10 +18,11 @@ type UserDocument = User | WithId<Document>;
 interface IUserModel {
   getUserById(userId: string): Promise<UserDocument>;
   getUserByEmail(email: string): Promise<UserDocument>;
-  getUserSubscription(email: string): Promise<UserDocument>;
+  getUserSubscription(email: string): Promise<{ subscriptions: Array<PushSubscription> }>;
   updateUserSubscription(
     email: string,
     subscription: Array<PushSubscription>
   ): Promise<ModifyResult<Document>>;
   deleteUserSubscription(email: string, subscription: PushSubscription): Promise<boolean>;
+  addUserSubscription(email: string, subscription: PushSubscription): Promise<boolean>;
 }
