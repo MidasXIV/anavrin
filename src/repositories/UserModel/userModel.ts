@@ -7,6 +7,10 @@ export default class UserModel implements IUserModel {
     this.db = db;
   }
 
+  private toMongoDB<T>(document: T) {
+    return { _id: new ObjectId(), ...document };
+  }
+
   private async get(query = {}, projection = {}): Promise<UserDocument> {
     return this.db
       .collection("users")
@@ -47,7 +51,9 @@ export default class UserModel implements IUserModel {
     return this.get(query, projection);
   }
 
-  public async getUserSubscription(email: string): Promise<UserDocument> {
+  public async getUserSubscription(
+    email: string
+  ): Promise<{ subscriptions: Array<PushSubscription> }> {
     const query = { email };
     const projection = { projection: { subscriptions: 1, _id: 0 } };
     return this.get(query, projection);
@@ -62,6 +68,20 @@ export default class UserModel implements IUserModel {
     const options: FindOneAndUpdateOptions = { upsert: true, returnDocument: "after" };
 
     return this.db.collection("users").findOneAndUpdate(query, update, options);
+  }
+
+  public async addUserSubscription(
+    email: string,
+    subscription: PushSubscription
+  ): Promise<boolean> {
+    const subscriptionDocument = this.toMongoDB(subscription);
+
+    const query = { email };
+    const update = { $push: { subscriptions: subscriptionDocument } };
+    const options: FindOneAndUpdateOptions = { upsert: true, returnDocument: "after" };
+
+    const updateResult = await this.db.collection("users").updateOne(query, update, options);
+    return Boolean(updateResult.matchedCount && updateResult.modifiedCount);
   }
 
   public async deleteUserSubscription(
