@@ -2,8 +2,6 @@ import { Session } from "next-auth";
 import Result from "../../lib/result";
 import isEmpty from "../../util/helper";
 
-const toMongoDB = document => ({ _id: new ObjectId(), ...document });
-
 export default class SaveSubscription implements ISaveSubscription {
   private userRepo: IUserModel;
 
