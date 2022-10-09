@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { ComponentType, FC } from "react";
+import { ComponentType } from "react";
 import LoadingForm from "./loading";
 
 const BinanceForm = dynamic(() => import("./binance"), { loading: LoadingForm });

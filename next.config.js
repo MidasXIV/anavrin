@@ -8,7 +8,11 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
     disable: false,
-    runtimeCaching
+    runtimeCaching,
+    customWorkerDir: "src/service-worker"
+  },
+  images: {
+    domains: ["images.unsplash.com", "lh3.googleusercontent.com"]
   },
 
   swcMinify: true,

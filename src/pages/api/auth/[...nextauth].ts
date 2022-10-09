@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import GoogleProvider from "next-auth/providers/google";
 
 const options = {
   providers: [
-    Providers.Google({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
     })
@@ -11,11 +11,12 @@ const options = {
   debug: false,
   database: process.env.MONGODB_URI,
   callbacks: {
-    async signIn(user, account, profile) {
+    async signIn({ user, account, profile, email, credentials }) {
       console.log(user, account, profile);
       return true;
     }
   },
+  secret: process.env.NEXTAUTH_SECRET,
   events: {
     async signIn(message) {
       /* on successful sign in */ console.log(message);

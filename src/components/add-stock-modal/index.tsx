@@ -317,7 +317,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                 />
               </dd>
             </div>
-            {/* {stock ? <StockInformationTable stock={stock} /> : null} */}
+            {stock ? <StockInformationTable stock={stock} /> : null}
           </dl>
         </div>
 
