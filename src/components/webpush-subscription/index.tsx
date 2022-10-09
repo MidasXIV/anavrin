@@ -1,4 +1,4 @@
-import { Code, Checkbox, CheckboxProps, Divider } from "@mantine/core";
+import { Code, Checkbox, CheckboxProps, Divider, LoadingOverlay, Loader } from "@mantine/core";
 import { FC, useEffect, useRef, useState } from "react";
 import {
   isNotificationPermissionDenied,
@@ -17,13 +17,16 @@ const WebpushSubscription: FC<unknown> = () => {
   const [subscription, setSubscriptisubscription] = useState({});
   const [isDenied, setDenied] = useState(false);
   const [device, setDevice] = useState<string>("Unknown");
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const notificationSubscriptionChanged = async (subscribedStatus: boolean) => {
+    setLoading(true);
     if (!subscribedStatus) {
       // delete subscription.
       unsubscribeDevice();
       setSubscribed(false);
       setSubscriptisubscription(undefined);
+      setLoading(false);
       return;
     }
 
@@ -40,6 +43,7 @@ const WebpushSubscription: FC<unknown> = () => {
     if (isNotificationPermissionDenied()) {
       setDenied(true);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -69,6 +73,10 @@ const WebpushSubscription: FC<unknown> = () => {
   );
   return (
     <>
+      <LoadingOverlay
+        visible={isLoading}
+        loaderProps={{ size: "lg", color: "dark", variant: "bars" }}
+      />
       <Checkbox
         disabled={isDenied}
         indeterminate={isIndeterminate}
