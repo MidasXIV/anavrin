@@ -1,4 +1,5 @@
 import { Db, Document, FindOneAndUpdateOptions, ModifyResult, ObjectId } from "mongodb";
+import isEmpty from "../../util/helper";
 
 export default class UserModel implements IUserModel {
   private db: Db;
@@ -51,12 +52,14 @@ export default class UserModel implements IUserModel {
     return this.get(query, projection);
   }
 
-  public async getUserSubscription(
-    email: string
-  ): Promise<{ subscriptions: Array<PushSubscription> }> {
+  public async getUserSubscription(email: string): Promise<Array<PushSubscription>> {
     const query = { email };
     const projection = { projection: { subscriptions: 1, _id: 0 } };
-    return this.get(query, projection);
+    const pushSubscriptionsDocument = await this.get(query, projection);
+    if (isEmpty(pushSubscriptionsDocument)) {
+      return [];
+    }
+    return pushSubscriptionsDocument.subscriptions;
   }
 
   public async updateUserSubscription(

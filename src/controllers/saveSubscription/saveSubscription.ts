@@ -1,6 +1,5 @@
 import { Session } from "next-auth";
 import Result from "../../lib/result";
-import isEmpty from "../../util/helper";
 
 export default class SaveSubscription implements ISaveSubscription {
   private userRepo: IUserModel;
@@ -27,13 +26,7 @@ export default class SaveSubscription implements ISaveSubscription {
       const user = this.session.user.email;
 
       // Fetch User subscriptions
-      const pushSubscriptionsDocument = await this.userRepo.getUserSubscription(user);
-      let pushSubscriptions: Array<PushSubscription>;
-      if (isEmpty(pushSubscriptionsDocument)) {
-        pushSubscriptions = [];
-      } else {
-        pushSubscriptions = pushSubscriptionsDocument.subscriptions;
-      }
+      const pushSubscriptions = await this.userRepo.getUserSubscription(user);
 
       // IF less than 2 update subscription.
       if (pushSubscriptions.length >= 2) {
