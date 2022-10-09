@@ -64,3 +64,14 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+## Notes
+* running individual Tests: `npm test -- -u -t="test name"`;
+* To Debug, run `npm run debug` visit `chrome://inspect`
+* ToPersistence() means to massage data such that it can be sent to the database.
+* ToDTO() means to massage data such that it confroms to API response.
+* repositories => is analogous to Models.
+* controller is usually created using 3 Classes/files
+   1. the Nextjs API endpoint -> A Handler is created and objects are initialized. (The object for createController, the UseCase and all the repositories passed to the UseCase) 
+   2. The CreateController class handles controller functions such as Request params validation and mapping to DTO.
+   3. The UseCase handles to Application logic of the controller.
