@@ -8,7 +8,7 @@ import { isMobileUI } from "../lib/viewport";
 import WebPushSubscription from "../components/webpush-subscription";
 import PushNotificationPanel from "../components/push-notification-panel";
 
-const Overview: FC = () => {
+const UserSettings: FC = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const [opened, setOpened] = useState(false);
@@ -52,7 +52,6 @@ const Overview: FC = () => {
                 label={<h1 className="text-2xl mb-2">Authorize webpush subscriptions.</h1>}
               />
             </Accordion>
-            
           </div>
           <div className="dashboard-secondary-panel">
             <ExchangeFormFactory exchange={exchangeKey} />
@@ -73,4 +72,4 @@ const Overview: FC = () => {
   );
 };
 
-export default Overview;
+export default UserSettings;
