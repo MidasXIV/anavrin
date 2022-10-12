@@ -9,6 +9,7 @@ import {
   subscribeDevice,
   unsubscribeDevice
 } from "../../lib/webpush-notification";
+import fetchPushSubscription from "../../util/fetchPushSubscription";
 import DeleteIcon from "../icons/deleteIcon";
 
 const WebpushSubscription: FC<unknown> = () => {
@@ -18,6 +19,7 @@ const WebpushSubscription: FC<unknown> = () => {
   const [isDenied, setDenied] = useState(false);
   const [device, setDevice] = useState<string>("Unknown");
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [savedPushSubscriptions, setSavedPushSubscriptions] = useState<Array<PushSubscription>>([]);
 
   const notificationSubscriptionChanged = async (subscribedStatus: boolean) => {
     setLoading(true);
@@ -60,15 +62,21 @@ const WebpushSubscription: FC<unknown> = () => {
       }
       setIsIndeterminate(false);
     });
+
+    fetchPushSubscription().then(({ status, data }) => {
+      if (status === 200) {
+        setSavedPushSubscriptions(data.subscriptions);
+      }
+    });
   }, []);
 
-  const SubscriptionCard = _subscription => (
+  const SubscriptionCard = ({ subscription: pushSubscription }) => (
     <div className="mt-2 p-2 bg-gray-900 rounded-md">
       <div className="pb-2 text-gray-500 flex flex-row justify-between items-center">
         <h2 className="align-middle">{device}</h2>
-        <DeleteIcon onClick={() => {}} />
+        <DeleteIcon onClick={() => {console.log(`Delete ${pushSubscription._id}`)}} />
       </div>
-      <Code block>{JSON.stringify(_subscription, null, 2)}</Code>
+      <Code block>{JSON.stringify(pushSubscription, null, 2)}</Code>
     </div>
   );
   return (
@@ -87,7 +95,19 @@ const WebpushSubscription: FC<unknown> = () => {
       {isDenied ? (
         <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>
       ) : null}
-      {subscription ? <SubscriptionCard subscription={subscription} /> : null}
+      <Divider />
+      {/* {subscription ? <SubscriptionCard subscription={subscription} /> : null} */}
+      {savedPushSubscriptions.length ? (
+        savedPushSubscriptions.map(savedPushSubscription => (
+          <SubscriptionCard
+            subscription={savedPushSubscription}
+            // eslint-disable-next-line no-underscore-dangle
+            key={`subscription-card-${savedPushSubscription._id}`}
+          />
+        ))
+      ) : (
+        <p className="text-xs text-red-500">You have not opted for push subscriptions by Anavrin</p>
+      )}
     </>
   );
 };
