@@ -12,6 +12,10 @@ export default class UserModel implements IUserModel {
     return { _id: new ObjectId(), ...document };
   }
 
+  private convertToMongoDBObject(id: string) {
+    return new ObjectId(id);
+  }
+
   private async get(query = {}, projection = {}): Promise<UserDocument> {
     return this.db
       .collection("users")
@@ -88,8 +92,9 @@ export default class UserModel implements IUserModel {
   }
 
   public async deleteUserSubscription(email: string, subscriptionId: string): Promise<boolean> {
+    const documentId = this.convertToMongoDBObject(subscriptionId);
     const query = { email };
-    const update = { $pull: { subscriptions: { _is: subscriptionId } } };
+    const update = { $pull: { subscriptions: { _id: documentId } } };
     const options = { returnDocument: "after" };
 
     const updateResult = await this.db.collection("users").updateOne(query, update);
