@@ -9,13 +9,14 @@ import {
   subscribeDevice,
   unsubscribeDevice
 } from "../../lib/webpush-notification";
+import postDeleteSubscription from "../../util/deletePushSubscription";
 import fetchPushSubscription from "../../util/fetchPushSubscription";
 import DeleteIcon from "../icons/deleteIcon";
 
 const WebpushSubscription: FC<unknown> = () => {
   const [isIndeterminate, setIsIndeterminate] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
-  const [subscription, setSubscriptisubscription] = useState({});
+  const [subscription, setSubscription] = useState<PushSubscription>();
   const [isDenied, setDenied] = useState(false);
   const [device, setDevice] = useState<string>("Unknown");
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -27,7 +28,7 @@ const WebpushSubscription: FC<unknown> = () => {
       // delete subscription.
       unsubscribeDevice();
       setSubscribed(false);
-      setSubscriptisubscription(undefined);
+      setSubscription(undefined);
       setLoading(false);
       return;
     }
@@ -35,7 +36,7 @@ const WebpushSubscription: FC<unknown> = () => {
     // Freeze UI
     const pushSubscription = await subscribeDevice();
     if (pushSubscription) {
-      setSubscriptisubscription(pushSubscription);
+      setSubscription(pushSubscription);
       setSubscribed(true);
     } else {
       setSubscribed(false);
@@ -57,7 +58,7 @@ const WebpushSubscription: FC<unknown> = () => {
       if (isSubscribed) {
         setSubscribed(true);
         getDeviceSubscription().then(_subscription => {
-          setSubscriptisubscription(_subscription);
+          setSubscription(_subscription);
         });
       }
       setIsIndeterminate(false);
@@ -74,7 +75,23 @@ const WebpushSubscription: FC<unknown> = () => {
     <div className="mt-2 p-2 bg-gray-900 rounded-md">
       <div className="pb-2 text-gray-500 flex flex-row justify-between items-center">
         <h2 className="align-middle">{device}</h2>
-        <DeleteIcon onClick={() => {console.log(`Delete ${pushSubscription._id}`)}} />
+        <DeleteIcon
+          onClick={() => {
+            // TODO: start loader on the card
+            console.log(`Delete ${pushSubscription._id}`);
+            // eslint-disable-next-line no-underscore-dangle
+            const isSubscriptionDeleted = postDeleteSubscription(pushSubscription._id);
+
+            const deleteCurrentDeviceSubscription =
+              subscription.endpoint === pushSubscription.endpoint;
+            if (isSubscriptionDeleted && deleteCurrentDeviceSubscription) {
+              unsubscribeDevice();
+              setSubscribed(false);
+              setSubscription(undefined);
+            }
+            // TODO: Depending on the result change state.
+          }}
+        />
       </div>
       <Code block>{JSON.stringify(pushSubscription, null, 2)}</Code>
     </div>
@@ -95,7 +112,7 @@ const WebpushSubscription: FC<unknown> = () => {
       {isDenied ? (
         <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>
       ) : null}
-      <Divider />
+      <Divider margins="md" />
       {/* {subscription ? <SubscriptionCard subscription={subscription} /> : null} */}
       {savedPushSubscriptions.length ? (
         savedPushSubscriptions.map(savedPushSubscription => (
