@@ -12,7 +12,7 @@ class CreateDeletePushSubscriptionController {
     const { subscriptionId } = request.body;
     try {
       const result = await this.useCase.execute(subscriptionId);
-      if (Result.fail(result)) {
+      if (Result.isFail(result)) {
         const resultError = Result.getError(result);
         switch (resultError.type) {
           default:
