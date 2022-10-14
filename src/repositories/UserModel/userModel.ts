@@ -87,13 +87,9 @@ export default class UserModel implements IUserModel {
     return Boolean(updateResult.matchedCount && updateResult.modifiedCount);
   }
 
-  public async deleteUserSubscription(
-    email: string,
-    subscription: PushSubscription
-  ): Promise<boolean> {
+  public async deleteUserSubscription(email: string, subscriptionId: string): Promise<boolean> {
     const query = { email };
-    console.log(subscription.endpoint);
-    const update = { $pull: { subscriptions: { endpoint: subscription.endpoint } } };
+    const update = { $pull: { subscriptions: { _is: subscriptionId } } };
     const options = { returnDocument: "after" };
 
     const updateResult = await this.db.collection("users").updateOne(query, update);
