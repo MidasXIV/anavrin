@@ -10,3 +10,7 @@ type FetchPushSubscriptionResponse = Either<
 interface IFetchPushSubscription {
   execute(): Promise<FetchPushSubscriptionResponse>;
 }
+
+type PushSubscriptionDocument = PushSubscription & {
+  _id: string;
+};

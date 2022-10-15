@@ -1,4 +1,4 @@
-import { Code, Checkbox, CheckboxProps, Divider, LoadingOverlay, Loader } from "@mantine/core";
+import { Code, Checkbox, CheckboxProps, Divider, LoadingOverlay, Loader, Switch } from "@mantine/core";
 import { FC, useEffect, useRef, useState } from "react";
 import {
   isNotificationPermissionDenied,
@@ -7,7 +7,8 @@ import {
   isUserSubscribed,
   isWebPushSupported,
   subscribeDevice,
-  unsubscribeDevice
+  unsubscribeDevice,
+  deleteSubscriptionFromDb
 } from "../../lib/webpush-notification";
 import postDeleteSubscription from "../../util/deletePushSubscription";
 import fetchPushSubscription from "../../util/fetchPushSubscription";
@@ -60,6 +61,9 @@ const WebpushSubscription: FC<unknown> = () => {
         getDeviceSubscription().then(_subscription => {
           setSubscription(_subscription);
         });
+      } else {
+        setSubscribed(false);
+        setSubscription(undefined);
       }
       setIsIndeterminate(false);
     });
@@ -69,27 +73,17 @@ const WebpushSubscription: FC<unknown> = () => {
         setSavedPushSubscriptions(data.subscriptions);
       }
     });
-  }, []);
+  }, [isLoading]);
 
   const SubscriptionCard = ({ subscription: pushSubscription }) => (
     <div className="mt-2 p-2 bg-gray-900 rounded-md">
       <div className="pb-2 text-gray-500 flex flex-row justify-between items-center">
         <h2 className="align-middle">{device}</h2>
         <DeleteIcon
-          onClick={() => {
-            // TODO: start loader on the card
-            console.log(`Delete ${pushSubscription._id}`);
-            // eslint-disable-next-line no-underscore-dangle
-            const isSubscriptionDeleted = postDeleteSubscription(pushSubscription._id);
-
-            const deleteCurrentDeviceSubscription =
-              subscription.endpoint === pushSubscription.endpoint;
-            if (isSubscriptionDeleted && deleteCurrentDeviceSubscription) {
-              unsubscribeDevice();
-              setSubscribed(false);
-              setSubscription(undefined);
-            }
-            // TODO: Depending on the result change state.
+          onClick={async () => {
+            setLoading(true);
+            await deleteSubscriptionFromDb(pushSubscription);
+            setLoading(false);
           }}
         />
       </div>

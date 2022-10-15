@@ -1,3 +1,4 @@
+import postDeleteSubscription from "../util/deletePushSubscription";
 import postSaveSubscription from "../util/postSaveSubscription";
 
 const vapidDetails = {
@@ -56,6 +57,7 @@ const unsubscribeDevice = async (): Promise<void> => {
 
     if (!swSubscription) {
       // Device was not subscribed.
+      return;
     }
 
     // Delete pushSubscription from database.
@@ -104,6 +106,19 @@ const subscribeDevice = async (): Promise<PushSubscription> => {
   return undefined;
 };
 
+const deleteSubscriptionFromDb = async (
+  pushSubscription: PushSubscriptionDocument
+): Promise<void> => {
+  // eslint-disable-next-line no-underscore-dangle
+  const isSubscriptionDeleted = await postDeleteSubscription(pushSubscription._id);
+  const subscription = await getDeviceSubscription();
+  const deleteCurrentDeviceSubscription =
+    subscription?.endpoint === pushSubscription.endpoint ?? false;
+  if (isSubscriptionDeleted && deleteCurrentDeviceSubscription) {
+    unsubscribeDevice();
+  }
+};
+
 export {
   isNotificationPermissionDenied,
   isServiceWorkerSupported,
@@ -111,5 +126,6 @@ export {
   getDeviceSubscription,
   isUserSubscribed,
   unsubscribeDevice,
-  subscribeDevice
+  subscribeDevice,
+  deleteSubscriptionFromDb
 };
