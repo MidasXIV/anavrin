@@ -1,4 +1,12 @@
-import { Code, Checkbox, CheckboxProps, Divider, LoadingOverlay, Loader, Switch } from "@mantine/core";
+import {
+  Code,
+  Checkbox,
+  CheckboxProps,
+  Divider,
+  LoadingOverlay,
+  Loader,
+  Switch
+} from "@mantine/core";
 import { FC, useEffect, useRef, useState } from "react";
 import {
   isNotificationPermissionDenied,
@@ -10,7 +18,6 @@ import {
   unsubscribeDevice,
   deleteSubscriptionFromDb
 } from "../../lib/webpush-notification";
-import postDeleteSubscription from "../../util/deletePushSubscription";
 import fetchPushSubscription from "../../util/fetchPushSubscription";
 import DeleteIcon from "../icons/deleteIcon";
 
@@ -21,7 +28,9 @@ const WebpushSubscription: FC<unknown> = () => {
   const [isDenied, setDenied] = useState(false);
   const [device, setDevice] = useState<string>("Unknown");
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [savedPushSubscriptions, setSavedPushSubscriptions] = useState<Array<PushSubscription>>([]);
+  const [savedPushSubscriptions, setSavedPushSubscriptions] = useState<
+    Array<PushSubscriptionDocument>
+  >([]);
 
   const notificationSubscriptionChanged = async (subscribedStatus: boolean) => {
     setLoading(true);
