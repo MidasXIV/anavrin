@@ -1,4 +1,12 @@
-import { Code, Checkbox, CheckboxProps, Divider, LoadingOverlay, Loader } from "@mantine/core";
+import {
+  Code,
+  Checkbox,
+  CheckboxProps,
+  Divider,
+  LoadingOverlay,
+  Loader,
+  Switch
+} from "@mantine/core";
 import { FC, useEffect, useRef, useState } from "react";
 import {
   isNotificationPermissionDenied,
@@ -7,17 +15,22 @@ import {
   isUserSubscribed,
   isWebPushSupported,
   subscribeDevice,
-  unsubscribeDevice
+  unsubscribeDevice,
+  deleteSubscriptionFromDb
 } from "../../lib/webpush-notification";
+import fetchPushSubscription from "../../util/fetchPushSubscription";
 import DeleteIcon from "../icons/deleteIcon";
 
 const WebpushSubscription: FC<unknown> = () => {
   const [isIndeterminate, setIsIndeterminate] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
-  const [subscription, setSubscriptisubscription] = useState({});
+  const [subscription, setSubscription] = useState<PushSubscription>();
   const [isDenied, setDenied] = useState(false);
   const [device, setDevice] = useState<string>("Unknown");
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [savedPushSubscriptions, setSavedPushSubscriptions] = useState<
+    Array<PushSubscriptionDocument>
+  >([]);
 
   const notificationSubscriptionChanged = async (subscribedStatus: boolean) => {
     setLoading(true);
@@ -25,7 +38,7 @@ const WebpushSubscription: FC<unknown> = () => {
       // delete subscription.
       unsubscribeDevice();
       setSubscribed(false);
-      setSubscriptisubscription(undefined);
+      setSubscription(undefined);
       setLoading(false);
       return;
     }
@@ -33,7 +46,7 @@ const WebpushSubscription: FC<unknown> = () => {
     // Freeze UI
     const pushSubscription = await subscribeDevice();
     if (pushSubscription) {
-      setSubscriptisubscription(pushSubscription);
+      setSubscription(pushSubscription);
       setSubscribed(true);
     } else {
       setSubscribed(false);
@@ -55,20 +68,35 @@ const WebpushSubscription: FC<unknown> = () => {
       if (isSubscribed) {
         setSubscribed(true);
         getDeviceSubscription().then(_subscription => {
-          setSubscriptisubscription(_subscription);
+          setSubscription(_subscription);
         });
+      } else {
+        setSubscribed(false);
+        setSubscription(undefined);
       }
       setIsIndeterminate(false);
     });
-  }, []);
 
-  const SubscriptionCard = _subscription => (
+    fetchPushSubscription().then(({ status, data }) => {
+      if (status === 200) {
+        setSavedPushSubscriptions(data.subscriptions);
+      }
+    });
+  }, [isLoading]);
+
+  const SubscriptionCard = ({ subscription: pushSubscription }) => (
     <div className="mt-2 p-2 bg-gray-900 rounded-md">
       <div className="pb-2 text-gray-500 flex flex-row justify-between items-center">
         <h2 className="align-middle">{device}</h2>
-        <DeleteIcon onClick={() => {}} />
+        <DeleteIcon
+          onClick={async () => {
+            setLoading(true);
+            await deleteSubscriptionFromDb(pushSubscription);
+            setLoading(false);
+          }}
+        />
       </div>
-      <Code block>{JSON.stringify(_subscription, null, 2)}</Code>
+      <Code block>{JSON.stringify(pushSubscription, null, 2)}</Code>
     </div>
   );
   return (
@@ -87,7 +115,19 @@ const WebpushSubscription: FC<unknown> = () => {
       {isDenied ? (
         <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>
       ) : null}
-      {subscription ? <SubscriptionCard subscription={subscription} /> : null}
+      <Divider margins="md" />
+      {/* {subscription ? <SubscriptionCard subscription={subscription} /> : null} */}
+      {savedPushSubscriptions.length ? (
+        savedPushSubscriptions.map(savedPushSubscription => (
+          <SubscriptionCard
+            subscription={savedPushSubscription}
+            // eslint-disable-next-line no-underscore-dangle
+            key={`subscription-card-${savedPushSubscription._id}`}
+          />
+        ))
+      ) : (
+        <p className="text-xs text-red-500">You have not opted for push subscriptions by Anavrin</p>
+      )}
     </>
   );
 };

@@ -23,6 +23,6 @@ interface IUserModel {
     email: string,
     subscription: Array<PushSubscription>
   ): Promise<ModifyResult<Document>>;
-  deleteUserSubscription(email: string, subscription: PushSubscription): Promise<boolean>;
+  deleteUserSubscription(email: string, subscriptionId: string): Promise<boolean>;
   addUserSubscription(email: string, subscription: PushSubscription): Promise<boolean>;
 }
