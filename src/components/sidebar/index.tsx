@@ -9,8 +9,8 @@ type SidebarProps = {
 
 const Sidebar: FC<SidebarProps> = ({ select }) => (
   <nav className={cn(styles.sidebar, "flex")}>
-    <div className="flex flex-row sm:flex-col justify-between w-full sm:w-auto h-auto sm:h-full">
-      <ul className="nav flex flex-col border-r sm:border-b border-gray-900">
+    <div className="flex h-auto w-full flex-row justify-between sm:h-full sm:w-auto sm:flex-col">
+      <ul className="nav flex flex-col border-r border-gray-900 sm:border-b">
         <li className={cn(styles.icon, { [styles.active]: select === "overview" })}>
           <Link href="/overview">
             <a>

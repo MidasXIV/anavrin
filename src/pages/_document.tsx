@@ -43,7 +43,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head />
-        <body className="bg-gray-100 text-gray-800 w-screen h-screen">
+        <body className="h-screen w-screen bg-gray-100 text-gray-800">
           <Main />
           <NextScript />
         </body>

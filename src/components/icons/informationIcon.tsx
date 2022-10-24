@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 const InformationIcon = ({ onClick }) => (
   <button
     type="button"
-    className={cn(styles.icon, "border-2 border-gray-500 rounded-lg")}
+    className={cn(styles.icon, "rounded-lg border-2 border-gray-500")}
     onClick={onClick}
   >
     <svg
@@ -13,7 +13,7 @@ const InformationIcon = ({ onClick }) => (
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-6 h-6"
+      className="h-6 w-6"
     >
       <path
         strokeLinecap="round"

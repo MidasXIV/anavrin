@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FC } from "react";
 
 const LaunchAppButton: FC<unknown> = () => (
-  <button type="button" className="p-4 font-semibold text-gray-100 border">
+  <button type="button" className="border p-4 font-semibold text-gray-100">
     <Link href="/dashboard">
       <div className="">
         <Image
@@ -12,7 +12,7 @@ const LaunchAppButton: FC<unknown> = () => (
           width={20}
           height={18}
         />
-        <span className="text-gray-600 pl-2 uppercase font-mono mb-2 text-center">Launch App</span>
+        <span className="mb-2 pl-2 text-center font-mono uppercase text-gray-600">Launch App</span>
       </div>
     </Link>
   </button>

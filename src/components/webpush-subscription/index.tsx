@@ -85,8 +85,8 @@ const WebpushSubscription: FC<unknown> = () => {
   }, [isLoading]);
 
   const SubscriptionCard = ({ subscription: pushSubscription }) => (
-    <div className="mt-2 p-2 bg-gray-900 rounded-md">
-      <div className="pb-2 text-gray-500 flex flex-row justify-between items-center">
+    <div className="mt-2 rounded-md bg-gray-900 p-2">
+      <div className="flex flex-row items-center justify-between pb-2 text-gray-500">
         <h2 className="align-middle">{device}</h2>
         <DeleteIcon
           onClick={async () => {

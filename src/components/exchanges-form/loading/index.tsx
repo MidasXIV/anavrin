@@ -4,16 +4,16 @@ const LoadingForm: FC<any> = () => (
   <form>
     <section className="py-8">
       <div className="p-2">
-        <div className="mb-2 bg-gray-600 animate-pulse h-8 w-1/4 rounded-md" />
-        <div className="mb-2 bg-gray-400 animate-pulse h-4 w-1/2 rounded-md" />
-        <div className="bg-gray-400 w-full animate-pulse h-14 rounded-md" />
+        <div className="mb-2 h-8 w-1/4 animate-pulse rounded-md bg-gray-600" />
+        <div className="mb-2 h-4 w-1/2 animate-pulse rounded-md bg-gray-400" />
+        <div className="h-14 w-full animate-pulse rounded-md bg-gray-400" />
       </div>
       <div className="mt-4 p-2">
-        <div className="mb-2 bg-gray-600 animate-pulse h-8 w-1/4 rounded-md" />
-        <div className="mb-2 bg-gray-400 animate-pulse h-4 w-1/2 rounded-md" />
-        <div className="bg-gray-400 w-full animate-pulse h-14 rounded-md" />
+        <div className="mb-2 h-8 w-1/4 animate-pulse rounded-md bg-gray-600" />
+        <div className="mb-2 h-4 w-1/2 animate-pulse rounded-md bg-gray-400" />
+        <div className="h-14 w-full animate-pulse rounded-md bg-gray-400" />
       </div>
-      <div className="mt-4 ml-2 p-2 bg-blue-400 animate-pulse h-8 w-1/2 rounded-md" />
+      <div className="mt-4 ml-2 h-8 w-1/2 animate-pulse rounded-md bg-blue-400 p-2" />
     </section>
   </form>
 );

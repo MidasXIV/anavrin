@@ -23,7 +23,7 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
       <div className={styles.leftHeader}>
         <div className={cn(styles.leftContentPanel, styles.content)}>
           <h3 className="text-2xl font-black">{title}</h3>
-          <p className="text-xs font-thin font-sans">{description}</p>
+          <p className="font-sans text-xs font-thin">{description}</p>
         </div>
       </div>
       <div className={styles.rightHeader}>
@@ -34,14 +34,14 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
             control={
               <button className="relative inline-block" type="button">
                 <Image
-                  className="inline-block w-12 h-12 object-cover rounded-lg"
+                  className="inline-block h-12 w-12 rounded-lg object-cover"
                   src={userImage}
                   alt="Profile"
                   layout="intrinsic"
                   width={48}
                   height={48}
                 />
-                <span className="absolute bottom-0 right-0 inline-block w-3 h-3 -mr-1 bg-green-600 border-2 border-white rounded-full" />
+                <span className="absolute bottom-0 right-0 -mr-1 inline-block h-3 w-3 rounded-full border-2 border-white bg-green-600" />
               </button>
             }
             position="top"

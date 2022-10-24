@@ -1,16 +1,16 @@
 import { FC } from "react";
 
 const Register: FC<unknown> = () => (
-  <div className="container mx-auto font-mono p-8">
-    <div className="w-full lg:w-1/2 mx-auto">
-      <p className="w-max flex flex-row text-center p-1 px-2 mb-3 mx-auto rounded-xl bg-gray-200">
+  <div className="container mx-auto p-8 font-mono">
+    <div className="mx-auto w-full lg:w-1/2">
+      <p className="mx-auto mb-3 flex w-max flex-row rounded-xl bg-gray-200 p-1 px-2 text-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -20,18 +20,18 @@ const Register: FC<unknown> = () => (
         </svg>
         <span className="ml-2 uppercase">Get Project Updates</span>
       </p>
-      <div className="px-8 mb-4 text-center">
-        <h3 className="pt-4 mb-2 text-5xl font-medium">Stay in the loop</h3>
-        <p className="mb-4 text-sm text-gray-700 font-bold">
+      <div className="mb-4 px-8 text-center">
+        <h3 className="mb-2 pt-4 text-5xl font-medium">Stay in the loop</h3>
+        <p className="mb-4 text-sm font-bold text-gray-700">
           We&apos;re just getting started. Subscribe for updates on Anavrin.
         </p>
       </div>
-      <form action="" className="w-3/4 mx-auto flex flex-col gap-3 px-8 pt-4 mb-4 sm:flex-row">
+      <form action="" className="mx-auto mb-4 flex w-3/4 flex-col gap-3 px-8 pt-4 sm:flex-row">
         <input
           type="email"
           name="email"
           id="email"
-          className="flex-1 rounded-lg border border-transparent bg-violet-200/50 py-3 px-5 placeholder:text-black/30 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+          className="bg-violet-200/50 focus:outline-none flex-1 rounded-lg border border-transparent py-3 px-5 placeholder:text-black/30 focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40"
           placeholder="Enter your email Address..."
         />
         <button type="submit" className="rounded-lg bg-black px-5 py-3 font-bold text-white">
