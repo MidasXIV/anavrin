@@ -1,3 +1,5 @@
+import { ExchangeKeys } from ".";
+
 export type UserSettingsExchangeButton = {
-  onClick: (exchangeKey: string) => void;
+  onClick: (exchangeKey: ExchangeKeys) => void;
 };
