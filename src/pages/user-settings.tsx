@@ -1,24 +1,24 @@
 import { FC, useState } from "react";
-import { Accordion, Divider, Drawer } from "@mantine/core";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { Accordion } from "@mantine/core";
+import { useSession } from "next-auth/react";
 import DefaultLayout from "../layouts/default";
 import * as exchanges from "../components/exchanges-form";
-import ExchangeFormFactory from "../components/exchange-form-factory";
 import { isMobileUI } from "../lib/viewport";
-import WebPushSubscription from "../components/webpush-subscription";
-import PushNotificationPanel from "../components/push-notification-panel";
+import SecondaryPanel from "../components/secondary-panel";
+import { UserSettingsComponentMapping, PanelKeys } from "../lib/user-settings-component-map";
 
 const UserSettings: FC = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const [opened, setOpened] = useState(false);
   const isSignedIn = loading ? "" : Boolean(session?.user) ?? false;
-  const [exchangeKey, exchangeKeyPanel] = useState<exchanges.ExchangeKeys>(null);
+  const [panel, setPanel] = useState<PanelKeys>(null);
+  const [menuItem, setMenuItem] = useState<string>();
 
-  const onExchangeButtonClick = (exchange: exchanges.ExchangeKeys) => {
+  const onExchangeButtonClick = (exchange: PanelKeys) => {
     // Pass in the exchange name which can be understood by the Form Factory.
     // sets the secondary Panel.
-    exchangeKeyPanel(exchange);
+    setPanel(exchange);
     // Only in Mobile UI should the Secondary Panel as a drawer.
     if (isMobileUI()) {
       setOpened(true);
@@ -30,13 +30,35 @@ const UserSettings: FC = () => {
     exchanges[exchange]({ onClick: onExchangeButtonClick })
   );
 
+  const onMenuItemClick = MenuState => {
+    // MenuState: {0: true, 1: false}
+
+    const selectedMenuItem = Object.entries(MenuState).find(menuStateItem => {
+      const [menuKey, isOpened] = menuStateItem;
+      return isOpened;
+    })?.[0];
+
+    switch (selectedMenuItem) {
+      case "0": // Exchange Selection
+        break;
+      case "1": // WebPush Menu Item
+        setPanel(PanelKeys.WEBPUSH);
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <>
       <DefaultLayout title="User setting" sidebar="" description="Update user profile">
         <div className="flex h-full w-full flex-row">
           <div className="dashboard-primary-panel">
             {!isSignedIn ? <h1 className="mb-2 text-2xl">Please Login.</h1> : null}
-            <Accordion initialItem={-1} className="border-t-0 border-b border-gray-400">
+            <Accordion
+              initialItem={-1}
+              className="border-t-0 border-b border-gray-400"
+              onChange={onMenuItemClick}
+            >
               <Accordion.Item
                 className="border-t-0 border-b border-gray-400 font-normal"
                 label={
@@ -53,19 +75,12 @@ const UserSettings: FC = () => {
               />
             </Accordion>
           </div>
-          <div className="dashboard-secondary-panel">
-            <ExchangeFormFactory exchange={exchangeKey} />
-            <PushNotificationPanel />
-            <Drawer
-              opened={opened}
-              onClose={() => setOpened(false)}
-              title="Register"
-              padding="xl"
-              size="xl"
-            >
-              <ExchangeFormFactory exchange={exchangeKey} />
-            </Drawer>
-          </div>
+          <SecondaryPanel
+            PanelComponentMapping={UserSettingsComponentMapping}
+            panel={panel}
+            opened={opened}
+            setOpened={setOpened}
+          />
         </div>
       </DefaultLayout>
     </>
