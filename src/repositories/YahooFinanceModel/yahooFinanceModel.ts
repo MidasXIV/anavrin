@@ -3,7 +3,7 @@
  */
 import axios from "axios";
 
-class YahooFinanceRepo implements DividendInfoScraper {
+class YahooFinanceModel implements DividendInfoScraper {
   nameQuerySelector = "h1.D\\(ib\\)";
 
   quoteQuerySelector = ".Fz\\(36px\\)";
@@ -263,4 +263,4 @@ class YahooFinanceRepo implements DividendInfoScraper {
   }
 }
 
-export default YahooFinanceRepo;
+export default YahooFinanceModel;
