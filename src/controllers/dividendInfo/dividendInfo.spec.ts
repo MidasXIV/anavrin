@@ -1,7 +1,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import * as path from "path";
 import Result from "../../lib/result";
-import YahooFinanceRepo from "../../repositories/yahooFinanceRepo";
+import YahooFinanceModel from "../../repositories/YahooFinanceModel/yahooFinanceModel";
 import DividendInfo from "./dividendInfo";
 
 const feature = loadFeature(path.join(__dirname, "./dividendInfo.feature"));
@@ -15,8 +15,8 @@ defineFeature(feature, test => {
   test("Getting Dividend Info", ({ given, when, then }) => {
     given("I provide a ticker", () => {
       // Arrange
-      ticker = "MCD";
-      yahooFinanceRepo = new YahooFinanceRepo();
+      ticker = "NGI.AE";
+      yahooFinanceRepo = new YahooFinanceModel();
       dividendInfo = new DividendInfo(yahooFinanceRepo);
     });
 
@@ -35,6 +35,7 @@ defineFeature(feature, test => {
 
       const resultSuccess = Result.getValue(result);
 
+      console.log(resultSuccess);
       expect(resultSuccess).toEqual(
         expect.objectContaining({
           AnnualDividendGrowth: expect.any(Object),
@@ -62,7 +63,7 @@ defineFeature(feature, test => {
     given("I provide an invalid ticker", () => {
       // Arrange
       ticker = "MCDxxxxx";
-      yahooFinanceRepo = new YahooFinanceRepo();
+      yahooFinanceRepo = new YahooFinanceModel();
       dividendInfo = new DividendInfo(yahooFinanceRepo);
     });
 
@@ -83,7 +84,7 @@ defineFeature(feature, test => {
     given("I provide a ticker with no dividend Info", () => {
       // Arrange
       ticker = "META";
-      yahooFinanceRepo = new YahooFinanceRepo();
+      yahooFinanceRepo = new YahooFinanceModel();
       dividendInfo = new DividendInfo(yahooFinanceRepo);
     });
 

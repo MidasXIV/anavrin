@@ -24,6 +24,10 @@ export default class DividendInfo implements IDividendInfo {
     return `https://finance.yahoo.com/quote/${ticker}/history?period1=1286755200&period2=1666915200&interval=capitalGain%7Cdiv%7Csplit&filter=div&frequency=1mo&includeAdjustedClose=true`;
   }
 
+  private isDFMTicker(ticker: string): boolean {
+    return ticker.endsWith(".AE");
+  }
+
   /** ***************************************************************************************
    *
    *                            Public / Router Endpoint Methods
@@ -34,6 +38,7 @@ export default class DividendInfo implements IDividendInfo {
     const yahooFinancedividendProfileURL = this.getYahooFinancedividendProfileURL(ticker);
 
     const symbol: string = ticker;
+    const isDFMTicker = this.isDFMTicker(ticker);
 
     const dividendProfilePage = await this.dividendInfoScrapper.fetchHTML(
       yahooFinancedividendProfileURL
@@ -42,6 +47,10 @@ export default class DividendInfo implements IDividendInfo {
     const { name, price, exchange, stockSummary }: PrimaryDividendInformationDTO =
       this.dividendInfoScrapper.parsePrimaryInformation(dividendProfilePageParser);
 
+    // DFM stocks don't have dividend Data updated.
+    stockSummary.dividendAmount = isDFMTicker
+      ? stockSummary.dividendAmount
+      : stockSummary.dividendAmount ?? 0;
     if (name === "" && Number.isNaN(price)) {
       return Result.fail({ type: "InvalidTicker" });
     }
