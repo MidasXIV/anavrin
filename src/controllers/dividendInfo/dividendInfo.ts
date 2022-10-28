@@ -21,7 +21,7 @@ export default class DividendInfo implements IDividendInfo {
 
   private getYahooFinanceDividendHistoryURL(ticker: string): string {
     /** function to get Yahoo Finance Dividend History Page URL corresponding to input ticker */
-    return `https://finance.yahoo.com/quote/${ticker}/history?period1=345427200&period2=1585353600&interval=div%7Csplit&filter=div&frequency=1d`;
+    return `https://finance.yahoo.com/quote/${ticker}/history?period1=1286755200&period2=1666915200&interval=capitalGain%7Cdiv%7Csplit&filter=div&frequency=1mo&includeAdjustedClose=true`;
   }
 
   /** ***************************************************************************************
