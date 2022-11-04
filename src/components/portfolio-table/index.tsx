@@ -1,5 +1,10 @@
 import { FC } from "react";
-import DataTable, { createTheme, defaultThemes, Media } from "react-data-table-component";
+import DataTable, {
+  createTheme,
+  defaultThemes,
+  Media,
+  TableColumn
+} from "react-data-table-component";
 
 createTheme("solarized", {
   text: {
@@ -23,7 +28,7 @@ createTheme("solarized", {
   }
 });
 
-const dataStore = [
+const dataStoreDefault = [
   {
     id: 1,
     title: "Apple Inc.",
@@ -112,7 +117,7 @@ const ExpandableComponent = ({ data }) => {
   return <img alt="" width="200px" src={data.image} />;
 };
 
-const columns = [
+const columnsDefault = [
   {
     name: "Company Name",
     sortable: false,
@@ -336,19 +341,34 @@ const customStyles2 = {
   // }
 };
 
-const TableAction = data => (
-  <div>
-    <div style={{ fontWeight: 700 }}>Hello</div>
-  </div>
-);
+const TableAction = data => {
+  console.log(data);
+  return (
+    <div>
+      <div style={{ fontWeight: 700 }}>Hello</div>
+    </div>
+  );
+};
 
-const PortfolioTable: FC = () => (
+type PortfolioTableProps<T> = {
+  tableSchema: TableColumn<T>[];
+  data: Array<any>;
+  loading: boolean;
+  expandableComponent: ({ data }: { data: any }) => JSX.Element;
+};
+
+const PortfolioTable: FC<PortfolioTableProps<any>> = ({
+  tableSchema: columns = columnsDefault,
+  data: dataStore = dataStoreDefault,
+  loading = false,
+  expandableComponent = ExpandableComponent
+}) => (
   <DataTable
     title="Portfolio"
     columns={columns}
     data={dataStore}
     expandableRows
-    expandableRowsComponent={ExpandableComponent}
+    expandableRowsComponent={expandableComponent}
     expandOnRowClicked
     expandableRowsHideExpander
     // overflowY
@@ -357,6 +377,7 @@ const PortfolioTable: FC = () => (
     fixedHeader
     fixedHeaderScrollHeight="100%"
     noHeader
+    progressPending={loading}
     theme="solarized"
     customStyles={customStyles2}
     highlightOnHover
