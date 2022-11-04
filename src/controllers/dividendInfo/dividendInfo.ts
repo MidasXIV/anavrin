@@ -48,9 +48,8 @@ export default class DividendInfo implements IDividendInfo {
       this.dividendInfoScrapper.parsePrimaryInformation(dividendProfilePageParser);
 
     // DFM stocks don't have dividend Data updated.
-    stockSummary.dividendAmount = isDFMTicker
-      ? stockSummary.dividendAmount
-      : stockSummary.dividendAmount ?? 0;
+    stockSummary.dividendAmount = isDFMTicker ? 0 : stockSummary.dividendAmount;
+
     if (name === "" && Number.isNaN(price)) {
       return Result.fail({ type: "InvalidTicker" });
     }

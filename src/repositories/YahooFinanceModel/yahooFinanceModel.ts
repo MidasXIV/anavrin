@@ -162,18 +162,22 @@ class YahooFinanceModel implements DividendInfoScraper {
     const AnnualDividends: AnnualDividendInterface = {};
 
     DividendHistory.forEach((DividendHistoryItem: DividendInformationItemInterface) => {
-      const dividendYear = new Date(DividendHistoryItem.date).getFullYear().toString();
+      const { date, dividend } = DividendHistoryItem;
+      const dividendYear = new Date(date).getFullYear().toString();
 
       if (dividendYear in AnnualDividends) {
-        AnnualDividends[dividendYear] += DividendHistoryItem.dividend;
+        AnnualDividends[dividendYear] += dividend;
       } else {
-        AnnualDividends[dividendYear] = DividendHistoryItem.dividend;
+        AnnualDividends[dividendYear] = dividend;
       }
     });
 
     /** if dividendAmount is not provided remove it from Annual Dividend Object */
     if (dividendAmount) {
       AnnualDividends[currentYear] = dividendAmount;
+    } else if (dividendAmount === 0) {
+      // Usually the case of DFM stocks
+      // Do nothing.
     } else {
       delete AnnualDividends[currentYear];
     }
