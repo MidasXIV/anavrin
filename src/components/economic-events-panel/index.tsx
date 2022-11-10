@@ -49,6 +49,7 @@ const ListItem = ({ event }: { event: IEcnomicEvent }) => {
       >
         <div className="w-full">
           <div className="text-left text-xs font-semibold">
+            {/* TODO: make the time remaining dynamic */}
             {time} <span>( 2 hours to go )</span>
           </div>
           <div className="flex flex-row justify-between py-2 text-base font-normal text-gray-600 dark:text-gray-400">
