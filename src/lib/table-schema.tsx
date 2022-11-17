@@ -13,7 +13,7 @@ type DividendDataRow = {
   netValue: string;
   earningPerShare: string;
   pricePerEarning: string;
-  dividend: string;
+  dividendAmount: string;
   dividendYield: string;
   yieldOnCost: string;
   income: string;
@@ -118,7 +118,7 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
   },
   {
     name: "Annual Dividend",
-    selector: row => row.dividend,
+    selector: row => row.dividendAmount,
     // compact: true,
     width: "70px",
     center: true,
@@ -159,7 +159,7 @@ type DFMDividendDataRow = {
   symbol: string;
   marketPrice: string;
   earningPerShare: string;
-  dividend: string;
+  dividendAmount: string;
   dividendYield: string;
 };
 
@@ -186,6 +186,7 @@ const DFMDividendPortfolioSchema: TableColumn<DFMDividendDataRow>[] = [
     selector: row => row.marketPrice,
     // compact: true,
     // width: "150px",
+    sortable: true,
     center: true
     // style: { border: "1px solid" }
   },
@@ -199,9 +200,10 @@ const DFMDividendPortfolioSchema: TableColumn<DFMDividendDataRow>[] = [
   },
   {
     name: "Annual Dividend",
-    selector: row => row.dividend,
+    selector: row => row.dividendAmount,
     // compact: true,
     // width: "150px",
+    sortable: true,
     center: true
     // style: { border: "1px solid" }
   },
@@ -210,6 +212,7 @@ const DFMDividendPortfolioSchema: TableColumn<DFMDividendDataRow>[] = [
     selector: row => row.dividendYield,
     // compact: true,
     // width: "150px",
+    sortable: true,
     center: true
     // style: { border: "1px solid" }
   }
