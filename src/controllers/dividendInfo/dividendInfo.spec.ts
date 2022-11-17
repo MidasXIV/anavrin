@@ -45,7 +45,7 @@ defineFeature(feature, test => {
           dividendAmount: expect.any(Number),
           dividendCurrency: expect.any(String),
           dividendPayoutRatio: expect.any(Number),
-          dividendYeild: expect.any(String),
+          dividendYield: expect.any(String),
           exDividendDate: expect.any(String),
           exchange: expect.any(String),
           marketCap: expect.any(String),

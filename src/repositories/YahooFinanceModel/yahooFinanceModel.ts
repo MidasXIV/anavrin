@@ -76,7 +76,7 @@ class YahooFinanceModel implements DividendInfoScraper {
     let paymentDate: string = defaultStringValue;
     let exDividendDate: string = defaultStringValue;
     let dividendAmount: number = defaultNumericValue;
-    let dividendYeild: string = defaultStringValue;
+    let dividendYield: string = defaultStringValue;
     let dividendPayoutRatio: number = defaultNumericValue;
 
     $(this.stockSummaryQuerySelector)
@@ -110,7 +110,7 @@ class YahooFinanceModel implements DividendInfoScraper {
           case "Forward Dividend & Yield": {
             const dividendValueandYeild = rowValue.replace("(", "").replace(")", "").split(" ");
             dividendAmount = parseFloat(dividendValueandYeild[0]);
-            [, dividendYeild] = dividendValueandYeild;
+            [, dividendYield] = dividendValueandYeild;
             break;
           }
           default:
@@ -130,7 +130,7 @@ class YahooFinanceModel implements DividendInfoScraper {
       paymentDate,
       exDividendDate,
       dividendAmount,
-      dividendYeild,
+      dividendYield,
       dividendPayoutRatio
     };
   }
