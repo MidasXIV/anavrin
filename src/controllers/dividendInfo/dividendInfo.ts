@@ -28,6 +28,21 @@ export default class DividendInfo implements IDividendInfo {
     return ticker.endsWith(".AE");
   }
 
+  private coerceForDFM({
+    price,
+    AnnualDividends
+  }: {
+    price: number;
+    AnnualDividends: AnnualDividendInterface;
+  }) {
+    const year = new Date().getFullYear();
+    const dividend = AnnualDividends[year];
+
+    return {
+      dividend,
+      dividendYield: (dividend / price) * 100
+    };
+  }
   /** ***************************************************************************************
    *
    *                            Public / Router Endpoint Methods
@@ -65,6 +80,11 @@ export default class DividendInfo implements IDividendInfo {
     const { dividendCurrency, AnnualDividends, AnnualDividendGrowth }: ParseDividendInformationDTO =
       this.dividendInfoScrapper.parseDividendInformation(dividendHistoryPageParser, stockSummary);
 
+    if (isDFMTicker) {
+      const { dividend, dividendYield } = this.coerceForDFM({ price, AnnualDividends });
+      stockSummary.dividendAmount = dividend;
+      stockSummary.dividendYield = dividendYield.toString();
+    }
     return Result.ok({
       symbol,
       name,
