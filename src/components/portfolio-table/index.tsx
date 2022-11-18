@@ -110,7 +110,7 @@ const RowComponent = row => (
   </div>
 );
 // The row data is composed into your custom expandable component via the data prop
-const ExpandableComponent = ({ data }) => {
+const defaultExpandableComponent = ({ data }) => {
   if (!data) {
     return null;
   }
@@ -361,7 +361,7 @@ const PortfolioTable: FC<PortfolioTableProps<any>> = ({
   tableSchema: columns = columnsDefault,
   data: dataStore = dataStoreDefault,
   loading = false,
-  expandableComponent = ExpandableComponent
+  expandableComponent = defaultExpandableComponent
 }) => (
   <DataTable
     title="Portfolio"
