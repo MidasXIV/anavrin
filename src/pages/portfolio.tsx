@@ -15,15 +15,15 @@ const Portfolio: FC = () => {
         description="You can see your portfolios estimated value & progress below"
       >
         <AddStockModal isShowing={isShowing} cancel={toggle} />
-        <div className="portfolio-primary-panel overflow-y-auto flex flex-col">
-          <div className="h-20 flex flex-row">
-            <div className="w-2/3 bg-red-100 h-full flex flex-col md:flex-row items-center p-2 md:p-4 md:justify-evenly">
-              <div className="flex flex-col w-full">
-                <span className="hidden md:block text-xs m-1 uppercase text-gray-700">
+        <div className="portfolio-primary-panel flex flex-col overflow-y-auto">
+          <div className="flex h-20 flex-row">
+            <div className="flex h-full w-2/3 flex-col items-center bg-red-100 p-2 md:flex-row md:justify-evenly md:p-4">
+              <div className="flex w-full flex-col">
+                <span className="m-1 hidden text-xs uppercase text-gray-700 md:block">
                   INVESTED AMOUNT
                 </span>
                 <div className="flex w-full items-end">
-                  <span className="block leading-none text-xl md:text-3xl text-gray-800">
+                  <span className="block text-xl leading-none text-gray-800 md:text-3xl">
                     22.325,50
                   </span>
                   {/* <span className="block leading-5 text-sm ml-4 text-green-500">
@@ -33,19 +33,19 @@ const Portfolio: FC = () => {
                   </span> */}
                 </div>
               </div>
-              <div className="w-full flex flex-col md:flex-row md:justify-evenly">
-                <div className="flex flex-row md:flex-col justify-between">
-                  <span className="text-xs m-1 uppercase  text-gray-700">PROFIT</span>
+              <div className="flex w-full flex-col md:flex-row md:justify-evenly">
+                <div className="flex flex-row justify-between md:flex-col">
+                  <span className="m-1 text-xs uppercase  text-gray-700">PROFIT</span>
                   <div className="flex md:w-full md:items-end">
-                    <span className="block leading-none text-xs md:text-3xl m-1 md:m-0 text-gray-800">
+                    <span className="m-1 block text-xs leading-none text-gray-800 md:m-0 md:text-3xl">
                       22.325,50
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-row md:flex-col justify-between">
-                  <span className="text-xs m-1 uppercase  text-gray-700">PORTFOLIO VALUE</span>
+                <div className="flex flex-row justify-between md:flex-col">
+                  <span className="m-1 text-xs uppercase  text-gray-700">PORTFOLIO VALUE</span>
                   <div className="flex md:w-full md:items-end">
-                    <span className="block leading-none text-xs md:text-3xl m-1 md:m-0 text-gray-800">
+                    <span className="m-1 block text-xs leading-none text-gray-800 md:m-0 md:text-3xl">
                       22.325,50
                     </span>
                   </div>
@@ -57,8 +57,13 @@ const Portfolio: FC = () => {
             </div>
           </div>
           {/* Occupy Max remaining space and scroll only table */}
-          <div className="flex-1 overflow-auto my-2">
-            <PortfolioTable />
+          <div className="my-2 flex-1 overflow-auto">
+            <PortfolioTable
+              tableSchema={undefined}
+              data={undefined}
+              loading={undefined}
+              expandableComponent={undefined}
+            />
           </div>
         </div>
       </DefaultLayout>

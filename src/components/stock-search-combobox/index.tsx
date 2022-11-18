@@ -47,7 +47,7 @@ const ESCAPE_KEY_CODE = 27;
 const ModalStockSearchInputID = "modal_input_stock";
 
 const SearchIconComponent = () => (
-  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -66,7 +66,7 @@ const SearchIconComponent = () => (
 );
 
 const SuccessIconComponent = () => (
-  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -85,7 +85,7 @@ const SuccessIconComponent = () => (
 );
 
 const FailureIconComponent = () => (
-  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -104,9 +104,9 @@ const FailureIconComponent = () => (
 );
 
 const PendingIconComponent = () => (
-  <span className="absolute inline-flex right-0 justify-end items-center text-gray-500 py-2 px-4">
+  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
     <svg
-      className="animate-spin text-white h-5 w-5"
+      className="h-5 w-5 animate-spin text-white"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -188,7 +188,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
 
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => (
     <li
-      className="focus:outline-none focus:flex-col px-4 py-2 text-gray-800 rounded-lg text-xs focus:bg-gray-300 hover:bg-gray-300 cursor-pointer flex flex-row justify-between text"
+      className="focus:outline-none text flex cursor-pointer flex-row justify-between rounded-lg px-4 py-2 text-xs text-gray-800 hover:bg-gray-300 focus:flex-col focus:bg-gray-300"
       aria-labelledby="dropdown-label"
       aria-selected="false"
       key={suggestion.symbol}
@@ -250,7 +250,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
     >
       <span className="font-semibold">{suggestion.symbol}</span>
       <p className="">{suggestion.name}</p>
-      <span className="text-xs text-gray-500 flex flex-row items-center hidden">
+      <span className="flex hidden flex-row items-center text-xs text-gray-500">
         Select
         <svg
           id="Capa_1"
@@ -259,7 +259,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
           viewBox="0 0 374.706 374.706"
           width="512"
           xmlns="http://www.w3.org/2000/svg"
-          className="fill-current text-white stroke-current stroke-0 w-6 h-6 p-1 bg-gray-500 rounded-md ml-2"
+          className="ml-2 h-6 w-6 rounded-md bg-gray-500 fill-current stroke-current stroke-0 p-1 text-white"
         >
           <path d="m321.176 53.529h-107.058v53.529h107.059v80.294l-214.111-.007 40.141-40.141-40.147-40.147-107.06 107.061 107.059 107.059 40.147-40.147-40.153-40.153 214.124-.02c29.522 0 53.529-24.007 53.529-53.529v-80.268c0-29.523-24.007-53.53-53.53-53.531z" />
         </svg>
@@ -268,12 +268,12 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
   ));
 
   return (
-    <div className="relative w-full z-50">
+    <div className="relative z-50 w-full">
       <input
         type="text"
         name="stock"
         id={ModalStockSearchInputID}
-        className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+        className="inline-flex w-full items-center rounded bg-gray-300 py-2 px-4 font-semibold text-gray-700"
         ref={stockSearchInput}
         onChange={e => setSearchTerm(e.target.value)}
         value={searchTerm}
@@ -287,7 +287,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
       {searchState === SearchState.FAILURE ? <FailureIconComponent /> : null}
       <ul
         ref={stockSearchOptions}
-        className={cn("absolute w-full max-w-md -mt-1 p-2 bg-white rounded-lg shadow-lg", {
+        className={cn("absolute -mt-1 w-full max-w-md rounded-lg bg-white p-2 shadow-lg", {
           hidden: !isShowing
         })}
       >

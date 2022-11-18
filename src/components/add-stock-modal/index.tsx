@@ -56,16 +56,16 @@ const StockInformationTable = ({ stock }) => (
       </div>
       <div className="flex w-7/12">
         <div className="flex-1 px-3 text-left font-semibold">Dividend yield</div>
-        <div className="pl-3 text-right">{stock?.dividendYeild || "0%"}</div>
+        <div className="pl-3 text-right">{stock?.dividendYield || "0%"}</div>
       </div>
     </div>
   </div>
 );
 
 const UtilityFooter = () => (
-  <dl className="p-2 text-xs border-t border-gray-200 hidden sm:flex flex-row justify-between">
+  <dl className="hidden flex-row justify-between border-t border-gray-200 p-2 text-xs sm:flex">
     <dt className="flex flex-row items-center space-x-2">
-      <kbd className="bg-charcoal-400 p-2 rounded-md text-sm text-gray-300">
+      <kbd className="rounded-md bg-charcoal-400 p-2 text-sm text-gray-300">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -79,7 +79,7 @@ const UtilityFooter = () => (
           />
         </svg>
       </kbd>
-      <kbd className="bg-charcoal-400 p-2 rounded-md text-sm text-gray-300">
+      <kbd className="rounded-md bg-charcoal-400 p-2 text-sm text-gray-300">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -96,11 +96,11 @@ const UtilityFooter = () => (
       <p>to navigate.</p>
     </dt>
     <dt className="flex flex-row items-center space-x-2">
-      <kbd className="bg-charcoal-400 py-1 px-3 rounded-md text-sm text-gray-300">ENTER</kbd>
+      <kbd className="rounded-md bg-charcoal-400 py-1 px-3 text-sm text-gray-300">ENTER</kbd>
       <p>to select.</p>
     </dt>
     <dt className="flex flex-row items-center space-x-2">
-      <kbd className="bg-charcoal-400 py-1 px-3 rounded-md text-sm text-gray-300">ESC</kbd>
+      <kbd className="rounded-md bg-charcoal-400 py-1 px-3 text-sm text-gray-300">ESC</kbd>
       <p>to cancel.</p>
     </dt>
   </dl>
@@ -108,12 +108,12 @@ const UtilityFooter = () => (
 
 const ButtonPanel = ({ cancel, formState, formValid }) => (
   // <div className="text-center md:text-right mt-4 md:flex md:justify-end">
-  <div className="bg-charcoal-900 mx-2 p-2 h-full flex flex-row align-middle justify-between items-center rounded-lg font-light">
+  <div className="mx-2 flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 p-2 align-middle font-light">
     <ul className="nav flex flex-row items-center text-xs">
       <button
         type="button"
         className={cn(
-          "py-2 pl-1 pr-2 inline-block w-auto text-gray-500 rounded-lg font-semibold text-xs",
+          "inline-block w-auto rounded-lg py-2 pl-1 pr-2 text-xs font-semibold text-gray-500",
           {
             "animate-bounce": formValid
           }
@@ -124,14 +124,14 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          className="w-6 h-6 p-1 mr-2 inline-flex bg-charcoal-300 text-charcoal-900 rounded-md"
+          className="mr-2 inline-flex h-6 w-6 rounded-md bg-charcoal-300 p-1 text-charcoal-900"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
         </svg>
         Click to Proceed{" "}
       </button>
     </ul>
-    <ul className="nav flex flex-row text-xs space-x-3">
+    <ul className="nav flex flex-row space-x-3 text-xs">
       {/* <button
         type="button"
         className="block w-full md:inline-block pr-3 md:w-auto bg-charcoal-400 text-gray-500 hover:bg-green-300 hover:text-charcoal-900 rounded-md font-semibold text-center"
@@ -149,14 +149,14 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
       </button> */}
       <button
         type="button"
-        className="py-2 pl-1 pr-2 inline-block w-auto bg-charcoal-400 text-gray-500 hover:bg-green-300 hover:text-charcoal-900 rounded-lg font-semibold text-center"
+        className="inline-block w-auto rounded-lg bg-charcoal-400 py-2 pl-1 pr-2 text-center font-semibold text-gray-500 hover:bg-green-300 hover:text-charcoal-900"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          className="w-6 p-1 mr-1 inline-flex bg-green-300 text-charcoal-900 rounded-md"
+          className="mr-1 inline-flex w-6 rounded-md bg-green-300 p-1 text-charcoal-900"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
         </svg>
@@ -164,7 +164,7 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
       </button>
       <button
         type="button"
-        className="py-2 pl-1 pr-2 inline-block w-auto bg-charcoal-400 text-gray-500 hover:bg-red-300 hover:text-charcoal-900 rounded-lg font-semibold"
+        className="inline-block w-auto rounded-lg bg-charcoal-400 py-2 pl-1 pr-2 font-semibold text-gray-500 hover:bg-red-300 hover:text-charcoal-900"
         onClick={cancel}
       >
         <svg
@@ -172,7 +172,7 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          className="w-6 p-1 mr-1 inline-flex bg-red-300 text-charcoal-900 rounded-md"
+          className="mr-1 inline-flex w-6 rounded-md bg-red-300 p-1 text-charcoal-900"
         >
           <path
             strokeLinecap="round"
@@ -254,28 +254,28 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
 
   return (
     <div
-      className={cn("fixed px-4 md:flex md:items-center md:justify-center z-10 inset-0", {
+      className={cn("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
         hidden: !isShowing,
         "md:hidden": !isShowing
       })}
     >
       <div
-        className="bg-black opacity-75 w-full absolute z-10 inset-0"
+        className="absolute inset-0 z-10 w-full bg-black opacity-75"
         onClick={cancel}
         onKeyDown={cancel}
         aria-hidden="true"
       />
-      <div className="bg-white rounded-lg md:max-w-lg md:w-full md:mx-auto p-2 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg">
-        <div className="px-2 py-5 sm:px-4 flex flex-col">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Stock Information</h3>
+      <div className="fixed inset-x-0 bottom-0 z-50 mx-4 mb-4 rounded-lg bg-white p-2 shadow-lg md:relative md:mx-auto md:w-full md:max-w-lg">
+        <div className="flex flex-col px-2 py-5 sm:px-4">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Stock Information</h3>
         </div>
         <div className="border-t border-gray-200 py-2">
           <dl>
             <div className="bg-gray-50 p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
-              <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
+              <dt className="rounded-md bg-charcoal-400 py-2 px-4 text-sm font-semibold text-gray-400">
                 Ticker
               </dt>
-              <dd className="text-sm text-gray-900 sm:mt-0 sm:col-span-2 rounded-md flex flex-row relative">
+              <dd className="relative flex flex-row rounded-md text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                 <StockSearchCombobox
                   searchTerm={searchTerm}
                   setSearchTerm={setSearchTerm}
@@ -285,26 +285,26 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                 />
               </dd>
             </div>
-            <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 text-gray-600">
-              <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
+            <div className="bg-white p-2 text-gray-600 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+              <dt className="rounded-md bg-charcoal-400 py-2 px-4 text-sm font-semibold text-gray-400">
                 Shares
               </dt>
-              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 rounded-md">
+              <dd className="mt-1 rounded-md text-sm sm:col-span-2 sm:mt-0">
                 <input
                   type="number"
                   name="shares"
                   id="modal_input_shares"
                   min="0"
-                  className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+                  className="inline-flex w-full items-center rounded bg-gray-300 py-2 px-4 font-semibold text-gray-700"
                   onChange={onStockQuantityChange}
                 />
               </dd>
             </div>
-            <div className="bg-white p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2 text-gray-600">
-              <dt className="text-sm py-2 px-4 font-semibold bg-charcoal-400 text-gray-400 rounded-md">
+            <div className="bg-white p-2 text-gray-600 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+              <dt className="rounded-md bg-charcoal-400 py-2 px-4 text-sm font-semibold text-gray-400">
                 Buy Price
               </dt>
-              <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 rounded-md">
+              <dd className="mt-1 rounded-md text-sm sm:col-span-2 sm:mt-0">
                 <input
                   type="number"
                   name="market_price"
@@ -312,12 +312,12 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                   min="0"
                   step="0.01"
                   inputMode="decimal"
-                  className="bg-gray-300 w-full text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+                  className="inline-flex w-full items-center rounded bg-gray-300 py-2 px-4 font-semibold text-gray-700"
                   onChange={onStockSharesChange}
                 />
               </dd>
             </div>
-            {/* {stock ? <StockInformationTable stock={stock} /> : null} */}
+            {stock ? <StockInformationTable stock={stock} /> : null}
           </dl>
         </div>
 

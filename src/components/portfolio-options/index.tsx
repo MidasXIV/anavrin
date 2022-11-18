@@ -7,7 +7,7 @@ type PortfolioOptionsProps = {
 };
 
 const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
-  <div className="bg-charcoal-900 px-4 h-full flex flex-row align-middle justify-between items-center rounded-lg">
+  <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 px-4 align-middle">
     <ul className="nav flex flex-row">
       <button type="button" className={styles.icon} onClick={openAddStockModal}>
         <svg
@@ -27,7 +27,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
       </button>
     </ul>
 
-    <ul className="hidden nav md:flex flex-row space-x-5">
+    <ul className="nav hidden flex-row space-x-5 md:flex">
       <button type="button" className={styles.icon}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
       </button>
     </ul>
 
-    <ul className="hidden nav md:flex flex-row">
+    <ul className="nav hidden flex-row md:flex">
       <button type="button" className={styles.icon}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
         </svg>
       </button>
     </ul>
-    <ul className="flex nav md:hidden flex-row">
+    <ul className="nav flex flex-row md:hidden">
       <button type="button" className={styles.icon}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

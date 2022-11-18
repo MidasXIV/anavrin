@@ -3,13 +3,11 @@
     <p>Simple tracking & simulation for your portfolio</p>
 </div>
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Stack
 
 * Frontend Framework - Next JS
 * CSS Framework - Tailwind CSS
-* Frontend Components -Chakra UI
+* Frontend Components -Mantine components
 * Frontend API connection - React Query
 * Backend API - Next.js API Routes 
 * Auth - NextAuth.js
@@ -22,7 +20,40 @@ Project uses [qoomon/git-conventional-commits](https://github.com/qoomon/git-con
 
 ## Getting Started
 
-First, run the development server:
+[google-auth-mongodb-setup-guide]: https://betterprogramming.pub/build-a-note-taking-app-with-google-authentication-in-next-js-f0835d14034e
+
+### Setting up local env
+
+This is how your local `env.local` file should look like in root of the project.
+
+```
+ALPHAVANTAGE_API_KEY=<ALPHAVANTAGE_API_KEY>
+
+GOOGLE_CLIENT_ID=<GOOGLE_CLIENT_ID>
+GOOGLE_CLIENT_SECRET=<GOOGLE_CLIENT_SECRET>
+
+MONGODB_URI=mongodb+srv://<MONGO_APP_NAME>:<MONGO_PASS>@cluster0.ieyta.mongodb.net/<MONGODB_DB>?retryWrites=true&w=majority
+MONGODB_DB=<MONGODB_DB>
+
+NEXTAUTH_URL=http://localhost:3000/api/auth
+NEXTAUTH_SECRET=<NEXTAUTH_SECRET>
+
+VAPID_PUBLIC_KEY=<VAPID_PUBLIC_KEY>
+VAPID_PRIVATE_KEY=<VAPID_PRIVATE_KEY>
+VAPID_SUBJECT=test:test@test.app
+```
+
+| ENV Keys | Description | Links to get Key |
+| :- | :- | :- |
+| **ALPHAVANTAGE_API_KEY** | Required for add/search stock Modal used in portfolio page. | [alphavantage-api-key](https://www.alphavantage.co/support/#api-key) |
+| **GOOGLE_CLIENT_ID** / **GOOGLE_CLIENT_SECRET**| Required for loggin-in and is the primary Auth provider currently | [Guide to creating Google Auth Credentials][google-auth-mongodb-setup-guide] |
+| **MONGODB_URI** / **MONGODB_DB**| Required for loggin-in and is the primary database | [Guide to creating MogoDB Atlas Cluster Credentials][google-auth-mongodb-setup-guide] |
+|**VAPID_PUBLIC_KEY**, **VAPID_PRIVATE_KEY**, **VAPID_SUBJECT**| Required for creating and sending webpush notifications | In the terminal, run `npx web-push generate-vapid-keys`. Copy the private key and public key values. |
+|**NEXTAUTH_SECRET**| Required in production  |run `openssl rand -base64 32` or visit [this](https://generate-secret.vercel.app/32) site.|
+
+***
+
+After setting up the `env.local` file, run the development server:
 
 ```bash
 npm run dev
@@ -34,17 +65,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Notes
+* running individual Tests: `npm test -- -u -t="test name"`;
+* To Debug, run `npm run debug` visit `chrome://inspect`
+* ToPersistence() means to massage data such that it can be sent to the database.
+* ToDTO() means to massage data such that it confroms to API response.
+* repositories => is analogous to Models.
+* controller is usually created using 3 Classes/files
+   1. the Nextjs API endpoint -> A Handler is created and objects are initialized. (The object for createController, the UseCase and all the repositories passed to the UseCase) 
+   2. The CreateController class handles controller functions such as Request params validation and mapping to DTO.
+   3. The UseCase handles to Application logic of the controller.

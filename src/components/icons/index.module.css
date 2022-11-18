@@ -1,0 +1,18 @@
+.icon {
+  text-align: center;
+  cursor: pointer;
+  height: 2.5em;
+  width: 2.5em;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+.active, .icon:hover {
+  /* background-color: #404040; */
+  @apply rounded-lg;
+  background-color: #2b2b2b;
+}
