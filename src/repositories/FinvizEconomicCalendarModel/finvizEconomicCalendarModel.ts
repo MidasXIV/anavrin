@@ -40,7 +40,7 @@ export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalen
           .map((_index, col) => {
             if (_index === IMPACT_INDEX) {
               const imapctSrc = $(col).children("img").eq(0).attr("src");
-              return imapctSrc ? imapctSrc.split("_")[1].split(".")[0] : "";
+              return imapctSrc ? imapctSrc.split("_")[1]?.split(".")[0] : "";
             }
             return $(col).text();
           })
@@ -90,6 +90,7 @@ export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalen
       const finvizEconomicCalendarPageParser = cheerio.load(finvizEconomicCalendarPage);
       events = this.parseCalendar(finvizEconomicCalendarPageParser);
     } catch (e) {
+      console.error(e);
       return Result.fail({ type: "UnableToParseData" });
     }
 

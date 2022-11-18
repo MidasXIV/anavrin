@@ -6,7 +6,7 @@ interface StockSummaryInterface {
   paymentDate: string;
   exDividendDate: string;
   dividendAmount: number;
-  dividendYeild: string;
+  dividendYield: string;
   dividendPayoutRatio: number;
 }
 

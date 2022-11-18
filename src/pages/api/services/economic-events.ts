@@ -13,15 +13,16 @@ const handlers = {
         const resultError = Result.getError(result);
         switch (resultError.type) {
           case "UnableToParseData":
-            res.status(500).json(result);
+            res.status(500).json(resultError);
             break;
           case "UnableToFetchData":
-            res.status(500).json(result);
+            res.status(500).json(resultError);
             break;
           default:
-            res.status(500).json(result);
+            res.status(500).json(resultError);
             break;
         }
+        console.log(resultError);
       }
 
       const resultSuccess = Result.getValue(result);

@@ -56,7 +56,7 @@ const StockInformationTable = ({ stock }) => (
       </div>
       <div className="flex w-7/12">
         <div className="flex-1 px-3 text-left font-semibold">Dividend yield</div>
-        <div className="pl-3 text-right">{stock?.dividendYeild || "0%"}</div>
+        <div className="pl-3 text-right">{stock?.dividendYield || "0%"}</div>
       </div>
     </div>
   </div>

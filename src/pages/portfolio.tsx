@@ -58,7 +58,12 @@ const Portfolio: FC = () => {
           </div>
           {/* Occupy Max remaining space and scroll only table */}
           <div className="my-2 flex-1 overflow-auto">
-            <PortfolioTable />
+            <PortfolioTable
+              tableSchema={undefined}
+              data={undefined}
+              loading={undefined}
+              expandableComponent={undefined}
+            />
           </div>
         </div>
       </DefaultLayout>

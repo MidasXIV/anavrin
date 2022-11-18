@@ -3,7 +3,7 @@
  */
 import axios from "axios";
 
-class YahooFinanceRepo implements DividendInfoScraper {
+class YahooFinanceModel implements DividendInfoScraper {
   nameQuerySelector = "h1.D\\(ib\\)";
 
   quoteQuerySelector = ".Fz\\(36px\\)";
@@ -76,7 +76,7 @@ class YahooFinanceRepo implements DividendInfoScraper {
     let paymentDate: string = defaultStringValue;
     let exDividendDate: string = defaultStringValue;
     let dividendAmount: number = defaultNumericValue;
-    let dividendYeild: string = defaultStringValue;
+    let dividendYield: string = defaultStringValue;
     let dividendPayoutRatio: number = defaultNumericValue;
 
     $(this.stockSummaryQuerySelector)
@@ -110,7 +110,7 @@ class YahooFinanceRepo implements DividendInfoScraper {
           case "Forward Dividend & Yield": {
             const dividendValueandYeild = rowValue.replace("(", "").replace(")", "").split(" ");
             dividendAmount = parseFloat(dividendValueandYeild[0]);
-            [, dividendYeild] = dividendValueandYeild;
+            [, dividendYield] = dividendValueandYeild;
             break;
           }
           default:
@@ -130,7 +130,7 @@ class YahooFinanceRepo implements DividendInfoScraper {
       paymentDate,
       exDividendDate,
       dividendAmount,
-      dividendYeild,
+      dividendYield,
       dividendPayoutRatio
     };
   }
@@ -162,18 +162,22 @@ class YahooFinanceRepo implements DividendInfoScraper {
     const AnnualDividends: AnnualDividendInterface = {};
 
     DividendHistory.forEach((DividendHistoryItem: DividendInformationItemInterface) => {
-      const dividendYear = new Date(DividendHistoryItem.date).getFullYear().toString();
+      const { date, dividend } = DividendHistoryItem;
+      const dividendYear = new Date(date).getFullYear().toString();
 
       if (dividendYear in AnnualDividends) {
-        AnnualDividends[dividendYear] += DividendHistoryItem.dividend;
+        AnnualDividends[dividendYear] += dividend;
       } else {
-        AnnualDividends[dividendYear] = DividendHistoryItem.dividend;
+        AnnualDividends[dividendYear] = dividend;
       }
     });
 
     /** if dividendAmount is not provided remove it from Annual Dividend Object */
     if (dividendAmount) {
       AnnualDividends[currentYear] = dividendAmount;
+    } else if (dividendAmount === 0) {
+      // Usually the case of DFM stocks
+      // Do nothing.
     } else {
       delete AnnualDividends[currentYear];
     }
@@ -263,4 +267,4 @@ class YahooFinanceRepo implements DividendInfoScraper {
   }
 }
 
-export default YahooFinanceRepo;
+export default YahooFinanceModel;
