@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import PortfolioTable from "../components/portfolio-table";
-import useModal from "../hooks/useModal";
-import DefaultLayout from "../layouts/default";
-import { DFMDividendExpandableComponent, DFMDividendPortfolioSchema } from "../lib/table-schema";
-import getStockInformation from "../util/getStockInformation";
+import PortfolioTable from "../../components/portfolio-table";
+import useModal from "../../hooks/useModal";
+import DefaultLayout from "../../layouts/default";
+import { DFMDividendExpandableComponent, DFMDividendPortfolioSchema } from "../../lib/table-schema";
+import getStockInformation from "../../util/getStockInformation";
 
-const Portfolio: FC = () => {
+const SimulatorDFM: FC = () => {
   const { isShowing, toggle } = useModal(false);
   const [tableData, setTableData] = useState([]);
   const [dataBeingFetched, setDataBeingFetched] = useState(true);
@@ -73,7 +73,7 @@ const Portfolio: FC = () => {
     <>
       <DefaultLayout
         title="Simulator"
-        sidebar="Simulator"
+        sidebar="simulator"
         description="You can see your portfolios estimated value & progress below"
       >
         <div className="portfolio-primary-panel flex flex-col overflow-y-auto">
@@ -92,4 +92,4 @@ const Portfolio: FC = () => {
   );
 };
 
-export default Portfolio;
+export default SimulatorDFM;
