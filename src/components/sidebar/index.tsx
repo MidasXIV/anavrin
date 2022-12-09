@@ -36,7 +36,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => (
 
       <ul className="nav flex flex-row sm:flex-col">
         <li className={cn(styles.icon, { [styles.active]: select === "dashboard" })}>
-          <Link href="/">
+          <Link href="/dashboard">
             <a>
               <svg
                 className="bi bi-house icon"
