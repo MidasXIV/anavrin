@@ -1,6 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import cn from "classnames";
 import fetchEconomicEvents from "../../util/fetchEconomicEvents";
+import {
+  buildEventDate,
+  formatDateString,
+  getTimeDifferenceString
+} from "../../util/timeAndDateHelpers";
 
 const LoadingListItem = () => (
   <li>
@@ -38,9 +43,12 @@ const LoadingEconomicEventDayBlock = () => (
   </div>
 );
 
-const ListItem = ({ event }: { event: IEcnomicEvent }) => {
+const ListItem = ({ event, day }: { event: IEcnomicEvent; day: IEcnomicCalandarItemDay }) => {
   const { actual, expected, for: _for, impact, prior, release, time } = event;
-
+  const eventDate = buildEventDate(day, time);
+  const eventDateString = formatDateString(eventDate);
+  const currentDate = new Date();
+  const timeDifferenceString = getTimeDifferenceString(eventDate, currentDate);
   return (
     <li>
       <a
@@ -50,7 +58,7 @@ const ListItem = ({ event }: { event: IEcnomicEvent }) => {
         <div className="w-full">
           <div className="text-left text-xs font-semibold">
             {/* TODO: make the time remaining dynamic */}
-            {time} <span>( 2 hours to go )</span>
+            {eventDateString} <span>( {timeDifferenceString} )</span>
           </div>
           <div className="flex flex-row justify-between py-2 text-base font-normal text-gray-600 dark:text-gray-400">
             <span className="text-2xl font-medium text-gray-900 dark:text-white">{release} </span>
@@ -94,7 +102,7 @@ const EconomicEventDayBlock = ({ event }: { event: IEcnomicCalandarItem }) => {
       <time className="text-lg font-semibold text-gray-900 dark:text-white">{day}</time>
       <ol className="divider-gray-200 mt-3 divide-y dark:divide-gray-700">
         {events.map((economicEvent, index) => (
-          <ListItem key={`economic-event-${index + 1}`} event={economicEvent} />
+          <ListItem key={`economic-event-${index + 1}`} event={economicEvent} day={day} />
         ))}
       </ol>
     </div>

@@ -9,8 +9,10 @@ const Overview: FC = () => (
       sidebar="overview"
       description="You can see your portfolios estimated value & progress below"
     >
-      <div className="w-full p-4 md:w-1/3">
-        <EconomicEventsPanel />
+      <div className="flex w-full flex-1 flex-row overflow-auto rounded-t-lg">
+        <div className="w-full overflow-y-auto border border-r-2 p-4 md:w-1/3">
+          <EconomicEventsPanel />
+        </div>
       </div>
     </DefaultLayout>
   </>

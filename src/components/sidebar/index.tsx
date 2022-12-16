@@ -1,6 +1,7 @@
 import { FC } from "react";
 import cn from "classnames";
 import Link from "next/link";
+import { Divider, Menu, MenuItem } from "@mantine/core";
 import styles from "./index.module.css";
 
 type SidebarProps = {
@@ -35,7 +36,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => (
 
       <ul className="nav flex flex-row sm:flex-col">
         <li className={cn(styles.icon, { [styles.active]: select === "dashboard" })}>
-          <Link href="/">
+          <Link href="/dashboard">
             <a>
               <svg
                 className="bi bi-house icon"
@@ -91,22 +92,75 @@ const Sidebar: FC<SidebarProps> = ({ select }) => (
           </Link>
         </li>
         <li className={cn(styles.icon, { [styles.active]: select === "simulator" })}>
-          <Link href="/simulator">
-            <svg
-              className="bi bi-collection icon"
-              width="1em"
-              height="1em"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
+          <Menu
+            // trigger="hover"
+            size="xs"
+            position="right"
+            withArrow
+            placement="center"
+            controlRefProp="ref"
+            control={
+              <button className="relative inline-block" type="button">
+                <svg
+                  className="bi bi-collection icon"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            }
+            gutter={25}
+          >
+            <MenuItem
+              icon={
+                <svg
+                  className="bi bi-collection icon"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              }
             >
-              <path
-                fillRule="evenodd"
-                d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </Link>
+              <Link href="/simulator/dubai-financial-markets">DFM</Link>
+            </MenuItem>
+            <Divider />
+            <MenuItem
+              icon={
+                <svg
+                  className="bi bi-collection icon"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              }
+            >
+              <Link href="/simulator/cryptocurrency">Crypto</Link>
+            </MenuItem>
+          </Menu>
         </li>
       </ul>
 
