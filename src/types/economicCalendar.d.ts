@@ -13,7 +13,7 @@ interface IEcnomicCalandarItem {
   events: Array<IEcnomicEvent>;
 }
 
-type IEcnomicCalandarItemDay = Pick<IEcnomicCalandarItem, "day">;
+type IEcnomicCalandarItemDay = IEcnomicCalandarItem["day"];
 
 type UnableToFetchData = {
   type: "UnableToFetchData";
