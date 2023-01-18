@@ -139,8 +139,14 @@ const SimulatorCryptoCurrency: FC = () => {
         <div className="bg-gray-200 p-6 shadow-md">
           <CryptocurrencySearchBox setCyptocurrency={setSelectedCrypto} />
         </div>
-        {selectedCrypto && coinInfo ? <CoinInfo coin={coinInfo} /> : null}
-        <Ranker items={cryptoWatchlist} />
+        {selectedCrypto && coinInfo ? (
+          <div className="flex-1 overflow-auto">
+            <CoinInfo coin={coinInfo} />
+          </div>
+        ) : null}
+        <div className="bottom-0 h-20 border-t-2 border-charcoal-900">
+          <Ranker items={cryptoWatchlist} />
+        </div>
       </DefaultLayout>
     </>
   );
