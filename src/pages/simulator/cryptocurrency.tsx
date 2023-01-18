@@ -4,6 +4,7 @@ import Ranker from "../../components/ranker";
 import DefaultLayout from "../../layouts/default";
 import { fetchCoinInfo } from "../../util/cryptocurrencyService";
 
+// TODO: Move it to API
 const calcScore = coin_info => {
   let score = 0;
   const price_change_24h_weight = 0.3;
