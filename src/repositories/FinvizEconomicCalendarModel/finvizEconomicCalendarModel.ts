@@ -15,7 +15,7 @@ export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalen
    **************************************************************************************** */
 
   private async fetchFinvizEcnomicCalendarPage() {
-    return makeRequest(this.baseURL);
+    return makeRequest(this.baseURL, true);
   }
 
   private parseCalendar($: cheerio.Selector): Array<IEcnomicCalandarItem> {
