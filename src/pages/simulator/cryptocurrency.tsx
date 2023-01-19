@@ -4,23 +4,6 @@ import Ranker from "../../components/ranker";
 import DefaultLayout from "../../layouts/default";
 import { fetchCoinInfo } from "../../util/cryptocurrencyService";
 
-// TODO: Move it to API
-const calcScore = coin_info => {
-  let score = 0;
-  const price_change_24h_weight = 0.3;
-  const price_change_7d_weight = 0.2;
-  const price_change_14d_weight = 0.1;
-  const market_cap_weight = 0.2;
-  const trading_volume_weight = 0.2;
-
-  score += coin_info.market_data.price_change_percentage_24h * price_change_24h_weight;
-  score += coin_info.market_data.price_change_percentage_7d * price_change_7d_weight;
-  score += coin_info.market_data.price_change_percentage_14d * price_change_14d_weight;
-  score += Math.log10(coin_info.market_data.market_cap.usd) * market_cap_weight;
-  score += Math.log10(coin_info.market_data.total_volume.usd) * trading_volume_weight;
-  return score;
-};
-
 const CoinInfo = ({ coin }) => (
   <div className="flex flex-col overflow-y-scroll bg-white p-4 shadow-md sm:flex-row">
     <div className="flex w-full flex-col justify-between rounded-lg bg-charcoal-900 p-4 text-gray-100 md:w-1/2 lg:w-1/4">
@@ -63,9 +46,9 @@ const CoinInfo = ({ coin }) => (
       <div className="mt-4 rounded-lg">
         <p className="py-2 text-sm font-medium">Categories:</p>
         <div className="flex flex-wrap">
-          {coin.categories.map((category, index) => (
+          {coin.categories.map(category => (
             <span
-              key={index}
+              key={`cetegory-${category}`}
               className="mr-2 mb-2 rounded-lg bg-charcoal-300 p-2 text-xs font-medium"
             >
               {category}
@@ -117,7 +100,6 @@ const SimulatorCryptoCurrency: FC = () => {
         return;
       }
       const data = await fetchCoinInfo(selectedCrypto);
-      data.anavrin_score = calcScore(data);
       setCoinInfo(data);
 
       const isSelectedCryptoInWatchlist = cryptoWatchlist.find(
