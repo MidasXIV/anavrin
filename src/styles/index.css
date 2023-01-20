@@ -7,12 +7,14 @@
 
 .dashboard-primary-panel {
   @apply w-full sm:w-8/12 bg-gray-300 p-2 border-r border-gray-400;
+  transition: width 0.5s ease;
 }
 
 .dashboard-secondary-panel {
   @apply sm:w-4/12 bg-gray-200 p-2; 
   @apply hidden sm:block;
   background-color: #eaeaea;
+  transition: width 0.5s ease;
 }
 
 .portfolio-primary-panel {
