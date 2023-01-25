@@ -4,9 +4,16 @@ import styles from "./index.module.css";
 
 type PortfolioOptionsProps = {
   openAddStockModal: () => void;
+  togglePortfolioAnalysisPanel: () => void;
 };
 
-const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
+// TODO: Take in schema and generate layout based on Schema
+// Solves hardcoding buttons and their functionality.
+
+const PortfolioOptions: FC<PortfolioOptionsProps> = ({
+  openAddStockModal,
+  togglePortfolioAnalysisPanel
+}) => (
   <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 px-4 align-middle">
     <ul className="nav flex flex-row">
       <button type="button" className={styles.icon} onClick={openAddStockModal}>
@@ -62,20 +69,21 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
       </button>
     </ul>
 
+    {/* Transistion panel -> Open portfolio analysis panel */}
     <ul className="nav hidden flex-row md:flex">
-      <button type="button" className={styles.icon}>
+      <button type="button" className={styles.icon} onClick={togglePortfolioAnalysisPanel}>
         <svg
-          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 15 15"
           fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-8"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1"
-            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+            d="M4.81812 4.68161C4.99386 4.85734 4.99386 5.14227 4.81812 5.318L3.08632 7.0498H11.9135L10.1817 5.318C10.006 5.14227 10.006 4.85734 10.1817 4.68161C10.3575 4.50587 10.6424 4.50587 10.8181 4.68161L13.3181 7.18161C13.4939 7.35734 13.4939 7.64227 13.3181 7.818L10.8181 10.318C10.6424 10.4937 10.3575 10.4937 10.1817 10.318C10.006 10.1423 10.006 9.85734 10.1817 9.68161L11.9135 7.9498H3.08632L4.81812 9.68161C4.99386 9.85734 4.99386 10.1423 4.81812 10.318C4.64239 10.4937 4.35746 10.4937 4.18173 10.318L1.68173 7.818C1.50599 7.64227 1.50599 7.35734 1.68173 7.18161L4.18173 4.68161C4.35746 4.50587 4.64239 4.50587 4.81812 4.68161Z"
+            fill="currentColor"
+            fillRule="evenodd"
+            clipRule="evenodd"
           />
         </svg>
       </button>
