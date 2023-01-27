@@ -1,12 +1,35 @@
-import { FC } from "react";
-import AddStockModal from "../components/add-stock-modal";
-import PortfolioOptions from "../components/portfolio-options";
-import PortfolioTable from "../components/portfolio-table";
-import useModal from "../hooks/useModal";
+import { Tab, Tabs } from "@mantine/core";
+import dynamic from "next/dynamic";
+import { FC, useState } from "react";
+import LoadingForm from "../components/exchanges-form/loading";
 import DefaultLayout from "../layouts/default";
+import PortfolioLayout from "../layouts/portfolio";
+
+const DummyPortfolio = dynamic(() => import("../layouts/portfolio"), {
+  loading: LoadingForm
+});
 
 const Portfolio: FC = () => {
-  const { isShowing, toggle } = useModal(false);
+  // Fetches portfolios of user
+  const [tabs, setTabs] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
+  function handleTabChange(tabIndex: number) {
+    console.log(tabIndex, tabs);
+    const dummyVal = 2;
+    const PortfolioLimit = 2;
+
+    const lastIndex = tabs + dummyVal;
+    // last tab is clicked.
+    if (tabIndex === lastIndex - 1) {
+      if (tabs >= PortfolioLimit) {
+        console.log("Max Portfolios created");
+        return;
+      }
+      setTabs(tabs + 1);
+    } else {
+      setActiveTab(tabIndex);
+    }
+  }
   return (
     <>
       <DefaultLayout
@@ -14,57 +37,34 @@ const Portfolio: FC = () => {
         sidebar="portfolio"
         description="You can see your portfolios estimated value & progress below"
       >
-        <AddStockModal isShowing={isShowing} cancel={toggle} />
         <div className="portfolio-primary-panel flex flex-col overflow-y-auto">
-          <div className="flex h-20 flex-row">
-            <div className="flex h-full w-2/3 flex-col items-center bg-red-100 p-2 md:flex-row md:justify-evenly md:p-4">
-              <div className="flex w-full flex-col">
-                <span className="m-1 hidden text-xs uppercase text-gray-700 md:block">
-                  INVESTED AMOUNT
-                </span>
-                <div className="flex w-full items-end">
-                  <span className="block text-xl leading-none text-gray-800 md:text-3xl">
-                    22.325,50
-                  </span>
-                  {/* <span className="block leading-5 text-sm ml-4 text-green-500">
-                    {" "}
-                    {2.325 - 2.215 < 0 ? "▼" : "▲"} {(2.325 - 2.215).toFixed(3)}(
-                    {((2.325 / 2.215) * 100 - 100).toFixed(3)} %)
-                  </span> */}
-                </div>
-              </div>
-              <div className="flex w-full flex-col md:flex-row md:justify-evenly">
-                <div className="flex flex-row justify-between md:flex-col">
-                  <span className="m-1 text-xs uppercase  text-gray-700">PROFIT</span>
-                  <div className="flex md:w-full md:items-end">
-                    <span className="m-1 block text-xs leading-none text-gray-800 md:m-0 md:text-3xl">
-                      22.325,50
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-row justify-between md:flex-col">
-                  <span className="m-1 text-xs uppercase  text-gray-700">PORTFOLIO VALUE</span>
-                  <div className="flex md:w-full md:items-end">
-                    <span className="m-1 block text-xs leading-none text-gray-800 md:m-0 md:text-3xl">
-                      22.325,50
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-1/3">
-              <PortfolioOptions openAddStockModal={toggle} />
-            </div>
-          </div>
-          {/* Occupy Max remaining space and scroll only table */}
-          <div className="my-2 flex-1 overflow-auto">
-            <PortfolioTable
-              tableSchema={undefined}
-              data={undefined}
-              loading={undefined}
-              expandableComponent={undefined}
+          <Tabs active={activeTab} onTabChange={handleTabChange}>
+            <Tab label="Portfolio 1">
+              {/* <PortfolioLayout /> */}
+              <DummyPortfolio />
+            </Tab>
+            {new Array(tabs).fill(0).map((item, key) => (
+              <Tab label={`Portfolio ${key}`}>Messages tab content</Tab>
+            ))}
+            <Tab
+              icon={
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 15 15"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z"
+                    fill="currentColor"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              }
             />
-          </div>
+          </Tabs>
         </div>
       </DefaultLayout>
     </>
