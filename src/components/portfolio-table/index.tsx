@@ -317,17 +317,18 @@ const customStyles2 = {
   // },
   rows: {
     style: {
-      backgroundColor: "rgb(230, 244, 244)",
+      minHeight: "36px",
+      backgroundColor: "rgba(230, 244, 244, 0)",
       borderBottomColor: "#FFFFFF",
       borderRadius: "5px",
       // outline: "1px solid #FFFFFF",
       marginBottom: "5px"
     },
     highlightOnHoverStyle: {
-      backgroundColor: "rgb(230, 244, 244)",
-      borderBottomColor: "#FFFFFF",
-      borderRadius: "5px",
-      outline: "1px solid #FFFFFF"
+      backgroundColor: "rgb(230, 244, 244, 0.5)",
+      // borderBottomColor: "#FFFFFF",
+      borderRadius: "5px"
+      // outline: "1px solid #FFFFFF"
     }
   }
   // cells: {
