@@ -34,7 +34,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
       </button>
     </ul>
 
-    <ul className="nav hidden flex-row space-x-5 md:flex">
+    <ul className="nav hidden flex-row space-x-5 xl:flex">
       <button type="button" className={styles.icon}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
     </ul>
 
     {/* Transistion panel -> Open portfolio analysis panel */}
-    <ul className="nav hidden flex-row md:flex">
+    <ul className="nav hidden flex-row xl:flex">
       <button type="button" className={styles.icon} onClick={togglePortfolioAnalysisPanel}>
         <svg
           width="24"
@@ -88,7 +88,8 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
         </svg>
       </button>
     </ul>
-    <ul className="nav flex flex-row md:hidden">
+    {/* Options */}
+    <ul className="nav flex flex-row xl:hidden">
       <button type="button" className={styles.icon}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
