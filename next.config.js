@@ -12,7 +12,12 @@ module.exports = withPWA({
     customWorkerDir: "src/service-worker"
   },
   images: {
-    domains: ["images.unsplash.com", "lh3.googleusercontent.com", "res.cloudinary.com"]
+    domains: [
+      "images.unsplash.com",
+      "lh3.googleusercontent.com",
+      "res.cloudinary.com",
+      "assets.coingecko.com"
+    ]
   },
 
   swcMinify: true,
