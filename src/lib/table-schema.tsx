@@ -1,4 +1,6 @@
 import { Code } from "@mantine/core";
+import Image from "next/image";
+import cn from "classnames";
 import { Media, TableColumn } from "react-data-table-component";
 
 type DividendDataRow = {
@@ -17,6 +19,19 @@ type DividendDataRow = {
   dividendYield: string;
   yieldOnCost: string;
   income: string;
+};
+
+type CryptoDataRow = {
+  title: string;
+  symbol: string;
+  holdings: string;
+  marketPrice: string;
+  avgPrice: string; // holdings / initial investment
+  costBasis: string;
+  marketValue: string; // holdings * marketPrice
+  iconSrc: string;
+  change: number;
+  cell?: () => void;
 };
 
 const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
@@ -230,4 +245,93 @@ const DFMDividendExpandableComponent: ({
   return <Code block>{JSON.stringify(data.AnnualDividends, null, 2)}</Code>;
 };
 
-export { DividendPortfolioSchema, DFMDividendPortfolioSchema, DFMDividendExpandableComponent };
+const CryptoPortfolioAssetComponent = (row: CryptoDataRow, index: number, column: any, id: any) => (
+  <div className="flex flex-row">
+    <img
+      className="mr-2 inline-flex h-5 w-5 rounded-full bg-gray-900"
+      src={row.iconSrc}
+      alt={row.title}
+    />
+    <h2 className="text-xs font-medium">{row.title}</h2>
+  </div>
+);
+
+const CryptoPortfolioValueComponent = (row: CryptoDataRow, index: number, column: any, id: any) => {
+  const value = (row.marketPrice * row.holdings).toFixed(2);
+  const PnL = (value - row.costBasis).toFixed(2);
+  return (
+    <div className="display: flex w-full space-x-2 px-2">
+      <div className="w-1/2 text-right">${value}</div>
+      <div className="w-1/2 text-left">
+        <span className={`font-bold ${PnL >= 0 ? "text-green-500" : "text-red-500"}`}>
+          {PnL >= 0 ? "+" : "-"}
+          {Math.abs(PnL)}
+        </span>
+      </div>
+    </div>
+  );
+};
+
+const CryptoPortfolioMarketPRiceComponent = (
+  row: CryptoDataRow,
+  index: number,
+  column: any,
+  id: any
+) => (
+  <div className="display: flex w-full space-x-2 px-2">
+    <div className="w-1/2 text-right">${row.marketPrice}</div>
+    <div className="w-1/2 text-left">
+      <span className={`font-bold ${row.change >= 0 ? "text-green-500" : "text-red-500"}`}>
+        {row.change >= 0 ? "+" : "-"}
+        {Math.abs(row.change)}%
+      </span>
+    </div>
+  </div>
+);
+
+const CryptoPortfolioSchema: TableColumn<CryptoDataRow>[] = [
+  {
+    name: "Asset",
+    sortable: false,
+    // width: "300px",
+    selector: row => row.title,
+    cell: CryptoPortfolioAssetComponent
+    // style: { border: "1px solid" }
+  },
+  {
+    name: "Price",
+    selector: row => row.marketPrice,
+    center: true,
+    compact: true,
+    sortable: true,
+    // grow: 10,
+    cell: CryptoPortfolioMarketPRiceComponent
+    // width: "70px"
+    // style: { border: "1px solid" }
+  },
+  {
+    name: "Holdings",
+    selector: row => row.holdings,
+    // compact: true,
+    // width: "150px",
+    sortable: true,
+    center: true
+    // style: { border: "1px solid" }
+  },
+  {
+    name: "Value",
+    selector: row => row.marketValue,
+    compact: true,
+    // width: "70px",
+    center: true,
+    cell: CryptoPortfolioValueComponent
+    // style: { border: "1px solid" }
+  }
+];
+
+export {
+  DividendPortfolioSchema,
+  DFMDividendPortfolioSchema,
+  DFMDividendExpandableComponent,
+  CryptoPortfolioSchema
+};
