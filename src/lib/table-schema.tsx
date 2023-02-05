@@ -24,11 +24,11 @@ type DividendDataRow = {
 type CryptoDataRow = {
   title: string;
   symbol: string;
-  holdings: string;
-  marketPrice: string;
-  avgPrice: string; // holdings / initial investment
-  costBasis: string;
-  marketValue: string; // holdings * marketPrice
+  holdings: number;
+  marketPrice: number;
+  avgPrice: number; // holdings / initial investment
+  costBasis: number;
+  marketValue: number; // holdings * marketPrice
   iconSrc: string;
   change: number;
   cell?: () => void;
@@ -245,20 +245,34 @@ const DFMDividendExpandableComponent: ({
   return <Code block>{JSON.stringify(data.AnnualDividends, null, 2)}</Code>;
 };
 
-const CryptoPortfolioAssetComponent = (row: CryptoDataRow, index: number, column: any, id: any) => (
-  <div className="flex flex-row">
-    <img
-      className="mr-2 inline-flex h-5 w-5 rounded-full bg-gray-900"
-      src={row.iconSrc}
-      alt={row.title}
-    />
-    <h2 className="text-xs font-medium">{row.title}</h2>
-  </div>
-);
+const CryptoPortfolioAssetComponent = (
+  row: CryptoDataRow,
+  index: number,
+  column: any,
+  id: any
+): JSX.Element => {
+  const { iconSrc, title } = row;
+  return (
+    <div className="flex flex-row">
+      <img
+        className="mr-2 inline-flex h-5 w-5 rounded-full bg-gray-900"
+        src={iconSrc}
+        alt={title}
+      />
+      <h2 className="text-xs font-medium">{title}</h2>
+    </div>
+  );
+};
 
-const CryptoPortfolioValueComponent = (row: CryptoDataRow, index: number, column: any, id: any) => {
-  const value = (row.marketPrice * row.holdings).toFixed(2);
-  const PnL = (value - row.costBasis).toFixed(2);
+const CryptoPortfolioValueComponent = (
+  row: CryptoDataRow,
+  index: number,
+  column: any,
+  id: any
+): JSX.Element => {
+  const { marketPrice, holdings, costBasis } = row;
+  const value = parseFloat((marketPrice * holdings).toFixed(2));
+  const PnL = parseFloat((value - costBasis).toFixed(2));
   return (
     <div className="display: flex w-full space-x-2 px-2">
       <div className="w-1/2 text-right">${value}</div>
@@ -277,17 +291,20 @@ const CryptoPortfolioMarketPRiceComponent = (
   index: number,
   column: any,
   id: any
-) => (
-  <div className="display: flex w-full space-x-2 px-2">
-    <div className="w-1/2 text-right">${row.marketPrice}</div>
-    <div className="w-1/2 text-left">
-      <span className={`font-bold ${row.change >= 0 ? "text-green-500" : "text-red-500"}`}>
-        {row.change >= 0 ? "+" : "-"}
-        {Math.abs(row.change)}%
-      </span>
+): JSX.Element => {
+  const { marketPrice, change } = row;
+  return (
+    <div className="display: flex w-full space-x-2 px-2">
+      <div className="w-1/2 text-right">${marketPrice}</div>
+      <div className="w-1/2 text-left">
+        <span className={`font-bold ${change >= 0 ? "text-green-500" : "text-red-500"}`}>
+          {change >= 0 ? "+" : "-"}
+          {Math.abs(change)}%
+        </span>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const CryptoPortfolioSchema: TableColumn<CryptoDataRow>[] = [
   {
