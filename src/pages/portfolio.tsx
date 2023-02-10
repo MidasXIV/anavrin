@@ -12,6 +12,10 @@ const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm
 });
 
+const PortfolioComponentMapper = ({ portfolioType }) => (
+  <LazyLoadPortfolio portfolioType={portfolioType} />
+);
+
 const Portfolio: FC = () => {
   // Fetches portfolios of user
   const [tabs, setTabs] = useState(0);
@@ -64,8 +68,7 @@ const Portfolio: FC = () => {
         <div className="portfolio-primary-panel flex flex-col overflow-y-auto">
           <Tabs active={activeTab} onTabChange={handleTabChange}>
             <Tab label="Portfolio 1">
-              {/* <PortfolioLayout /> */}
-              <LazyLoadPortfolio portfolioType={PortfolioType.CRYPTO} />
+              <PortfolioComponentMapper portfolioType={PortfolioType.CRYPTO} />
             </Tab>
             {new Array(tabs).fill(0).map((item, key) => (
               <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>
