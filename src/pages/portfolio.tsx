@@ -1,11 +1,14 @@
 import { Tab, Tabs } from "@mantine/core";
 import dynamic from "next/dynamic";
 import { FC, useState } from "react";
+import AddNewPortfolioModal from "../components/add-new-portfolio-modal";
 import LoadingForm from "../components/exchanges-form/loading";
+import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal";
+import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
-import PortfolioLayout from "../layouts/portfolio";
+import PortfolioType from "../lib/portfolio-utils";
 
-const DummyPortfolio = dynamic(() => import("../layouts/portfolio"), {
+const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm
 });
 
@@ -13,6 +16,16 @@ const Portfolio: FC = () => {
   // Fetches portfolios of user
   const [tabs, setTabs] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
+  const { isShowing, toggle } = useModal(false);
+  const { isShowing: isMaxPortfolioWarningShowing, toggle: toggleMaxPortfolioWarningModal } =
+    useModal(false);
+
+  function onPortfolioTypeSelection(portfolioType: PortfolioType) {
+    console.log(`${portfolioType} selected`);
+    toggle();
+    setTabs(tabs + 1);
+  }
+
   function handleTabChange(tabIndex: number) {
     console.log(tabIndex, tabs);
     const dummyVal = 2;
@@ -22,10 +35,12 @@ const Portfolio: FC = () => {
     // last tab is clicked.
     if (tabIndex === lastIndex - 1) {
       if (tabs >= PortfolioLimit) {
+        toggleMaxPortfolioWarningModal();
         console.log("Max Portfolios created");
         return;
       }
-      setTabs(tabs + 1);
+      toggle();
+      // setTabs(tabs + 1);
     } else {
       setActiveTab(tabIndex);
     }
@@ -37,14 +52,25 @@ const Portfolio: FC = () => {
         sidebar="portfolio"
         description="You can see your portfolios estimated value & progress below"
       >
+        <AddNewPortfolioModal
+          isShowing={isShowing}
+          cancel={toggle}
+          onSelection={onPortfolioTypeSelection}
+        />
+        <MaxPortfolioReachedModal
+          isShowing={isMaxPortfolioWarningShowing}
+          cancel={toggleMaxPortfolioWarningModal}
+        />
         <div className="portfolio-primary-panel flex flex-col overflow-y-auto">
           <Tabs active={activeTab} onTabChange={handleTabChange}>
             <Tab label="Portfolio 1">
               {/* <PortfolioLayout /> */}
-              <DummyPortfolio />
+              <LazyLoadPortfolio portfolioType={PortfolioType.CRYPTO} />
             </Tab>
             {new Array(tabs).fill(0).map((item, key) => (
-              <Tab label={`Portfolio ${key}`}>Messages tab content</Tab>
+              <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>
+                Messages tab content
+              </Tab>
             ))}
             <Tab
               icon={
