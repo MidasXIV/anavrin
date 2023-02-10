@@ -8,7 +8,8 @@ import AddStockModal from "../../components/add-stock-modal";
 
 type PortfolioLayoutProps = {};
 
-const PortfolioLayout: FC<PortfolioLayoutProps> = ({}) => {
+// eslint-disable-next-line import/prefer-default-export
+export const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
   const { isShowing, toggle } = useModal(false);
   const [hide, setHide] = useState(false);
   return (
@@ -85,5 +86,3 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({}) => {
     </>
   );
 };
-
-export default PortfolioLayout;
