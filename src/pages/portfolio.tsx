@@ -6,16 +6,12 @@ import LoadingForm from "../components/exchanges-form/loading";
 import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal";
 import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
-import * as Layout from "../layouts/portfolio";
 import PortfolioType from "../lib/portfolio-utils";
 
-const LazyLoadPortfolio = dynamic<React.ComponentProps<typeof Layout.PortfolioLayout>>(
-  () => import("../layouts/portfolio").then(mod => mod.PortfolioLayout),
-  {
-    loading: LoadingForm,
-    ssr: false
-  }
-);
+const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
+  loading: LoadingForm,
+  ssr: false
+});
 
 const Portfolio: FC = () => {
   // Fetches portfolios of user
