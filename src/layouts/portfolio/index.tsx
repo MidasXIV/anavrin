@@ -5,11 +5,13 @@ import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
 import { DFMDividendPortfolioSchema } from "../../lib/table-schema";
 import AddStockModal from "../../components/add-stock-modal";
+import PortfolioType from "../../lib/portfolio-utils";
 
-type PortfolioLayoutProps = {};
+type PortfolioLayoutProps = {
+  portfolioType: PortfolioType;
+};
 
-// eslint-disable-next-line import/prefer-default-export
-export const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
+const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
   const { isShowing, toggle } = useModal(false);
   const [hide, setHide] = useState(false);
   return (
@@ -80,9 +82,11 @@ export const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => 
             "sm:hidden sm:max-w-0": hide
           })}
         >
-          Secondary Panel
+          Secondary Panel -LINK - {portfolioType}
         </div>
       </div>
     </>
   );
 };
+
+export default PortfolioLayout;
