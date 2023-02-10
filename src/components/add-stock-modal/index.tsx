@@ -4,6 +4,9 @@ import getStockInformation from "../../util/getStockInformation";
 import useStockInformation from "../../hooks/useStockInformation";
 import StockSearchCombobox from "../stock-search-combobox";
 import useStockSearch from "../../hooks/useStockSearch";
+import StockInformationTable from "./stock-information-table";
+import CryptocurrencySearchBox from "../cryptocurrency-search-box";
+import UtilityFooter from "./stock-modal-utility-footer";
 
 type AddStockModalProps = {
   isShowing: boolean;
@@ -16,95 +19,6 @@ enum SearchState {
   PENDING = "PENDING",
   FAILURE = "FAILURE"
 }
-
-const StockInformationTable = ({ stock }) => (
-  <div className="bg-gray-50 py-2 px-6 text-gray-600">
-    <div className="flex w-full text-xs">
-      <div className="flex w-5/12">
-        <div className="flex-1 pr-3 text-left font-semibold">Dividend</div>
-        <div className="flex-1 px-3 text-right">{stock?.dividendAmount || 0}</div>
-      </div>
-      <div className="flex w-7/12">
-        <div className="flex-1 px-3 text-left font-semibold">Payout Ratio</div>
-        <div className="flex-1 pl-3 text-right">{stock?.dividendPayoutRatio?.toFixed(3) || 0}</div>
-      </div>
-    </div>
-    <div className="flex w-full text-xs">
-      <div className="flex w-5/12">
-        <div className="flex-1 pr-3 text-left font-semibold">Price</div>
-        <div className="flex-1 px-3 text-right">{stock?.price || 0}</div>
-      </div>
-      <div className="flex w-7/12">
-        <div className="flex-1 px-3 text-left font-semibold">Market Cap</div>
-        <div className="flex-1 pl-3 text-right">{stock?.marketCap || 0}</div>
-      </div>
-    </div>
-    <div className="flex w-full text-xs">
-      <div className="flex w-5/12">
-        <div className="flex-1 pr-3 text-left font-semibold">beta</div>
-        <div className="px-3 text-right">{stock?.beta || 0}</div>
-      </div>
-      <div className="flex w-7/12">
-        <div className="flex-1 px-3 text-left font-semibold">P/E ratio</div>
-        <div className="pl-3 text-right">{stock?.peRatio || 0}</div>
-      </div>
-    </div>
-    <div className="flex w-full text-xs">
-      <div className="flex w-5/12">
-        <div className="flex-1 pr-3 text-left font-semibold">EPS</div>
-        <div className="px-3 text-right">{stock?.EPS || 0}</div>
-      </div>
-      <div className="flex w-7/12">
-        <div className="flex-1 px-3 text-left font-semibold">Dividend yield</div>
-        <div className="pl-3 text-right">{stock?.dividendYield || "0%"}</div>
-      </div>
-    </div>
-  </div>
-);
-
-const UtilityFooter = () => (
-  <dl className="hidden flex-row justify-between border-t border-gray-200 p-2 text-xs sm:flex">
-    <dt className="flex flex-row items-center space-x-2">
-      <kbd className="rounded-md bg-charcoal-400 p-2 text-sm text-gray-300">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="w-4"
-        >
-          <path
-            fillRule="evenodd"
-            d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </kbd>
-      <kbd className="rounded-md bg-charcoal-400 p-2 text-sm text-gray-300">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="w-4"
-        >
-          <path
-            fillRule="evenodd"
-            d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </kbd>
-      <p>to navigate.</p>
-    </dt>
-    <dt className="flex flex-row items-center space-x-2">
-      <kbd className="rounded-md bg-charcoal-400 py-1 px-3 text-sm text-gray-300">ENTER</kbd>
-      <p>to select.</p>
-    </dt>
-    <dt className="flex flex-row items-center space-x-2">
-      <kbd className="rounded-md bg-charcoal-400 py-1 px-3 text-sm text-gray-300">ESC</kbd>
-      <p>to cancel.</p>
-    </dt>
-  </dl>
-);
 
 const ButtonPanel = ({ cancel, formState, formValid }) => (
   // <div className="text-center md:text-right mt-4 md:flex md:justify-end">
