@@ -6,16 +6,14 @@ import LoadingForm from "../components/exchanges-form/loading";
 import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal";
 import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
-import * as Layout from "../layouts/portfolio";
 import PortfolioType from "../lib/portfolio-utils";
 
-const LazyLoadPortfolio = dynamic<React.ComponentProps<typeof Layout.PortfolioLayout>>(
-  () => import("../layouts/portfolio").then(mod => mod.PortfolioLayout),
-  {
-    loading: LoadingForm,
-    ssr: false
-  }
-);
+const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
+  loading: LoadingForm,
+  ssr: false
+});
+
+const PortfolioComponentMapper = props => <LazyLoadPortfolio {...props} />;
 
 const Portfolio: FC = () => {
   // Fetches portfolios of user
@@ -69,7 +67,7 @@ const Portfolio: FC = () => {
         <div className="portfolio-primary-panel flex flex-col overflow-y-auto">
           <Tabs active={activeTab} onTabChange={handleTabChange}>
             <Tab label="Portfolio 1">
-              <LazyLoadPortfolio portfolioType={PortfolioType.CRYPTO} />
+              <PortfolioComponentMapper portfolioType={PortfolioType.CRYPTO} />
             </Tab>
             {new Array(tabs).fill(0).map((item, key) => (
               <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>
