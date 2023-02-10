@@ -3,10 +3,15 @@ import { Group, Avatar, Text, Autocomplete } from "@mantine/core";
 import { fetchCoinList } from "../../util/cryptocurrencyService";
 
 type CryptocurrencySearchBoxProps = {
+  // eslint-disable-next-line react/require-default-props
+  hideHeader?: boolean;
   setCyptocurrency: Dispatch<SetStateAction<string>>;
 };
 
-const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({ setCyptocurrency }) => {
+const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({
+  hideHeader = false,
+  setCyptocurrency
+}) => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -53,7 +58,7 @@ const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({ setCyptocur
 
   return (
     <Autocomplete
-      label="Choose cryptocurrency"
+      label={`${hideHeader ? "" : "Choose cryptocurrency"}`}
       placeholder="Pick one"
       disabled={disabled}
       value={searchTerm}
@@ -61,6 +66,7 @@ const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({ setCyptocur
       onItemSubmit={token => {
         setCyptocurrency(token.id);
       }}
+      className="w-full"
       itemComponent={AutoCompleteItem}
       nothingFound="CoinGecko cannot find this token."
       limit={6}
