@@ -14,38 +14,34 @@ const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
 });
 
 const Portfolio: FC = () => {
-  // Fetches portfolios of user
-  const [tabs, setTabs] = useState(0);
+  const [tabCount, setTabCount] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
-  const { isShowing, toggle } = useModal(false);
+  const { isShowing: isCreatePortfolioModalShowing, toggle: toggleCreatePortfolioModal } =
+    useModal(false);
   const { isShowing: isMaxPortfolioWarningShowing, toggle: toggleMaxPortfolioWarningModal } =
     useModal(false);
 
-  function onPortfolioTypeSelection(portfolioType: PortfolioType) {
-    console.log(`${portfolioType} selected`);
-    toggle();
-    setTabs(tabs + 1);
-  }
+  const handlePortfolioTypeSelection = (portfolioType: PortfolioType) => {
+    toggleCreatePortfolioModal();
+    setTabCount(tabCount + 1);
+  };
 
-  function handleTabChange(tabIndex: number) {
-    console.log(tabIndex, tabs);
+  const handleTabChange = (tabIndex: number) => {
     const dummyVal = 2;
     const PortfolioLimit = 2;
 
-    const lastIndex = tabs + dummyVal;
-    // last tab is clicked.
-    if (tabIndex === lastIndex - 1) {
-      if (tabs >= PortfolioLimit) {
+    if (tabIndex === tabCount + dummyVal - 1) {
+      if (tabCount >= PortfolioLimit) {
         toggleMaxPortfolioWarningModal();
         console.log("Max Portfolios created");
         return;
       }
-      toggle();
-      // setTabs(tabs + 1);
+      toggleCreatePortfolioModal();
     } else {
       setActiveTab(tabIndex);
     }
-  }
+  };
+
   return (
     <>
       <DefaultLayout
@@ -54,9 +50,9 @@ const Portfolio: FC = () => {
         description="You can see your portfolios estimated value & progress below"
       >
         <AddNewPortfolioModal
-          isShowing={isShowing}
-          cancel={toggle}
-          onSelection={onPortfolioTypeSelection}
+          isShowing={isCreatePortfolioModalShowing}
+          cancel={toggleCreatePortfolioModal}
+          onSelection={handlePortfolioTypeSelection}
         />
         <MaxPortfolioReachedModal
           isShowing={isMaxPortfolioWarningShowing}
@@ -67,7 +63,7 @@ const Portfolio: FC = () => {
             <Tab label="Portfolio 1">
               <LazyLoadPortfolio portfolioType={PortfolioType.CRYPTO} />
             </Tab>
-            {new Array(tabs).fill(0).map((item, key) => (
+            {new Array(tabCount).fill(0).map((item, key) => (
               <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>
                 Messages tab content
               </Tab>
