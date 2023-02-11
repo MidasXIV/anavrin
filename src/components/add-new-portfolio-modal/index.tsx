@@ -1,7 +1,7 @@
 import { FC } from "react";
 import cn from "classnames";
 import { Transition } from "@mantine/core";
-import PortfolioType from "../../lib/portfolio-utils";
+import { PortfolioType } from "../../lib/portfolio-utils";
 
 type AddNewPortfolioModalProps = {
   isShowing: boolean;

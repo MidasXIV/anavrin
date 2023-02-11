@@ -3,9 +3,8 @@ import cn from "classnames";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
-import { DFMDividendPortfolioSchema } from "../../lib/table-schema";
 import AddStockModal from "../../components/add-stock-modal";
-import PortfolioType from "../../lib/portfolio-utils";
+import { getPortfolioTableSchema, PortfolioType } from "../../lib/portfolio-utils";
 
 type PortfolioLayoutProps = {
   portfolioType: PortfolioType;
@@ -14,6 +13,7 @@ type PortfolioLayoutProps = {
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
   const { isShowing, toggle } = useModal(false);
   const [hide, setHide] = useState(false);
+  const portfolioTableSchema = getPortfolioTableSchema(portfolioType);
   return (
     <>
       <AddStockModal isShowing={isShowing} cancel={toggle} />
@@ -70,7 +70,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
           {/* Occupy Max remaining space and scroll only table */}
           <div className="my-2 flex-1 overflow-auto">
             <PortfolioTable
-              tableSchema={DFMDividendPortfolioSchema}
+              tableSchema={portfolioTableSchema}
               data={undefined}
               loading={undefined}
               expandableComponent={undefined}

@@ -6,7 +6,7 @@ import LoadingForm from "../components/exchanges-form/loading";
 import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal";
 import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
-import PortfolioType from "../lib/portfolio-utils";
+import { PortfolioType } from "../lib/portfolio-utils";
 
 const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm,
