@@ -7,10 +7,13 @@ import useStockSearch from "../../hooks/useStockSearch";
 import StockInformationTable from "./stock-information-table";
 import CryptocurrencySearchBox from "../cryptocurrency-search-box";
 import UtilityFooter from "./stock-modal-utility-footer";
+import { AssetType, getAddAssetModalTitle } from "../../lib/portfolio-utils";
+import AddCryptoForm from "./add-crypto-form";
 
-type AddStockModalProps = {
+type AddAssetModalProps = {
   isShowing: boolean;
   cancel: () => void;
+  assetType: AssetType;
 };
 
 enum SearchState {
@@ -101,7 +104,7 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
   </div>
 );
 
-const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
+const AddAssetModal: FC<AddAssetModalProps> = ({ isShowing, cancel, assetType }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [stockQuantity, setStockQuantity] = useState("");
@@ -118,6 +121,7 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
   const [formState, setFormState] = useState(0);
   const [formValid, setFormValid] = useState(false);
 
+  const modalTitle = getAddAssetModalTitle(assetType);
   const isFormValid = () => {
     const isformValid =
       searchState === SearchState.SUCCESS && isStockQuantityValid && isStockSharesValid;
@@ -181,11 +185,11 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
       />
       <div className="fixed inset-x-0 bottom-0 z-50 mx-4 mb-4 rounded-lg bg-white p-2 shadow-lg md:relative md:mx-auto md:w-full md:max-w-lg">
         <div className="flex flex-col px-2 py-5 sm:px-4">
-          <h3 className="text-lg font-medium leading-6 text-gray-900">Stock Information</h3>
+          <h3 className="text-lg font-medium leading-6 text-gray-900">{modalTitle}</h3>
         </div>
         <div className="border-t border-gray-200 py-2">
           <dl>
-            <div className="bg-gray-50 p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
+            {/* <div className="bg-gray-50 p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
               <dt className="rounded-md bg-charcoal-400 py-2 px-4 text-sm font-semibold text-gray-400">
                 Ticker
               </dt>
@@ -230,19 +234,22 @@ const AddStockModal: FC<AddStockModalProps> = ({ isShowing, cancel }) => {
                   onChange={onStockSharesChange}
                 />
               </dd>
-            </div>
+            </div> */}
+
+            {/* <CryptocurrencySearchBox hideHeader setCyptocurrency={setSearchTerm} /> */}
+            <AddCryptoForm />
             {stock ? <StockInformationTable stock={stock} /> : null}
           </dl>
         </div>
 
-        <ButtonPanel cancel={cancel} formState={formState} formValid={formValid} />
+        {/* <ButtonPanel cancel={cancel} formState={formState} formValid={formValid} /> */}
         <UtilityFooter />
       </div>
     </div>
   );
 };
 
-export default AddStockModal;
+export default AddAssetModal;
 
 // reference
 /* https://tailwindcomponents.com/component/modal
