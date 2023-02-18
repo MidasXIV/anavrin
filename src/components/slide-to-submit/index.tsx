@@ -56,13 +56,13 @@ const SlideToSubmit: FC<SlideToSubmitProps> = ({ onSubmit }) => {
   return (
     <div
       aria-hidden="true"
-      className="relative flex h-12 flex-row items-center justify-between rounded-lg bg-charcoal-900 p-2 align-middle"
+      className="relative my-2 flex h-12 flex-row items-center justify-between rounded-lg bg-charcoal-900 p-2 align-middle"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       ref={trackRef}
     >
-      <div className="flex-1 text-center text-gray-600">
+      <div className="flex-1 text-center text-gray-500">
         {allowSubmit ? `Submitting` : `Drag the button to submit`}
       </div>
       <button
