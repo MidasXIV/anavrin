@@ -7,7 +7,7 @@ import styles from "./index.module.css";
 import TooltipWrapper from "../tooltip-wrapper";
 
 type PortfolioOptionsProps = {
-  openAddStockModal: () => void;
+  openAddAssetModal: () => void;
   togglePortfolioAnalysisPanel: () => void;
 };
 
@@ -15,13 +15,13 @@ type PortfolioOptionsProps = {
 // Solves hardcoding buttons and their functionality.
 
 const PortfolioOptions: FC<PortfolioOptionsProps> = ({
-  openAddStockModal,
+  openAddAssetModal,
   togglePortfolioAnalysisPanel
 }) => (
   <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 px-4 align-middle">
     <ul className="nav flex flex-row">
       <TooltipWrapper label="Add stock" color="orange">
-        <button type="button" className={styles.icon} onClick={openAddStockModal}>
+        <button type="button" className={styles.icon} onClick={openAddAssetModal}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
