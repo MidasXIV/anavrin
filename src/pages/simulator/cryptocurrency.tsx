@@ -136,7 +136,7 @@ const SimulatorCryptoCurrency: FC = () => {
         description="You can see your portfolios estimated value & progress below"
       >
         <div className="bg-gray-200 p-6 shadow-md">
-          <CryptocurrencySearchBox setCyptocurrency={setSelectedCrypto} />
+          <CryptocurrencySearchBox setCyptocurrency={token => setSelectedCrypto(token)} />
         </div>
         {selectedCrypto && coinInfo ? (
           <div className="flex-1 overflow-auto">

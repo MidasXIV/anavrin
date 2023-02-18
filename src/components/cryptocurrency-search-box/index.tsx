@@ -1,11 +1,11 @@
-import { useState, FC, useEffect, SetStateAction, Dispatch } from "react";
+import { useState, FC, useEffect } from "react";
 import { Group, Avatar, Text, Autocomplete } from "@mantine/core";
 import { fetchCoinList } from "../../util/cryptocurrencyService";
 
 type CryptocurrencySearchBoxProps = {
   // eslint-disable-next-line react/require-default-props
   hideHeader?: boolean;
-  setCyptocurrency: Dispatch<SetStateAction<string>>;
+  setCyptocurrency: (token) => void;
 };
 
 const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({
