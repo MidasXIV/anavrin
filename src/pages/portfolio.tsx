@@ -6,7 +6,7 @@ import LoadingForm from "../components/exchanges-form/loading";
 import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal";
 import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
-import { PortfolioType } from "../lib/portfolio-utils";
+import { AssetType } from "../lib/portfolio-utils";
 
 const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm,
@@ -21,7 +21,7 @@ const Portfolio: FC = () => {
   const { isShowing: isMaxPortfolioWarningShowing, toggle: toggleMaxPortfolioWarningModal } =
     useModal(false);
 
-  const handlePortfolioTypeSelection = (portfolioType: PortfolioType) => {
+  const handleAssetTypeSelection = (portfolioType: AssetType) => {
     toggleCreatePortfolioModal();
     setTabCount(tabCount + 1);
   };
@@ -52,16 +52,16 @@ const Portfolio: FC = () => {
         <AddNewPortfolioModal
           isShowing={isCreatePortfolioModalShowing}
           cancel={toggleCreatePortfolioModal}
-          onSelection={handlePortfolioTypeSelection}
+          onSelection={handleAssetTypeSelection}
         />
         <MaxPortfolioReachedModal
           isShowing={isMaxPortfolioWarningShowing}
           cancel={toggleMaxPortfolioWarningModal}
         />
-        <div className="portfolio-primary-panel flex flex-col overflow-y-auto">
+        <div className="portfolio-primary-panel flex h-full flex-col overflow-y-auto">
           <Tabs active={activeTab} onTabChange={handleTabChange}>
-            <Tab label="Portfolio 1">
-              <LazyLoadPortfolio portfolioType={PortfolioType.CRYPTO} />
+            <Tab label="Portfolio 1" className="min-h-full">
+              <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
             </Tab>
             {new Array(tabCount).fill(0).map((item, key) => (
               <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>

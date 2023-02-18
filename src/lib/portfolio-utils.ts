@@ -4,23 +4,39 @@ import {
   DividendPortfolioSchema
 } from "./table-schema";
 
-enum PortfolioType {
+enum AssetType {
   STOCK = "stock",
   CRYPTO = "crypto",
   DFM = "dfm"
 }
 
-const getPortfolioTableSchema = (portfolioType: PortfolioType) => {
+const getPortfolioTableSchema = (portfolioType: AssetType) => {
   switch (portfolioType) {
-    case PortfolioType.CRYPTO:
+    case AssetType.CRYPTO:
       return CryptoPortfolioSchema;
-    case PortfolioType.DFM:
+    case AssetType.DFM:
       return DFMDividendPortfolioSchema;
-    case PortfolioType.STOCK:
+    case AssetType.STOCK:
       return DividendPortfolioSchema;
     default:
       return DividendPortfolioSchema;
   }
 };
 
-export { PortfolioType, getPortfolioTableSchema };
+const getAddAssetModalTitle = (portfolioType: AssetType) => {
+  const cryptoModalTitle = "Add Cryptocurrency";
+  const DFMModalTitle = "Add DFM Stock";
+  const stockModalTitle = "Add Stock";
+  switch (portfolioType) {
+    case AssetType.CRYPTO:
+      return cryptoModalTitle;
+    case AssetType.DFM:
+      return DFMModalTitle;
+    case AssetType.STOCK:
+      return stockModalTitle;
+    default:
+      return stockModalTitle;
+  }
+};
+
+export { AssetType, getPortfolioTableSchema, getAddAssetModalTitle };

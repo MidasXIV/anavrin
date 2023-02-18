@@ -1,12 +1,12 @@
 import { FC } from "react";
 import cn from "classnames";
 import { Transition } from "@mantine/core";
-import { PortfolioType } from "../../lib/portfolio-utils";
+import { AssetType } from "../../lib/portfolio-utils";
 
 type AddNewPortfolioModalProps = {
   isShowing: boolean;
   cancel: () => void;
-  onSelection: (portfolioType: PortfolioType) => void;
+  onSelection: (portfolioType: AssetType) => void;
 };
 
 const AddNewPortfolioModal: FC<AddNewPortfolioModalProps> = ({
@@ -37,14 +37,14 @@ const AddNewPortfolioModal: FC<AddNewPortfolioModalProps> = ({
               <button
                 type="button"
                 className="h-24 w-24 rounded-lg border-4 border-gray-500 bg-charcoal-400 text-center font-mono font-semibold text-gray-300 hover:bg-green-300 hover:text-charcoal-900"
-                onClick={() => onSelection(PortfolioType.STOCK)}
+                onClick={() => onSelection(AssetType.STOCK)}
               >
                 Stock
               </button>
               <button
                 type="submit"
                 className="h-24 w-24 rounded-lg border-4 border-gray-500 px-5 py-3  font-mono font-semibold text-gray-500 hover:bg-yellow-300 hover:text-charcoal-900"
-                onClick={() => onSelection(PortfolioType.CRYPTO)}
+                onClick={() => onSelection(AssetType.CRYPTO)}
               >
                 Crypto
               </button>

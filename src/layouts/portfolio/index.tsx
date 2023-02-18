@@ -4,10 +4,10 @@ import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
 import AddStockModal from "../../components/add-stock-modal";
-import { getPortfolioTableSchema, PortfolioType } from "../../lib/portfolio-utils";
+import { getPortfolioTableSchema, AssetType } from "../../lib/portfolio-utils";
 
 type PortfolioLayoutProps = {
-  portfolioType: PortfolioType;
+  portfolioType: AssetType;
 };
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
