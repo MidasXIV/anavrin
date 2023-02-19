@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 const StockInformationTable: FC<any> = ({ stock }) => (
-  <div className="bg-gray-50 py-2 px-6 text-gray-600">
+  <div className="bg-gray-50 py-2 px-2 text-gray-600">
     <div className="flex w-full text-xs">
       <div className="flex w-5/12">
         <div className="flex-1 pr-3 text-left font-semibold">Dividend</div>

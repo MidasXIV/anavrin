@@ -5,23 +5,16 @@ import useStockInformation from "../../hooks/useStockInformation";
 import StockSearchCombobox from "../stock-search-combobox";
 import useStockSearch from "../../hooks/useStockSearch";
 import StockInformationTable from "./stock-information-table";
-import CryptocurrencySearchBox from "../cryptocurrency-search-box";
 import UtilityFooter from "./stock-modal-utility-footer";
 import { AssetType, getAddAssetModalTitle } from "../../lib/portfolio-utils";
 import AddCryptoForm from "./add-crypto-form";
+import AddStockForm from "./add-stock-form";
 
 type AddAssetModalProps = {
   isShowing: boolean;
   cancel: () => void;
   assetType: AssetType;
 };
-
-enum SearchState {
-  STABLE = "STABLE",
-  SUCCESS = "SUCCESS",
-  PENDING = "PENDING",
-  FAILURE = "FAILURE"
-}
 
 const ButtonPanel = ({ cancel, formState, formValid }) => (
   // <div className="text-center md:text-right mt-4 md:flex md:justify-end">
@@ -105,70 +98,14 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
 );
 
 const AddAssetModal: FC<AddAssetModalProps> = ({ isShowing, cancel, assetType }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const [stockQuantity, setStockQuantity] = useState("");
-  const [stockShares, setStockShares] = useState("");
-  const [ticker, setTicker] = useState("");
-
-  const [stock, setStock] = useState(null);
-  const { stockSuggestions, _isLoading, _isError } = useStockSearch(ticker || null);
-
-  const [searchState, setSearchState] = useState(SearchState.STABLE);
-  const [isStockQuantityValid, setStockQuantityValidity] = useState(false);
-  const [isStockSharesValid, setStockSharesValidity] = useState(false);
-
-  const [formState, setFormState] = useState(0);
-  const [formValid, setFormValid] = useState(false);
-
   const modalTitle = getAddAssetModalTitle(assetType);
-  const isFormValid = () => {
-    const isformValid =
-      searchState === SearchState.SUCCESS && isStockQuantityValid && isStockSharesValid;
-    setFormValid(!!isformValid);
-    console.log(searchState, isStockQuantityValid, isStockSharesValid, isformValid, formValid);
+  const assetTypeToFormMap = {
+    [AssetType.CRYPTO]: <AddCryptoForm />,
+    [AssetType.STOCK]: <AddStockForm />
+    // add more mappings as needed
   };
 
-  const fetchStock = stockTicker => {
-    setSearchState(SearchState.PENDING);
-    getStockInformation(stockTicker)
-      .then(({ status, data: stockData }) => {
-        if (status === 200) {
-          setSearchState(SearchState.SUCCESS);
-          isFormValid();
-          setStock(stockData);
-        }
-      })
-      .catch(e => {
-        console.error(e);
-        setSearchState(SearchState.FAILURE);
-      })
-      .finally(() => {
-        console.log("request completed");
-      });
-  };
-
-  const onStockQuantityChange = e => {
-    setStockQuantity(e.target.value);
-    setStockQuantityValidity(e.target.checkValidity());
-    isFormValid();
-  };
-
-  const onStockSharesChange = e => {
-    setStockShares(e.target.value);
-    setStockSharesValidity(e.target.checkValidity());
-    isFormValid();
-  };
-
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      console.log("Setting Ticker");
-      // setSearchState(SearchState.STABLE);
-      setTicker(searchTerm);
-    }, 1000);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+  const ModalContent = assetTypeToFormMap[assetType] || <AddStockForm />;
 
   return (
     <div
@@ -188,58 +125,7 @@ const AddAssetModal: FC<AddAssetModalProps> = ({ isShowing, cancel, assetType })
           <h3 className="text-lg font-medium leading-6 text-gray-900">{modalTitle}</h3>
         </div>
         <div className="border-t border-gray-200 py-2">
-          <dl>
-            {/* <div className="bg-gray-50 p-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
-              <dt className="rounded-md bg-charcoal-400 py-2 px-4 text-sm font-semibold text-gray-400">
-                Ticker
-              </dt>
-              <dd className="relative flex flex-row rounded-md text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                <StockSearchCombobox
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  stockSuggestions={stockSuggestions}
-                  fetchStock={fetchStock}
-                  searchState={searchState}
-                />
-              </dd>
-            </div>
-            <div className="bg-white p-2 text-gray-600 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
-              <dt className="rounded-md bg-charcoal-400 py-2 px-4 text-sm font-semibold text-gray-400">
-                Shares
-              </dt>
-              <dd className="mt-1 rounded-md text-sm sm:col-span-2 sm:mt-0">
-                <input
-                  type="number"
-                  name="shares"
-                  id="modal_input_shares"
-                  min="0"
-                  className="inline-flex w-full items-center rounded bg-gray-300 py-2 px-4 font-semibold text-gray-700"
-                  onChange={onStockQuantityChange}
-                />
-              </dd>
-            </div>
-            <div className="bg-white p-2 text-gray-600 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-2">
-              <dt className="rounded-md bg-charcoal-400 py-2 px-4 text-sm font-semibold text-gray-400">
-                Buy Price
-              </dt>
-              <dd className="mt-1 rounded-md text-sm sm:col-span-2 sm:mt-0">
-                <input
-                  type="number"
-                  name="market_price"
-                  id="modal_input_market_price"
-                  min="0"
-                  step="0.01"
-                  inputMode="decimal"
-                  className="inline-flex w-full items-center rounded bg-gray-300 py-2 px-4 font-semibold text-gray-700"
-                  onChange={onStockSharesChange}
-                />
-              </dd>
-            </div> */}
-
-            {/* <CryptocurrencySearchBox hideHeader setCyptocurrency={setSearchTerm} /> */}
-            <AddCryptoForm />
-            {stock ? <StockInformationTable stock={stock} /> : null}
-          </dl>
+          <dl>{ModalContent}</dl>
         </div>
 
         {/* <ButtonPanel cancel={cancel} formState={formState} formValid={formValid} /> */}

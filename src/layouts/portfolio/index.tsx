@@ -3,12 +3,15 @@ import cn from "classnames";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
-import AddStockModal from "../../components/add-stock-modal";
+import AddAssetModal from "../../components/add-asset-modal";
 import { getPortfolioTableSchema, AssetType } from "../../lib/portfolio-utils";
 
 type PortfolioLayoutProps = {
   portfolioType: AssetType;
 };
+
+const dummyData = [
+];
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
   const { isShowing, toggle } = useModal(false);
@@ -16,15 +19,15 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
   const portfolioTableSchema = getPortfolioTableSchema(portfolioType);
   return (
     <>
-      <AddStockModal isShowing={isShowing} cancel={toggle} />
-      <div className="flex w-full flex-1 flex-row rounded-t-lg">
+      <AddAssetModal isShowing={isShowing} cancel={toggle} assetType={portfolioType} />
+      <div className="overflow-y-autp flex w-full flex-1 flex-row rounded-t-lg border-2 border-red-300">
         <div
-          className={cn("dashboard-primary-panel overflow-y-auto", {
+          className={cn("dashboard-primary-panel flex flex-col overflow-y-auto", {
             "sm:w-full": hide,
             "sm:w-8/12": !hide
           })}
         >
-          <div className="flex h-20 flex-row">
+          <div className="flex h-20 flex-row border-2 border-red-300">
             <div className="flex h-full w-2/3 flex-col items-center p-2 md:flex-row md:justify-evenly md:p-4">
               <div className="flex w-full flex-col">
                 <span className="m-1 hidden text-xs uppercase text-gray-700 md:block">
@@ -62,25 +65,28 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
             </div>
             <div className="w-1/3">
               <PortfolioOptions
-                openAddStockModal={toggle}
+                openAddAssetModal={toggle}
                 togglePortfolioAnalysisPanel={() => setHide(!hide)}
               />
             </div>
           </div>
           {/* Occupy Max remaining space and scroll only table */}
-          <div className="my-2 flex-1 overflow-auto">
+          <div className="my-2 flex flex-1 overflow-auto border-2 border-red-300">
             <PortfolioTable
               tableSchema={portfolioTableSchema}
-              data={undefined}
+              data={dummyData}
               loading={undefined}
               expandableComponent={undefined}
             />
           </div>
         </div>
         <div
-          className={cn("dashboard-secondary-panel overflow-auto", {
-            "sm:hidden sm:max-w-0": hide
-          })}
+          className={cn(
+            "dashboard-secondary-panel my-2 overflow-auto rounded-lg border-2 border-red-300",
+            {
+              "sm:hidden sm:max-w-0": hide
+            }
+          )}
         >
           Secondary Panel -LINK - {portfolioType}
         </div>
