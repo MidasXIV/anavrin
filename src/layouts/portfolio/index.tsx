@@ -17,9 +17,18 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
   const { isShowing, toggle } = useModal(false);
   const [hide, setHide] = useState(false);
   const portfolioTableSchema = getPortfolioTableSchema(portfolioType);
+  const onAssetAdd = asset => {
+    dummyData.push(asset);
+  };
+
   return (
     <>
-      <AddAssetModal isShowing={isShowing} cancel={toggle} assetType={portfolioType} />
+      <AddAssetModal
+        isShowing={isShowing}
+        cancel={toggle}
+        assetType={portfolioType}
+        onSubmit={onAssetAdd}
+      />
       <div className="overflow-y-autp flex w-full flex-1 flex-row rounded-t-lg border-2 border-red-300">
         <div
           className={cn("dashboard-primary-panel flex flex-col overflow-y-auto", {

@@ -6,7 +6,11 @@ import StockSearchCombobox from "../stock-search-combobox";
 import StockInformationTable from "./stock-information-table";
 import getStockInformation from "../../util/getStockInformation";
 
-const AddStockForm: FC<unknown> = () => {
+type AddStockFormProps = {
+  onSubmit: (asset) => void;
+};
+
+const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
   enum SearchState {
     STABLE = "STABLE",
     SUCCESS = "SUCCESS",
@@ -16,7 +20,7 @@ const AddStockForm: FC<unknown> = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchState, setSearchState] = useState(SearchState.STABLE);
-  const [stockInformation, setStockInformation] = useState(null);
+  const [stockInformation, setStockInformation] = useState<Record<string, unknown>>(null);
 
   const form = useForm({
     initialValues: {
@@ -28,6 +32,12 @@ const AddStockForm: FC<unknown> = () => {
     // validationRules: {
     //   email: (value) => /^\S+@\S+$/.test(value),
     // },
+  });
+
+  const handleFormSubmit = form.onSubmit(values => {
+    const asset = { ...values, ...stockInformation };
+    console.log(asset);
+    onSubmit(asset);
   });
 
   const updateStockInformation = async stockTicker => {
@@ -84,11 +94,7 @@ const AddStockForm: FC<unknown> = () => {
         </InputWrapper>
 
         {stockInformation ? <StockInformationTable stock={stockInformation} /> : null}
-        <SlideToSubmit
-          onSubmit={form.onSubmit(values => {
-            console.log({ ...values, stockInformation });
-          })}
-        />
+        <SlideToSubmit onSubmit={handleFormSubmit} />
       </section>
     </form>
   );

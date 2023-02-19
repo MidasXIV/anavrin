@@ -5,10 +5,15 @@ import CryptocurrencySearchBox from "../cryptocurrency-search-box";
 import SlideToSubmit from "../slide-to-submit";
 import { fetchCoinInfo } from "../../util/cryptocurrencyService";
 import CryptoInformationTable from "./crypto-information-table";
+import { convertCoinGeckoApiCoinObjectToDto } from "../../lib/portfolio-asset-utils";
 
-const AddCryptoForm: FC<unknown> = () => {
+type AddCryptoFormProps = {
+  onSubmit: (asset) => void;
+};
+
+const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [tokenInformation, setTokenInformation] = useState("");
+  const [tokenInformation, setTokenInformation] = useState<Record<string, unknown>>(null);
   const form = useForm({
     initialValues: {
       token: "",
@@ -21,6 +26,11 @@ const AddCryptoForm: FC<unknown> = () => {
     // },
   });
 
+  const handleFormSubmit = form.onSubmit(values => {
+    const asset = { ...values, ...tokenInformation };
+    const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDto(asset);
+    onSubmit(cryptoAssetDTO);
+  });
   const fetchTokenInformation = token => {
     fetchCoinInfo(token)
       .then(tokenInfo => {
@@ -88,11 +98,7 @@ const AddCryptoForm: FC<unknown> = () => {
         </InputWrapper>
 
         {tokenInformation ? <CryptoInformationTable coin={tokenInformation} /> : null}
-        <SlideToSubmit
-          onSubmit={form.onSubmit(values => {
-            console.log({ ...values, tokenInformation });
-          })}
-        />
+        <SlideToSubmit onSubmit={handleFormSubmit} />
       </section>
     </form>
   );

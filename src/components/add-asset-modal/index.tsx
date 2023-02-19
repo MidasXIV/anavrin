@@ -1,10 +1,5 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import cn from "classnames";
-import getStockInformation from "../../util/getStockInformation";
-import useStockInformation from "../../hooks/useStockInformation";
-import StockSearchCombobox from "../stock-search-combobox";
-import useStockSearch from "../../hooks/useStockSearch";
-import StockInformationTable from "./stock-information-table";
 import UtilityFooter from "./stock-modal-utility-footer";
 import { AssetType, getAddAssetModalTitle } from "../../lib/portfolio-utils";
 import AddCryptoForm from "./add-crypto-form";
@@ -14,6 +9,7 @@ type AddAssetModalProps = {
   isShowing: boolean;
   cancel: () => void;
   assetType: AssetType;
+  onSubmit: (asset) => void;
 };
 
 const ButtonPanel = ({ cancel, formState, formValid }) => (
@@ -97,15 +93,21 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
   </div>
 );
 
-const AddAssetModal: FC<AddAssetModalProps> = ({ isShowing, cancel, assetType }) => {
+const AddAssetModal: FC<AddAssetModalProps> = ({ isShowing, cancel, assetType, onSubmit }) => {
   const modalTitle = getAddAssetModalTitle(assetType);
+  const onAddAssetModalSubmit = asset => {
+    onSubmit(asset);
+    cancel();
+  };
   const assetTypeToFormMap = {
-    [AssetType.CRYPTO]: <AddCryptoForm />,
-    [AssetType.STOCK]: <AddStockForm />
+    [AssetType.CRYPTO]: <AddCryptoForm onSubmit={onAddAssetModalSubmit} />,
+    [AssetType.STOCK]: <AddStockForm onSubmit={onAddAssetModalSubmit} />
     // add more mappings as needed
   };
 
-  const ModalContent = assetTypeToFormMap[assetType] || <AddStockForm />;
+  const ModalContent = assetTypeToFormMap[assetType] || (
+    <AddStockForm onSubmit={onAddAssetModalSubmit} />
+  );
 
   return (
     <div
