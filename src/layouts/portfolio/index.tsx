@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useRef, useEffect } from "react";
 import cn from "classnames";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
@@ -21,6 +21,15 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
     dummyData.push(asset);
   };
 
+  const [height, setHeight] = useState(null);
+  const tableRef = useRef(null);
+  useEffect(() => {
+    if (tableRef.current) {
+      debugger;
+      setHeight(tableRef.current.getBoundingClientRect().height);
+    }
+  }, []);
+
   return (
     <>
       <AddAssetModal
@@ -29,15 +38,19 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
         assetType={portfolioType}
         onSubmit={onAssetAdd}
       />
-      <div className="overflow-y-autp flex w-full flex-1 flex-row rounded-t-lg border-2 border-red-300">
+      <div className="flex h-full w-full flex-1 flex-row space-x-2 overflow-y-auto rounded-t-lg">
         <div
-          className={cn("dashboard-primary-panel flex flex-col overflow-y-auto", {
+          className={cn("portfolio-default-primary-panel flex flex-col overflow-y-auto", {
             "sm:w-full": hide,
             "sm:w-8/12": !hide
           })}
+          style={{ height: "100%" }}
         >
-          <div className="flex h-20 flex-row border-2 border-red-300">
-            <div className="flex h-full w-2/3 flex-col items-center p-2 md:flex-row md:justify-evenly md:p-4">
+          <div className="flex h-20 flex-row">
+            <div
+              className="flex h-full w-2/3 flex-col items-center p-2 md:flex-row md:justify-evenly md:p-4"
+              style={{ height: "100%" }}
+            >
               <div className="flex w-full flex-col">
                 <span className="m-1 hidden text-xs uppercase text-gray-700 md:block">
                   INVESTED AMOUNT
@@ -47,10 +60,10 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
                     22.325,50
                   </span>
                   {/* <span className="block leading-5 text-sm ml-4 text-green-500">
-                    {" "}
-                    {2.325 - 2.215 < 0 ? "▼" : "▲"} {(2.325 - 2.215).toFixed(3)}(
-                    {((2.325 / 2.215) * 100 - 100).toFixed(3)} %)
-                  </span> */}
+              {" "}
+              {2.325 - 2.215 < 0 ? "▼" : "▲"} {(2.325 - 2.215).toFixed(3)}(
+              {((2.325 / 2.215) * 100 - 100).toFixed(3)} %)
+            </span> */}
                 </div>
               </div>
               <div className="flex w-full flex-col md:flex-row md:justify-evenly">
@@ -80,7 +93,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
             </div>
           </div>
           {/* Occupy Max remaining space and scroll only table */}
-          <div className="my-2 flex flex-1 overflow-auto border-2 border-red-300">
+          <div className="mt-2 flex-1 overflow-y-auto" ref={tableRef} style={{ height }}>
             <PortfolioTable
               tableSchema={portfolioTableSchema}
               data={dummyData}
@@ -90,14 +103,11 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
           </div>
         </div>
         <div
-          className={cn(
-            "dashboard-secondary-panel my-2 overflow-auto rounded-lg border-2 border-red-300",
-            {
-              "sm:hidden sm:max-w-0": hide
-            }
-          )}
+          className={cn("portfolio-secondary-panel overflow-auto rounded-lg", {
+            "sm:hidden sm:max-w-0": hide
+          })}
         >
-          Secondary Panel -LINK - {portfolioType}
+          <div>Secondary Panel -LINK - {portfolioType}</div>
         </div>
       </div>
     </>

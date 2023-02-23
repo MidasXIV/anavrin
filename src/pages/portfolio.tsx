@@ -59,8 +59,13 @@ const Portfolio: FC = () => {
           cancel={toggleMaxPortfolioWarningModal}
         />
         <div className="portfolio-primary-panel flex h-full flex-col overflow-y-auto">
-          <Tabs active={activeTab} onTabChange={handleTabChange}>
-            <Tab label="Portfolio 1" className="min-h-full">
+          <Tabs
+            active={activeTab}
+            onTabChange={handleTabChange}
+            style={{ display: "flex" }}
+            classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
+          >
+            <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
               <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
             </Tab>
             {new Array(tabCount).fill(0).map((item, key) => (
