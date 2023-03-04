@@ -1,11 +1,11 @@
 import { useForm } from "@mantine/hooks";
-import { InputWrapper, Input } from "@mantine/core";
+import { InputWrapper, NumberInput } from "@mantine/core";
 import { FC, useState } from "react";
 import CryptocurrencySearchBox from "../cryptocurrency-search-box";
 import SlideToSubmit from "../slide-to-submit";
 import { fetchCoinInfo } from "../../util/cryptocurrencyService";
 import CryptoInformationTable from "./crypto-information-table";
-import { convertCoinGeckoApiCoinObjectToDto } from "../../lib/portfolio-asset-utils";
+import { convertCoinGeckoApiCoinObjectToDTO } from "../../lib/portfolio-asset-utils";
 
 type AddCryptoFormProps = {
   onSubmit: (asset) => void;
@@ -28,7 +28,7 @@ const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
 
   const handleFormSubmit = form.onSubmit(values => {
     const asset = { ...values, ...tokenInformation };
-    const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDto(asset);
+    const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDTO(asset);
     onSubmit(cryptoAssetDTO);
   });
   const fetchTokenInformation = token => {
@@ -70,14 +70,12 @@ const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
           description="Enter the number of tokens you own"
           className="pb-2"
         >
-          <Input
+          <NumberInput
             id="cryptocurrency-holdings"
             placeholder="1000"
             variant="filled"
             value={form.values.holdings}
-            onChange={event =>
-              form.setFieldValue("holdings", parseFloat(event.currentTarget.value))
-            }
+            onChange={value => form.setFieldValue("holdings", value)}
           />
         </InputWrapper>
 
@@ -88,12 +86,12 @@ const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
           description="Fiat spent on acquiring holdings"
           className="pb-2"
         >
-          <Input
+          <NumberInput
             id="cryptocurrency-fiat"
             placeholder="500"
             variant="filled"
             value={form.values.fiat}
-            onChange={event => form.setFieldValue("fiat", parseFloat(event.currentTarget.value))}
+            onChange={value => form.setFieldValue("fiat", value)}
           />
         </InputWrapper>
 

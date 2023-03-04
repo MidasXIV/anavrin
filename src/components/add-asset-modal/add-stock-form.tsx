@@ -1,5 +1,5 @@
 import { useForm } from "@mantine/hooks";
-import { InputWrapper, Input } from "@mantine/core";
+import { InputWrapper, NumberInput } from "@mantine/core";
 import { FC, useState } from "react";
 import SlideToSubmit from "../slide-to-submit";
 import StockSearchCombobox from "../stock-search-combobox";
@@ -74,22 +74,22 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
           />
         </InputWrapper>
         <InputWrapper id="stock-shares" required label="Shares" className="pb-2">
-          <Input
+          <NumberInput
             id="stock-shares"
             placeholder="10"
             variant="filled"
             value={form.values.shares}
-            onChange={event => form.setFieldValue("shares", parseFloat(event.currentTarget.value))}
+            onChange={shares => form.setFieldValue("shares", shares)}
           />
         </InputWrapper>
 
         <InputWrapper id="cryptocurrency-fiat" required label="Buy Price" className="pb-2">
-          <Input
+          <NumberInput
             id="cryptocurrency-fiat"
             placeholder="500"
             variant="filled"
             value={form.values.fiat}
-            onChange={event => form.setFieldValue("fiat", parseFloat(event.currentTarget.value))}
+            onChange={fiat => form.setFieldValue("fiat", fiat)}
           />
         </InputWrapper>
 
