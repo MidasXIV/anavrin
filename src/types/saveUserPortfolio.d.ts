@@ -15,7 +15,8 @@ type InternalServerError = {
 };
 
 interface SaveUserPortfolioDTO {
-  userUpdated: boolean;
+  ok: boolean;
+  value: Portfolio;
 }
 
 type SaveUserPortfolioResponse = Either<
