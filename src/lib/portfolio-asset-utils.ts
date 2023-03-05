@@ -1,13 +1,3 @@
-interface CryptoAssetDTO {
-  title: string;
-  symbol: string;
-  holdings: number;
-  marketPrice: number;
-  costBasis: number;
-  change: number;
-  iconSrc: string;
-}
-
 /**
  * Converts a CoinGecko API coin object to a simplified DTO.
  *
@@ -15,16 +5,24 @@ interface CryptoAssetDTO {
  * @returns {Object} A simplified DTO containing the coin's title, symbol, holdings, market price,
  * cost basis, change, and icon source URL.
  */
-function convertCoinGeckoApiCoinObjectToDto(obj: any): CryptoAssetDTO {
+function convertCoinGeckoApiCoinObjectToDTO(obj: any): CryptoAssetDTO {
   return {
     title: obj.name,
-    symbol: obj.token,
+    token: obj.token,
     holdings: obj.holdings,
     marketPrice: obj.market_data.current_price.usd,
-    costBasis: obj.fiat,
+    fiat: obj.fiat,
     change: obj.market_data.price_change_percentage_24h,
     iconSrc: obj.image.thumb
   };
 }
 
-export { convertCoinGeckoApiCoinObjectToDto };
+function convertCryptoPortfolioItemToPersistence(obj: CryptoAssetDTO): CryptoPortfolioItem {
+  return {
+    token: obj.token,
+    holdings: obj.holdings,
+    fiat: obj.fiat
+  };
+}
+
+export { convertCoinGeckoApiCoinObjectToDTO, convertCryptoPortfolioItemToPersistence };

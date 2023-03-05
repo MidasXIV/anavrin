@@ -23,11 +23,11 @@ type DividendDataRow = {
 
 type CryptoDataRow = {
   title: string;
-  symbol: string;
+  token: string;
   holdings: number;
   marketPrice: number;
   avgPrice: number; // holdings / initial investment
-  costBasis: number;
+  fiat: number;
   marketValue: number; // holdings * marketPrice
   iconSrc: string;
   change: number;
@@ -270,9 +270,9 @@ const CryptoPortfolioValueComponent = (
   column: any,
   id: any
 ): JSX.Element => {
-  const { marketPrice, holdings, costBasis } = row;
+  const { marketPrice, holdings, fiat } = row;
   const value = parseFloat((marketPrice * holdings).toFixed(2));
-  const PnL = parseFloat((value - costBasis).toFixed(2));
+  const PnL = parseFloat((value - fiat).toFixed(2));
   return (
     <div className="display: flex w-full space-x-2 px-2">
       <div className="w-1/2 text-right">${value}</div>
