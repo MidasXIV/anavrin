@@ -1,12 +1,14 @@
 import { Tab, Tabs } from "@mantine/core";
 import dynamic from "next/dynamic";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import AddNewPortfolioModal from "../components/add-new-portfolio-modal";
 import LoadingForm from "../components/exchanges-form/loading";
+import PlusIconSVG from "../components/icons/plusIconSVG";
 import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal";
 import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
 import { AssetType } from "../lib/portfolio-utils";
+import { fetchUserPortfolio } from "../util/user-portfolio";
 
 const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm,
@@ -16,13 +18,22 @@ const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
 const Portfolio: FC = () => {
   const [tabCount, setTabCount] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
-  const { isShowing: isCreatePortfolioModalShowing, toggle: toggleCreatePortfolioModal } =
+  const { isShowing: showCreatePortfolioModal, toggle: toggleShowCreatePortfolioModal } =
     useModal(false);
-  const { isShowing: isMaxPortfolioWarningShowing, toggle: toggleMaxPortfolioWarningModal } =
+  const { isShowing: showMaxPortfolioWarningModal, toggle: toggleShowMaxPortfolioWarningModal } =
     useModal(false);
 
-  const handleAssetTypeSelection = (portfolioType: AssetType) => {
-    toggleCreatePortfolioModal();
+  const [portfolios, setPortfolios] = useState<Array<Portfolio>>([]);
+
+  const portfolioCount = portfolios.length;
+  const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
+
+  const handleAssetTypeSelection = (assetType: AssetType) => {
+    toggleShowCreatePortfolioModal();
+    portfolios.push({
+      assetType,
+      items: []
+    });
     setTabCount(tabCount + 1);
   };
 
@@ -32,15 +43,79 @@ const Portfolio: FC = () => {
 
     if (tabIndex === tabCount + dummyVal - 1) {
       if (tabCount >= PortfolioLimit) {
-        toggleMaxPortfolioWarningModal();
+        toggleShowMaxPortfolioWarningModal();
         console.log("Max Portfolios created");
         return;
       }
-      toggleCreatePortfolioModal();
+      toggleShowCreatePortfolioModal();
     } else {
       setActiveTab(tabIndex);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const fetchUserPortfoliosResponse = await fetchUserPortfolio();
+        const { portfolios: userPortfolios } = fetchUserPortfoliosResponse.data;
+        setPortfolios(userPortfolios);
+      } catch (error) {
+        console.error(error);
+        // Handle the error appropriately, such as displaying a message to the user
+      } finally {
+        setIsPortfolioFetched(true);
+      }
+    })();
+  }, []);
+
+  let Content = null;
+
+  if (!isPortfolioFetched) {
+    Content = <p>Loading</p>;
+  } else if (portfolioCount < 1) {
+    Content = (
+      <div className="py-4 text-center ">
+        <h1 className="font-heading mb-6 text-4xl font-bold leading-none md:text-6xl lg:text-8xl">
+          Welcome to your portfolio page!
+        </h1>
+        <p className="mb-11 text-lg font-medium text-gray-600">
+          It looks like you don&apos;t have any portfolios yet. Don&apos;t worry, you can easily
+          create a new portfolio by clicking on the{" "}
+          <span className="font-semibold text-yellow-600">&apos;Create New Portfolio&apos;</span>{" "}
+          button below. Once you have created a portfolio, you can track your investments, view your
+          estimated portfolio value, and monitor your progress. Start building your portfolio today!
+        </p>
+        <div className="w-max rounded-lg bg-charcoal-900 p-2">
+          <button
+            type="button"
+            className="focus:outline-none rounded-lg bg-charcoal-400 p-4 font-mono font-light text-gray-500 hover:bg-yellow-700 hover:text-white focus:text-white focus:ring-2 focus:ring-yellow-600 focus:ring-opacity-50"
+            onClick={() => toggleShowCreatePortfolioModal()}
+          >
+            Create New Portfolio
+          </button>
+        </div>
+      </div>
+    );
+  } else {
+    Content = (
+      <Tabs
+        active={activeTab}
+        onTabChange={handleTabChange}
+        style={{ display: "flex" }}
+        classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
+      >
+        <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
+          <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
+        </Tab>
+        {new Array(tabCount).fill(0).map((item, key) => (
+          <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>
+            Messages tab content
+          </Tab>
+        ))}
+        <Tab icon={<PlusIconSVG width={15} height={15} />} />
+      </Tabs>
+    );
+  }
 
   return (
     <>
@@ -50,48 +125,16 @@ const Portfolio: FC = () => {
         description="You can see your portfolios estimated value & progress below"
       >
         <AddNewPortfolioModal
-          isShowing={isCreatePortfolioModalShowing}
-          cancel={toggleCreatePortfolioModal}
+          isShowing={showCreatePortfolioModal}
+          cancel={toggleShowCreatePortfolioModal}
           onSelection={handleAssetTypeSelection}
         />
         <MaxPortfolioReachedModal
-          isShowing={isMaxPortfolioWarningShowing}
-          cancel={toggleMaxPortfolioWarningModal}
+          isShowing={showMaxPortfolioWarningModal}
+          cancel={toggleShowMaxPortfolioWarningModal}
         />
         <div className="portfolio-primary-panel flex h-full flex-col overflow-y-auto">
-          <Tabs
-            active={activeTab}
-            onTabChange={handleTabChange}
-            style={{ display: "flex" }}
-            classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
-          >
-            <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
-              <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
-            </Tab>
-            {new Array(tabCount).fill(0).map((item, key) => (
-              <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>
-                Messages tab content
-              </Tab>
-            ))}
-            <Tab
-              icon={
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 15 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z"
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              }
-            />
-          </Tabs>
+          {Content}
         </div>
       </DefaultLayout>
     </>

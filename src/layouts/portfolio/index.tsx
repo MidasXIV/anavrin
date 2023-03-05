@@ -5,27 +5,73 @@ import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
 import AddAssetModal from "../../components/add-asset-modal";
 import { getPortfolioTableSchema, AssetType } from "../../lib/portfolio-utils";
+import { saveUserPortfolio } from "../../util/user-portfolio";
+import { convertCryptoPortfolioItemToPersistence } from "../../lib/portfolio-asset-utils";
 
 type PortfolioLayoutProps = {
   portfolioType: AssetType;
 };
 
-const dummyData = [
+const portfolioData: CryptoAssetDTO[] = [
 ];
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
+  const [portfolioDomainObject, setPortfolioDomainObject] = useState({});
   const { isShowing, toggle } = useModal(false);
   const [hide, setHide] = useState(false);
   const portfolioTableSchema = getPortfolioTableSchema(portfolioType);
   const onAssetAdd = asset => {
-    dummyData.push(asset);
+    portfolioData.push(asset);
+  };
+
+  const onPortfolioSave = async () => {
+    try {
+      console.log("Saving portfolio");
+      const result = await saveUserPortfolio({
+        ...portfolioDomainObject,
+        assetType: portfolioType,
+        items: portfolioData.map(item => convertCryptoPortfolioItemToPersistence(item))
+      });
+
+      const { data } = result;
+      setPortfolioDomainObject(data.value);
+      console.log(data);
+      // Success handling here
+    } catch (error) {
+      // Error handling here
+      console.error(error);
+
+      if (error.response) {
+        // Handle known error types returned by the API
+        const { data } = error.response;
+        switch (data.type) {
+          case "UserNotLoggedIn":
+            // Handle the "UserNotLoggedIn" error
+            break;
+          case "MaxPortfoliosReached":
+            // Handle the "MaxPortfoliosReached" error
+            break;
+          case "FailedToUpdatePortfolio":
+            // Handle the "FailedToUpdatePortfolio" error
+            break;
+          default:
+            // Handle other known errors returned by the API
+            break;
+        }
+      } else if (error.request) {
+        // Handle network errors (e.g. server not responding)
+        console.log("Server not responding");
+      } else {
+        // Handle other types of errors (e.g. unexpected errors)
+        console.log("Unexpected error occurred");
+      }
+    }
   };
 
   const [height, setHeight] = useState(null);
   const tableRef = useRef(null);
   useEffect(() => {
     if (tableRef.current) {
-      debugger;
       setHeight(tableRef.current.getBoundingClientRect().height);
     }
   }, []);
@@ -88,6 +134,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
             <div className="w-1/3">
               <PortfolioOptions
                 openAddAssetModal={toggle}
+                savePortfolio={onPortfolioSave}
                 togglePortfolioAnalysisPanel={() => setHide(!hide)}
               />
             </div>
@@ -96,7 +143,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolioType }) => {
           <div className="mt-2 flex-1 overflow-y-auto" ref={tableRef} style={{ height }}>
             <PortfolioTable
               tableSchema={portfolioTableSchema}
-              data={dummyData}
+              data={portfolioData}
               loading={undefined}
               expandableComponent={undefined}
             />
