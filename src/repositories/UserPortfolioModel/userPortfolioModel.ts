@@ -1,4 +1,5 @@
-import { Db, FindOneAndUpdateOptions } from "mongodb";
+/* eslint-disable no-underscore-dangle */
+import { Db, FindOneAndUpdateOptions, UpdateResult } from "mongodb";
 import isEmpty from "../../util/helper";
 import MongoBase from "../MongoDbBase/mongoDBBase";
 
@@ -32,29 +33,74 @@ class UserPortfolioModel extends MongoBase implements IUserPortfolioModel {
     return portfolioDocument.portfolios;
   }
 
-  // Updates a user's portfolio with the given email address and portfolio data
-  public async updateUserPortfolio(email: string, portfolio: Array<Portfolio>) {
-    const query = { email };
-    const update = { $set: { portfolios: portfolio } };
-    const options: FindOneAndUpdateOptions = { upsert: true, returnDocument: "after" };
+  /**
+   * Updates a single portfolio item of a user.
+   * @param {string} email - The email of the user to update the portfolio item for.
+   * @param {Portfolio} portfolio - The portfolio item to update.
+   * @returns {Promise<{ value: Portfolio; ok: boolean }>} An object with the updated portfolio
+   * item and a boolean indicating whether the update was successful.
+   */
+  public async updateUserPortfolio(
+    email: string,
+    portfolio: Portfolio
+  ): Promise<{
+    value: Portfolio;
+    ok: boolean;
+  }> {
+    // eslint-disable-next-line no-param-reassign
+    portfolio._id = this.convertToMongoDBObject(portfolio._id);
+    const query = {
+      email,
+      portfolios: { $elemMatch: { _id: portfolio._id } }
+    };
+    const update = { $set: { "portfolios.$": portfolio } };
+    const options: FindOneAndUpdateOptions = {
+      upsert: true,
+      returnDocument: "after",
+      projection: {
+        _id: 0,
+        portfolios: { $elemMatch: { _id: portfolio._id } }
+      }
+    };
 
     // Updates the document matching the query and returns the updated document
-    return this.db.collection(this.collectionName).findOneAndUpdate(query, update, options);
+    const updateResult = await this.db
+      .collection(this.collectionName)
+      .findOneAndUpdate(query, update, options);
+
+    return {
+      value: updateResult?.value?.portfolios[0] ?? {},
+      ok: Boolean(updateResult.ok)
+    };
   }
 
-  // Adds a portfolio item to a user's portfolio with the given email address and portfolio item data
-  public async addUserPortfolioItem(email: string, item: Portfolio): Promise<boolean> {
-    const itemDocument = this.toMongoDB(item);
+  /**
+   * Add a portfolio item to a user's portfolio array in the database.
+   * @param {string} email - Email address of the user.
+   * @param {Portfolio} item - Portfolio item to add to the user's portfolio array.
+   * @returns {Promise<UpdateResult & { value: Portfolio; ok: boolean }>} - A promise that resolves
+   * with an object containing the update result, a boolean indicating if the update was successful,
+   * and the value of the added portfolio item.
+   */
+  public async addUserPortfolioItem(
+    email: string,
+    item: Portfolio
+  ): Promise<UpdateResult & { value: Portfolio; ok: boolean }> {
+    const itemDocument = item._id ? item : this.toMongoDB(item);
 
     const query = { email };
-    const update = { $push: { portfolio: itemDocument } };
-    const options: FindOneAndUpdateOptions = { upsert: true, returnDocument: "after" };
+    const update = { $push: { portfolios: itemDocument } };
+    const options: FindOneAndUpdateOptions = { upsert: false, returnDocument: "after" };
 
-    // Updates the document matching the query and returns a boolean indicating if the update was successful
     const updateResult = await this.db
       .collection(this.collectionName)
       .updateOne(query, update, options);
-    return Boolean(updateResult.matchedCount && updateResult.modifiedCount);
+    // return Boolean(updateResult.matchedCount && updateResult.modifiedCount);
+    return {
+      ...updateResult,
+      ok: Boolean(updateResult.matchedCount && updateResult.modifiedCount),
+      value: itemDocument
+    };
   }
 
   // Deletes a portfolio item from a user's portfolio with the given email address and item ID
