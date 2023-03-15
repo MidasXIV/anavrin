@@ -11,6 +11,7 @@ import MoreOptionsIcon from "../icons/moreOptionsIcon";
 type PortfolioOptionsProps = {
   openAddAssetModal: () => void;
   savePortfolio: () => void;
+  deletePortfolio: () => void;
   togglePortfolioAnalysisPanel: () => void;
 };
 
@@ -20,6 +21,7 @@ type PortfolioOptionsProps = {
 const PortfolioOptions: FC<PortfolioOptionsProps> = ({
   openAddAssetModal,
   savePortfolio,
+  deletePortfolio,
   togglePortfolioAnalysisPanel
 }) => (
   <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 px-4 align-middle">
@@ -33,7 +35,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
 
     <ul className="nav hidden flex-row space-x-5 xl:flex">
       <TooltipWrapper label="Delete" color="orange">
-        <button type="button" className={styles.icon}>
+        <button type="button" className={styles.icon} onClick={deletePortfolio}>
           <DeletePortfolioIcon width={24} height={24} />
         </button>
       </TooltipWrapper>
@@ -69,7 +71,11 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
         <MenuItem color="orange" icon={<SaveIcon width={15} height={15} />} onClick={savePortfolio}>
           Save
         </MenuItem>
-        <MenuItem color="red" icon={<DeletePortfolioIcon width={15} height={15} />}>
+        <MenuItem
+          color="red"
+          icon={<DeletePortfolioIcon width={15} height={15} />}
+          onClick={deletePortfolio}
+        >
           Delete
         </MenuItem>
         <Divider />

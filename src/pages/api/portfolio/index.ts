@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import {
+  CreateDeleteUserPortfolioController,
+  DeleteUserPortfolio
+} from "../../../controllers/deleteUserPortfolio";
+import {
   CreateFetchUserPortfolioController,
   FetchUserPortfolio
 } from "../../../controllers/fetchUserPortfolio";
@@ -32,6 +36,18 @@ const handlers = {
     const fetchUserPortfolioController = new CreateFetchUserPortfolioController(fetchUserPortfolio);
 
     await fetchUserPortfolioController.execute(req, res);
+  },
+  DELETE: async (req: NextApiRequest, res: NextApiResponse) => {
+    const session = await getSession({ req });
+    const db = await connectToDatabase();
+
+    const userPortfolioModel = new UserPortfolioModel(db);
+    const deleteUserPortfolio = new DeleteUserPortfolio(userPortfolioModel, session);
+    const deleteUserPortfolioController = new CreateDeleteUserPortfolioController(
+      deleteUserPortfolio
+    );
+
+    await deleteUserPortfolioController.execute(req, res);
   }
 };
 
