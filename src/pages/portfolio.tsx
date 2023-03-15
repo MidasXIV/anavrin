@@ -104,12 +104,12 @@ const Portfolio: FC = () => {
         style={{ display: "flex" }}
         classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
       >
-        <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
+        {/* <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
           <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
-        </Tab>
-        {new Array(tabCount).fill(0).map((item, key) => (
-          <Tab key="portfolio-placeholder" label={`Portfolio ${key}`}>
-            Messages tab content
+        </Tab> */}
+        {portfolios.map((portfolio, key) => (
+          <Tab key={portfolio._id} label={`Portfolio ${key}`} classNames={{ root: "flex" }}>
+            <LazyLoadPortfolio portfolio={portfolio} />
           </Tab>
         ))}
         <Tab icon={<PlusIconSVG width={15} height={15} />} />

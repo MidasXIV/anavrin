@@ -3,6 +3,7 @@ interface CryptoAssetDTO {
   token: string;
   holdings: number;
   marketPrice: number;
+  marketValue: number; // marketPrice * holdings
   fiat: number;
   change: number;
   iconSrc: string;
@@ -41,5 +42,5 @@ interface IUserPortfolioModel {
     email: string,
     item: Portfolio
   ): Promise<UpdateResult & { value: Portfolio; ok: boolean }>;
-  deleteUserPortfolioItem(email: string, itemId: string): Promise<boolean>;
+  deleteUserPortfolioItem(email: string, itemId: string): Promise<UpdateResult & { ok: boolean }>;
 }

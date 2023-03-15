@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Db, FindOneAndUpdateOptions, UpdateResult } from "mongodb";
-import isEmpty from "../../util/helper";
+import { isEmpty } from "../../util/helper";
 import MongoBase from "../MongoDbBase/mongoDBBase";
 
 // UserPortfolioModel implements the IUserPortfolioModel interface
@@ -88,6 +88,10 @@ class UserPortfolioModel extends MongoBase implements IUserPortfolioModel {
   ): Promise<UpdateResult & { value: Portfolio; ok: boolean }> {
     const itemDocument = item._id ? item : this.toMongoDB(item);
 
+    if (typeof itemDocument._id === "string") {
+      itemDocument._id = this.convertToMongoDBObject(itemDocument._id);
+    }
+
     const query = { email };
     const update = { $push: { portfolios: itemDocument } };
     const options: FindOneAndUpdateOptions = { upsert: false, returnDocument: "after" };
@@ -104,7 +108,7 @@ class UserPortfolioModel extends MongoBase implements IUserPortfolioModel {
   }
 
   // Deletes a portfolio item from a user's portfolio with the given email address and item ID
-  public async deleteUserPortfolioItem(email: string, itemId: string): Promise<boolean> {
+  public async deleteUserPortfolioItem(email: string, itemId: string) {
     const documentId = this.convertToMongoDBObject(itemId);
     const query = { email };
     const update = { $pull: { portfolios: { _id: documentId } } };
@@ -113,7 +117,11 @@ class UserPortfolioModel extends MongoBase implements IUserPortfolioModel {
     // Updates the document matching the query and returns a boolean indicating if the update was successful
     const updateResult = await this.db.collection(this.collectionName).updateOne(query, update);
 
-    return Boolean(updateResult.matchedCount && updateResult.modifiedCount);
+    // return updateResult;
+    return {
+      ...updateResult,
+      ok: Boolean(updateResult.matchedCount && updateResult.modifiedCount)
+    };
   }
 }
 
