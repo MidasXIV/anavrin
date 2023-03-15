@@ -98,7 +98,7 @@ type PortfolioTableProps<T> = {
   data: Array<any>;
   loading: boolean;
   expandableComponent: ({ data }: { data: any }) => JSX.Element;
-  onRowDoubleclick: (row, event) => void;
+  onRowDoubleclick?: (row, event) => void;
 };
 
 const PortfolioTable: FC<PortfolioTableProps<any>> = ({
@@ -169,3 +169,9 @@ const PortfolioTable: FC<PortfolioTableProps<any>> = ({
   );
 };
 export default PortfolioTable;
+
+PortfolioTable.defaultProps = {
+  onRowDoubleclick: () => {
+    console.warn("Double not supported");
+  } // Set a default empty function for onRowDoubleclick
+};

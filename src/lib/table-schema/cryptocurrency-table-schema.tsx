@@ -123,11 +123,7 @@ const CryptoPortfolioSchema: TableColumn<CryptoDataRow>[] = [
   }
 ];
 
-const CryptocurrencyExpandableComponent: ({
-  data
-}: {
-  data: DividendInformationDTO;
-}) => JSX.Element = ({ data }) => {
+const CryptocurrencyExpandableComponent: ({ data }) => JSX.Element = ({ data }) => {
   if (!data) {
     return null;
   }
