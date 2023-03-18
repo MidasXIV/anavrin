@@ -16,7 +16,6 @@ const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
 });
 
 const Portfolio: FC = () => {
-  const [tabCount, setTabCount] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
   const { isShowing: showCreatePortfolioModal, toggle: toggleShowCreatePortfolioModal } =
     useModal(false);
@@ -34,15 +33,15 @@ const Portfolio: FC = () => {
       assetType,
       items: []
     });
-    setTabCount(tabCount + 1);
   };
 
   const handleTabChange = (tabIndex: number) => {
-    const dummyVal = 2;
-    const PortfolioLimit = 2;
+    const PORTFOLIO_LIMIT = 2;
 
-    if (tabIndex === tabCount + dummyVal - 1) {
-      if (tabCount >= PortfolioLimit) {
+    // If tabIndex is last tab => it is add portfolio button
+    // tabIndex starts from 0 hence such a check
+    if (tabIndex === portfolioCount) {
+      if (portfolioCount >= PORTFOLIO_LIMIT) {
         toggleShowMaxPortfolioWarningModal();
         console.log("Max Portfolios created");
         return;

@@ -176,7 +176,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     hydratePortfolioItemsData();
 
     setPortfolioDomainObject(portfolio);
-  }, []);
+  }, [portfolio]);
 
   return (
     <>
