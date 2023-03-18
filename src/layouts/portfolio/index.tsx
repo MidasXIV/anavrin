@@ -36,6 +36,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   const { isShowing: isEditModalShowing, toggle: toggleEditModal } = useModal(false);
   const [hide, setHide] = useState(true);
   const [portfolioData, setPortfolioData] = useState([]);
+  const [portfolioTableLoading, setPortfolioTableLoading] = useState(false);
 
   const { totalInvested, portfolioValue, percentageChange } = getPortfolioSummary(portfolioData);
 
@@ -147,6 +148,10 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     }
   };
 
+  const onPortfolioRowDelete = async updatedPortfolio => {
+    setPortfolioData(updatedPortfolio);
+  };
+
   const [height, setHeight] = useState(null);
   const tableRef = useRef(null);
   useEffect(() => {
@@ -164,8 +169,10 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
 
       const data = await portfolioHydrationFnMapper.get(portfolioType)(portfolio);
       setPortfolioData(data);
+      setPortfolioTableLoading(false);
       NProgress.done();
     }
+    setPortfolioTableLoading(true);
     hydratePortfolioItemsData();
 
     setPortfolioDomainObject(portfolio);
@@ -216,9 +223,11 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
             <PortfolioTable
               tableSchema={portfolioTableSchema}
               data={portfolioData}
-              loading={undefined}
+              loading={portfolioTableLoading}
               expandableComponent={portfolioExpandableComponent}
               onRowDoubleclick={portfolioRowDoubleClickHandler}
+              showRowDeleteButton
+              onRowDelete={onPortfolioRowDelete}
             />
           </div>
         </div>

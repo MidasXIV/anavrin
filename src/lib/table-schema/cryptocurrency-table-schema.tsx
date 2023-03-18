@@ -1,5 +1,6 @@
 import { Code } from "@mantine/core";
-import { TableColumn } from "react-data-table-component";
+import { Media, TableColumn } from "react-data-table-component";
+import DeleteIcon from "../../components/icons/deleteIcon";
 
 type CryptoDataRow = {
   title: string;
@@ -112,9 +113,21 @@ const CryptoPortfolioSchema: TableColumn<CryptoDataRow>[] = [
     // style: { border: "1px solid" }
   },
   {
+    name: "Fiat",
+    selector: row => row.fiat,
+    compact: true,
+    // compact: true,
+    // width: "150px",
+    sortable: true,
+    center: true,
+    hide: Media.SM
+    // style: { border: "1px solid" }
+  },
+  {
     name: "Value",
     selector: row => row.marketValue,
-    compact: true,
+    // compact: true,
+    grow: 1,
     // width: "70px",
     center: true,
     sortable: true,

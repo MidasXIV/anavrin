@@ -19,7 +19,6 @@ function isEmpty(obj: Record<string, unknown>): boolean {
  * @returns Difference between the two arrays
  */
 function differenceBy(array1: any[], array2: any[], iteratee: string): any[] {
-  console.log("bruh");
   const set = new Set(array2.map(item => item[iteratee]));
   console.log(array1.filter(item => !set.has(item[iteratee])));
   return array1.filter(item => !set.has(item[iteratee]));
@@ -35,4 +34,16 @@ function formatNumber(num: number): string {
   return num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 }
 
-export { isEmpty, differenceBy, formatNumber };
+/**
+ * Remove an object from an array if it matches the given object based on the provided property.
+ * @param {T[]} arr - The array to remove the object from.
+ * @param {T} obj - The object to remove from the array.
+ * @param {keyof T} [prop] - The name of the property to check in the object.
+ * @returns {T[]} A new array with the object removed, or the original array if the object was not found.
+ * @template T
+ */
+function removeObjFromArray<T>(arr: T[], obj: T, propToCheck: keyof T): T[] {
+  return arr.filter(item => item[propToCheck] !== obj[propToCheck]);
+}
+
+export { isEmpty, differenceBy, formatNumber, removeObjFromArray };
