@@ -29,6 +29,12 @@ const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
   const handleFormSubmit = form.onSubmit(values => {
     const asset = { ...values, ...tokenInformation };
     const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDTO(asset);
+
+    // clean form
+    // TODO: reset cryptocurrency searchbox
+    form.reset();
+    setTokenInformation(undefined);
+
     onSubmit(cryptoAssetDTO);
   });
   const fetchTokenInformation = token => {
