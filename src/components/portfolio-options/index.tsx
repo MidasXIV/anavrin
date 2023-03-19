@@ -1,102 +1,92 @@
 import { FC } from "react";
-import cn from "classnames";
+import { Divider, Menu, MenuItem } from "@mantine/core";
 import styles from "./index.module.css";
+import TooltipWrapper from "../tooltip-wrapper";
+import AnalyseIcon from "../icons/analyseIcon";
+import SaveIcon from "../icons/saveIcon";
+import DeletePortfolioIcon from "../icons/DeletePortfolioIcon";
+import PlusIconSVG from "../icons/plusIconSVG";
+import MoreOptionsIcon from "../icons/moreOptionsIcon";
 
 type PortfolioOptionsProps = {
-  openAddStockModal: () => void;
+  openAddAssetModal: () => void;
+  savePortfolio: () => void;
+  deletePortfolio: () => void;
+  togglePortfolioAnalysisPanel: () => void;
 };
 
-const PortfolioOptions: FC<PortfolioOptionsProps> = ({ openAddStockModal }) => (
+// TODO: Take in schema and generate layout based on Schema
+// Solves hardcoding buttons and their functionality.
+
+const PortfolioOptions: FC<PortfolioOptionsProps> = ({
+  openAddAssetModal,
+  savePortfolio,
+  deletePortfolio,
+  togglePortfolioAnalysisPanel
+}) => (
   <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 px-4 align-middle">
     <ul className="nav flex flex-row">
-      <button type="button" className={styles.icon} onClick={openAddStockModal}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-8"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1"
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-          />
-        </svg>
-      </button>
+      <TooltipWrapper label="Add stock" color="orange">
+        <button type="button" className={styles.icon} onClick={openAddAssetModal}>
+          <PlusIconSVG width={24} height={24} />
+        </button>
+      </TooltipWrapper>
     </ul>
 
-    <ul className="nav hidden flex-row space-x-5 md:flex">
-      <button type="button" className={styles.icon}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-8"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1"
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-      </button>
-      <button type="button" className={styles.icon}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-8"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1"
-            d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
-          />
-        </svg>
-      </button>
+    <ul className="nav hidden flex-row space-x-5 xl:flex">
+      <TooltipWrapper label="Delete" color="orange">
+        <button type="button" className={styles.icon} onClick={deletePortfolio}>
+          <DeletePortfolioIcon width={24} height={24} />
+        </button>
+      </TooltipWrapper>
+      <TooltipWrapper label="Save" color="orange">
+        <button type="button" className={styles.icon} onClick={savePortfolio}>
+          <SaveIcon width={24} height={24} />
+        </button>
+      </TooltipWrapper>
     </ul>
 
-    <ul className="nav hidden flex-row md:flex">
-      <button type="button" className={styles.icon}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-8"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1"
-            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-          />
-        </svg>
-      </button>
+    {/* Transistion panel -> Open portfolio analysis panel */}
+    <ul className="nav hidden flex-row xl:flex">
+      <TooltipWrapper label="Analyse portfolio" color="orange">
+        <button type="button" className={styles.icon} onClick={togglePortfolioAnalysisPanel}>
+          <AnalyseIcon width={24} height={24} />
+        </button>
+      </TooltipWrapper>
     </ul>
-    <ul className="nav flex flex-row md:hidden">
-      <button type="button" className={styles.icon}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-8"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+    {/* Options */}
+    <ul className="nav flex flex-row xl:hidden">
+      <Menu
+        // trigger="hover"
+        controlRefProp="ref"
+        control={
+          <button type="button" className={styles.icon}>
+            <MoreOptionsIcon width={32} height={32} />
+          </button>
+        }
+        position="bottom"
+        placement="end"
+        gutter={6}
+      >
+        <MenuItem color="orange" icon={<SaveIcon width={15} height={15} />} onClick={savePortfolio}>
+          Save
+        </MenuItem>
+        <MenuItem
+          color="red"
+          icon={<DeletePortfolioIcon width={15} height={15} />}
+          onClick={deletePortfolio}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1"
-            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-          />
-        </svg>
-      </button>
+          Delete
+        </MenuItem>
+        <Divider />
+        <MenuItem
+          color="green"
+          icon={<AnalyseIcon width={15} height={15} />}
+          onClick={togglePortfolioAnalysisPanel}
+        >
+          Analyse
+        </MenuItem>
+      </Menu>
     </ul>
   </div>
 );

@@ -87,6 +87,22 @@ const CoinInfo = ({ coin }) => (
         </div>
       </div>
     </div>
+
+    <div className="w-full rounded-lg bg-white p-4 md:w-1/4">
+      <h3 className="text-lg font-medium">Status Updates</h3>
+      <div className="h-64 overflow-y-auto">
+        {coin.status_updates.map(update => (
+          <div key={update.id} className="border-b border-gray-300 py-2">
+            <div className="text-sm font-medium">{update.category}</div>
+            <div className="text-xs">{update.created_at}</div>
+            <div className="text-sm">{update.description}</div>
+            <div className="text-xs font-medium">Pin: {update.pin ? "Yes" : "No"}</div>
+            <div className="text-xs">{update.user}</div>
+            <div className="text-xs font-medium">{update.user_title}</div>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 );
 
@@ -120,7 +136,7 @@ const SimulatorCryptoCurrency: FC = () => {
         description="You can see your portfolios estimated value & progress below"
       >
         <div className="bg-gray-200 p-6 shadow-md">
-          <CryptocurrencySearchBox setCyptocurrency={setSelectedCrypto} />
+          <CryptocurrencySearchBox setCyptocurrency={token => setSelectedCrypto(token)} />
         </div>
         {selectedCrypto && coinInfo ? (
           <div className="flex-1 overflow-auto">
