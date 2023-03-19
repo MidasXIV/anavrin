@@ -1,6 +1,7 @@
-import { FC, useRef } from "react";
+import { FC, useRef, useState } from "react";
 import cn from "classnames";
 import useModal from "../../hooks/useModal";
+import useStockSearch from "../../hooks/useStockSearch";
 
 type StockSuggestionItem = {
   "1. symbol": string;
@@ -29,9 +30,8 @@ type SearchStateType = keyof typeof SearchState;
 type StockSearchComboboxProps = {
   searchTerm: string;
   setSearchTerm: (ticker: string) => void;
-  stockSuggestions: { bestMatches: Array<StockSuggestionItem> };
-  fetchStock: (ticker: string) => void;
-  searchState: SearchStateType;
+  // stockSuggestions: { bestMatches: Array<StockSuggestionItem> };
+  state: SearchStateType;
 };
 
 const tempStockSearchData = {
@@ -106,7 +106,7 @@ const FailureIconComponent = () => (
 const PendingIconComponent = () => (
   <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
     <svg
-      className="h-5 w-5 animate-spin text-white"
+      className="h-5 w-5 animate-spin text-gray-700"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -124,19 +124,18 @@ const PendingIconComponent = () => (
 const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
   searchTerm,
   setSearchTerm,
-  stockSuggestions,
-  fetchStock,
-  searchState
+  state
 }) => {
+  const [stockTicker, setStockTicker] = useState(undefined);
   const { isShowing, open, close } = useModal(false);
   const stockSearchOptions = useRef<HTMLUListElement>();
   const stockSearchInput = useRef<HTMLInputElement>();
+  const { stockSuggestions, _isLoading, _isError } = useStockSearch(stockTicker || null);
 
   const handleKeyDown = e => {
     switch (e.keyCode) {
       case ENTER_KEY_CODE:
-        console.log("Calling API");
-        fetchStock(searchTerm);
+        setSearchTerm(searchTerm);
         break;
 
       case DOWN_ARROW_KEY_CODE:
@@ -175,16 +174,18 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
     }, 1);
   };
 
-  const stockSearchSuggestionsData = (stockSuggestions || tempStockSearchData).bestMatches.map(
-    stock => ({
-      symbol: stock["1. symbol"],
-      name: stock["2. name"],
-      type: stock["3. type"],
-      region: stock["4. region"],
-      currency: stock["8. currency"],
-      matchScore: stock["9. matchScore"]
-    })
-  );
+  // Current API limit is 5 API calls per minute
+  const stockSuggestionsIsValid = !!stockSuggestions?.bestMatches;
+  const paddedStockSuggestions = stockSuggestionsIsValid ? stockSuggestions : tempStockSearchData;
+
+  const stockSearchSuggestionsData = paddedStockSuggestions.bestMatches.map(stock => ({
+    symbol: stock["1. symbol"],
+    name: stock["2. name"],
+    type: stock["3. type"],
+    region: stock["4. region"],
+    currency: stock["8. currency"],
+    matchScore: stock["9. matchScore"]
+  }));
 
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => (
     <li
@@ -205,7 +206,6 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
         if (ticker) {
           setSearchTerm(ticker);
           stockSearchInput.current.focus();
-          fetchStock(ticker);
           close();
         }
       }}
@@ -214,7 +214,6 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
           case ENTER_KEY_CODE:
             setSearchTerm((e.target as HTMLLIElement).dataset.ticker);
             stockSearchInput.current.focus();
-            fetchStock((e.target as HTMLLIElement).dataset.ticker);
             close();
             break;
 
@@ -273,18 +272,18 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
         type="text"
         name="stock"
         id={ModalStockSearchInputID}
-        className="inline-flex w-full items-center rounded bg-gray-300 py-2 px-4 font-semibold text-gray-700"
+        className="inline-flex h-9 w-full items-center rounded bg-gray-100 py-2 px-4 font-semibold text-gray-700"
         ref={stockSearchInput}
-        onChange={e => setSearchTerm(e.target.value)}
-        value={searchTerm}
+        onChange={e => setStockTicker(e.target.value)}
+        value={stockTicker}
         onKeyDown={handleKeyDown}
         onFocus={open}
         onBlur={handleBlur}
       />
-      {searchState === SearchState.STABLE ? <SearchIconComponent /> : null}
-      {searchState === SearchState.PENDING ? <PendingIconComponent /> : null}
-      {searchState === SearchState.SUCCESS ? <SuccessIconComponent /> : null}
-      {searchState === SearchState.FAILURE ? <FailureIconComponent /> : null}
+      {state === SearchState.STABLE ? <SearchIconComponent /> : null}
+      {state === SearchState.PENDING ? <PendingIconComponent /> : null}
+      {state === SearchState.SUCCESS ? <SuccessIconComponent /> : null}
+      {state === SearchState.FAILURE ? <FailureIconComponent /> : null}
       <ul
         ref={stockSearchOptions}
         className={cn("absolute -mt-1 w-full max-w-md rounded-lg bg-white p-2 shadow-lg", {
