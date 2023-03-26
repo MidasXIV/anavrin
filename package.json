@@ -68,8 +68,6 @@
     "jest": "^28.1.3",
     "jest-cucumber": "^3.0.1",
     "postcss": "^8.4.21",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-preset-env": "^6.7.0",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "puppeteer-core": "^19.8.0",
