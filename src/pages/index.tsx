@@ -23,10 +23,10 @@ const Home: FC = () => (
       <div className="flex h-full flex-col justify-center md:flex-row">
         <div className="flex flex-col p-8 md:w-4/12 md:p-12">
           <h1 className="m-0 text-3xl font-medium leading-10 tracking-tight text-white sm:leading-none md:text-5xl lg:text-7xl">
-            <span className="via-emerald-400 bg-gradient-to-r from-purple-400 to-green-500 bg-clip-text uppercase text-transparent md:inline-block">
+            <span className="bg-gradient-to-r from-purple-400 via-emerald-400 to-green-500 bg-clip-text uppercase text-transparent md:inline-block">
               {" "}
               Make Better
-              <span className="from-teal-500 via-cyon-400 bg-gradient-to-r to-purple-300 bg-clip-text uppercase text-transparent">
+              <span className="via-cyon-400 bg-gradient-to-r from-teal-500 to-purple-300 bg-clip-text uppercase text-transparent">
                 {" "}
                 Decisions
               </span>{" "}

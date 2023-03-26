@@ -13,7 +13,7 @@ const WebsiteHeader: FC<unknown> = () => (
           Anavrin
         </a>
       </div>
-      <div className="hs-collapse basis-full grow overflow-hidden transition-all duration-300">
+      <div className="hs-collapse grow basis-full overflow-hidden transition-all duration-300">
         <div className="mt-0 flex flex-row items-center justify-end gap-y-0 gap-x-7 pl-7">
           <a
             className="font-medium text-gray-500 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500 sm:py-6"

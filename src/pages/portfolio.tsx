@@ -87,7 +87,7 @@ const Portfolio: FC = () => {
         <div className="w-max rounded-lg bg-charcoal-900 p-2">
           <button
             type="button"
-            className="focus:outline-none rounded-lg bg-charcoal-400 p-4 font-mono font-light text-gray-500 hover:bg-yellow-700 hover:text-white focus:text-white focus:ring-2 focus:ring-yellow-600 focus:ring-opacity-50"
+            className="rounded-lg bg-charcoal-400 p-4 font-mono font-light text-gray-500 hover:bg-yellow-700 hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-opacity-50"
             onClick={() => toggleShowCreatePortfolioModal()}
           >
             Create New Portfolio
