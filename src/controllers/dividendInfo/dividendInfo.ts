@@ -35,8 +35,9 @@ export default class DividendInfo implements IDividendInfo {
     price: number;
     AnnualDividends: AnnualDividendInterface;
   }) {
-    const year = new Date().getFullYear();
-    const dividend = AnnualDividends[year];
+    const years = Object.keys(AnnualDividends);
+    const latestYear = Math.max(...years.map(Number));
+    const dividend = AnnualDividends[String(latestYear)];
 
     return {
       dividend,
