@@ -6,7 +6,7 @@ import { useEffect, FC } from "react";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { JssProvider, createGenerateId } from "react-jss";
-import { MantineProvider, NormalizeCSS, GlobalStyles } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -196,14 +196,14 @@ const MyApp: FC<AppProps<{ session: Session }>> = ({ Component, pageProps }) => 
 <link rel='apple-touch-startup-image' href='/static/images/apple_splash_640.png' sizes='640x1136' /> */}
           </Head>
           <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
             theme={{
               /** Put your mantine theme override here */
               colorScheme: "light"
             }}
           >
             <main>
-              <NormalizeCSS />
-              <GlobalStyles />
               <Component {...pageProps} />
             </main>
           </MantineProvider>

@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import dynamic from "next/dynamic";
 import { FC, useEffect, useState } from "react";
 import AddNewPortfolioModal from "../components/add-new-portfolio-modal";
@@ -15,8 +15,11 @@ const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   ssr: false
 });
 
+const ADD_PORTFOLIO_TAB_VALUE = "add-portfolio";
+
 const Portfolio: FC = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  // const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState<string | null>(null);
   const { isShowing: showCreatePortfolioModal, toggle: toggleShowCreatePortfolioModal } =
     useModal(false);
   const { isShowing: showMaxPortfolioWarningModal, toggle: toggleShowMaxPortfolioWarningModal } =
@@ -35,12 +38,12 @@ const Portfolio: FC = () => {
     });
   };
 
-  const handleTabChange = (tabIndex: number) => {
+  const handleTabChange = (tabValue: string) => {
     const PORTFOLIO_LIMIT = 2;
 
     // If tabIndex is last tab => it is add portfolio button
     // tabIndex starts from 0 hence such a check
-    if (tabIndex === portfolioCount) {
+    if (tabValue === ADD_PORTFOLIO_TAB_VALUE) {
       if (portfolioCount >= PORTFOLIO_LIMIT) {
         toggleShowMaxPortfolioWarningModal();
         console.log("Max Portfolios created");
@@ -48,7 +51,7 @@ const Portfolio: FC = () => {
       }
       toggleShowCreatePortfolioModal();
     } else {
-      setActiveTab(tabIndex);
+      setActiveTab(tabValue);
     }
   };
 
@@ -98,20 +101,30 @@ const Portfolio: FC = () => {
   } else {
     Content = (
       <Tabs
-        active={activeTab}
+        defaultValue={activeTab}
         onTabChange={handleTabChange}
-        style={{ display: "flex" }}
-        classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
+        // style={{ display: "flex" }}
+      // classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
       >
         {/* <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
           <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
         </Tab> */}
+        <Tabs.List>
+          {portfolios.map((portfolio, key) => (
+            <Tabs.Tab key={portfolio._id} value={`Portfolio ${key}`}>
+              {`Portfolio ${key}`}
+            </Tabs.Tab>
+          ))}
+
+          <Tabs.Tab value={ADD_PORTFOLIO_TAB_VALUE} icon={<PlusIconSVG width={15} height={15} />} />
+        </Tabs.List>
+
         {portfolios.map((portfolio, key) => (
-          <Tab key={portfolio._id} label={`Portfolio ${key}`} classNames={{ root: "flex" }}>
+          <Tabs.Panel key={portfolio._id} value={`Portfolio ${key}`} classNames={{ root: "flex" }}>
             <LazyLoadPortfolio portfolio={portfolio} />
-          </Tab>
+          </Tabs.Panel>
         ))}
-        <Tab icon={<PlusIconSVG width={15} height={15} />} />
+
       </Tabs>
     );
   }

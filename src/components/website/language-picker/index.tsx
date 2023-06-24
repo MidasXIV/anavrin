@@ -25,8 +25,10 @@ const LanguagePicker = () => {
       onClose={() => setOpened(false)}
       radius="md"
       withArrow
+      width={200}
       zIndex={99}
-      control={
+    >
+      <Menu.Target>
         <UnstyledButton
           styles={{
             width: 200,
@@ -57,9 +59,8 @@ const LanguagePicker = () => {
             <span>{selected.label}</span>
           </Group>
         </UnstyledButton>
-      }
-    >
-      {items}
+      </Menu.Target>
+      <Menu.Dropdown>{items}</Menu.Dropdown>
     </Menu>
   );
 };
