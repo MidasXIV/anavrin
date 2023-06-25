@@ -61,8 +61,8 @@ const UserSettings: FC = () => {
   return (
     <>
       <DefaultLayout title="User setting" sidebar="" description="Update user profile">
-        <div className="flex h-full w-full flex-row">
-          <div className="dashboard-primary-panel">
+        <div className="flex h-full w-full flex-1 flex-row overflow-auto">
+          <div className="dashboard-primary-panel overflow-y-auto">
             {!isSignedIn ? <h1 className="mb-2 text-2xl">Please Login.</h1> : null}
             <Accordion
               defaultValue={SETTING_KEY_VALUES.connectToExchange}
