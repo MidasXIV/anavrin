@@ -16,10 +16,9 @@ const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
 });
 
 const ADD_PORTFOLIO_TAB_VALUE = "add-portfolio";
+const generateTabsValueForPortfolioItem = portfolio => `Portfolio::${portfolio._id}`;
 
 const Portfolio: FC = () => {
-  // const [activeTab, setActiveTab] = useState(0);
-  const [activeTab, setActiveTab] = useState<string | null>(null);
   const { isShowing: showCreatePortfolioModal, toggle: toggleShowCreatePortfolioModal } =
     useModal(false);
   const { isShowing: showMaxPortfolioWarningModal, toggle: toggleShowMaxPortfolioWarningModal } =
@@ -30,6 +29,7 @@ const Portfolio: FC = () => {
   const portfolioCount = portfolios.length;
   const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
 
+  const [activeTab, setActiveTab] = useState(null);
   const handleAssetTypeSelection = (assetType: AssetType) => {
     toggleShowCreatePortfolioModal();
     portfolios.push({
@@ -60,6 +60,11 @@ const Portfolio: FC = () => {
       try {
         const fetchUserPortfoliosResponse = await fetchUserPortfolio();
         const { portfolios: userPortfolios } = fetchUserPortfoliosResponse.data;
+
+        const selectedPortfolioValue =
+          userPortfolios.length > 1 ? generateTabsValueForPortfolioItem(userPortfolios[0]) : null;
+
+        setActiveTab(selectedPortfolioValue);
         setPortfolios(userPortfolios);
       } catch (error) {
         console.error(error);
@@ -67,6 +72,8 @@ const Portfolio: FC = () => {
       } finally {
         setIsPortfolioFetched(true);
       }
+
+      return () => setPortfolios([]);
     })();
   }, []);
 
@@ -104,27 +111,26 @@ const Portfolio: FC = () => {
         defaultValue={activeTab}
         onTabChange={handleTabChange}
         // style={{ display: "flex" }}
-      // classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
+        // classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
       >
-        {/* <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
-          <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
-        </Tab> */}
         <Tabs.List>
           {portfolios.map((portfolio, key) => (
-            <Tabs.Tab key={portfolio._id} value={`Portfolio ${key}`}>
+            <Tabs.Tab key={portfolio._id} value={generateTabsValueForPortfolioItem(portfolio)}>
               {`Portfolio ${key}`}
             </Tabs.Tab>
           ))}
-
           <Tabs.Tab value={ADD_PORTFOLIO_TAB_VALUE} icon={<PlusIconSVG width={15} height={15} />} />
         </Tabs.List>
 
-        {portfolios.map((portfolio, key) => (
-          <Tabs.Panel key={portfolio._id} value={`Portfolio ${key}`} classNames={{ root: "flex" }}>
+        {portfolios.map(portfolio => (
+          <Tabs.Panel
+            key={portfolio._id}
+            value={generateTabsValueForPortfolioItem(portfolio)}
+            // classNames={{ root: "flex" }}
+          >
             <LazyLoadPortfolio portfolio={portfolio} />
           </Tabs.Panel>
         ))}
-
       </Tabs>
     );
   }
