@@ -128,13 +128,16 @@ const Portfolio: FC = () => {
             value={generateTabsValueForPortfolioItem(portfolio)}
             // classNames={{ root: "flex" }}
           >
-            <LazyLoadPortfolio portfolio={portfolio} />
+            {activeTab === generateTabsValueForPortfolioItem(portfolio) ? (
+              <LazyLoadPortfolio portfolio={portfolio} />
+            ) : null}
           </Tabs.Panel>
         ))}
       </Tabs>
     );
   }
 
+  console.log("Portfolio -> render");
   return (
     <>
       <DefaultLayout
