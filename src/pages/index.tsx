@@ -3,6 +3,7 @@ import Register from "../components/website/register";
 import FeaturesSection from "../components/website/features-section";
 import LaunchAppButton from "../components/website/launch-app-button";
 import WebsiteHeader from "../components/website/header";
+import WebsiteFooter from "../components/website/footer/footer";
 
 const Home: FC = () => (
   <div className="flex w-full flex-col">
@@ -51,6 +52,8 @@ const Home: FC = () => (
     <div className="border-t-1 border bg-gray-50">
       <Register />
     </div>
+
+    <WebsiteFooter />
   </div>
 );
 
