@@ -68,8 +68,11 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
           </button>
         </Menu.Target>
         <Menu.Dropdown>
-
-          <Menu.Item color="orange" icon={<SaveIcon width={15} height={15} />} onClick={savePortfolio}>
+          <Menu.Item
+            color="orange"
+            icon={<SaveIcon width={15} height={15} />}
+            onClick={savePortfolio}
+          >
             Save
           </Menu.Item>
           <Menu.Item

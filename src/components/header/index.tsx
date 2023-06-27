@@ -35,7 +35,7 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
             offset={6}
           >
             <Menu.Target>
-            <button className="relative inline-block" type="button">
+              <button className="relative inline-block" type="button">
                 <Image
                   className="inline-block h-12 w-12 rounded-lg object-cover"
                   src={userImage}
@@ -48,36 +48,34 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
               </button>
             </Menu.Target>
             <Menu.Dropdown>
-
-            <Menu.Item>
-              <Link href="./user-settings">Settings</Link>
-            </Menu.Item>
-            <Menu.Item>
-              <a href="./user-settings">Messages</a>
-            </Menu.Item>
-            <Menu.Item>Gallery</Menu.Item>
-            <Menu.Item
-              rightSection={
-                <Text size="sm" color="gray">
-                  ⌘K
-                </Text>
-              }
-            >
-              Search
-            </Menu.Item>
-            <Divider />
-            <Menu.Item disabled>Delete my data</Menu.Item>
-            {session ? (
-              <Menu.Item color="red" onClick={() => signOut()}>
-                Sign out
+              <Menu.Item>
+                <Link href="./user-settings">Settings</Link>
               </Menu.Item>
-            ) : (
-              <Menu.Item color="green" onClick={() => signIn()}>
-                Sign in
+              <Menu.Item>
+                <a href="./user-settings">Messages</a>
               </Menu.Item>
-            )}
-                  </ Menu.Dropdown>
-
+              <Menu.Item>Gallery</Menu.Item>
+              <Menu.Item
+                rightSection={
+                  <Text size="sm" color="gray">
+                    ⌘K
+                  </Text>
+                }
+              >
+                Search
+              </Menu.Item>
+              <Divider />
+              <Menu.Item disabled>Delete my data</Menu.Item>
+              {session ? (
+                <Menu.Item color="red" onClick={() => signOut()}>
+                  Sign out
+                </Menu.Item>
+              ) : (
+                <Menu.Item color="green" onClick={() => signIn()}>
+                  Sign in
+                </Menu.Item>
+              )}
+            </Menu.Dropdown>
           </Menu>
         </div>
       </div>
