@@ -26,11 +26,12 @@ const Dashboard: FC = () => {
             <LoremIpsum />
           </div>
           <div
-            className={cn("dashboard-secondary-panel", {
+            className={cn("dashboard-secondary-panel overflow-y-auto", {
               "sm:w-1/4": hide
             })}
           >
             Secondary Panel
+            <LoremIpsum />
           </div>
         </div>
       </DefaultLayout>

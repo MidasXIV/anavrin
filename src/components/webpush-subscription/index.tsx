@@ -115,7 +115,7 @@ const WebpushSubscription: FC<unknown> = () => {
       {isDenied ? (
         <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>
       ) : null}
-      <Divider margins="md" />
+      <Divider my="md" />
       {/* {subscription ? <SubscriptionCard subscription={subscription} /> : null} */}
       {savedPushSubscriptions.length ? (
         savedPushSubscriptions.map(savedPushSubscription => (

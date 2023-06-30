@@ -189,7 +189,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
 
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => (
     <li
-      className="focus:outline-none text flex cursor-pointer flex-row justify-between rounded-lg px-4 py-2 text-xs text-gray-800 hover:bg-gray-300 focus:flex-col focus:bg-gray-300"
+      className="text flex cursor-pointer flex-row justify-between rounded-lg px-4 py-2 text-xs text-gray-800 hover:bg-gray-300 focus:flex-col focus:bg-gray-300 focus:outline-none"
       aria-labelledby="dropdown-label"
       aria-selected="false"
       key={suggestion.symbol}

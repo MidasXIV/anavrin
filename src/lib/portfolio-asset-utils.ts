@@ -1,4 +1,5 @@
 import { fetchCoinInfo } from "../util/cryptocurrencyService";
+import isEmptyDataItem from "../util/type-gaurds";
 import { AssetType } from "./portfolio-utils";
 
 /**
@@ -11,14 +12,14 @@ import { AssetType } from "./portfolio-utils";
  */
 function convertCoinGeckoApiCoinObjectToDTO(obj: any): CryptoAssetDTO {
   return {
-    title: obj.name,
-    token: obj.token,
-    holdings: obj.holdings,
-    marketPrice: obj.market_data.current_price.usd,
-    marketValue: obj.market_data.current_price.usd * obj.holdings, // marketPrice * holdings
-    fiat: obj.fiat,
-    change: obj.market_data.price_change_percentage_24h,
-    iconSrc: obj.image.thumb
+    title: obj?.name,
+    token: obj?.token,
+    holdings: obj?.holdings,
+    marketPrice: obj?.market_data?.current_price.usd,
+    marketValue: obj?.market_data?.current_price.usd * obj.holdings, // marketPrice * holdings
+    fiat: obj?.fiat,
+    change: obj?.market_data?.price_change_percentage_24h,
+    iconSrc: obj?.image?.thumb
   };
 }
 

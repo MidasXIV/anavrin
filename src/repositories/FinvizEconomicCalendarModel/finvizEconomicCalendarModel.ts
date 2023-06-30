@@ -1,5 +1,4 @@
 import cheerio from "cheerio";
-import { data } from "cheerio/lib/api/attributes";
 import Result from "../../lib/result";
 import makeRequest from "../../util/makeRequest";
 
@@ -80,7 +79,7 @@ export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalen
 
   public async getEcnomicEvents(): Promise<EcnomicEventsResponse> {
     const { data: finvizEconomicCalendarPage } = await this.fetchFinvizEcnomicCalendarPage();
-    if (!data) {
+    if (!finvizEconomicCalendarPage) {
       // Unable to fetch data
       return Result.fail({ type: "UnableToFetchData" });
     }

@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // next.config.js
 const path = require("path");
-const withPWA = require("next-pwa");
+const withPWA = require("next-pwa")({
+  dest: "public",
+  disable: false,
+  // runtimeCaching,Aet this up
+  customWorkerDir: "src/service-worker"
+});
+
 const runtimeCaching = require("next-pwa/cache");
 
 module.exports = withPWA({
-  pwa: {
-    dest: "public",
-    disable: false,
-    runtimeCaching,
-    customWorkerDir: "src/service-worker"
-  },
   images: {
     domains: [
       "images.unsplash.com",

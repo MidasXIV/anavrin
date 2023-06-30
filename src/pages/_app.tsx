@@ -6,19 +6,20 @@ import { useEffect, FC } from "react";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { JssProvider, createGenerateId } from "react-jss";
-import { MantineProvider, NormalizeCSS, GlobalStyles } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
 import Router from "next/router";
+import { Session } from "next-auth";
 
 NProgress.configure({ showSpinner: false });
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+const MyApp: FC<AppProps<{ session: Session }>> = ({ Component, pageProps }) => {
   useEffect(() => {
     const jssStyles = document.getElementById("mantine-ssr-styles");
     if (jssStyles) {
@@ -195,14 +196,14 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
 <link rel='apple-touch-startup-image' href='/static/images/apple_splash_640.png' sizes='640x1136' /> */}
           </Head>
           <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
             theme={{
               /** Put your mantine theme override here */
               colorScheme: "light"
             }}
           >
             <main>
-              <NormalizeCSS />
-              <GlobalStyles />
               <Component {...pageProps} />
             </main>
           </MantineProvider>

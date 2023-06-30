@@ -7,7 +7,7 @@ module.exports = {
   // corePlugins: {
   //   outline: false
   // },
-  purge: [
+  content: [
     "./src/components/**/*.{js,ts,jsx,tsx}",
     "./src/layouts/**/*.{js,ts,jsx,tsx}",
     "./src/pages/**/*.{js,ts,jsx,tsx}"
@@ -34,9 +34,6 @@ module.exports = {
         sans: ["Inter", ...defaultTheme.fontFamily.sans]
       }
     }
-  },
-  variants: {
-    backgroundColor: ["responsive", "hover", "focus", "active"]
   },
   plugins: []
 };

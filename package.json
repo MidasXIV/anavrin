@@ -26,16 +26,19 @@
     "pl:dev:desktop": "npm run profile-layout:dev -- -v desktop"
   },
   "dependencies": {
-    "@mantine/core": "^2.5.1",
-    "@mantine/hooks": "^2.5.1",
+    "@emotion/react": "^11.11.1",
+    "@mantine/core": "^6.0.14",
+    "@mantine/form": "^6.0.14",
+    "@mantine/hooks": "^6.0.14",
     "axios": "^0.21.4",
     "cheerio": "^1.0.0-rc.10",
     "classnames": "^2.3.1",
     "crypto": "^1.0.1",
+    "fast-memoize": "^2.5.2",
     "mongodb": "^4.10.0",
     "next": "^12.2.3",
     "next-auth": "^4.10.3",
-    "next-pwa": "^5.4.4",
+    "next-pwa": "^5.6.0",
     "nprogress": "^0.2.0",
     "react": "^18.2.0",
     "react-data-table-component": "^7.5.3",
@@ -44,7 +47,6 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.3",
     "swr": "^1.3.0",
-    "tailwindcss": "^2.2.19",
     "web-push": "^3.4.5"
   },
   "devDependencies": {
@@ -56,7 +58,7 @@
     "@types/react": "^17.0.38",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "autoprefixer": "^10.4.2",
+    "autoprefixer": "^10.4.14",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -68,15 +70,14 @@
     "eslint-plugin-react": "^7.28.0",
     "jest": "^28.1.3",
     "jest-cucumber": "^3.0.1",
-    "postcss": "^8.4.5",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-preset-env": "^6.7.0",
+    "postcss": "^8.4.21",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
-    "puppeteer-core": "^10.4.0",
-    "rimraf": "^3.0.2",
+    "puppeteer-core": "^19.8.0",
+    "rimraf": "^4.4.1",
     "stdio": "^2.1.1",
+    "tailwindcss": "^3.2.7",
     "ts-jest": "^28.0.7",
-    "typescript": "^4.5.4"
+    "typescript": "^5.0.2"
   }
 }

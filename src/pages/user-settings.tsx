@@ -7,6 +7,13 @@ import { isMobileUI } from "../lib/viewport";
 import SecondaryPanel from "../components/secondary-panel";
 import { UserSettingsComponentMapping, PanelKeys } from "../lib/user-settings-component-map";
 
+const SETTING_KEY_VALUES = {
+  connectToExchange: "connect-to-exchange",
+  webpush: "webpush"
+} as const;
+
+type SETTING_KEY_VALUES = (typeof SETTING_KEY_VALUES)[keyof typeof SETTING_KEY_VALUES];
+
 const UserSettings: FC = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
@@ -30,18 +37,21 @@ const UserSettings: FC = () => {
     exchanges[exchange]({ onClick: onExchangeButtonClick })
   );
 
-  const onMenuItemClick = MenuState => {
+  const onMenuItemClick = (selectedMenuItem: SETTING_KEY_VALUES) => {
     // MenuState: {0: true, 1: false}
 
-    const selectedMenuItem = Object.entries(MenuState).find(menuStateItem => {
-      const [menuKey, isOpened] = menuStateItem;
-      return isOpened;
-    })?.[0];
+    // TODO add null check; null is emmited when the panel is clicked
+    // TODO: implement unSetPanel
+
+    // const selectedMenuItem = Object.entries(MenuState).find(menuStateItem => {
+    //   const [menuKey, isOpened] = menuStateItem;
+    //   return isOpened;
+    // })?.[0];
 
     switch (selectedMenuItem) {
-      case "0": // Exchange Selection
+      case SETTING_KEY_VALUES.connectToExchange: // Exchange Selection
         break;
-      case "1": // WebPush Menu Item
+      case SETTING_KEY_VALUES.webpush: // WebPush Menu Item
         setPanel(PanelKeys.WEBPUSH);
         break;
       default:
@@ -51,28 +61,35 @@ const UserSettings: FC = () => {
   return (
     <>
       <DefaultLayout title="User setting" sidebar="" description="Update user profile">
-        <div className="flex h-full w-full flex-row">
-          <div className="dashboard-primary-panel">
+        <div className="flex h-full w-full flex-1 flex-row overflow-auto">
+          <div className="dashboard-primary-panel overflow-y-auto">
             {!isSignedIn ? <h1 className="mb-2 text-2xl">Please Login.</h1> : null}
             <Accordion
-              initialItem={-1}
+              defaultValue={SETTING_KEY_VALUES.connectToExchange}
               className="border-t-0 border-b border-gray-400"
               onChange={onMenuItemClick}
             >
               <Accordion.Item
                 className="border-t-0 border-b border-gray-400 font-normal"
-                label={
+                value={SETTING_KEY_VALUES.connectToExchange}
+              >
+                <Accordion.Control>
                   <h1 className="mb-2 text-2xl">
                     Connect <span className="font-semibold">Anavrin</span> to an exchange account.
                   </h1>
-                }
-              >
-                <p className="text-md text-gray-600">We currently only support Binance exchange.</p>
-                <section className="my-4 grid grid-cols-4 gap-4">{Exchanges}</section>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <p className="text-md text-gray-600">
+                    We currently only support Binance exchange.
+                  </p>
+                  <section className="my-4 grid grid-cols-4 gap-4">{Exchanges}</section>
+                </Accordion.Panel>
               </Accordion.Item>
-              <Accordion.Item
-                label={<h1 className="mb-2 text-2xl">Authorize webpush subscriptions.</h1>}
-              />
+              <Accordion.Item value={SETTING_KEY_VALUES.webpush}>
+                <Accordion.Control>
+                  <h1 className="mb-2 text-2xl">Authorize webpush subscriptions.</h1>
+                </Accordion.Control>
+              </Accordion.Item>
             </Accordion>
           </div>
           <SecondaryPanel

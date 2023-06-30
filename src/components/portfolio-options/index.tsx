@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Divider, Menu, MenuItem } from "@mantine/core";
+import { Divider, Menu } from "@mantine/core";
 import styles from "./index.module.css";
 import TooltipWrapper from "../tooltip-wrapper";
 import AnalyseIcon from "../icons/analyseIcon";
@@ -58,34 +58,39 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
     <ul className="nav flex flex-row xl:hidden">
       <Menu
         // trigger="hover"
-        controlRefProp="ref"
-        control={
+        width={200}
+        position="bottom-end"
+        offset={6}
+      >
+        <Menu.Target>
           <button type="button" className={styles.icon}>
             <MoreOptionsIcon width={32} height={32} />
           </button>
-        }
-        position="bottom"
-        placement="end"
-        gutter={6}
-      >
-        <MenuItem color="orange" icon={<SaveIcon width={15} height={15} />} onClick={savePortfolio}>
-          Save
-        </MenuItem>
-        <MenuItem
-          color="red"
-          icon={<DeletePortfolioIcon width={15} height={15} />}
-          onClick={deletePortfolio}
-        >
-          Delete
-        </MenuItem>
-        <Divider />
-        <MenuItem
-          color="green"
-          icon={<AnalyseIcon width={15} height={15} />}
-          onClick={togglePortfolioAnalysisPanel}
-        >
-          Analyse
-        </MenuItem>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item
+            color="orange"
+            icon={<SaveIcon width={15} height={15} />}
+            onClick={savePortfolio}
+          >
+            Save
+          </Menu.Item>
+          <Menu.Item
+            color="red"
+            icon={<DeletePortfolioIcon width={15} height={15} />}
+            onClick={deletePortfolio}
+          >
+            Delete
+          </Menu.Item>
+          <Divider />
+          <Menu.Item
+            color="green"
+            icon={<AnalyseIcon width={15} height={15} />}
+            onClick={togglePortfolioAnalysisPanel}
+          >
+            Analyse
+          </Menu.Item>
+        </Menu.Dropdown>
       </Menu>
     </ul>
   </div>

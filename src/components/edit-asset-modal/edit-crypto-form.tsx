@@ -1,5 +1,5 @@
-import { useForm } from "@mantine/hooks";
-import { InputWrapper, NumberInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { NumberInput } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import SlideToSubmit from "../slide-to-submit";
 import { fetchCoinInfo } from "../../util/cryptocurrencyService";
@@ -60,38 +60,29 @@ const EditCryptoForm: FC<EditCryptoFormProps> = ({ asset, onSubmit }) => {
     <form>
       <section className="py-2 px-2">
         {tokenInformation ? <CryptoInformationTable coin={tokenInformation} /> : null}
-        <InputWrapper
+        <NumberInput
           id="cryptocurrency-holdings"
           required
           label="Token Holdings"
           description="Enter the number of tokens you own"
           className="pb-2"
-        >
-          <NumberInput
-            id="cryptocurrency-holdings"
-            placeholder="1000"
-            variant="filled"
-            value={form.values.holdings}
-            onChange={value => form.setFieldValue("holdings", value)}
-          />
-        </InputWrapper>
+          placeholder="1000"
+          variant="filled"
+          value={form.values.holdings}
+          onChange={value => form.setFieldValue("holdings", Number(value))}
+        />
 
-        <InputWrapper
+        <NumberInput
           id="cryptocurrency-fiat"
           required
           label="Fiat"
           description="Fiat spent on acquiring holdings"
           className="pb-2"
-        >
-          <NumberInput
-            id="cryptocurrency-fiat"
-            placeholder="500"
-            variant="filled"
-            value={form.values.fiat}
-            onChange={value => form.setFieldValue("fiat", value)}
-          />
-        </InputWrapper>
-
+          placeholder="500"
+          variant="filled"
+          value={form.values.fiat}
+          onChange={value => form.setFieldValue("fiat", Number(value))}
+        />
         <SlideToSubmit onSubmit={handleFormSubmit} />
       </section>
     </form>
