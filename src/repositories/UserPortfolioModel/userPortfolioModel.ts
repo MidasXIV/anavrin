@@ -5,28 +5,15 @@ import MongoBase from "../MongoDbBase/mongoDBBase";
 
 // UserPortfolioModel implements the IUserPortfolioModel interface
 class UserPortfolioModel extends MongoBase implements IUserPortfolioModel {
-  private db: Db;
-
-  private collectionName = "users";
-
   constructor(db: Db) {
-    super();
-    this.db = db;
-  }
-
-  // Retrieves a user document from the "users" collection with the given query and projection
-  private async get(query = {}, projection = {}): Promise<UserDocument> {
-    return this.db
-      .collection(this.collectionName)
-      .findOne(query, projection)
-      .then(user => user || null);
+    super({ db, collectionName: "users" });
   }
 
   // Retrieves a user's portfolio from the "users" collection with the given email address
   public async getUserPortfolio(email: string): Promise<Array<Portfolio>> {
     const query = { email };
     const projection = { projection: { portfolios: 1, _id: 0 } };
-    const portfolioDocument = await this.get(query, projection);
+    const portfolioDocument: UserDocument = await this.get(query, projection);
     if (isEmpty(portfolioDocument)) {
       return [];
     }
