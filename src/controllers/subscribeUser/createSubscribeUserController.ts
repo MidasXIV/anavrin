@@ -8,12 +8,15 @@ export default class CreateSubscribeUserController {
     this.useCase = useCase;
   }
 
-  public async execute(request: NextApiRequest, response: NextApiResponse): Promise<void> {
+  public async execute(
+    request: NextApiRequest,
+    response: NextApiResponse<SubscribeUserControllerResponse>
+  ): Promise<void> {
     const { email } = request.body;
 
     if (!email) {
       return response.status(400).json({
-        message: `Email not present`
+        type: "InvalidEmail"
       });
     }
 
@@ -24,21 +27,24 @@ export default class CreateSubscribeUserController {
         const resultError = Result.getError(result);
         switch (resultError.type) {
           case "UserAlreadySubscribed":
-            response.status(401).json(result);
+            response.status(409);
             break;
           case "FailedToSubscribeUser":
-            response.status(500).json(result);
+            response.status(500);
             break;
           default:
-            response.status(500).json(result);
+            response.status(500);
             break;
         }
+        response.json(resultError);
+        return null;
       }
 
       const resultSuccess = Result.getValue(result);
       response.status(200).json(resultSuccess);
     } catch (error) {
-      response.status(500).json({ error: "Internal Server Error" });
+      response.status(500).json({ type: "InternalServerError" });
     }
+    return null;
   }
 }

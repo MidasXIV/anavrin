@@ -2,6 +2,10 @@ type UserAlreadySubscribed = {
   type: "UserAlreadySubscribed";
 };
 
+type InvalidEmail = {
+  type: "InvalidEmail";
+};
+
 type InternalServerError = {
   type: "InternalServerError";
 };
@@ -14,10 +18,15 @@ interface SubscribeUserDTO {
   emailSaved: boolean;
 }
 
-type SubscribeUserResponse = Either<
-  UserAlreadySubscribed | FailedToSubscribeUser | InternalServerErrors,
-  SubscribeUserDTO
->;
+type SubscribeUserErrors =
+  | UserAlreadySubscribed
+  | InvalidEmail
+  | FailedToSubscribeUser
+  | InternalServerError;
+
+type SubscribeUserResponse = Either<SubscribeUserErrors, SubscribeUserDTO>;
+
+type SubscribeUserControllerResponse = SubscribeUserErrors | SubscribeUserDTO;
 
 interface ISubscribeUser {
   execute(email: string): Promise<SubscribeUserResponse>;
