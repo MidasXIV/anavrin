@@ -18,7 +18,6 @@ export default class SubscribeUser implements ISubscribeUser {
       if (isEmailRegistered) {
         return Result.fail({ type: "UserAlreadySubscribed" });
       }
-
       // Call the repository method to save the email to the database
       const isEmailSaved = await this.model.saveEmail(email);
 

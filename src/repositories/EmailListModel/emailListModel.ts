@@ -7,7 +7,7 @@ export default class EmailListModel extends MongoBase implements IEmailListModel
   }
 
   public async saveEmail(email: string): Promise<boolean> {
-    const result = await this.save(email);
+    const result = await this.save({ email });
     return result;
   }
 
