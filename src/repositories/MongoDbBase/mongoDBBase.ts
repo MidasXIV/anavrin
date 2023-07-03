@@ -43,7 +43,7 @@ export default class MongoBase {
    */
   protected async save<T>(doc: T): Promise<boolean> {
     // Save the document to the database collection
-    const result = await this.db.collection(this.collectionName).insertOne({ doc });
+    const result = await this.db.collection(this.collectionName).insertOne(doc);
 
     const normalizeResult = Boolean(result.acknowledged && result.insertedId);
     // Return a boolean indicating the success of the operation
