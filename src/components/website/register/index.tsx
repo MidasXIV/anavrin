@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import postSubscribeUser from "../../../util/postSubscribeUser";
+import api from "../../../services/create-service";
 
 const Register: FC<unknown> = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ const Register: FC<unknown> = () => {
     setIsLoading(true);
 
     try {
-      const response = await postSubscribeUser(email);
+      const response = await api.postSubscribeUser({ email });
 
       if (response.status === 200) {
         // Email saved successfully

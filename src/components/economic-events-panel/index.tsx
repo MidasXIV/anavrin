@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import cn from "classnames";
-import fetchEconomicEvents from "../../util/fetchEconomicEvents";
 import {
   buildEventDate,
   formatDateString,
   getTimeDifferenceString
 } from "../../util/timeAndDateHelpers";
+import api from "../../services/create-service";
 
 const LoadingListItem = () => (
   <li>
@@ -116,7 +116,7 @@ const EconomicEventsPanel: FC<any> = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetchEconomicEvents().then(({ status, data }) => {
+    api.fetchEconomicEvents().then(({ status, data }) => {
       setLoading(false);
 
       if (status === 200) {
