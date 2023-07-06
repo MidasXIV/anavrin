@@ -2,7 +2,7 @@ import { FC } from "react";
 import cn from "classnames";
 
 const CryptoInformationTable: FC<any> = ({ coin }) => (
-  <div className="flex flex-row rounded-sm bg-gray-100 py-2 px-2 text-gray-600">
+  <div className="flex flex-row rounded-sm bg-gray-100 px-2 py-2 text-gray-600">
     <div className="flex w-5/12 flex-col">
       <div className="flex items-center">
         <img className="mr-4 h-12 w-12 rounded-full" src={coin.image.large} alt={coin.name} />

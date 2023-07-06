@@ -52,7 +52,7 @@ const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
 
   return (
     <form>
-      <section className="py-2 px-2">
+      <section className="px-2 py-2">
         <Input.Wrapper
           id="cryptocurrency-searchbox"
           required

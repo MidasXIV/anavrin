@@ -76,7 +76,7 @@ const Register: FC<unknown> = () => {
             type="email"
             name="email"
             id="email"
-            className="flex-1 rounded-lg border border-transparent bg-violet-200/50 py-3 px-5 placeholder:text-black/30 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            className="flex-1 rounded-lg border border-transparent bg-violet-200/50 px-5 py-3 placeholder:text-black/30 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             placeholder="Enter your email Address..."
             value={email}
             onChange={e => setEmail(e.target.value)}
