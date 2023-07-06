@@ -1,3 +1,4 @@
+import memoize from "fast-memoize";
 import {
   CryptocurrencyExpandableComponent,
   CryptoPortfolioSchema,
@@ -7,11 +8,13 @@ import {
   onCryptocurrencyTableRowDoublceClick
 } from "./table-schema";
 
-enum AssetType {
-  STOCK = "stock",
-  CRYPTO = "crypto",
-  DFM = "dfm"
-}
+const AssetType = {
+  STOCK: "stock",
+  CRYPTO: "crypto",
+  DFM: "dfm"
+} as const;
+
+type AssetType = (typeof AssetType)[keyof typeof AssetType];
 
 const getPortfolioTableSchema = (portfolioType: AssetType) => {
   switch (portfolioType) {
@@ -123,6 +126,20 @@ const updatePortfolio = <T extends { [key: string]: any }>(
 };
 
 /**
+ * Generates a random hex color code.
+ *
+ * @returns {string} - The randomly generated color code.
+ */
+function generateRandomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i += 1) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+/**
  * Calculates the total invested amount and portfolio value for a given portfolioData array
  *
  * @param {Array} portfolioData - Array of portfolio data objects
@@ -132,6 +149,11 @@ function getPortfolioSummary(portfolioData: CryptoAssetDTO[]): {
   totalInvested: number;
   portfolioValue: number;
   percentageChange: number;
+  ringChartData: {
+    value: number;
+    color: string;
+    tooltip: string;
+  }[];
 } {
   let totalInvested = 0;
   let portfolioValue = 0;
@@ -140,6 +162,19 @@ function getPortfolioSummary(portfolioData: CryptoAssetDTO[]): {
     portfolioValue += item.holdings * item.marketPrice;
   });
   const percentageChange = (portfolioValue / totalInvested - 1) * 100;
+
+  /**
+   * Calculates the data for a ring chart based on the portfolio data.
+   * Each item in the portfolio data will contribute a portion of the total invested amount to the chart.
+   */
+
+  const ringChartData = portfolioData.map(item => ({
+    value: (item.fiat / totalInvested) * 100,
+
+    color: generateRandomColor(),
+
+    tooltip: `${item.token} (${((item.fiat / totalInvested) * 100).toFixed(2)}%)`
+  }));
 
   // const formattedTotalInvested = totalInvested.toLocaleString(undefined, {
   //   style: "currency",
@@ -150,9 +185,12 @@ function getPortfolioSummary(portfolioData: CryptoAssetDTO[]): {
   return {
     totalInvested,
     portfolioValue,
-    percentageChange
+    percentageChange,
+    ringChartData
   };
 }
+
+const getPortfolioSummaryMemoized = memoize(getPortfolioSummary);
 
 export {
   AssetType,
@@ -162,5 +200,6 @@ export {
   getEditAssetModalTitle,
   getPortfolioRowDoubleClickHandler,
   updatePortfolio,
-  getPortfolioSummary
+  getPortfolioSummary,
+  getPortfolioSummaryMemoized
 };

@@ -1,6 +1,7 @@
 import { FC, useState, useRef, useEffect } from "react";
 import cn from "classnames";
 import NProgress from "nprogress";
+import { useResizeObserver } from "@mantine/hooks";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
@@ -9,23 +10,26 @@ import {
   AssetType,
   getPortfolioExpandableComponent,
   getPortfolioRowDoubleClickHandler,
-  getPortfolioSummary,
+  getPortfolioSummaryMemoized,
   getPortfolioTableSchema,
   updatePortfolio
 } from "../../lib/portfolio-utils";
-import { deleteUserPortfolio, saveUserPortfolio } from "../../util/user-portfolio";
 import {
   convertCryptoPortfolioItemToPersistence,
   hydrateCryptoPortfolioItems
 } from "../../lib/portfolio-asset-utils";
 import EditAssetModal from "../../components/edit-asset-modal";
 import PortfolioAnalysisHeader from "../../components/portfolio-analysis-header";
+import RingChart from "../../components/ring-chart/ring-chart";
+import api from "../../services/create-service";
 
 type PortfolioLayoutProps = {
   portfolio: Portfolio;
 };
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
+  const [ref, size] = useResizeObserver();
+
   // Extract the portfolioType and items.
   const { assetType: portfolioType } = portfolio;
   const [portfolioDomainObject, setPortfolioDomainObject] = useState<Portfolio>({
@@ -34,11 +38,12 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   });
   const { isShowing, toggle } = useModal(false);
   const { isShowing: isEditModalShowing, toggle: toggleEditModal } = useModal(false);
-  const [hide, setHide] = useState(true);
+  const [hideSecondaryPanel, setHideSecondaryPanel] = useState(true);
   const [portfolioData, setPortfolioData] = useState([]);
   const [portfolioTableLoading, setPortfolioTableLoading] = useState(false);
 
-  const { totalInvested, portfolioValue, percentageChange } = getPortfolioSummary(portfolioData);
+  const { totalInvested, portfolioValue, percentageChange, ringChartData } =
+    getPortfolioSummaryMemoized(portfolioData);
 
   const [assetToBeEdited, setAssetToBeEdited] = useState(undefined);
 
@@ -63,10 +68,12 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
       NProgress.start();
 
       console.log("Saving portfolio");
-      const result = await saveUserPortfolio({
-        ...portfolioDomainObject,
-        assetType: portfolioType,
-        items: portfolioData.map(item => convertCryptoPortfolioItemToPersistence(item))
+      const result = await api.saveUserPortfolio({
+        portfolio: {
+          ...portfolioDomainObject,
+          assetType: portfolioType,
+          items: portfolioData.map(item => convertCryptoPortfolioItemToPersistence(item))
+        }
       });
 
       const { data } = result;
@@ -110,7 +117,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     try {
       NProgress.start();
       console.log("Deleting portfolio");
-      const result = await deleteUserPortfolio(portfolioDomainObject);
+      const result = await api.deleteUserPortfolio({ portfolio: portfolioDomainObject });
 
       const { data } = result;
       console.log(data);
@@ -155,6 +162,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   const [height, setHeight] = useState(null);
   const tableRef = useRef(null);
   useEffect(() => {
+    console.log("useEffect layouts/portfolio");
     NProgress.start();
     if (tableRef.current) {
       setHeight(tableRef.current.getBoundingClientRect().height);
@@ -164,7 +172,10 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
      * such that it is understood by the tableSchema
      */
     async function hydratePortfolioItemsData() {
-      const portfolioHydrationFnMapper = new Map();
+      const portfolioHydrationFnMapper = new Map<
+        AssetType,
+        (portfolio: Portfolio) => Promise<CryptoAssetDTO[]>
+      >();
       portfolioHydrationFnMapper.set(AssetType.CRYPTO, hydrateCryptoPortfolioItems);
 
       const data = await portfolioHydrationFnMapper.get(portfolioType)(portfolio);
@@ -178,14 +189,17 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     setPortfolioDomainObject(portfolio);
   }, [portfolio]);
 
+  console.log("layouts/Portfolio -> render");
   return (
     <>
-      <AddAssetModal
-        isShowing={isShowing}
-        cancel={toggle}
-        assetType={portfolioType}
-        onSubmit={onAssetAdd}
-      />
+      {isShowing ? (
+        <AddAssetModal
+          isShowing={isShowing}
+          cancel={toggle}
+          assetType={portfolioType}
+          onSubmit={onAssetAdd}
+        />
+      ) : null}
       {assetToBeEdited ? (
         <EditAssetModal
           isShowing={isEditModalShowing}
@@ -198,8 +212,8 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
       <div className="flex h-full w-full flex-1 flex-row space-x-2 overflow-y-auto rounded-t-lg">
         <div
           className={cn("portfolio-default-primary-panel flex flex-col overflow-y-auto", {
-            "sm:w-full": hide,
-            "sm:w-8/12": !hide
+            "sm:w-full": hideSecondaryPanel,
+            "sm:w-8/12": !hideSecondaryPanel
           })}
           style={{ height: "100%" }}
         >
@@ -214,7 +228,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
                 openAddAssetModal={toggle}
                 savePortfolio={onPortfolioSave}
                 deletePortfolio={onPortfolioDelete}
-                togglePortfolioAnalysisPanel={() => setHide(!hide)}
+                togglePortfolioAnalysisPanel={() => setHideSecondaryPanel(!hideSecondaryPanel)}
               />
             </div>
           </div>
@@ -233,10 +247,17 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
         </div>
         <div
           className={cn("portfolio-secondary-panel overflow-auto rounded-lg", {
-            "sm:hidden sm:max-w-0": hide
+            "sm:hidden sm:max-w-0": hideSecondaryPanel
           })}
+          ref={ref}
         >
-          <div>Secondary Panel -LINK - {portfolioType}</div>
+          {hideSecondaryPanel ? null : (
+            <>
+              <div>Secondary Panel -LINK - {portfolioType}</div>
+              <RingChart sections={ringChartData} width={size.width} />
+              {/* <pre>Rect: {JSON.stringify(rect)}</pre> */}
+            </>
+          )}
         </div>
       </div>
     </>

@@ -3,7 +3,7 @@ interface FetchUserPortfolioDTO {
 }
 
 type FetchUserPortfolioResponse = Either<
-  UserNotLoggedIn | InternalServerErrors,
+  UserNotLoggedIn | InternalServerError,
   FetchUserPortfolioDTO
 >;
 

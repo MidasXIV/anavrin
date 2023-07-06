@@ -20,7 +20,7 @@ interface SaveUserPortfolioDTO {
 }
 
 type SaveUserPortfolioResponse = Either<
-  UserNotLoggedIn | MaxPortfoliosReached | FailedToUpdatePortfolio | InternalServerErrors,
+  UserNotLoggedIn | MaxPortfoliosReached | FailedToUpdatePortfolio | InternalServerError,
   SaveUserPortfolioDTO
 >;
 

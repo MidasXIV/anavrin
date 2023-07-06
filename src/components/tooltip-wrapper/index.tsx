@@ -12,9 +12,7 @@ const TooltipWrapper: FC<TooltipWrapperProps> = ({ label, color, children }) => 
   <Tooltip
     label={label}
     color={color}
-    transition="fade"
-    transitionDuration={300}
-    transitionTimingFunction="ease"
+    transitionProps={{ transition: "fade", duration: 300, timingFunction: "ease" }}
     withArrow
   >
     {children}

@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import dynamic from "next/dynamic";
 import { FC, useEffect, useState } from "react";
 import AddNewPortfolioModal from "../components/add-new-portfolio-modal";
@@ -8,15 +8,17 @@ import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal"
 import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
 import { AssetType } from "../lib/portfolio-utils";
-import { fetchUserPortfolio } from "../util/user-portfolio";
+import api from "../services/create-service";
 
 const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm,
   ssr: false
 });
 
+const ADD_PORTFOLIO_TAB_VALUE = "add-portfolio";
+const generateTabsValueForPortfolioItem = portfolio => `Portfolio::${portfolio._id}`;
+
 const Portfolio: FC = () => {
-  const [activeTab, setActiveTab] = useState(0);
   const { isShowing: showCreatePortfolioModal, toggle: toggleShowCreatePortfolioModal } =
     useModal(false);
   const { isShowing: showMaxPortfolioWarningModal, toggle: toggleShowMaxPortfolioWarningModal } =
@@ -27,6 +29,7 @@ const Portfolio: FC = () => {
   const portfolioCount = portfolios.length;
   const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
 
+  const [activeTab, setActiveTab] = useState(null);
   const handleAssetTypeSelection = (assetType: AssetType) => {
     toggleShowCreatePortfolioModal();
     portfolios.push({
@@ -35,12 +38,12 @@ const Portfolio: FC = () => {
     });
   };
 
-  const handleTabChange = (tabIndex: number) => {
+  const handleTabChange = (tabValue: string) => {
     const PORTFOLIO_LIMIT = 2;
 
     // If tabIndex is last tab => it is add portfolio button
     // tabIndex starts from 0 hence such a check
-    if (tabIndex === portfolioCount) {
+    if (tabValue === ADD_PORTFOLIO_TAB_VALUE) {
       if (portfolioCount >= PORTFOLIO_LIMIT) {
         toggleShowMaxPortfolioWarningModal();
         console.log("Max Portfolios created");
@@ -48,15 +51,20 @@ const Portfolio: FC = () => {
       }
       toggleShowCreatePortfolioModal();
     } else {
-      setActiveTab(tabIndex);
+      setActiveTab(tabValue);
     }
   };
 
   useEffect(() => {
     (async () => {
       try {
-        const fetchUserPortfoliosResponse = await fetchUserPortfolio();
+        const fetchUserPortfoliosResponse = await api.fetchUserPortfolio();
         const { portfolios: userPortfolios } = fetchUserPortfoliosResponse.data;
+
+        const selectedPortfolioValue =
+          userPortfolios.length > 0 ? generateTabsValueForPortfolioItem(userPortfolios[0]) : null;
+
+        setActiveTab(selectedPortfolioValue);
         setPortfolios(userPortfolios);
       } catch (error) {
         console.error(error);
@@ -64,6 +72,8 @@ const Portfolio: FC = () => {
       } finally {
         setIsPortfolioFetched(true);
       }
+
+      return () => setPortfolios([]);
     })();
   }, []);
 
@@ -87,7 +97,7 @@ const Portfolio: FC = () => {
         <div className="w-max rounded-lg bg-charcoal-900 p-2">
           <button
             type="button"
-            className="focus:outline-none rounded-lg bg-charcoal-400 p-4 font-mono font-light text-gray-500 hover:bg-yellow-700 hover:text-white focus:text-white focus:ring-2 focus:ring-yellow-600 focus:ring-opacity-50"
+            className="rounded-lg bg-charcoal-400 p-4 font-mono font-light text-gray-500 hover:bg-yellow-700 hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-opacity-50"
             onClick={() => toggleShowCreatePortfolioModal()}
           >
             Create New Portfolio
@@ -98,24 +108,36 @@ const Portfolio: FC = () => {
   } else {
     Content = (
       <Tabs
-        active={activeTab}
+        defaultValue={activeTab}
         onTabChange={handleTabChange}
-        style={{ display: "flex" }}
-        classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
+        // style={{ display: "flex" }}
+        // classNames={{ root: "flex flex-col flex-1", body: "flex-grow" }}
       >
-        {/* <Tab label="Portfolio 1" classNames={{ root: "flex" }}>
-          <LazyLoadPortfolio portfolioType={AssetType.CRYPTO} />
-        </Tab> */}
-        {portfolios.map((portfolio, key) => (
-          <Tab key={portfolio._id} label={`Portfolio ${key}`} classNames={{ root: "flex" }}>
-            <LazyLoadPortfolio portfolio={portfolio} />
-          </Tab>
+        <Tabs.List>
+          {portfolios.map((portfolio, key) => (
+            <Tabs.Tab key={portfolio._id} value={generateTabsValueForPortfolioItem(portfolio)}>
+              {`Portfolio ${key}`}
+            </Tabs.Tab>
+          ))}
+          <Tabs.Tab value={ADD_PORTFOLIO_TAB_VALUE} icon={<PlusIconSVG width={15} height={15} />} />
+        </Tabs.List>
+
+        {portfolios.map(portfolio => (
+          <Tabs.Panel
+            key={portfolio._id}
+            value={generateTabsValueForPortfolioItem(portfolio)}
+            // classNames={{ root: "flex" }}
+          >
+            {activeTab === generateTabsValueForPortfolioItem(portfolio) ? (
+              <LazyLoadPortfolio portfolio={portfolio} />
+            ) : null}
+          </Tabs.Panel>
         ))}
-        <Tab icon={<PlusIconSVG width={15} height={15} />} />
       </Tabs>
     );
   }
 
+  console.log("Portfolio -> render");
   return (
     <>
       <DefaultLayout
@@ -132,7 +154,7 @@ const Portfolio: FC = () => {
           isShowing={showMaxPortfolioWarningModal}
           cancel={toggleShowMaxPortfolioWarningModal}
         />
-        <div className="portfolio-primary-panel flex h-full flex-col overflow-y-auto">
+        <div className="portfolio-primary-panel flex h-full flex-1 flex-col overflow-y-auto">
           {Content}
         </div>
       </DefaultLayout>

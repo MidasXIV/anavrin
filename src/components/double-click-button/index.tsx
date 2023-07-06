@@ -38,9 +38,8 @@ function DoubleClickButton({
     <Tooltip
       label={tooltipLabel}
       opened={isActive}
-      transition="fade"
-      placement="end"
-      transitionDuration={200}
+      transitionProps={{ transition: "fade", duration: 200 }}
+      position="bottom-end"
     >
       <button
         type="button"

@@ -3,7 +3,7 @@ interface DeletePushSubscriptionDTO {
 }
 
 type DeletePushSubscriptionResponse = Either<
-  UserNotLoggedIn | InternalServerErrors,
+  UserNotLoggedIn | InternalServerError,
   DeletePushSubscriptionDTO
 >;
 

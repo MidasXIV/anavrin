@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Result from "../../lib/result";
 
-export default class CreateFetchPushSubscriptionController {
+export default class CreateFetchUserPortfolioController {
   useCase: IFetchUserPortfolio;
 
   constructor(useCase: IFetchUserPortfolio) {

@@ -1,5 +1,5 @@
-import { useForm } from "@mantine/hooks";
-import { InputWrapper, Input, Button } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { Button, TextInput } from "@mantine/core";
 import { FC } from "react";
 import { encrypt, decrypt } from "../../../lib/crypto";
 
@@ -25,37 +25,28 @@ const DummyForm: FC<unknown> = () => {
       })}
     >
       <section className="py-8">
-        <InputWrapper
+        <TextInput
           id="dummy-api-key"
           required
           label="Dummy API Key"
           description="Please enter your dummy API key"
           className="pb-2"
-        >
-          <Input
-            id="dummy-api-key"
-            placeholder="API key"
-            variant="filled"
-            value={form.values.dummyAPI}
-            onChange={event => form.setFieldValue("dummyAPI", event.currentTarget.value)}
-          />
-        </InputWrapper>
-        <InputWrapper
+          placeholder="API key"
+          variant="filled"
+          value={form.values.dummyAPI}
+          onChange={event => form.setFieldValue("dummyAPI", event.currentTarget.value)}
+        />
+        <TextInput
           id="dummy-api-secret"
           required
           label="Dummy API Secret"
           description="Please enter your dummy API Secret"
           className="pb-2"
-        >
-          <Input
-            id="dummy-api-secret"
-            placeholder="API secret"
-            variant="filled"
-            value={form.values.dummySecret}
-            onChange={event => form.setFieldValue("dummySecret", event.currentTarget.value)}
-          />
-        </InputWrapper>
-
+          placeholder="API secret"
+          variant="filled"
+          value={form.values.dummySecret}
+          onChange={event => form.setFieldValue("dummySecret", event.currentTarget.value)}
+        />
         <Button type="submit">Connect</Button>
       </section>
     </form>

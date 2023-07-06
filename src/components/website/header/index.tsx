@@ -1,6 +1,7 @@
 import { FC } from "react";
 import LanguagePicker from "../language-picker";
 import LaunchAppButton from "../launch-app-button";
+import ThemeToggle from "../theme-toggle/theme-toggle";
 
 const WebsiteHeader: FC<unknown> = () => (
   <header className="sticky inset-x-0 top-0 z-50 flex w-full flex-wrap border-b border-gray-200 bg-white py-3 text-sm dark:border-gray-700 dark:bg-gray-800 sm:flex-nowrap sm:justify-start sm:py-0">
@@ -13,14 +14,9 @@ const WebsiteHeader: FC<unknown> = () => (
           Anavrin
         </a>
       </div>
-      <div className="hs-collapse basis-full grow overflow-hidden transition-all duration-300">
+      <div className="hs-collapse grow basis-full overflow-hidden transition-all duration-300">
         <div className="mt-0 flex flex-row items-center justify-end gap-y-0 gap-x-7 pl-7">
-          <a
-            className="font-medium text-gray-500 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500 sm:py-6"
-            href="#"
-          >
-            Theme Picker
-          </a>
+          <ThemeToggle />
           <a
             className="font-medium text-gray-500 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500 sm:py-6"
             href="#"

@@ -1,5 +1,5 @@
-import { useForm } from "@mantine/hooks";
-import { InputWrapper, NumberInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { Input, NumberInput } from "@mantine/core";
 import { FC, useState } from "react";
 import SlideToSubmit from "../slide-to-submit";
 import StockSearchCombobox from "../stock-search-combobox";
@@ -62,7 +62,7 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
   return (
     <form>
       <section className="py-2 px-2">
-        <InputWrapper id="stock-searchbox" required label="Ticker" className="pb-2">
+        <Input.Wrapper id="stock-searchbox" required label="Ticker" className="pb-2">
           <StockSearchCombobox
             searchTerm={searchTerm}
             setSearchTerm={ticker => {
@@ -72,26 +72,26 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
             }}
             state={searchState}
           />
-        </InputWrapper>
-        <InputWrapper id="stock-shares" required label="Shares" className="pb-2">
+        </Input.Wrapper>
+        <Input.Wrapper id="stock-shares" required label="Shares" className="pb-2">
           <NumberInput
             id="stock-shares"
             placeholder="10"
             variant="filled"
             value={form.values.shares}
-            onChange={shares => form.setFieldValue("shares", shares)}
+            onChange={shares => form.setFieldValue("shares", Number(shares))}
           />
-        </InputWrapper>
+        </Input.Wrapper>
 
-        <InputWrapper id="cryptocurrency-fiat" required label="Buy Price" className="pb-2">
+        <Input.Wrapper id="cryptocurrency-fiat" required label="Buy Price" className="pb-2">
           <NumberInput
             id="cryptocurrency-fiat"
             placeholder="500"
             variant="filled"
             value={form.values.fiat}
-            onChange={fiat => form.setFieldValue("fiat", fiat)}
+            onChange={fiat => form.setFieldValue("fiat", Number(fiat))}
           />
-        </InputWrapper>
+        </Input.Wrapper>
 
         {stockInformation ? <StockInformationTable stock={stockInformation} /> : null}
         <SlideToSubmit onSubmit={handleFormSubmit} />

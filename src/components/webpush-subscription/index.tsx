@@ -18,8 +18,8 @@ import {
   unsubscribeDevice,
   deleteSubscriptionFromDb
 } from "../../lib/webpush-notification";
-import fetchPushSubscription from "../../util/fetchPushSubscription";
 import DeleteIcon from "../icons/deleteIcon";
+import api from "../../services/create-service";
 
 const WebpushSubscription: FC<unknown> = () => {
   const [isIndeterminate, setIsIndeterminate] = useState(true);
@@ -77,7 +77,7 @@ const WebpushSubscription: FC<unknown> = () => {
       setIsIndeterminate(false);
     });
 
-    fetchPushSubscription().then(({ status, data }) => {
+    api.fetchPushSubscription().then(({ status, data }) => {
       if (status === 200) {
         setSavedPushSubscriptions(data.subscriptions);
       }
@@ -115,7 +115,7 @@ const WebpushSubscription: FC<unknown> = () => {
       {isDenied ? (
         <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>
       ) : null}
-      <Divider margins="md" />
+      <Divider my="md" />
       {/* {subscription ? <SubscriptionCard subscription={subscription} /> : null} */}
       {savedPushSubscriptions.length ? (
         savedPushSubscriptions.map(savedPushSubscription => (
