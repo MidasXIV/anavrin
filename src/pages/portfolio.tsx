@@ -8,7 +8,7 @@ import MaxPortfolioReachedModal from "../components/max-portfolio-reached-modal"
 import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
 import { AssetType } from "../lib/portfolio-utils";
-import { fetchUserPortfolio } from "../util/user-portfolio";
+import api from "../services/create-service";
 
 const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm,
@@ -58,11 +58,11 @@ const Portfolio: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const fetchUserPortfoliosResponse = await fetchUserPortfolio();
+        const fetchUserPortfoliosResponse = await api.fetchUserPortfolio();
         const { portfolios: userPortfolios } = fetchUserPortfoliosResponse.data;
 
         const selectedPortfolioValue =
-          userPortfolios.length > 1 ? generateTabsValueForPortfolioItem(userPortfolios[0]) : null;
+          userPortfolios.length > 0 ? generateTabsValueForPortfolioItem(userPortfolios[0]) : null;
 
         setActiveTab(selectedPortfolioValue);
         setPortfolios(userPortfolios);

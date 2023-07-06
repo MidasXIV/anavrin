@@ -1,5 +1,4 @@
-import postDeleteSubscription from "../util/deletePushSubscription";
-import postSaveSubscription from "../util/postSaveSubscription";
+import api from "../services/create-service";
 
 const vapidDetails = {
   PUBLIC_KEY:
@@ -45,7 +44,7 @@ const base64ToUint8Array = base64 => {
   const rawData = window.atob(b64);
   const outputArray = new Uint8Array(rawData.length);
 
-  for (let i = 0; i < rawData.length; ++i) {
+  for (let i = 0; i < rawData.length; i += 1) {
     outputArray[i] = rawData.charCodeAt(i);
   }
   return outputArray;
@@ -97,7 +96,7 @@ const subscribeDevice = async (): Promise<PushSubscription> => {
 
     // Save pushSubscription in database.
 
-    const result = await postSaveSubscription(pushSubscription);
+    const result = await api.postSaveSubscription({ subscription: pushSubscription });
     console.log(result);
     return pushSubscription;
   } catch (e) {
@@ -110,7 +109,9 @@ const deleteSubscriptionFromDb = async (
   pushSubscription: PushSubscriptionDocument
 ): Promise<void> => {
   // eslint-disable-next-line no-underscore-dangle
-  const isSubscriptionDeleted = await postDeleteSubscription(pushSubscription._id);
+  const isSubscriptionDeleted = await api.postDeleteSubscription({
+    subscriptionId: pushSubscription._id
+  });
   const subscription = await getDeviceSubscription();
   const deleteCurrentDeviceSubscription =
     subscription?.endpoint === pushSubscription.endpoint ?? false;

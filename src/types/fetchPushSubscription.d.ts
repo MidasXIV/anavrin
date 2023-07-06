@@ -3,7 +3,7 @@ interface FetchPushSubscriptionDTO {
 }
 
 type FetchPushSubscriptionResponse = Either<
-  UserNotLoggedIn | InternalServerErrors,
+  UserNotLoggedIn | InternalServerError,
   FetchPushSubscriptionDTO
 >;
 

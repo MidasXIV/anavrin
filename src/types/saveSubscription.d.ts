@@ -19,7 +19,7 @@ interface SaveSubscriptionDTO {
 }
 
 type SaveSubscriptionResponse = Either<
-  UserNotLoggedIn | MaxSubscriptionsReached | FailedToUpdateSubscription | InternalServerErrors,
+  UserNotLoggedIn | MaxSubscriptionsReached | FailedToUpdateSubscription | InternalServerError,
   SaveSubscriptionDTO
 >;
 

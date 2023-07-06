@@ -20,7 +20,7 @@ interface DeleteUserPortfolioDTO {
 }
 
 type DeleteUserPortfolioResponse = Either<
-  UserNotLoggedIn | NoMatchingPortfolio | FailedToDeletePortfolio | InternalServerErrors,
+  UserNotLoggedIn | NoMatchingPortfolio | FailedToDeletePortfolio | InternalServerError,
   DeleteUserPortfolioDTO
 >;
 
