@@ -16,9 +16,11 @@ class CreateDeletePushSubscriptionController {
         const resultError = Result.getError(result);
         switch (resultError.type) {
           default:
-            response.status(500).json(result);
+            response.status(500);
             break;
         }
+        response.json(resultError);
+        return null;
       }
 
       const resultSuccess = Result.getValue(result);
@@ -27,6 +29,7 @@ class CreateDeletePushSubscriptionController {
       console.error(e);
       response.status(500);
     }
+    return null;
   }
 }
 

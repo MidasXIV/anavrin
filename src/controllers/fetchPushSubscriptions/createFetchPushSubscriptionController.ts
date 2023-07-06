@@ -16,12 +16,14 @@ export default class CreateFetchPushSubscriptionController {
         const resultError = Result.getError(result);
         switch (resultError.type) {
           case "UserNotLoggedIn":
-            response.status(401).json(result);
+            response.status(401);
             break;
           default:
-            response.status(500).json(result);
+            response.status(500);
             break;
         }
+        response.json(resultError);
+        return null;
       }
 
       const resultSuccess = Result.getValue(result);
@@ -30,5 +32,6 @@ export default class CreateFetchPushSubscriptionController {
       console.error(e);
       response.status(500);
     }
+    return null;
   }
 }
