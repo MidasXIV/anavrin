@@ -23,24 +23,33 @@
     "plugin:import/typescript",
     "prettier"
   ],
-  "ignorePatterns": [ "public/*.js"],
+  "ignorePatterns": ["public/*.js"],
   "rules": {
     // suppress errors for missing 'import React' in files
     "react/react-in-jsx-scope": "off",
     // suppress errors for not adding 'href' for a elements
     // NextJs uses Link so no need to use 'href'
     "jsx-a11y/anchor-is-valid": ["off"],
-    "react/jsx-filename-extension": [1, {
-      "extensions": [".ts", ".tsx"]
-    }],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".ts", ".tsx"]
+      }
+    ],
     "import/extensions": 0,
     "react/prop-types": 0,
-    "react/jsx-props-no-spreading": ["error", {
-      "custom": "ignore"
-    }],
-    "prettier/prettier": ["error", {
-      "endOfLine": "auto"
-    }],
+    "react/jsx-props-no-spreading": [
+      "error",
+      {
+        "custom": "ignore"
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
     "max-len": [
@@ -58,7 +67,11 @@
       }
     ],
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"]
+    "@typescript-eslint/no-shadow": ["error"],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["**/*.config.js", "**/*.spec.ts"], "optionalDependencies": false, "peerDependencies": false, "packageDir": "./" }
+    ]
   },
   "settings": {
     "import/parsers": {
