@@ -14,7 +14,6 @@ import {
   getPortfolioTableSchema,
   updatePortfolio
 } from "../../lib/portfolio-utils";
-import { deleteUserPortfolio, saveUserPortfolio } from "../../util/user-portfolio";
 import {
   convertCryptoPortfolioItemToPersistence,
   hydrateCryptoPortfolioItems
@@ -22,6 +21,7 @@ import {
 import EditAssetModal from "../../components/edit-asset-modal";
 import PortfolioAnalysisHeader from "../../components/portfolio-analysis-header";
 import RingChart from "../../components/ring-chart/ring-chart";
+import api from "../../services/create-service";
 
 type PortfolioLayoutProps = {
   portfolio: Portfolio;
@@ -68,10 +68,12 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
       NProgress.start();
 
       console.log("Saving portfolio");
-      const result = await saveUserPortfolio({
-        ...portfolioDomainObject,
-        assetType: portfolioType,
-        items: portfolioData.map(item => convertCryptoPortfolioItemToPersistence(item))
+      const result = await api.saveUserPortfolio({
+        portfolio: {
+          ...portfolioDomainObject,
+          assetType: portfolioType,
+          items: portfolioData.map(item => convertCryptoPortfolioItemToPersistence(item))
+        }
       });
 
       const { data } = result;
@@ -115,7 +117,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     try {
       NProgress.start();
       console.log("Deleting portfolio");
-      const result = await deleteUserPortfolio(portfolioDomainObject);
+      const result = await api.deleteUserPortfolio({ portfolio: portfolioDomainObject });
 
       const { data } = result;
       console.log(data);
