@@ -59,12 +59,13 @@ const Register: FC<unknown> = () => {
               d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
             />
           </svg>
-          <span className="ml-2 uppercase">Get Project Updates</span>
+          <span className="ml-2 uppercase">Get Exclusive Access</span>
         </p>
         <div className="mb-4 px-8 text-center">
-          <h3 className="mb-2 pt-4 text-5xl font-medium">Stay in the loop</h3>
+          <h3 className="mb-2 pt-4 text-5xl font-medium">Be the First to Know</h3>
           <p className="mb-4 text-sm font-bold text-gray-700">
-            We&apos;re just getting started. Subscribe for updates on Anavrin.
+            Join our community and stay updated with the latest news and announcements about
+            Anavrin.
           </p>
         </div>
         <form
