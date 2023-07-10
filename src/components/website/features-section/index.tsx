@@ -61,9 +61,9 @@ const FeaturesSection: FC<unknown> = () => (
       <h1 className="mb-4 text-5xl font-medium sm:text-[45px]">Unlock your portfolio potential.</h1>
       <h2 className=" text-xl leading-8 sm:text-base">
         Discover hidden patterns, analyze market trends, and leverage the full potential of your
-        portfolio. With Anavrin's advanced tracking, analytics, and simulation capabilities, you can
-        make data-driven decisions to optimize your investments, maximize returns, and stay ahead of
-        the market.
+        portfolio. With Anavrin&apos;s advanced tracking, analytics, and simulation capabilities,
+        you can make data-driven decisions to optimize your investments, maximize returns, and stay
+        ahead of the market.
       </h2>
     </div>
     <div className="mx-auto w-full max-w-6xl">
