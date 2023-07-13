@@ -81,7 +81,7 @@ const FeaturesSection: FC<unknown> = () => (
                 {index + 1}
               </div>
               <h3 className="mb-2 text-2xl font-medium">{feature.title}</h3>
-              <p className="mb-8 text-xl font-normal">{feature.body}</p>
+              <div className="mb-8 text-xl font-normal">{feature.body}</div>
             </div>
           </div>
         </div>

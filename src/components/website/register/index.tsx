@@ -44,7 +44,7 @@ const Register: FC<unknown> = () => {
   return (
     <div className="container mx-auto p-8 font-mono">
       <div className="mx-auto w-full lg:w-1/2">
-        <p className="mx-auto mb-3 flex w-max flex-row rounded-xl bg-gray-200 p-1 px-2 text-center">
+        <span className="mx-auto mb-3 flex w-max flex-row rounded-xl bg-gray-200 p-1 px-2 text-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -60,7 +60,7 @@ const Register: FC<unknown> = () => {
             />
           </svg>
           <span className="ml-2 uppercase">Get Exclusive Access</span>
-        </p>
+        </span>
         <div className="mb-4 px-8 text-center">
           <h3 className="mb-2 pt-4 text-5xl font-medium">Be the First to Know</h3>
           <p className="mb-4 text-sm font-bold text-gray-700">
