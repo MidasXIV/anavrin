@@ -76,7 +76,7 @@
     "puppeteer-core": "^19.8.0",
     "rimraf": "^4.4.1",
     "stdio": "^2.1.1",
-    "tailwindcss": "^3.2.7",
+    "tailwindcss": "^3.3.2",
     "ts-jest": "^28.0.7",
     "typescript": "^5.0.2"
   }

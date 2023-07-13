@@ -32,11 +32,11 @@ const UtilityFooter = () => (
       <p>to navigate.</p>
     </dt>
     <dt className="flex flex-row items-center space-x-2">
-      <kbd className="rounded-md bg-charcoal-400 py-1 px-3 text-sm text-gray-300">ENTER</kbd>
+      <kbd className="rounded-md bg-charcoal-400 px-3 py-1 text-sm text-gray-300">ENTER</kbd>
       <p>to select.</p>
     </dt>
     <dt className="flex flex-row items-center space-x-2">
-      <kbd className="rounded-md bg-charcoal-400 py-1 px-3 text-sm text-gray-300">ESC</kbd>
+      <kbd className="rounded-md bg-charcoal-400 px-3 py-1 text-sm text-gray-300">ESC</kbd>
       <p>to cancel.</p>
     </dt>
   </dl>

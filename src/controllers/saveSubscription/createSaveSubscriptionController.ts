@@ -34,18 +34,20 @@ export default class CreateSaveSubscriptionController {
         const resultError = Result.getError(result);
         switch (resultError.type) {
           case "UserNotLoggedIn":
-            response.status(401).json(result);
+            response.status(401);
             break;
           case "MaxSubscriptionsReached":
-            response.status(403).json(result);
+            response.status(403);
             break;
           case "FailedToUpdateSubscription":
-            response.status(500).json(result);
+            response.status(500);
             break;
           default:
-            response.status(500).json(result);
+            response.status(500);
             break;
         }
+        response.json(resultError);
+        return null;
       }
 
       const resultSuccess = Result.getValue(result);
@@ -54,5 +56,6 @@ export default class CreateSaveSubscriptionController {
       // Report the error to metrics + logging app
       response.status(500);
     }
+    return null;
   }
 }
