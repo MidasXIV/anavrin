@@ -51,11 +51,11 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
               <Menu.Item>
                 <Link href="./user-settings">Settings</Link>
               </Menu.Item>
-              <Menu.Item>
+              {/* <Menu.Item>
                 <a href="./user-settings">Messages</a>
-              </Menu.Item>
-              <Menu.Item>Gallery</Menu.Item>
-              <Menu.Item
+              </Menu.Item> */}
+              {/* <Menu.Item>Gallery</Menu.Item> */}
+              {/* <Menu.Item
                 rightSection={
                   <Text size="sm" color="gray">
                     ⌘K
@@ -63,9 +63,9 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
                 }
               >
                 Search
-              </Menu.Item>
+              </Menu.Item> */}
               <Divider />
-              <Menu.Item disabled>Delete my data</Menu.Item>
+              {/* <Menu.Item disabled>Delete my data</Menu.Item> */}
               {session ? (
                 <Menu.Item color="red" onClick={() => signOut()}>
                   Sign out
