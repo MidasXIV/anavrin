@@ -159,7 +159,7 @@ function getPortfolioSummary(portfolioData: CryptoAssetDTO[]): {
   let portfolioValue = 0;
   portfolioData.forEach(item => {
     totalInvested += item.fiat;
-    portfolioValue += item.holdings * item.marketPrice;
+    portfolioValue += item.holdings * item?.marketPrice;
   });
   const percentageChange = (portfolioValue / totalInvested - 1) * 100;
 
@@ -190,6 +190,43 @@ function getPortfolioSummary(portfolioData: CryptoAssetDTO[]): {
   };
 }
 
+/**
+ * Calculate ring chart data for portfolio diversification.
+ * @param {Object[]} portfolioData - Array of portfolio objects.
+ * @param {string} portfolioData._id - The portfolio ID.
+ * @param {string} portfolioData.assetType - The type of asset in the portfolio.
+ * @param {Object[]} portfolioData.items - Array of items in the portfolio.
+ * @param {string} portfolioData.items.token - The token symbol.
+ * @param {number} portfolioData.items.holdings - The amount of holdings for the token.
+ * @param {number} portfolioData.items.fiat - The value in fiat currency for the token.
+ * @returns {Object[]} - Array of ring chart data objects.
+ * @property {number} value - The percentage value of the portfolio in the total investment.
+ * @property {string} color - The color for the ring chart segment.
+ * @property {string} tooltip - The tooltip text for the ring chart segment.
+ */
+const getPortfolioDiversificationChartData = memoize((portfolios: Portfolio[]) => {
+  // Calculate the total investment across all portfolios
+  const totalInvestment = portfolios.reduce((acc, portfolio) => {
+    const portfolioTotalInvestment = portfolio.items.reduce((sum, item) => sum + item.fiat, 0);
+    return acc + portfolioTotalInvestment;
+  }, 0);
+
+  // Generate ring chart data based on portfolio information
+  const ringChartData = portfolios.map(portfolio => {
+    const portfolioTotalInvestment = portfolio.items.reduce((sum, item) => sum + item.fiat, 0);
+    const value = (portfolioTotalInvestment / totalInvestment) * 100;
+    const tooltip = `${portfolio._id} (${value.toFixed(2)}%)`;
+
+    return {
+      value,
+      color: generateRandomColor(),
+      tooltip
+    };
+  });
+
+  return ringChartData;
+});
+
 const getPortfolioSummaryMemoized = memoize(getPortfolioSummary);
 
 export {
@@ -201,5 +238,6 @@ export {
   getPortfolioRowDoubleClickHandler,
   updatePortfolio,
   getPortfolioSummary,
-  getPortfolioSummaryMemoized
+  getPortfolioSummaryMemoized,
+  getPortfolioDiversificationChartData
 };
