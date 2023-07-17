@@ -7,6 +7,7 @@ import LoremIpsum from "../components/placeholder/lorem-ipsum";
 import DefaultLayout from "../layouts/default";
 import api from "../services/create-service";
 import DashboardPortfolioSection from "../components/dashboard-portfolio-section/dashboard-portfolio-section";
+import DashboardPortfolioSectionLoading from "../components/dashboard-portfolio-section/dashboard-portfolio-section-loading";
 
 const Dashboard: FC = () => {
   const [hide, setHide] = useState(false);
@@ -45,7 +46,11 @@ const Dashboard: FC = () => {
               "sm:w-8/12": !hide
             })}
           >
-            {isPortfolioFetched ? <DashboardPortfolioSection portfolios={portfolios} /> : null}
+            {isPortfolioFetched ? (
+              <DashboardPortfolioSection portfolios={portfolios} />
+            ) : (
+              <DashboardPortfolioSectionLoading />
+            )}
           </div>
           <div
             className={cn("dashboard-secondary-panel overflow-y-auto", {
