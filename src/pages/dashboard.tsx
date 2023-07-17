@@ -1,12 +1,36 @@
 import { Button } from "@mantine/core";
+
 import cn from "classnames";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import LoremIpsum from "../components/placeholder/lorem-ipsum";
 
 import DefaultLayout from "../layouts/default";
+import api from "../services/create-service";
+import DashboardPortfolioSection from "../components/dashboard-portfolio-section/dashboard-portfolio-section";
 
 const Dashboard: FC = () => {
   const [hide, setHide] = useState(false);
+  const [portfolios, setPortfolios] = useState<Array<Portfolio>>([]);
+  const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const fetchUserPortfoliosResponse = await api.fetchUserPortfolio();
+        const { portfolios: userPortfolios } = fetchUserPortfoliosResponse.data;
+        setPortfolios(userPortfolios);
+      } catch (error) {
+        console.error(error);
+        // Handle the error appropriately, such as displaying a message to the user
+      } finally {
+        setIsPortfolioFetched(true);
+        console.log("done");
+      }
+
+      return () => setPortfolios([]);
+    })();
+  }, []);
+
   return (
     <>
       <DefaultLayout
@@ -21,9 +45,7 @@ const Dashboard: FC = () => {
               "sm:w-8/12": !hide
             })}
           >
-            <Button onClick={() => setHide(!hide)}>Transistion</Button>
-            <LoremIpsum />
-            <LoremIpsum />
+            {isPortfolioFetched ? <DashboardPortfolioSection portfolios={portfolios} /> : null}
           </div>
           <div
             className={cn("dashboard-secondary-panel overflow-y-auto", {
