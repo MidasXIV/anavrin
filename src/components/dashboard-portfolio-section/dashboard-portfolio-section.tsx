@@ -23,9 +23,6 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({ portfo
               {portfolios.map(portfolio => (
                 <PortfolioOverviewCard key={portfolio._id} portfolio={portfolio} />
               ))}
-              {portfolios.map(portfolio => (
-                <PortfolioOverviewCard key={portfolio._id} portfolio={portfolio} />
-              ))}
             </Box>
           </ScrollArea>
         </div>
