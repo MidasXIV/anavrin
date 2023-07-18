@@ -50,7 +50,7 @@ const featuresData = [
 ];
 
 const FeaturesSection: FC<unknown> = () => (
-  <section className="mx-auto w-full overflow-hidden">
+  <section className="mx-auto w-full overflow-hidden" id="features">
     <img
       className="left-0 top-0 w-full scale-95 sm:left-[-100%] sm:w-[100%] sm:max-w-none"
       src="https://res.cloudinary.com/dispatchxyz/image/upload/f_auto,q_10/v1668033206/public/homepage/how-dispatch-works-bg_hhlb2e.png"

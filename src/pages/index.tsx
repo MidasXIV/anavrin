@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import { FC } from "react";
+import Link from "next/link";
 import Register from "../components/website/register";
 import FeaturesSection from "../components/website/features-section";
 import LaunchAppButton from "../components/website/launch-app-button";
@@ -9,7 +10,7 @@ import WebsiteFooter from "../components/website/footer/footer";
 const Home: FC = () => (
   <div className="m-0 flex h-full w-full flex-col bg-white">
     <WebsiteHeader />
-    <div className="border-b-1 flex justify-center">
+    <div className="border-b-1 flex justify-center" id="home">
       <div className="flex max-w-6xl flex-col p-8 text-center md:p-16">
         {/* <h6 className="uppercase text-xs text-gray-600">coming soon</h6> */}
         {/* <h3 className="outline-font mb-2 pt-4 text-6xl font-light uppercase">
@@ -42,7 +43,7 @@ const Home: FC = () => (
       </div>
     </div>
 
-    <div className="flex">
+    <div className="flex" id="about">
       <div className="mx-auto flex h-full max-w-6xl flex-col justify-center space-y-6 p-6 sm:space-x-6 sm:space-y-0 md:flex-row">
         <div className="block rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
           <h5 className="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
@@ -56,14 +57,14 @@ const Home: FC = () => (
             your investments with ease and precision. Join us on this exciting journey and unlock
             the full potential of your portfolio.
           </p>
-          <button
-            type="button"
-            className="overflow-hiddenbg-gradient-to-br group relative mb-2 mr-2 inline-flex items-center justify-center from-green-400 to-blue-600 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-green-200 group-hover:from-green-400 group-hover:to-blue-600 dark:text-white dark:focus:ring-green-800"
-          >
-            <span className="relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900">
+          <Link href="#register" scroll={false}>
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-lg bg-orange-400 px-4 py-3 text-sm font-medium text-gray-900 hover:bg-orange-600 hover:text-white focus:outline-none focus:ring-4"
+            >
               Sign up for Beta
-            </span>
-          </button>
+            </button>
+          </Link>
         </div>
 
         <div className="block rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
@@ -82,7 +83,7 @@ const Home: FC = () => (
 
     <FeaturesSection />
 
-    <div className="w-full border-t">
+    <div className="w-full border-t" id="register">
       <Register />
       <div className="h-28 rounded-full border-b" />
     </div>

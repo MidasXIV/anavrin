@@ -35,6 +35,10 @@ function isCryptoPortfolioItem(item: PortfolioItem): item is CryptoPortfolioItem
   return (item as CryptoPortfolioItem).token !== undefined;
 }
 
+function isStockPortfolioItem(item: PortfolioItem): item is StockPortfolioItem {
+  return (item as StockPortfolioItem).ticker !== undefined;
+}
+
 const hydrateCryptoPortfolioItems = async (portfolio: Portfolio): Promise<CryptoAssetDTO[]> => {
   if (portfolio.assetType !== AssetType.CRYPTO) {
     throw new Error("InvalidPortfolioItem");
@@ -56,5 +60,7 @@ const hydrateCryptoPortfolioItems = async (portfolio: Portfolio): Promise<Crypto
 export {
   convertCoinGeckoApiCoinObjectToDTO,
   convertCryptoPortfolioItemToPersistence,
-  hydrateCryptoPortfolioItems
+  hydrateCryptoPortfolioItems,
+  isCryptoPortfolioItem,
+  isStockPortfolioItem
 };
