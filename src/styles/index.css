@@ -5,6 +5,12 @@
 
 @tailwind utilities;
 
+@font-face {
+  font-family:"widescreen-mixed";
+  src:url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff2"),url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff"),url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("opentype");
+  font-display:auto;font-style:normal;font: weight 100px;;font-stretch:normal;
+}
+
 .dashboard-primary-panel {
   @apply w-full sm:w-8/12 bg-gray-300 p-2;
   transition: width 0.5s ease;
@@ -41,4 +47,21 @@
 
 .rdt_TableRow {
   @apply font-mono bg-red-600 text-xs;
+}
+
+.clearNav {
+  backdrop-filter: saturate(180%) blur(5px) !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.outline-font {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px;
+  /* --font-factor: .059; */
+  /* --font-line: .745; */
+}
+
+.mask-gradient {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 50%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 50%, transparent);
 }

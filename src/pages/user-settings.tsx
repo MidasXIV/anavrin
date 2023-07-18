@@ -66,11 +66,11 @@ const UserSettings: FC = () => {
             {!isSignedIn ? <h1 className="mb-2 text-2xl">Please Login.</h1> : null}
             <Accordion
               defaultValue={SETTING_KEY_VALUES.connectToExchange}
-              className="border-t-0 border-b border-gray-400"
+              className="border-b border-t-0 border-gray-400"
               onChange={onMenuItemClick}
             >
               <Accordion.Item
-                className="border-t-0 border-b border-gray-400 font-normal"
+                className="border-b border-t-0 border-gray-400 font-normal"
                 value={SETTING_KEY_VALUES.connectToExchange}
               >
                 <Accordion.Control>

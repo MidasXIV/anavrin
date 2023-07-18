@@ -27,16 +27,17 @@ export default class CreateDividendInfoController {
         const resultError = Result.getError(result);
         switch (resultError.type) {
           case "NoDividendInfo":
-            response.status(400).json(resultError);
+            response.status(400);
             break;
           case "InvalidTicker":
-            response.status(400).json(resultError);
+            response.status(400);
             break;
           default:
-            response.status(500).json(resultError);
+            response.status(500);
             break;
         }
-        response.send(resultError);
+        response.json(resultError);
+        return null;
       }
       const resultSuccess = Result.getValue(result);
       response.status(200).json(resultSuccess);
@@ -44,5 +45,6 @@ export default class CreateDividendInfoController {
       // Report the error to metrics + logging app
       response.status(500);
     }
+    return null;
   }
 }

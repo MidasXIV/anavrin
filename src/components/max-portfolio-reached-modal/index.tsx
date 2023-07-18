@@ -24,7 +24,7 @@ const MaxPortfolioReachedModal: FC<MaxPortfolioReachedModalProps> = ({ isShowing
             aria-hidden="true"
           />
           <div className="fixed inset-x-0 bottom-0 z-50 mx-4 mb-4 flex items-center justify-center rounded-lg bg-white p-2 shadow-lg md:relative md:mx-auto md:w-full md:max-w-lg">
-            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="flex flex-row items-center">
                 <div className="flex-shrink-0">
                   <svg

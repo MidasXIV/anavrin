@@ -61,7 +61,7 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
 
   return (
     <form>
-      <section className="py-2 px-2">
+      <section className="px-2 py-2">
         <Input.Wrapper id="stock-searchbox" required label="Ticker" className="pb-2">
           <StockSearchCombobox
             searchTerm={searchTerm}

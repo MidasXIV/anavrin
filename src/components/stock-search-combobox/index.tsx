@@ -47,7 +47,7 @@ const ESCAPE_KEY_CODE = 27;
 const ModalStockSearchInputID = "modal_input_stock";
 
 const SearchIconComponent = () => (
-  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
+  <span className="absolute right-0 inline-flex items-center justify-end px-4 py-2 text-gray-500">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -66,7 +66,7 @@ const SearchIconComponent = () => (
 );
 
 const SuccessIconComponent = () => (
-  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
+  <span className="absolute right-0 inline-flex items-center justify-end px-4 py-2 text-gray-500">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -85,7 +85,7 @@ const SuccessIconComponent = () => (
 );
 
 const FailureIconComponent = () => (
-  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
+  <span className="absolute right-0 inline-flex items-center justify-end px-4 py-2 text-gray-500">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -104,7 +104,7 @@ const FailureIconComponent = () => (
 );
 
 const PendingIconComponent = () => (
-  <span className="absolute right-0 inline-flex items-center justify-end py-2 px-4 text-gray-500">
+  <span className="absolute right-0 inline-flex items-center justify-end px-4 py-2 text-gray-500">
     <svg
       className="h-5 w-5 animate-spin text-gray-700"
       xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +272,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
         type="text"
         name="stock"
         id={ModalStockSearchInputID}
-        className="inline-flex h-9 w-full items-center rounded bg-gray-100 py-2 px-4 font-semibold text-gray-700"
+        className="inline-flex h-9 w-full items-center rounded bg-gray-100 px-4 py-2 font-semibold text-gray-700"
         ref={stockSearchInput}
         onChange={e => setStockTicker(e.target.value)}
         value={stockTicker}
