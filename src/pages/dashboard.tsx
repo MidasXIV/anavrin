@@ -32,6 +32,19 @@ const Dashboard: FC = () => {
     })();
   }, []);
 
+  let Content = null;
+  if (!isPortfolioFetched) {
+    Content = <DashboardPortfolioSectionLoading />;
+  } else if (portfolios.length < 1) {
+    Content = (
+      <div className="flex h-full flex-col items-center justify-center">
+        <p className="text-gray-500">You don&apos;t have any portfolios.</p>
+        <p className="text-gray-500">Create a portfolio to get started!</p>
+      </div>
+    );
+  } else {
+    <DashboardPortfolioSection portfolios={portfolios} />;
+  }
   return (
     <>
       <DefaultLayout
@@ -46,11 +59,7 @@ const Dashboard: FC = () => {
               "sm:w-8/12": !hide
             })}
           >
-            {isPortfolioFetched ? (
-              <DashboardPortfolioSection portfolios={portfolios} />
-            ) : (
-              <DashboardPortfolioSectionLoading />
-            )}
+            {Content}
           </div>
           <div
             className={cn("dashboard-secondary-panel overflow-y-auto", {
