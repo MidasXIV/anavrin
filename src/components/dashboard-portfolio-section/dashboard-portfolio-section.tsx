@@ -10,6 +10,7 @@ interface IDashboardPortfolioSectionProps {
 
 const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({ portfolios }) => {
   const [ref, size] = useResizeObserver();
+  const [refSecondColumn, sizeSecondColumn] = useResizeObserver();
   return (
     <section className="flex h-full w-full items-center justify-center">
       <div className="flex w-full grid-cols-4 flex-col gap-3 px-6 lg:grid">
@@ -27,8 +28,11 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({ portfo
           </ScrollArea>
         </div>
         <div className="col-span-1 max-w-full">
-          <div className="grid h-full w-full max-w-full grid-cols-2 gap-3 lg:grid-cols-none lg:grid-rows-2">
-            <PortfolioDiversificationCard portfolios={portfolios} />
+          <div
+            className="grid h-full w-full max-w-full grid-cols-2 gap-3 lg:grid-cols-none lg:grid-rows-2"
+            ref={refSecondColumn}
+          >
+            <PortfolioDiversificationCard portfolios={portfolios} size={sizeSecondColumn} />
             <div className="block h-full w-full rounded-md border border-gray-200 bg-charcoal-400 p-6 text-sm hover:bg-charcoal-900">
               {/* <Button onClick={() => setHide(!hide)}>Transistion</Button> */}
             </div>

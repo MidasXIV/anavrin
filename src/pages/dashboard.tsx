@@ -36,7 +36,7 @@ const Dashboard: FC = () => {
   if (!isPortfolioFetched) {
     Content = <DashboardPortfolioSectionLoading />;
   } else if (portfolios?.length > 0) {
-    <DashboardPortfolioSection portfolios={portfolios} />;
+    Content = <DashboardPortfolioSection portfolios={portfolios} />;
   } else {
     Content = (
       <div className="flex h-full flex-col items-center justify-center">
