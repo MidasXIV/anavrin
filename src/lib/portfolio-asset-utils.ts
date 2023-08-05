@@ -19,7 +19,9 @@ function convertCoinGeckoApiCoinObjectToDTO(obj: any): CryptoAssetDTO {
     marketValue: obj?.market_data?.current_price.usd * obj.holdings, // marketPrice * holdings
     fiat: obj?.fiat,
     change: obj?.market_data?.price_change_percentage_24h,
-    iconSrc: obj?.image?.thumb
+    iconSrc: obj?.image?.thumb,
+    categories: obj.categories,
+    links: obj.links
   };
 }
 

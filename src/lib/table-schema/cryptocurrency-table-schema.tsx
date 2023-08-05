@@ -1,6 +1,6 @@
-import { Code } from "@mantine/core";
 import { Media, TableColumn } from "react-data-table-component";
 import DeleteIcon from "../../components/icons/deleteIcon";
+import CryptocurrecnyTableDetailsViewProps from "../../components/cryptocurrecny-table-details-view/cryptocurrecny-table-details-view";
 
 type CryptoDataRow = {
   title: string;
@@ -136,13 +136,9 @@ const CryptoPortfolioSchema: TableColumn<CryptoDataRow>[] = [
   }
 ];
 
-const CryptocurrencyExpandableComponent: ({ data }) => JSX.Element = ({ data }) => {
-  if (!data) {
-    return null;
-  }
-
-  return <Code block>{JSON.stringify(data, null, 2)}</Code>;
-};
+const CryptocurrencyExpandableComponent: ({ data }) => JSX.Element = ({ data }) => (
+  <CryptocurrecnyTableDetailsViewProps data={data} />
+);
 
 const onCryptocurrencyTableRowDoublceClick = parentComponentProps => {
   const { toggleEditModal, setAssetToBeEdited } = parentComponentProps;
