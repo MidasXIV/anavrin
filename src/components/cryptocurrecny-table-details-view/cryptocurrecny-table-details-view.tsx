@@ -1,9 +1,6 @@
 import { FC } from "react";
 import { Button, Popover } from "@mantine/core";
-import BrandMediumSVG from "../icons/BrandMediumSVG";
-import BrandSlackSVG from "../icons/BrandSlackSVG";
 import BrandTelegramSVG from "../icons/BrandTelegramSVG";
-import BrandDiscordSVG from "../icons/BrandDiscordSVG";
 import BrandTwitterSVG from "../icons/BrandTwitterSVG";
 import BrandRedditSVG from "../icons/BrandRedditSVG";
 import BrandFacebookSVG from "../icons/BrandFacebookSVG";
@@ -12,100 +9,6 @@ import MoreOptionsIcon from "../icons/moreOptionsIcon";
 interface CryptocurrecnyTableDetailsViewProps {
   data: CryptoAssetDTO;
 }
-
-const LinkItemSVGIcons = ({ label, urls }) => (
-  <div className="mb-4">
-    <p className="font-semibold">{label}</p>
-    <div className="flex -space-x-1 overflow-hidden rounded-lg bg-gray-100 p-1 transition-all duration-300 ease-in-out hover:space-x-1">
-      <ul>
-        {urls.map((url, index) =>
-          url ? (
-            <a
-              key={index}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className=" flex h-6 w-6 items-center justify-center rounded-full bg-gray-300 ring-2 ring-white"
-            >
-              {url.indexOf("t.me") >= 0 ? <BrandTelegramSVG /> : null}
-              {url.indexOf("slack") >= 0 ? <BrandSlackSVG /> : null}
-              {url.indexOf("medium") >= 0 ? <BrandMediumSVG /> : null}
-              {url.indexOf("discord") >= 0 ? <BrandDiscordSVG /> : null}
-              <span className="sr-only">{`${label} ${index + 1}`}</span>
-            </a>
-          ) : null
-        )}
-      </ul>
-    </div>
-  </div>
-);
-const LinksComponentOld = ({ links }) => (
-  <div className="w-full rounded-lg bg-white p-4 shadow">
-    {/* <div className="border-b p-4">
-      <h2 className="text-2xl ">Links</h2>
-      <p className="text-sm text-gray-500">important links</p>
-    </div> */}
-    <LinkItem label="Homepage" urls={links.homepage} />
-    <LinkItem label="Blockchain Sites" urls={links.blockchain_site} />
-    <LinkItem label="Official Forum URL" urls={links.official_forum_url} />
-    <LinkItem label="Chat URL" urls={links.chat_url} />
-    <LinkItem label="Announcement URL" urls={links.announcement_url} />
-
-    {/* <LinkItem label="Twitter Screen Name" urls={twitterUrl} /> */}
-    {/* <LinkItem label="Facebook Username" urls={links.facebook_username} /> */}
-    <LinkItem
-      label="Bitcointalk Thread Identifier"
-      urls={links.bitcointalk_thread_identifier?.toString()}
-    />
-    {/* <LinkItem label="Telegram Channel Identifier" urls={telegramUrl} /> */}
-
-    {/* <LinkItem label="Subreddit URL" urls={links.subreddit_url} /> */}
-    <LinkItem label="Repos URL (GitHub)" urls={links.repos_url.github} />
-  </div>
-);
-
-const LinkItemOld = ({ label, urls }) => {
-  const isValidUrl = url => url !== "" && url?.includes("http");
-  const validUrls = Array.isArray(urls) ? urls.filter(isValidUrl) : [];
-  const renderLink = (url, index) => (
-    <li key={index} className="">
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block w-11/12 truncate text-blue-500"
-      >
-        {url}
-      </a>
-    </li>
-  );
-
-  const renderArrayOfUrl = urls => (
-    <ul className="list-inside list-disc">
-      {urls.length > 0 ? urls.map(renderLink) : <li>N/A</li>}
-    </ul>
-  );
-  const renderUrlBlock = urls =>
-    isValidUrl(urls) ? (
-      <a
-        href={urls}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block w-full truncate text-blue-500"
-      >
-        {urls}
-      </a>
-    ) : (
-      <p className="inline-block w-full truncate">{urls || "N/A"}</p>
-    );
-  return (
-    <div className="space-y-1 border-b p-4 hover:bg-gray-50 md:grid md:grid-cols-2 md:space-y-0">
-      <p className="text-gray-600">{label}</p>
-
-      {Array.isArray(urls) ? renderArrayOfUrl(validUrls) : renderUrlBlock(urls)}
-    </div>
-  );
-};
 
 const LinkItem = ({ label, urls }) => {
   const isValidUrl = url => url !== "" && url?.includes("http");
@@ -204,7 +107,6 @@ const SocialLinksGrid = ({ links }) => {
           <Button>
             <MoreOptionsIcon width={24} height={24} />
           </Button>
-          {/* <GridItem link={undefined} svgComponent={MoreOptionsIcon} /> */}
         </Popover.Target>
         <Popover.Dropdown>
           <LinksComponent links={links} />
