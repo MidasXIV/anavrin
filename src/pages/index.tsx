@@ -8,7 +8,7 @@ import WebsiteHeader from "../components/website/header";
 import WebsiteFooter from "../components/website/footer/footer";
 
 const Home: FC = () => (
-  <div className="m-0 flex h-full w-full flex-col bg-white">
+  <div className="m-0 flex h-full flex-col bg-white">
     <WebsiteHeader />
     <div className="border-b-1 flex justify-center" id="home">
       <div className="flex max-w-6xl flex-col p-8 text-center md:p-16">
