@@ -5,6 +5,7 @@ import BrandTwitterSVG from "../icons/BrandTwitterSVG";
 import BrandRedditSVG from "../icons/BrandRedditSVG";
 import BrandFacebookSVG from "../icons/BrandFacebookSVG";
 import MoreOptionsIcon from "../icons/moreOptionsIcon";
+import CategoryChipGroup from "../category-chip-group/category-chip-group";
 
 interface CryptocurrecnyTableDetailsViewProps {
   data: CryptoAssetDTO;
@@ -126,14 +127,15 @@ const CryptocurrecnyTableDetailsView: FC<CryptocurrecnyTableDetailsViewProps> = 
       <div>
         <p className="py-2 text-sm font-medium">Categories:</p>
         <div className="flex flex-wrap">
-          {data.categories.map(category => (
+          {/* {data.categories.map(category => (
             <span
               key={`category-${category}`}
               className="mb-2 mr-2 rounded-lg bg-charcoal-300 p-2  text-white"
             >
               {category}
             </span>
-          ))}
+          ))} */}
+          <CategoryChipGroup categories={data.categories} />
         </div>
       </div>
       <div className="">
