@@ -1,3 +1,21 @@
+/* eslint-disable camelcase */
+interface LinksData {
+  homepage: string[];
+  blockchain_site: string[];
+  official_forum_url: string[];
+  chat_url: string[];
+  announcement_url: string[];
+  twitter_screen_name: string;
+  facebook_username: string;
+  bitcointalk_thread_identifier: string | null;
+  telegram_channel_identifier: string;
+  subreddit_url: string | null;
+  repos_url: {
+    github: string[];
+    bitbucket: string[];
+  };
+}
+
 interface CryptoAssetDTO {
   title: string;
   token: string;
@@ -7,6 +25,8 @@ interface CryptoAssetDTO {
   fiat: number;
   change: number;
   iconSrc: string;
+  categories: Array<string>;
+  links: LinksData;
 }
 
 interface StockPortfolioItem {
