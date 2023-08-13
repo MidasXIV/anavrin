@@ -8,6 +8,7 @@ import DefaultLayout from "../layouts/default";
 import api from "../services/create-service";
 import DashboardPortfolioSection from "../components/dashboard-portfolio-section/dashboard-portfolio-section";
 import DashboardPortfolioSectionLoading from "../components/dashboard-portfolio-section/dashboard-portfolio-section-loading";
+import EconomicEventsPanel from "../components/economic-events-panel";
 
 const Dashboard: FC = () => {
   const [hide, setHide] = useState(false);
@@ -57,8 +58,9 @@ const Dashboard: FC = () => {
               "sm:w-1/4": hide
             })}
           >
-            Secondary Panel
-            <LoremIpsum />
+            {/* Secondary Panel
+            <LoremIpsum /> */}
+            <EconomicEventsPanel />
           </div>
         </div>
       </DefaultLayout>
