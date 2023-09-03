@@ -1,0 +1,52 @@
+.markdown {
+  @apply text-black font-mono;
+}
+
+.markdown > ul {
+  @apply list-disc list-inside px-2;
+}
+
+.markdown > ol {
+  @apply list-decimal list-inside px-2;
+}
+
+.markdown > li {
+  @apply mx-2 px-2;
+}
+
+.markdown > h1 {
+  @apply font-bold text-4xl mt-2 mx-0 mb-1;
+}
+
+.markdown > h2 {
+  margin: 22px 0 8px;
+  font-size: 32px;
+}
+
+.markdown > h3 {
+  margin: 22px 0 8px;
+  font-size: 30px;
+}
+
+.markdown > h4 {
+  margin: 18px 0 8px;
+  font-size: 24px;
+}
+
+.markdown > h5 {
+  margin: 14px 0 8px;
+  font-size: 18px;
+}
+
+.markdown > h6 {
+  margin: 12px 0 8px;
+  font-size: 18px;
+}
+
+.markdown > p {
+  @apply text-gray-600 text-sm font-mono;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  margin: 0 0 12px;
+}

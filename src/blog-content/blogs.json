@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Temp Blog 1",
+    "description": "Temp Blog 1 description",
+    "url": "/blogs/first-post",
+    "slug": "first-post",
+    "featured": true,
+    "author": "midasxiv",
+    "updatedAt": "2020-07-16T19:59:14.191Z",
+    "createdAt": "2020-07-16T19:59:14.191Z"
+  },
+  {
+    "title": "Temp Blog 2",
+    "description": "Temp Blog 2 description - testing",
+    "url": "/blogs/second-post",
+    "slug": "second-post",
+    "featured": true,
+    "author": "midasxiv",
+    "updatedAt": "2020-07-16T19:59:14.191Z",
+    "createdAt": "2020-07-16T19:59:14.191Z"
+  },
+  {
+    "title": "Markdown Test",
+    "description": "Utility markdown file to visualize markdown elements",
+    "url": "/blogs/markdown-test",
+    "slug": "markdown-test",
+    "featured": true,
+    "author": "midasxiv",
+    "updatedAt": "2020-07-16T19:59:14.191Z",
+    "createdAt": "2020-07-16T19:59:14.191Z"
+  }
+]
