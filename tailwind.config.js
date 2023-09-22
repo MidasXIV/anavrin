@@ -16,6 +16,7 @@ module.exports = {
     extend: {
       colors: {
         charcoal: {
+          200: "#eaeaea",
           300: "#404040",
           400: "#2b2b2b",
           900: "#151515"
