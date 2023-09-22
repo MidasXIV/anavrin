@@ -15,4 +15,5 @@ interface Blog {
   updatedAt: string;
   createdAt: string;
   content?: string;
+  display?: string;
 }

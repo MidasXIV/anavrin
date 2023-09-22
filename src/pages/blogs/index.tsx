@@ -45,7 +45,7 @@ const BlogListCard: FC<{
   blog: Blog;
   key: string;
 }> = ({ blog, key }) => {
-  const { slug, title, description, author, updatedAt } = blog;
+  const { slug, title, description, author, updatedAt, display } = blog;
   const formattedDate = new Date(updatedAt).toDateString();
   return (
     <Link href={{ pathname: `/blogs/${slug}` }}>
@@ -74,8 +74,8 @@ const BlogListCard: FC<{
             </dl>
             <img
               className="h-16 w-16 rounded-lg object-cover shadow-sm"
-              src="https://github.com/creativetimofficial/argon-design-system/blob/master/assets/img/faces/team-2.jpg?raw=true"
-              alt=""
+              src={display}
+              alt="blog display"
             />
           </div>
         </div>
