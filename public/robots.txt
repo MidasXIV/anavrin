@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://anavrin.app
+
+# Sitemaps
+Sitemap: https://anavrin.app/sitemap.xml
