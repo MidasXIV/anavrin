@@ -1,6 +1,7 @@
 import { fetchCoinInfo } from "../util/cryptocurrencyService";
 import isEmptyDataItem from "../util/type-gaurds";
 import { AssetType } from "./portfolio-utils";
+import rateLimit from "./rate-limiting";
 
 /**
  * Converts a CoinGecko API coin object to a simplified DTO understood by CryptoPortfolioSchema
@@ -48,12 +49,14 @@ const hydrateCryptoPortfolioItems = async (portfolio: Portfolio): Promise<Crypto
 
   const { items } = portfolio;
   const data = await Promise.all(
-    items.map(async (item: CryptoPortfolioItem) => {
-      const tokenInformation = await fetchCoinInfo(item.token);
-      const asset = { ...item, ...tokenInformation };
-      const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDTO(asset);
-      return cryptoAssetDTO;
-    })
+    items.map(
+      rateLimit(async (item: CryptoPortfolioItem) => {
+        const tokenInformation = await fetchCoinInfo(item.token);
+        const asset = { ...item, ...tokenInformation };
+        const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDTO(asset);
+        return cryptoAssetDTO;
+      }, 5)
+    )
   );
 
   return data;

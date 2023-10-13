@@ -4,6 +4,7 @@ import useModal from "../../hooks/useModal";
 import DefaultLayout from "../../layouts/default";
 import { DFMDividendExpandableComponent, DFMDividendPortfolioSchema } from "../../lib/table-schema";
 import getStockInformation from "../../util/getStockInformation";
+import rateLimit from "../../lib/rate-limiting";
 
 const SimulatorDFM: FC = () => {
   const { isShowing, toggle } = useModal(false);
@@ -47,7 +48,9 @@ const SimulatorDFM: FC = () => {
     ];
     setDataBeingFetched(true);
 
-    const StockPromises = DFMStocks.map(ticker => getStockInformation(`${ticker}.AE`, false));
+    const StockPromises = DFMStocks.map(ticker =>
+      rateLimit(() => getStockInformation(`${ticker}.AE`, false), 5)
+    );
 
     Promise.allSettled(StockPromises)
       .then(
