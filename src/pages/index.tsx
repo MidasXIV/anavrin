@@ -6,6 +6,7 @@ import FeaturesSection from "../components/website/features-section";
 import LaunchAppButton from "../components/website/launch-app-button";
 import WebsiteHeader from "../components/website/header";
 import WebsiteFooter from "../components/website/footer/footer";
+import Pricing from "../components/website/pricing/pricing";
 
 const Home: FC = () => (
   <div className="m-0 flex h-full flex-col bg-white">
@@ -83,6 +84,7 @@ const Home: FC = () => (
 
     <FeaturesSection />
 
+    <Pricing session={undefined} user={undefined} subscription={undefined} />
     <div className="w-full border-t" id="register">
       <Register />
       <div className="h-28 rounded-full border-b" />
