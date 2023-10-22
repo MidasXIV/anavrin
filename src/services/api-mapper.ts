@@ -58,6 +58,11 @@ export const apiMapper = {
     url: "/api/services/economic-events/",
     method: "get"
   },
+  // subscription-pricing-api
+  getActiveProductsWithPrices: {
+    url: "/api/services/subscription-pricing/",
+    method: "get"
+  },
   // user-portfolio-apis
   deleteUserPortfolio: {
     url: "/api/portfolio/",
