@@ -1,4 +1,13 @@
-import { Db, ObjectId, WithId } from "mongodb";
+import {
+  Db,
+  Filter,
+  FindCursor,
+  FindOneAndUpdateOptions,
+  ModifyResult,
+  ObjectId,
+  UpdateFilter,
+  WithId
+} from "mongodb";
 import isEmptyDataItem from "../../util/type-gaurds";
 
 /**
@@ -64,6 +73,17 @@ export default class MongoBase {
   }
 
   /**
+   * Retrieve all documents from the collection based on the provided query. A cursor object is
+   * returned instead of doing a toArray as it can sometimes be too time consuming and fail.
+   * @param query - The query to match documents.
+   * @param projection - The fields to include or exclude from the result.
+   * @returns A Promise that resolves to the retrieved document or null if not found.
+   */
+  protected async getAll<T>(query = {}, projection = {}): Promise<FindCursor<WithId<T>> | null> {
+    return this.db.collection<T>(this.collectionName).find(query, projection);
+  }
+
+  /**
    * Delete a document from the collection based on the provided query.
    * @param query - The query to match documents.
    * @returns A Promise that resolves to a boolean indicating the success of the operation.
@@ -77,6 +97,10 @@ export default class MongoBase {
       isDeleted = false;
     }
     return isDeleted;
+  }
+
+  public async upsert(query, update, options): Promise<unknown> {
+    return this.db.collection(this.collectionName).findOneAndUpdate(query, update, options);
   }
 
   /**
