@@ -1,10 +1,13 @@
 import Stripe from "stripe";
 import { NextApiRequest, NextApiResponse } from "next";
-// import { buffer } from "micro";
 import { buffer } from "node:stream/consumers";
 import stripe from "../../../lib/stripe";
 import createHandlers from "../../../lib/rest-utils";
-import { upsertPriceRecord, upsertProductRecord } from "../../../services/stripe-services";
+import {
+  manageSubscriptionStatusChange,
+  upsertPriceRecord,
+  upsertProductRecord
+} from "../../../services/stripe-services";
 
 const relevantEvents = new Set([
   "product.created",
@@ -64,26 +67,27 @@ const handlers = {
           }
           case "customer.subscription.created":
           case "customer.subscription.updated":
-          case "customer.subscription.deleted":
+          case "customer.subscription.deleted": {
             const subscription = event.data.object as Stripe.Subscription;
-
-            // await manageSubscriptionStatusChange(
-            //   subscription.id,
-            //   subscription.customer as string,
-            //   event.type === "customer.subscription.created"
-            // );
+            await manageSubscriptionStatusChange(
+              subscription.id,
+              subscription.customer as string,
+              event.type === "customer.subscription.created"
+            );
             break;
-          case "checkout.session.completed":
+          }
+          case "checkout.session.completed": {
             const checkoutSession = event.data.object as Stripe.Checkout.Session;
-            // if (checkoutSession.mode === "subscription") {
-            //   const subscriptionId = checkoutSession.subscription;
-            //   await manageSubscriptionStatusChange(
-            //     subscriptionId as string,
-            //     checkoutSession.customer as string,
-            //     true
-            //   );
-            // }
+            if (checkoutSession.mode === "subscription") {
+              const subscriptionId = checkoutSession.subscription;
+              await manageSubscriptionStatusChange(
+                subscriptionId as string,
+                checkoutSession.customer as string,
+                true
+              );
+            }
             break;
+          }
           default:
             throw new Error("Unhandled relevant event!");
         }
@@ -92,6 +96,7 @@ const handlers = {
         res.writeHead(400, "Webhook handler failed. View your nextjs function logs.").end();
       }
     }
+    res.status(200).send("Webhook processed by Anavrin");
   }
 };
 

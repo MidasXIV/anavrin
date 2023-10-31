@@ -18,12 +18,19 @@ type deleteUserPortfolioRequest = {
   portfolio: Portfolio;
 };
 
+type createCheckoutSessionRequest = {
+  price: number;
+  quantity?: number;
+  metadata?: Record<string, any>;
+};
+
 export interface ApiRequests {
   postSubscribeUserRequest: postSubscribeUserRequest;
   postDeleteSubscriptionRequest: postDeleteSubscriptionRequest;
   postSaveSubscriptionRequest: postSaveSubscriptionRequest;
   saveUserPortfolioRequest: saveUserPortfolioRequest;
   deleteUserPortfolioRequest: deleteUserPortfolioRequest;
+  createCheckoutSessionRequest: createCheckoutSessionRequest;
 }
 
 // type postSubscribeUserRequest2 = Pick< ApiRequests, "postSubscribeUserRequest" >["postSubscribeUserRequest"];
@@ -77,6 +84,12 @@ export const apiMapper = {
   fetchUserPortfolio: {
     url: "/api/portfolio/",
     method: "get"
+  },
+  // create-checkout-session
+  createCheckoutSession: {
+    url: "api/create-checkout-session",
+    method: "post",
+    requestType: "createCheckoutSessionRequest"
   }
 } as const;
 

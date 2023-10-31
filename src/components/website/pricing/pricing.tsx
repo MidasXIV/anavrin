@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import api from "../../../services/create-service";
+import getStripe from "../../../lib/stripe-client";
 // import { useRouter } from "next/navigation";
 // import { useState } from "react";
 // // import Button from "@/components/ui/Button";
@@ -34,11 +35,9 @@ import api from "../../../services/create-service";
 
 type BillingInterval = "lifetime" | "year" | "month";
 
-// export default function Pricing({ session, user, subscription }) {
 export default function Pricing({ session, user, subscription }) {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
-  const { data: Session, status } = useSession();
   const intervals = Array.from(
     new Set(products.flatMap(product => product?.prices?.map(price => price?.interval)))
   );
@@ -51,7 +50,6 @@ export default function Pricing({ session, user, subscription }) {
       try {
         setLoading(true);
         const productInfo = await api.getActiveProductsWithPrices();
-        console.log(productInfo);
         if (productInfo.data) {
           setProducts(productInfo.data);
         } else {
@@ -70,26 +68,30 @@ export default function Pricing({ session, user, subscription }) {
   }, []);
 
   const handleCheckout = async price => {
+    console.log(price);
     setPriceIdLoading(price.id);
-    // if (!user) {
-    //   return router.push("/signin");
-    // }
-    // if (subscription) {
-    //   return router.push("/account");
-    // }
-    // try {
-    //   const { sessionId } = await postData({
-    //     url: "/api/create-checkout-session",
-    //     data: { price }
-    //   });
+    if (!user) {
+      return router.push("/signin");
+    }
+    if (subscription) {
+      return router.push("/user-settings");
+    }
+    try {
+      const {
+        data: { sessionId }
+      } = await api.createCheckoutSession({
+        price
+      });
 
-    //   const stripe = await getStripe();
-    //   stripe?.redirectToCheckout({ sessionId });
-    // } catch (error) {
-    //   return alert((error as Error)?.message);
-    // } finally {
-    //   setPriceIdLoading(undefined);
-    // }
+      console.log(sessionId);
+
+      const stripe = await getStripe();
+      stripe?.redirectToCheckout({ sessionId });
+    } catch (error) {
+      return alert((error as Error)?.message);
+    } finally {
+      setPriceIdLoading(undefined);
+    }
   };
 
   if (loading) {

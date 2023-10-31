@@ -77,10 +77,17 @@ function getTimeDifferenceString(date1: Date, date2: Date): string {
   return `${timeDiff} ago.`;
 }
 
+function toDateTime(secs: number): Date {
+  const t = new Date("1970-01-01T00:30:00Z"); // Unix epoch start.
+  t.setSeconds(secs);
+  return t;
+}
+
 export {
   getTimeOffsetFromEST,
   coerceToClientTime,
   buildEventDate,
   formatDateString,
-  getTimeDifferenceString
+  getTimeDifferenceString,
+  toDateTime
 };

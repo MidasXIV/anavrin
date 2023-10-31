@@ -14,18 +14,25 @@ const PushNotificationPanel = dynamic(() => import("../components/push-notificat
   loading: LoadingForm
 });
 
+const SubscriptionPanel = dynamic(() => import("../components/subscription-panel"), {
+  loading: LoadingForm
+});
+
 enum MenuItems {
-  WEBPUSH = "webpush"
+  WEBPUSH = "webpush",
+  SUBSCRIPTION = "subscription"
 }
 
 export enum PanelKeys {
   BINANCE = ExchangeKeys.BINANCE,
   DUMMY = ExchangeKeys.DUMMY,
-  WEBPUSH = MenuItems.WEBPUSH
+  WEBPUSH = MenuItems.WEBPUSH,
+  SUBSCRIPTION = MenuItems.SUBSCRIPTION
 }
 
 export const UserSettingsComponentMapping = new Map<PanelKeys, ComponentType<unknown>>([
   [PanelKeys.BINANCE, BinanceForm],
   [PanelKeys.DUMMY, DummyForm],
-  [PanelKeys.WEBPUSH, PushNotificationPanel]
+  [PanelKeys.WEBPUSH, PushNotificationPanel],
+  [PanelKeys.SUBSCRIPTION, SubscriptionPanel]
 ]);
