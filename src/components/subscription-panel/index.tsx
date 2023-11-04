@@ -141,7 +141,7 @@ const SubscriptionPAnel: FC<unknown> = () => {
               ? `You are currently on the ${subscription?.prices?.products?.name} plan.`
               : "You are not currently subscribed to any plan."
           }
-          footer={<ManageSubscriptionButton session={subscription} />}
+          footer={<ManageSubscriptionButton subscription={subscription} />}
         >
           <div className="mb-4 mt-8 text-xl font-semibold">
             {subscription ? (
