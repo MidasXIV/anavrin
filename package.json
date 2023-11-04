@@ -26,7 +26,7 @@
     "pl:dev:laptop": "npm run profile-layout:dev -- -v laptop",
     "pl:dev:desktop": "npm run profile-layout:dev -- -v desktop",
     "sync-stripe": "stripe fixtures src/fixtures/stripe-fixtures.json",
-    "stripe:listen": "stripe listen --forward-to=localhost:3000/api/webhooks/stripe"
+    "stripe:listen": "stripe listen --forward-to=localhost:3000/api/stripe/stripe-webhooks"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

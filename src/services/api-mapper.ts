@@ -85,11 +85,15 @@ export const apiMapper = {
     url: "/api/portfolio/",
     method: "get"
   },
-  // create-checkout-session
+  // stripe
   createCheckoutSession: {
-    url: "api/create-checkout-session",
+    url: "api/stripe/create-checkout-session",
     method: "post",
     requestType: "createCheckoutSessionRequest"
+  },
+  createPortalLink: {
+    url: "api/stripe/create-portal-link",
+    method: "post"
   },
 
   // user/subscription
