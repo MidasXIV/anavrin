@@ -2,7 +2,6 @@ import { Db, Document, FindOneAndUpdateOptions, ModifyResult, ObjectId } from "m
 import Stripe from "stripe";
 import { isEmpty } from "../../util/helper";
 import stripe from "../../lib/stripe";
-import { toDateTime } from "../../util/timeAndDateHelpers";
 
 export default class UserModel implements IUserModel {
   private db: Db;
@@ -199,7 +198,7 @@ export default class UserModel implements IUserModel {
   public async getSubscription(email) {
     const query = { email };
     const projection = {
-      _id: 1,
+      _id: 0,
       name: 1,
       email: 1,
       stripe_customer_id: 1,

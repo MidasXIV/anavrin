@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import api from "../../../services/create-service";
 import getStripe from "../../../lib/stripe-client";
+import BoxButton from "../../box-button/box-button";
 // import { useRouter } from "next/navigation";
 // import { useState } from "react";
 // // import Button from "@/components/ui/Button";
@@ -161,7 +162,7 @@ export default function Pricing({ session, user, subscription }) {
                         </span>
                       </p>
                       <p className="mt-4 text-zinc-300">{price.description}</p>
-                      <Button
+                      <BoxButton
                         variant="slim"
                         type="button"
                         disabled={false}
@@ -172,7 +173,7 @@ export default function Pricing({ session, user, subscription }) {
                         {products[0].name === subscription?.prices?.products?.name
                           ? "Manage"
                           : "Subscribe"}
-                      </Button>
+                      </BoxButton>
                     </div>
                   </div>
                 );
@@ -246,10 +247,10 @@ export default function Pricing({ session, user, subscription }) {
                   <h2 className="text-2xl font-semibold leading-6 text-white">{product.name}</h2>
                   <p className="mt-4 text-zinc-300">{product.description}</p>
                   <p className="mt-8">
-                    <span className="white text-5xl font-extrabold">{priceString}</span>
+                    <span className="text-5xl font-extrabold text-white">{priceString}</span>
                     <span className="text-base font-medium text-zinc-100">/{billingInterval}</span>
                   </p>
-                  <Button
+                  <BoxButton
                     variant="slim"
                     type="button"
                     disabled={!session}
@@ -258,7 +259,7 @@ export default function Pricing({ session, user, subscription }) {
                     className="mt-8 block w-full rounded-md py-2 text-center text-sm font-semibold text-white hover:bg-zinc-900"
                   >
                     {subscription ? "Manage" : "Subscribe"}
-                  </Button>
+                  </BoxButton>
                 </div>
               </div>
             );

@@ -3,7 +3,10 @@ import { Button, TextInput } from "@mantine/core";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useForm } from "@mantine/form";
+import { FC, useEffect, useState } from "react";
 import ManageSubscriptionButton from "./manage-subscription-button";
+import api from "../../services/create-service";
+import getFormattedSubscriptionPrice from "../../util/subscription-utils";
 
 function Card({ title, description, footer, children }) {
   return (
@@ -46,49 +49,34 @@ function InputCard({ id, title, description, footer, value, onChange }) {
 const SubscriptionPAnel: FC<unknown> = () => {
   const { data: session, status } = useSession();
 
-  // const [session, userDetails, subscription] = await Promise.all([
-  //   getSession(),
-  //   getUserDetails(),
-  //   getSubscription()
-  // ]);
+  const [loading, setLoading] = useState(true);
+  const [subscription, setSubscription] = useState(undefined);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const subscriptionData = await api.getSubscription();
+        if (subscriptionData.data) {
+          const { subscription: subscriptionDocument } = subscriptionData.data;
+          setSubscription(subscriptionDocument);
+        } else {
+          console.error("Error in fetching subscription.");
+          // Handle this situation, e.g., display an error message to the user.
+        }
+      } catch (error) {
+        console.error("API request failed:", error);
+        // Handle the error, e.g., display an error message to the user.
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const userDetails = {
     full_name: "xiv"
-  };
-
-  const subscription = {
-    id: "sub_1O71JGKMqmNpvz01L8kgNQo6",
-
-    metadata: {},
-    status: "active",
-    price_id: "price_1O3mjXKMqmNpvz01VLCxhva2",
-    quantity: 1,
-    cancel_at_period_end: false,
-    cancel_at: null,
-    canceled_at: null,
-    current_period_start: "2023-10-30T20:09:38.000Z",
-    current_period_end: "2023-11-30T20:09:38.000Z",
-    created: "2023-10-30T20:09:38.000Z",
-    ended_at: null,
-    trial_start: null,
-    trial_end: null,
-    prices: {
-      _id: "653442b368d0d23847ec9a0e",
-      id: "price_1O3mjXKMqmNpvz01VLCxhva2",
-      active: true,
-      currency: "usd",
-      description: null,
-      interval: "month",
-      interval_count: 1,
-      metadata: {},
-      product_id: "prod_OrVlOCvoj6ooTp",
-      trial_period_days: null,
-      type: "recurring",
-      unit_amount: 2000,
-      products: {
-        name: "Hobby"
-      }
-    }
   };
 
   const user = session?.user;
@@ -102,14 +90,6 @@ const SubscriptionPAnel: FC<unknown> = () => {
   // if (!session) {
   //   return redirect("/signin");
   // }
-
-  const subscriptionPrice =
-    subscription &&
-    new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: subscription?.prices?.currency,
-      minimumFractionDigits: 0
-    }).format((subscription?.prices?.unit_amount || 0) / 100);
 
   const updateName = async (formData: FormData) => {
     console.log(formData);
@@ -139,6 +119,10 @@ const SubscriptionPAnel: FC<unknown> = () => {
     // revalidatePath("/account");
   };
 
+  if (loading) {
+    return <p>Loading</p>;
+  }
+  console.log("subscription-panel render");
   return (
     <section className="py-8">
       <div className="mx-auto">
@@ -157,106 +141,18 @@ const SubscriptionPAnel: FC<unknown> = () => {
               ? `You are currently on the ${subscription?.prices?.products?.name} plan.`
               : "You are not currently subscribed to any plan."
           }
-          footer={<ManageSubscriptionButton session={session} />}
+          footer={<ManageSubscriptionButton session={subscription} />}
         >
           <div className="mb-4 mt-8 text-xl font-semibold">
             {subscription ? (
-              `${subscriptionPrice}/${subscription?.prices?.interval}`
+              `${getFormattedSubscriptionPrice(subscription)}/${subscription?.prices?.interval}`
             ) : (
               <Link href="/">Choose your plan</Link>
             )}
           </div>
         </Card>
 
-        {/* <form
-          onSubmit={form.onSubmit(values => {
-            console.log(values);
-          })}
-        >
-          <TextInput
-            id="user-name"
-            required
-            label="Your Name"
-            description="Please enter your full name, or a display name you are comfortable with."
-            className="pb-2"
-            placeholder=""
-            variant="filled"
-            value={form.values.userName}
-            onChange={event => form.setFieldValue("userName", event.currentTarget.value)}
-          />
-          <TextInput
-            id="dummy-api-secret"
-            required
-            label="Your Email"
-            description="Please enter the email address you want to use to login."
-            className="pb-2"
-            placeholder=""
-            variant="filled"
-            value={form.values.userEmail}
-            onChange={event => form.setFieldValue("userEmail", event.currentTarget.value)}
-          />
-        </form> */}
-
-        {/* <Card
-          title="Your Name"
-          description="Please enter your full name, or a display name you are comfortable with."
-          footer={
-            <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-              <p className="pb-4 sm:pb-0">64 characters maximum</p>
-              <Button variant="slim" type="submit" form="nameForm" disabled>
-                
-         Update Name
-              </Button>
-            </div>
-          }
-        >
-          <div className="mb-4 mt-8 text-xl font-semibold">
-            <form
-              id="nameForm"
-              // action={updateName}
-            >
-              <input
-                type="text"
-                name="name"
-                className="w-1/2 rounded-md bg-zinc-800 p-3"
-                defaultValue={userDetails?.full_name ?? ""}
-                placeholder="Your name"
-                maxLength={64}
-              />
-            </form>
-          </div>
-        </Card> */}
-
-        {/* <Card
-          title="Your Email"
-          description="Please enter the email address you want to use to login."
-          footer={
-            <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-              <p className="pb-4 sm:pb-0">We will email you to verify the change.</p>
-              <Button variant="slim" type="submit" form="emailForm" disabled>
-                Update Email
-              </Button>
-            </div>
-          }
-        >
-          <div className="mb-4 mt-8 text-xl font-semibold">
-            <form
-              id="emailForm"
-              // action={updateEmail}
-            >
-              <input
-                type="text"
-                name="email"
-                className="w-1/2 rounded-md bg-zinc-800 p-3"
-                defaultValue={user ? user.email : ""}
-                placeholder="Your email"
-                maxLength={64}
-              />
-            </form>
-          </div>
-        </Card> */}
-
-        <InputCard
+        {/* <InputCard
           id="user-name-input"
           title="Your Name"
           description="Please enter your full name, or a display name you are comfortable with."
@@ -270,9 +166,9 @@ const SubscriptionPAnel: FC<unknown> = () => {
           }
           value={form.values.userName}
           onChange={event => form.setFieldValue("userName", event.currentTarget.value)}
-        />
+        /> */}
 
-        <InputCard
+        {/* <InputCard
           id="user-email-input"
           title="Your Email"
           description="Please enter the email address you want to use to login."
@@ -286,7 +182,7 @@ const SubscriptionPAnel: FC<unknown> = () => {
               </Button>
             </div>
           }
-        />
+        /> */}
       </div>
     </section>
   );

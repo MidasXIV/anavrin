@@ -90,6 +90,12 @@ export const apiMapper = {
     url: "api/create-checkout-session",
     method: "post",
     requestType: "createCheckoutSessionRequest"
+  },
+
+  // user/subscription
+  getSubscription: {
+    url: "/api/user/subscription/",
+    method: "get"
   }
 } as const;
 
