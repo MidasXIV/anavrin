@@ -18,12 +18,19 @@ type deleteUserPortfolioRequest = {
   portfolio: Portfolio;
 };
 
+type createCheckoutSessionRequest = {
+  price: number;
+  quantity?: number;
+  metadata?: Record<string, any>;
+};
+
 export interface ApiRequests {
   postSubscribeUserRequest: postSubscribeUserRequest;
   postDeleteSubscriptionRequest: postDeleteSubscriptionRequest;
   postSaveSubscriptionRequest: postSaveSubscriptionRequest;
   saveUserPortfolioRequest: saveUserPortfolioRequest;
   deleteUserPortfolioRequest: deleteUserPortfolioRequest;
+  createCheckoutSessionRequest: createCheckoutSessionRequest;
 }
 
 // type postSubscribeUserRequest2 = Pick< ApiRequests, "postSubscribeUserRequest" >["postSubscribeUserRequest"];
@@ -58,6 +65,11 @@ export const apiMapper = {
     url: "/api/services/economic-events/",
     method: "get"
   },
+  // subscription-pricing-api
+  getActiveProductsWithPrices: {
+    url: "/api/services/subscription-pricing/",
+    method: "get"
+  },
   // user-portfolio-apis
   deleteUserPortfolio: {
     url: "/api/portfolio/",
@@ -71,6 +83,22 @@ export const apiMapper = {
   },
   fetchUserPortfolio: {
     url: "/api/portfolio/",
+    method: "get"
+  },
+  // stripe
+  createCheckoutSession: {
+    url: "api/stripe/create-checkout-session",
+    method: "post",
+    requestType: "createCheckoutSessionRequest"
+  },
+  createPortalLink: {
+    url: "api/stripe/create-portal-link",
+    method: "post"
+  },
+
+  // user/subscription
+  getSubscription: {
+    url: "/api/user/subscription/",
     method: "get"
   }
 } as const;

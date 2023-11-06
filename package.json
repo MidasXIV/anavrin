@@ -24,13 +24,16 @@
     "pl:dev:ipad": "npm run profile-layout:dev -- -v ipad",
     "pl:dev:tablet": "npm run profile-layout:dev -- -v tablet",
     "pl:dev:laptop": "npm run profile-layout:dev -- -v laptop",
-    "pl:dev:desktop": "npm run profile-layout:dev -- -v desktop"
+    "pl:dev:desktop": "npm run profile-layout:dev -- -v desktop",
+    "sync-stripe": "stripe fixtures src/fixtures/stripe-fixtures.json",
+    "stripe:listen": "stripe listen --forward-to=localhost:3000/api/stripe/stripe-webhooks"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@mantine/core": "^6.0.14",
     "@mantine/form": "^6.0.14",
     "@mantine/hooks": "^6.0.14",
+    "@stripe/stripe-js": "^2.1.9",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.10",
     "classnames": "^2.3.1",
@@ -48,6 +51,8 @@
     "react-dom": "^18.2.0",
     "react-jss": "^10.9.0",
     "react-markdown": "^8.0.7",
+    "react-merge-refs": "^2.1.1",
+    "stripe": "^14.1.0",
     "styled-components": "^5.3.3",
     "swr": "^1.3.0",
     "web-push": "^3.4.5"
