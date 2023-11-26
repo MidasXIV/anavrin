@@ -1,3 +1,5 @@
+import { ReadonlyURLSearchParams } from "next/navigation";
+
 /**
  * Function that checks if the input object is empty
  *
@@ -46,4 +48,11 @@ function removeObjFromArray<T>(arr: T[], obj: T, propToCheck: keyof T): T[] {
   return arr.filter(item => item[propToCheck] !== obj[propToCheck]);
 }
 
-export { isEmpty, differenceBy, formatNumber, removeObjFromArray };
+const createUrl = (pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) => {
+  const paramsString = params.toString();
+  const queryString = `${paramsString.length ? "?" : ""}${paramsString}`;
+
+  return `${pathname}${queryString}`;
+};
+
+export { isEmpty, differenceBy, formatNumber, removeObjFromArray, createUrl };

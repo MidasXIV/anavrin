@@ -1,8 +1,11 @@
 import { FC, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import CryptocurrencySearchBox from "../../components/cryptocurrency-search-box";
 import Ranker from "../../components/ranker";
 import DefaultLayout from "../../layouts/default";
 import { fetchCoinInfo } from "../../util/cryptocurrencyService";
+import { createUrl } from "../../util/helper";
 
 const CoinInfo = ({ coin }) => (
   <div className="flex flex-col overflow-y-scroll bg-white p-4 shadow-md sm:flex-row">
@@ -107,7 +110,22 @@ const CoinInfo = ({ coin }) => (
 );
 
 const SimulatorCryptoCurrency: FC = () => {
-  const [selectedCrypto, setSelectedCrypto] = useState(undefined);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const setSelectedCrypto = selectedCrypto => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (selectedCrypto) {
+      newParams.set("q", selectedCrypto);
+    } else {
+      newParams.delete("q");
+    }
+
+    router.push(createUrl("cryptocurrency", newParams));
+  };
+
+  const selectedCrypto = searchParams.get("q") || "";
   const [coinInfo, setCoinInfo] = useState(undefined);
   const [cryptoWatchlist, setCryptoWatchlist] = useState([]);
   useEffect(() => {
@@ -136,7 +154,12 @@ const SimulatorCryptoCurrency: FC = () => {
         description="You can see your portfolios estimated value & progress below"
       >
         <div className="bg-gray-200 p-6 shadow-md">
-          <CryptocurrencySearchBox setCyptocurrency={token => setSelectedCrypto(token)} />
+          {cryptoWatchlist ? (
+            <CryptocurrencySearchBox
+              cyptocurrency={selectedCrypto}
+              setCyptocurrency={token => setSelectedCrypto(token)}
+            />
+          ) : null}
         </div>
         {selectedCrypto && coinInfo ? (
           <div className="flex-1 overflow-auto">
