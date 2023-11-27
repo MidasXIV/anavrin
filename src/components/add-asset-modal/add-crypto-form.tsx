@@ -62,6 +62,7 @@ const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
         >
           <CryptocurrencySearchBox
             hideHeader
+            cyptocurrency={searchTerm}
             setCyptocurrency={token => {
               setSearchTerm(token);
               fetchTokenInformation(token);
