@@ -157,11 +157,13 @@ const SimulatorCryptoCurrency: FC = () => {
         sidebar="simulator"
         description="You can see your portfolios estimated value & progress below"
       >
-        <div className="flex w-full flex-1 flex-row overflow-auto rounded-t-lg bg-gray-300">
+        <div className="flex w-full flex-1 flex-col overflow-auto  rounded-t-lg bg-gray-300 md:flex-row">
+          {/* Left hand panel */}
           <div
-            className={cn("w-full overflow-y-auto p-2 sm:w-8/12", {
-              "sm:w-full": hide,
-              "sm:w-8/12": !hide
+            // className={cn("w-full overflow-y-auto p-2 sm:w-8/12", {
+            className={cn("flex h-full w-full flex-col overflow-y-auto p-2 md:w-8/12", {
+              "sm:w-full": hide
+              // "sm:w-8/12": !hide
             })}
           >
             <div className="bg-gray-200 p-6 shadow-md">
@@ -173,7 +175,7 @@ const SimulatorCryptoCurrency: FC = () => {
               ) : null}
             </div>
             {selectedCrypto && coinInfo ? (
-              <div className="flex-1 overflow-auto">
+              <div className="h-full flex-1">
                 <CoinInfo coin={coinInfo} />
               </div>
             ) : null}
@@ -182,17 +184,24 @@ const SimulatorCryptoCurrency: FC = () => {
             </div> */}
           </div>
 
+          {/* Right hand panel */}
           <div
             className={cn(
-              "border-gray-400bg-charcoal-400 m-2 hidden overflow-auto rounded-lg bg-gray-200 p-2 text-gray-300 sm:block sm:w-4/12",
+              "border-gray-400bg-charcoal-400 m-2 flex items-center justify-center overflow-hidden rounded-lg bg-gray-200 p-2 text-gray-300 md:block md:w-4/12 md:overflow-auto",
               {
-                "sm:hidden sm:max-w-0": hide
+                // "sm:hidden sm:max-w-0": hide
+                // "sm:hidden sm:max-w-0": hide
               }
             )}
           >
             {/* Secondary Panel
             <LoremIpsum /> */}
-            <VerticalRanker items={cryptoWatchlist} />
+            <div className="hidden md:block">
+              <VerticalRanker items={cryptoWatchlist} />
+            </div>
+            <span className="text-md mx-auto w-full text-center font-mono text-black md:hidden">
+              click to open
+            </span>
           </div>
         </div>
       </DefaultLayout>

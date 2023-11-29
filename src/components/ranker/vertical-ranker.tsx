@@ -84,7 +84,7 @@ type RankerProps = {
 
 const VerticalRanker: FC<RankerProps> = ({ items }) => {
   const sortedItems = items.sort((a, b) => (a.anavrin_score < b.anavrin_score ? 1 : -1));
-  console.log(sortedItems);
+
   return (
     <div className="flex flex-col space-y-4">
       {sortedItems.map((item, index) => (
