@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 import {
   buildEventDate,
   formatDateString,
@@ -63,7 +63,7 @@ const ListItem = ({ event, day }: { event: IEcnomicEvent; day: IEcnomicCalandarI
           <div className="flex flex-row justify-between py-2 text-base font-normal text-gray-600 dark:text-gray-400">
             <span className="text-2xl font-medium text-gray-900 dark:text-white">{release} </span>
             <div
-              className={cn("h-6 w-6 rounded-md border-2 border-black", {
+              className={clsx("h-6 w-6 rounded-md border-2 border-black", {
                 "bg-red-500": impact === "3",
                 "bg-yellow-500": impact === "2",
                 "bg-yellow-200": impact === "1"

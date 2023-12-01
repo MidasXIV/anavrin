@@ -1,5 +1,5 @@
 import { FC } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 import Link from "next/link";
 import { Divider, Menu } from "@mantine/core";
 import styles from "./index.module.css";
@@ -9,10 +9,10 @@ type SidebarProps = {
 };
 
 const Sidebar: FC<SidebarProps> = ({ select }) => (
-  <nav className={cn(styles.sidebar, "flex")}>
+  <nav className={clsx(styles.sidebar, "flex")}>
     <div className="flex h-auto w-full flex-row justify-between sm:h-full sm:w-auto sm:flex-col">
       <ul className="nav flex flex-col border-r border-gray-900 sm:border-b">
-        <li className={cn(styles.icon, { [styles.active]: select === "overview" })}>
+        <li className={clsx(styles.icon, { [styles.active]: select === "overview" })}>
           <Link href="/overview">
             <svg
               className="bi bi-view-list icon"
@@ -33,7 +33,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => (
       </ul>
 
       <ul className="nav flex flex-row sm:flex-col">
-        <li className={cn(styles.icon, { [styles.active]: select === "dashboard" })}>
+        <li className={clsx(styles.icon, { [styles.active]: select === "dashboard" })}>
           <Link href="/dashboard">
             <svg
               className="bi bi-house icon"
@@ -56,7 +56,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => (
             </svg>
           </Link>
         </li>
-        <li className={cn(styles.icon, { [styles.active]: select === "portfolio" })}>
+        <li className={clsx(styles.icon, { [styles.active]: select === "portfolio" })}>
           <Link href="/portfolio">
             <svg
               className="bi bi-bullseye icon"
@@ -85,7 +85,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => (
             </svg>
           </Link>
         </li>
-        <li className={cn(styles.icon, { [styles.active]: select === "simulator" })}>
+        <li className={clsx(styles.icon, { [styles.active]: select === "simulator" })}>
           <Menu
             // trigger="hover"
             // size="xs"

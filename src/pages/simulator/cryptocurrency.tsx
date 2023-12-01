@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import cn from "classnames";
+import { clsx } from "clsx";
+import { Drawer } from "vaul";
 import CryptocurrencySearchBox from "../../components/cryptocurrency-search-box";
 import Ranker from "../../components/ranker";
 import DefaultLayout from "../../layouts/default";
@@ -152,59 +153,69 @@ const SimulatorCryptoCurrency: FC = () => {
   }, [cryptoWatchlist, selectedCrypto]);
   return (
     <>
-      <DefaultLayout
-        title="Simulator"
-        sidebar="simulator"
-        description="You can see your portfolios estimated value & progress below"
-      >
-        <div className="flex w-full flex-1 flex-col overflow-auto  rounded-t-lg bg-gray-300 md:flex-row">
-          {/* Left hand panel */}
-          <div
-            // className={cn("w-full overflow-y-auto p-2 sm:w-8/12", {
-            className={cn("flex h-full w-full flex-col overflow-y-auto p-2 md:w-8/12", {
-              "sm:w-full": hide
-              // "sm:w-8/12": !hide
-            })}
-          >
-            <div className="bg-gray-200 p-6 shadow-md">
-              {cryptoWatchlist ? (
-                <CryptocurrencySearchBox
-                  cyptocurrency={selectedCrypto}
-                  setCyptocurrency={token => setSelectedCrypto(token)}
-                />
-              ) : null}
-            </div>
-            {selectedCrypto && coinInfo ? (
-              <div className="h-full flex-1">
-                <CoinInfo coin={coinInfo} />
+      <Drawer.Root>
+        <DefaultLayout
+          title="Simulator"
+          sidebar="simulator"
+          description="You can see your portfolios estimated value & progress below"
+        >
+          <div className="flex w-full flex-1 flex-col overflow-auto  rounded-t-lg bg-gray-300 md:flex-row">
+            {/* Left hand panel */}
+            <div
+              // className={clsx("w-full overflow-y-auto p-2 sm:w-8/12", {
+              className={clsx("flex h-full w-full flex-col overflow-y-auto p-2 md:w-8/12", {
+                "sm:w-full": hide
+                // "sm:w-8/12": !hide
+              })}
+            >
+              <div className="bg-gray-200 p-6 shadow-md">
+                {cryptoWatchlist ? (
+                  <CryptocurrencySearchBox
+                    cyptocurrency={selectedCrypto}
+                    setCyptocurrency={token => setSelectedCrypto(token)}
+                  />
+                ) : null}
               </div>
-            ) : null}
-            {/* <div className="bottom-0 h-20 border-t-2 border-charcoal-900">
+              {selectedCrypto && coinInfo ? (
+                <div className="h-full flex-1">
+                  <CoinInfo coin={coinInfo} />
+                </div>
+              ) : null}
+              {/* <div className="bottom-0 h-20 border-t-2 border-charcoal-900">
               <Ranker items={cryptoWatchlist} />
             </div> */}
-          </div>
-
-          {/* Right hand panel */}
-          <div
-            className={cn(
-              "border-gray-400bg-charcoal-400 m-2 flex items-center justify-center overflow-hidden rounded-lg bg-gray-200 p-2 text-gray-300 md:block md:w-4/12 md:overflow-auto",
-              {
-                // "sm:hidden sm:max-w-0": hide
-                // "sm:hidden sm:max-w-0": hide
-              }
-            )}
-          >
-            {/* Secondary Panel
-            <LoremIpsum /> */}
-            <div className="hidden md:block">
-              <VerticalRanker items={cryptoWatchlist} />
             </div>
-            <span className="text-md mx-auto w-full text-center font-mono text-black md:hidden">
-              click to open
-            </span>
+
+            {/* Right hand panel */}
+            <div
+              className={clsx(
+                "border-gray-400bg-charcoal-400 m-2 flex items-center justify-center overflow-hidden rounded-lg bg-gray-200 p-2 text-gray-300 md:block md:w-4/12 md:overflow-auto",
+                {
+                  // "sm:hidden sm:max-w-0": hide
+                  // "sm:hidden sm:max-w-0": hide
+                }
+              )}
+            >
+              {/* Secondary Panel
+            <LoremIpsum /> */}
+              <div className="hidden md:block">
+                <VerticalRanker items={cryptoWatchlist} />
+              </div>
+              <span className="text-md mx-auto w-full text-center font-mono text-black md:hidden">
+                <Drawer.Trigger>click to open</Drawer.Trigger>
+              </span>
+            </div>
           </div>
-        </div>
-      </DefaultLayout>
+          <Drawer.Portal>
+            <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+            <Drawer.Content className="fixed bottom-0 left-0 right-0 flex max-h-[70%] flex-col rounded-t-[10px] bg-white">
+              <div className="mx-auto flex w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4">
+                <VerticalRanker items={cryptoWatchlist} />
+              </div>
+            </Drawer.Content>
+          </Drawer.Portal>
+        </DefaultLayout>
+      </Drawer.Root>
     </>
   );
 };

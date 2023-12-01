@@ -1,5 +1,5 @@
 import { useState, useRef, FC } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 
 interface SlideToSubmitProps {
   onSubmit: () => void;
@@ -76,7 +76,7 @@ const SlideToSubmit: FC<SlideToSubmitProps> = ({ onSubmit }) => {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          className={cn("mx-2 inline-flex h-6 w-6 rounded-md p-1 text-charcoal-900", {
+          className={clsx("mx-2 inline-flex h-6 w-6 rounded-md p-1 text-charcoal-900", {
             "bg-green-300": allowSubmit,
             "bg-charcoal-300": !allowSubmit
           })}

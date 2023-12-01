@@ -1,5 +1,5 @@
 import { FC } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 import { Transition } from "@mantine/core";
 
 type MaxPortfolioReachedModalProps = {
@@ -12,7 +12,7 @@ const MaxPortfolioReachedModal: FC<MaxPortfolioReachedModalProps> = ({ isShowing
     {styles => (
       <div style={styles}>
         <div
-          className={cn("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
+          className={clsx("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
             hidden: !isShowing,
             "md:hidden": !isShowing
           })}

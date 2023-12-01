@@ -2,7 +2,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { FC } from "react";
 import { Menu, Divider, Text } from "@mantine/core";
 import Link from "next/link";
-import cn from "classnames";
+import { clsx } from "clsx";
 import Image from "next/image";
 import styles from "./index.module.css";
 
@@ -19,15 +19,15 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
   const userImage = loading ? defaultUserImage : session?.user?.image ?? defaultUserImage;
 
   return (
-    <div className={cn(styles.header, "flex")}>
+    <div className={clsx(styles.header, "flex")}>
       <div className={styles.leftHeader}>
-        <div className={cn(styles.leftContentPanel, styles.content)}>
+        <div className={clsx(styles.leftContentPanel, styles.content)}>
           <h3 className="text-2xl font-black">{title}</h3>
           <p className="font-sans text-xs font-thin">{description}</p>
         </div>
       </div>
       <div className={styles.rightHeader}>
-        <div className={cn(styles.content, styles.rightContentPanel)}>
+        <div className={clsx(styles.content, styles.rightContentPanel)}>
           <Menu
             // trigger="hover"
             width={200}

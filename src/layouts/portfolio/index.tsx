@@ -1,5 +1,5 @@
 import { FC, useState, useRef, useEffect } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 import NProgress from "nprogress";
 import { useResizeObserver } from "@mantine/hooks";
 import useModal from "../../hooks/useModal";
@@ -211,7 +211,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
       ) : null}
       <div className="flex h-full w-full flex-1 flex-row space-x-2 overflow-y-auto rounded-t-lg">
         <div
-          className={cn("portfolio-default-primary-panel flex flex-col overflow-y-auto", {
+          className={clsx("portfolio-default-primary-panel flex flex-col overflow-y-auto", {
             "sm:w-full": hideSecondaryPanel,
             "sm:w-8/12": !hideSecondaryPanel
           })}
@@ -246,7 +246,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
           </div>
         </div>
         <div
-          className={cn("portfolio-secondary-panel overflow-auto rounded-lg", {
+          className={clsx("portfolio-secondary-panel overflow-auto rounded-lg", {
             "sm:hidden sm:max-w-0": hideSecondaryPanel
           })}
           ref={ref}
