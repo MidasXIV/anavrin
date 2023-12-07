@@ -1,17 +1,22 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 
+const cancelTokenDict: Record<string, CancelTokenSource> = {};
 let cancelToken;
+
 const getStockInformation = async (ticker: string, limit = true): Promise<any> => {
-  // Check if there are any previous pending requests
-  if (typeof cancelToken !== typeof undefined) {
-    cancelToken.cancel("Operation canceled due to new request.");
+  const url = `/api/dividend/?ticker=${ticker}`;
+
+  // Check if there is a cancel token associated with the URL endpoint
+  if (cancelTokenDict[url]) {
+    cancelTokenDict[url].cancel("Operation canceled due to new request.");
   }
 
-  // Save the cancel token for the current request
+  // Create a new cancel token for the current request
   cancelToken = axios.CancelToken.source();
+  cancelTokenDict[url] = cancelToken;
 
-  return axios(`/api/dividend/?ticker=${ticker}`, {
-    cancelToken: limit ? cancelToken.token : undefined
+  return axios(url, {
+    cancelToken: cancelToken.token
   });
 };
 
