@@ -5,6 +5,7 @@ import SlideToSubmit from "../slide-to-submit";
 import StockSearchCombobox from "../stock-search-combobox";
 import StockInformationTable from "./stock-information-table";
 import getStockInformation from "../../util/getStockInformation";
+import { convertDividendDataToDTO } from "../../lib/portfolio-asset-utils";
 
 type AddStockFormProps = {
   onSubmit: (asset) => void;
@@ -36,8 +37,11 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
 
   const handleFormSubmit = form.onSubmit(values => {
     const asset = { ...values, ...stockInformation };
+
+    const dividendAssetDTO = convertDividendDataToDTO(asset);
+
     console.log(asset);
-    onSubmit(asset);
+    onSubmit(dividendAssetDTO);
   });
 
   const updateStockInformation = async stockTicker => {
@@ -83,9 +87,9 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
           />
         </Input.Wrapper>
 
-        <Input.Wrapper id="cryptocurrency-fiat" required label="Buy Price" className="pb-2">
+        <Input.Wrapper id="stock-fiat" required label="Buy Price" className="pb-2">
           <NumberInput
-            id="cryptocurrency-fiat"
+            id="stock-fiat"
             placeholder="500"
             variant="filled"
             value={form.values.fiat}
