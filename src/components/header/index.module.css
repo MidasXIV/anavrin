@@ -1,6 +1,6 @@
 .header {
   @apply flex flex-row content-center items-center; 
-  @apply border-b border-gray-400;
+  /* @apply border-b border-gray-400; */
   @apply text-gray-300;
   font-size: 1.2em;
   /* @apply bg-gradient-to-b from-charcoal-900 via-charcoal-400 to-charcoal-300; */

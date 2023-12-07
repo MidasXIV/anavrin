@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 
-import cn from "classnames";
+import { clsx } from "clsx";
 import { FC, useEffect, useState } from "react";
 import LoremIpsum from "../components/placeholder/lorem-ipsum";
 
@@ -55,7 +55,7 @@ const Dashboard: FC = () => {
       >
         <div className="flex w-full flex-1 flex-row overflow-auto rounded-t-lg">
           <div
-            className={cn("dashboard-primary-panel overflow-y-auto", {
+            className={clsx("dashboard-primary-panel overflow-y-auto", {
               "sm:w-full": hide,
               "sm:w-8/12": !hide
             })}
@@ -63,13 +63,13 @@ const Dashboard: FC = () => {
             {Content}
           </div>
           <div
-            className={cn("dashboard-secondary-panel overflow-y-auto", {
+            className={clsx("dashboard-secondary-panel overflow-y-auto", {
               "sm:w-1/4": hide
             })}
           >
             {/* Secondary Panel
             <LoremIpsum /> */}
-            <EconomicEventsPanel />
+            {/* <EconomicEventsPanel /> */}
           </div>
         </div>
       </DefaultLayout>

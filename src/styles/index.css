@@ -66,6 +66,10 @@
   /* --font-line: .745; */
 }
 
+.outline {
+  @apply border-2 border-red-300;
+}
+
 .mask-gradient {
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 50%, transparent);
   mask-image: linear-gradient(to bottom, transparent, black 50%, transparent);

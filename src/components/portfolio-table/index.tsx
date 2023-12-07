@@ -66,7 +66,8 @@ const customStyles2 = {
       borderBottomColor: "#FFFFFF",
       borderRadius: "5px",
       // outline: "1px solid #FFFFFF",
-      marginBottom: "5px"
+      marginBottom: "5px",
+      size: "10px"
     },
     highlightOnHoverStyle: {
       backgroundColor: "rgb(230, 244, 244, 0.5)",
