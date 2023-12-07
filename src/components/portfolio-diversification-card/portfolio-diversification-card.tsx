@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { getPortfolioDiversificationChartData } from "../../lib/portfolio-utils";
-import RingChart from "../ring-chart/ring-chart";
+import RingChart from "../charting/ring-chart/ring-chart";
 
 interface IPortfolioDiversificationCardProps {
   portfolios: Portfolio[];

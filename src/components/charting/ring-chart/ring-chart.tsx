@@ -1,5 +1,5 @@
 /* eslint-disable react/require-default-props */
-import { RingProgress, Text, Group, RingProgressProps } from "@mantine/core";
+import { Group } from "@mantine/core";
 import { DonutChart } from "@tremor/react";
 import { FC, useState } from "react";
 
@@ -15,8 +15,6 @@ interface RingChartProps {
   width?: number;
 }
 
-const valueFormatter = number => `$ ${new Intl.NumberFormat("us").format(number).toString()}`;
-
 const RingChart: FC<RingChartProps> = ({
   sections = [],
   width = 200
@@ -31,7 +29,7 @@ const RingChart: FC<RingChartProps> = ({
       className=""
       data={sections}
       category="value"
-      index="value"
+      index="tooltip"
       colors={["rose", "yellow", "orange", "indigo", "blue", "emerald"]}
       // onValueChange={(v) => setValue(v)}
     />

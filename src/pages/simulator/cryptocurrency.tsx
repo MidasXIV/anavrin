@@ -196,8 +196,7 @@ const SimulatorCryptoCurrency: FC = () => {
                 }
               )}
             >
-              {/* Secondary Panel
-            <LoremIpsum /> */}
+              {/* Secondary Panel */}
               <div className="hidden md:block">
                 <VerticalRanker items={cryptoWatchlist} />
               </div>
