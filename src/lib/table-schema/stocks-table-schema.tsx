@@ -1,5 +1,7 @@
 import { Code } from "@mantine/core";
 import { Media, TableColumn } from "react-data-table-component";
+import BarChart from "../../components/charting/bar-chart/bar-chart";
+import { valueFormatter } from "../../util/timeAndDateHelpers";
 
 type DividendDataRow = {
   title: string;
@@ -17,6 +19,32 @@ type DividendDataRow = {
   dividendYield: string;
   yieldOnCost: string;
   income: string;
+  cell?: () => void;
+};
+
+const StockPortfolioMarketValueComponent = (
+  row: DividendDataRow,
+  index: number,
+  column: any,
+  id: any
+): JSX.Element => {
+  const { marketValue, costBasis } = row;
+  const change = Number.parseFloat(marketValue) - Number.parseFloat(costBasis);
+  return (
+    <div className="display: flex w-full space-x-2 px-2 text-xs" data-tag="allowRowEvents">
+      <div className="w-1/2 text-right" data-tag="allowRowEvents">
+        {valueFormatter(marketValue)}
+      </div>
+      <div className="w-1/2 text-left">
+        <span
+          className={`font-bold ${change >= 0 ? "text-green-500" : "text-red-500"}`}
+          data-tag="allowRowEvents"
+        >
+          {change >= 0 ? "+" : "-"} {valueFormatter(Math.abs(change))}
+        </span>
+      </div>
+    </div>
+  );
 };
 
 const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
@@ -24,7 +52,8 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
     name: "Company Name",
     sortable: false,
     width: "150px",
-    selector: row => row.title
+    selector: row => row.title,
+    hide: Media.LG
     // cell: RowComponent,
     // style: { border: "1px solid" }
   },
@@ -34,23 +63,25 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
     center: true,
     compact: true,
     sortable: true,
+    grow: 1,
     width: "70px"
     // style: { border: "1px solid" }
   },
+  // {
+  //   name: "Sector",
+  //   selector: row => row.sector,
+  //   // compact: true,
+  //   width: "120px",
+  //   hide: Media.SM
+  // },
   {
-    name: "Sector",
-    selector: row => row.sector,
-    // compact: true,
-    width: "120px"
-    // style: { border: "1px solid" }
-  },
-  {
-    name: "Shares",
-    selector: row => row.shares,
+    name: "Price",
+    selector: row => row.marketPrice,
     compact: true,
-    width: "70px",
-    center: true,
-    hide: Media.SM
+    grow: 1,
+    // width: "70px",
+    center: true
+    // hide: Media.SM
     // style: { border: "1px solid" }
   },
   {
@@ -63,18 +94,9 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
     // style: { border: "1px solid" }
   },
   {
-    name: "Market Price",
-    selector: row => row.marketPrice,
-    // compact: true,
-    width: "70px",
-    center: true,
-    hide: Media.SM
-    // style: { border: "1px solid" }
-  },
-  {
     name: "Cost Basis",
     selector: row => row.costBasis,
-    width: "70px",
+    width: "100px",
     center: true,
     hide: Media.SM
     // compact: true,
@@ -83,21 +105,32 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
   {
     name: "Market Value",
     selector: row => row.marketValue,
-    // compact: true,
-    width: "70px",
+    compact: true,
+    // width: "170px",
+    grow: 2,
     center: true,
-    hide: Media.SM
+    // hide: Media.SM,
+    cell: StockPortfolioMarketValueComponent
     // style: { border: "1px solid" }
   },
   {
-    name: "Gain / Loss",
-    selector: row => row.netValue,
+    name: "Shares",
+    selector: row => row.shares,
+    grow: 1,
     compact: true,
-    width: "100px",
-    center: true,
-    hide: Media.SM
+    width: "70px",
+    center: true
+    // hide: Media.SM
     // style: { border: "1px solid" }
   },
+  // {
+  //   name: "Gain / Loss",
+  //   selector: row => row.netValue,
+  //   compact: true,
+  //   width: "100px",
+  //   center: true,
+  //   hide: Media.SM
+  // },
   {
     name: "EPS",
     selector: row => row.earningPerShare,
@@ -218,6 +251,31 @@ const DFMDividendPortfolioSchema: TableColumn<DFMDividendDataRow>[] = [
   }
 ];
 
+const StocksDividendExpandableComponent: ({
+  data
+}: {
+  data: DividendInformationDTO;
+}) => JSX.Element = ({ data }) => {
+  if (!data) {
+    return null;
+  }
+  console.log("Open");
+  const chartDataMapper = chartData =>
+    Object.keys(chartData).map(chartDataKey => ({
+      year: chartDataKey,
+      dividend: chartData[chartDataKey]
+    }));
+  return (
+    <BarChart
+      title="Dividend Payout"
+      data={chartDataMapper(data.AnnualDividends)}
+      categories={["dividend"]}
+      index="year"
+      colors={["blue"]}
+    />
+  );
+};
+
 const DFMDividendExpandableComponent: ({
   data
 }: {
@@ -227,7 +285,35 @@ const DFMDividendExpandableComponent: ({
     return null;
   }
 
-  return <Code block>{JSON.stringify(data.AnnualDividends, null, 2)}</Code>;
+  const chartDataMapper = chartData =>
+    Object.keys(chartData).map(chartDataKey => ({
+      year: chartDataKey,
+      dividend: chartData[chartDataKey]
+    }));
+  return (
+    <BarChart
+      title="Dividend Payout"
+      data={chartDataMapper(data.AnnualDividends)}
+      categories={["dividend"]}
+      index="year"
+      colors={["blue"]}
+    />
+  );
 };
 
-export { DividendPortfolioSchema, DFMDividendPortfolioSchema, DFMDividendExpandableComponent };
+const onDividendTableRowDoublceClick = parentComponentProps => {
+  const { toggleEditModal, setAssetToBeEdited } = parentComponentProps;
+
+  return (row, event) => {
+    setAssetToBeEdited(row);
+    toggleEditModal();
+  };
+};
+
+export {
+  StocksDividendExpandableComponent,
+  DividendPortfolioSchema,
+  DFMDividendPortfolioSchema,
+  DFMDividendExpandableComponent,
+  onDividendTableRowDoublceClick
+};

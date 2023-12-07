@@ -77,7 +77,10 @@ function getTimeDifferenceString(date1: Date, date2: Date): string {
   return `${timeDiff} ago.`;
 }
 
+const valueFormatter = number => `$ ${new Intl.NumberFormat("us").format(number).toString()}`;
+
 export {
+  valueFormatter,
   getTimeOffsetFromEST,
   coerceToClientTime,
   buildEventDate,

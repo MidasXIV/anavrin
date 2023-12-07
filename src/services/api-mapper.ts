@@ -60,12 +60,12 @@ export const apiMapper = {
   },
   // user-portfolio-apis
   deleteUserPortfolio: {
-    url: "/api/portfolio/",
+    url: "/api/portfolio",
     method: "delete",
     requestType: "deleteUserPortfolioRequest"
   },
   saveUserPortfolio: {
-    url: "/api/portfolio/",
+    url: "/api/portfolio",
     method: "post",
     requestType: "saveUserPortfolioRequest"
   },
