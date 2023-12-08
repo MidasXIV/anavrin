@@ -172,12 +172,6 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
      * such that it is understood by the tableSchema
      */
     async function hydratePortfolioItemsData() {
-      const portfolioHydrationFnMapper = new Map<
-        AssetType,
-        (portfolio: Portfolio) => Promise<CryptoAssetDTO[]>
-      >();
-      portfolioHydrationFnMapper.set(AssetType.CRYPTO, hydrateCryptoPortfolioItems);
-
       const data = await portfolioHydrationFnMapper.get(portfolioType)(portfolio);
       setPortfolioData(data);
       setPortfolioTableLoading(false);
@@ -192,74 +186,83 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   console.log("layouts/Portfolio -> render");
   return (
     <>
-      {isShowing ? (
-        <AddAssetModal
-          isShowing={isShowing}
-          cancel={toggle}
-          assetType={portfolioType}
-          onSubmit={onAssetAdd}
-        />
-      ) : null}
-      {assetToBeEdited ? (
-        <EditAssetModal
-          isShowing={isEditModalShowing}
-          cancel={toggleEditModal}
-          assetType={portfolioType}
-          onSubmit={onAssetEdit}
-          asset={assetToBeEdited}
-        />
-      ) : null}
-      <div className="flex h-full w-full flex-1 flex-row space-x-2 overflow-y-auto rounded-t-lg">
-        <div
-          className={clsx("portfolio-default-primary-panel flex flex-col overflow-y-auto", {
-            "sm:w-full": hideSecondaryPanel,
-            "sm:w-8/12": !hideSecondaryPanel
-          })}
-          style={{ height: "100%" }}
-        >
-          <div className="flex h-20 flex-row">
-            <PortfolioAnalysisHeader
-              totalInvested={totalInvested}
-              portfolioValue={portfolioValue}
-              percentageChange={percentageChange}
-            />
-            <div className="w-1/3">
-              <PortfolioOptions
-                openAddAssetModal={toggle}
-                savePortfolio={onPortfolioSave}
-                deletePortfolio={onPortfolioDelete}
-                togglePortfolioAnalysisPanel={() => setHideSecondaryPanel(!hideSecondaryPanel)}
+      <Drawer.Root>
+        {isShowing ? (
+          <AddAssetModal
+            isShowing={isShowing}
+            cancel={toggle}
+            assetType={portfolioType}
+            onSubmit={onAssetAdd}
+          />
+        ) : null}
+        {assetToBeEdited ? (
+          <EditAssetModal
+            isShowing={isEditModalShowing}
+            cancel={toggleEditModal}
+            assetType={portfolioType}
+            onSubmit={onAssetEdit}
+            asset={assetToBeEdited}
+          />
+        ) : null}
+        <div className="flex h-full w-full flex-1 flex-row space-x-2 overflow-y-auto rounded-t-lg">
+          <div
+            className={clsx("portfolio-default-primary-panel flex flex-col overflow-y-auto", {
+              "sm:w-full": hideSecondaryPanel,
+              "sm:w-8/12": !hideSecondaryPanel
+            })}
+            style={{ height: "100%" }}
+          >
+            <div className="flex h-20 flex-row">
+              <PortfolioAnalysisHeader
+                totalInvested={totalInvested}
+                portfolioValue={portfolioValue}
+                percentageChange={percentageChange}
+              />
+              <div className="w-1/3">
+                <PortfolioOptions
+                  openAddAssetModal={toggle}
+                  savePortfolio={onPortfolioSave}
+                  deletePortfolio={onPortfolioDelete}
+                  togglePortfolioAnalysisPanel={() => setHideSecondaryPanel(!hideSecondaryPanel)}
+                />
+              </div>
+            </div>
+            {/* Occupy Max remaining space and scroll only table */}
+            <div className="mt-2 flex-1 overflow-y-auto" ref={tableRef} style={{ height }}>
+              <PortfolioTable
+                tableSchema={portfolioTableSchema}
+                data={portfolioData}
+                loading={portfolioTableLoading}
+                expandableComponent={portfolioExpandableComponent}
+                onRowDoubleclick={portfolioRowDoubleClickHandler}
+                showRowDeleteButton
+                onRowDelete={onPortfolioRowDelete}
               />
             </div>
           </div>
-          {/* Occupy Max remaining space and scroll only table */}
-          <div className="mt-2 flex-1 overflow-y-auto" ref={tableRef} style={{ height }}>
-            <PortfolioTable
-              tableSchema={portfolioTableSchema}
-              data={portfolioData}
-              loading={portfolioTableLoading}
-              expandableComponent={portfolioExpandableComponent}
-              onRowDoubleclick={portfolioRowDoubleClickHandler}
-              showRowDeleteButton
-              onRowDelete={onPortfolioRowDelete}
-            />
+          <div
+            className={clsx("portfolio-secondary-panel overflow-auto rounded-lg", {
+              "sm:hidden sm:max-w-0": hideSecondaryPanel
+            })}
+            ref={ref}
+          >
+            {hideSecondaryPanel ? null : (
+              <>
+                <PortfolioLayoutSecondaryPanel
+                  portfolioType={portfolioType}
+                  ringChartData={ringChartData}
+                  dividendIncome={dividendIncome}
+                  portfolioDividendYield={portfolioDividendYield}
+                  portfolioDividendEfficiency={portfolioDividendEfficiency}
+                />
+                {/* <span className="text-md mx-auto w-full text-center font-mono text-black md:hidden">
+                  <Drawer.Trigger>click to open</Drawer.Trigger>
+                </span> */}
+              </>
+            )}
           </div>
         </div>
-        <div
-          className={clsx("portfolio-secondary-panel overflow-auto rounded-lg", {
-            "sm:hidden sm:max-w-0": hideSecondaryPanel
-          })}
-          ref={ref}
-        >
-          {hideSecondaryPanel ? null : (
-            <>
-              <div>Secondary Panel -LINK - {portfolioType}</div>
-              <RingChart sections={ringChartData} width={size.width} />
-              {/* <pre>Rect: {JSON.stringify(rect)}</pre> */}
-            </>
-          )}
-        </div>
-      </div>
+      </Drawer.Root>
     </>
   );
 };

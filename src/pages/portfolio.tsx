@@ -154,7 +154,7 @@ const Portfolio: FC = () => {
           isShowing={showMaxPortfolioWarningModal}
           cancel={toggleShowMaxPortfolioWarningModal}
         />
-        <div className="portfolio-primary-panel flex h-full flex-1 flex-col overflow-y-auto">
+        <div className="portfolio-primary-panel flex h-full flex-1 flex-col overflow-y-auto rounded-lg sm:mb-1">
           {Content}
         </div>
       </DefaultLayout>
