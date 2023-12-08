@@ -33,6 +33,7 @@ const Portfolio: FC = () => {
   const handleAssetTypeSelection = (assetType: AssetType) => {
     toggleShowCreatePortfolioModal();
     portfolios.push({
+      _id: new Date().getTime(),
       assetType,
       items: []
     });
