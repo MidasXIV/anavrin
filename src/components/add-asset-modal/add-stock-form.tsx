@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import SlideToSubmit from "../slide-to-submit";
 import StockSearchCombobox from "../stock-search-combobox";
 import StockInformationTable from "./stock-information-table";
-import getStockInformation from "../../util/getStockInformation";
+import getStockInformation from "../../utils/getStockInformation";
 import { convertDividendDataToDTO } from "../../lib/portfolio-asset-utils";
 
 type AddStockFormProps = {

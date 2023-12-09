@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { formatNumber } from "../../util/helper";
+import { formatNumber } from "../../utils/helper";
 
 type PortfolioAnalysisHeaderProps = {
   totalInvested: number;

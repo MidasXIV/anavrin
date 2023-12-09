@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import Result from "../../lib/result";
-import makeRequest from "../../util/makeRequest";
+import makeRequest from "../../utils/makeRequest";
 
 export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalendarModel {
   private baseURL = "https://finviz.com/calendar.ashx";

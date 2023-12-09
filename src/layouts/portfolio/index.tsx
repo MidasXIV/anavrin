@@ -3,7 +3,8 @@ import { clsx } from "clsx";
 import NProgress from "nprogress";
 import { useResizeObserver } from "@mantine/hooks";
 import { Drawer } from "vaul";
-import { ScrollArea } from "@mantine/core";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Accordion,
   AccordionBody,
@@ -34,7 +35,7 @@ import EditAssetModal from "../../components/edit-asset-modal";
 import PortfolioAnalysisHeader from "../../components/portfolio-analysis-header";
 import RingChart from "../../components/charting/ring-chart/ring-chart";
 import api from "../../services/create-service";
-import { valueFormatter } from "../../util/timeAndDateHelpers";
+import { valueFormatter } from "../../utils/timeAndDateHelpers";
 import InfoIcon from "../../components/icons/InfoIcon";
 import BarChartWrapper from "../../components/charting/bar-chart/bar-chart";
 
@@ -163,7 +164,7 @@ const DividendDistributionBlock = ({ month, distribution }) => (
       ))}
     </List> */}
     <div className="flex flex-col text-xs">
-      <ScrollArea h={75} offsetScrollbars scrollbarSize={4}>
+      <ScrollArea className="h-[75px]">
         {distribution.map((item, index) => (
           <div
             key={`distribution-data-item-${index + 1}`}
@@ -239,7 +240,7 @@ const PortfolioLayoutSecondaryPanel = ({
               <RingChart sections={ringChartData} />
             </div>
             <div className="flex flex-col text-xs">
-              <ScrollArea h={75} offsetScrollbars scrollbarSize={4}>
+              <ScrollArea className="h-[75px]">
                 {ringChartData.map((ringChartDataItem, index) => (
                   <div
                     key={`ring-chart-data-item-${index + 1}`}

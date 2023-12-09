@@ -6,8 +6,8 @@ import { Drawer } from "vaul";
 import CryptocurrencySearchBox from "../../components/cryptocurrency-search-box";
 import Ranker from "../../components/ranker";
 import DefaultLayout from "../../layouts/default";
-import { fetchCoinInfo } from "../../util/cryptocurrencyService";
-import { createUrl } from "../../util/helper";
+import { fetchCoinInfo } from "../../utils/cryptocurrencyService";
+import { createUrl } from "../../utils/helper";
 import VerticalRanker from "../../components/ranker/vertical-ranker";
 
 const CoinInfo = ({ coin }) => (

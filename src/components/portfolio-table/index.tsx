@@ -5,7 +5,7 @@ import {
   dataStoreDefault,
   defaultExpandableComponent
 } from "../../lib/table-schema";
-import { removeObjFromArray } from "../../util/helper";
+import { removeObjFromArray } from "../../utils/helper";
 import DoubleClickButton from "../double-click-button";
 import CrossIconSVG from "../icons/crossIconSVG";
 

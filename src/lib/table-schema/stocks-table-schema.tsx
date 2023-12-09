@@ -1,7 +1,7 @@
 import { Code } from "@mantine/core";
 import { Media, TableColumn } from "react-data-table-component";
 import BarChart from "../../components/charting/bar-chart/bar-chart";
-import { valueFormatter } from "../../util/timeAndDateHelpers";
+import { valueFormatter } from "../../utils/timeAndDateHelpers";
 
 type DividendDataRow = {
   title: string;

@@ -4,7 +4,7 @@ import {
   buildEventDate,
   formatDateString,
   getTimeDifferenceString
-} from "../../util/timeAndDateHelpers";
+} from "../../utils/timeAndDateHelpers";
 import api from "../../services/create-service";
 
 const LoadingListItem = () => (

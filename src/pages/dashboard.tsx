@@ -11,7 +11,7 @@ import api from "../services/create-service";
 import DashboardPortfolioSection from "../components/dashboard-portfolio-section/dashboard-portfolio-section";
 import DashboardPortfolioSectionLoading from "../components/dashboard-portfolio-section/dashboard-portfolio-section-loading";
 import EconomicEventsPanel from "../components/economic-events-panel";
-import { createUrl } from "../util/helper";
+import { createUrl } from "../utils/helper";
 
 const Dashboard: FC = () => {
   const [hide, setHide] = useState(false);

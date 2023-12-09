@@ -1,6 +1,6 @@
-import { fetchCoinInfo } from "../util/cryptocurrencyService";
-import getStockInformation from "../util/getStockInformation";
-import isEmptyDataItem from "../util/type-gaurds";
+import { fetchCoinInfo } from "../utils/cryptocurrencyService";
+import getStockInformation from "../utils/getStockInformation";
+import isEmptyDataItem from "../utils/type-gaurds";
 import { AssetType } from "./portfolio-utils";
 import rateLimit from "./rate-limiting";
 import MockCryptoPortfolio from "../tests/mocks/mock-crypto-portfolio-1";
