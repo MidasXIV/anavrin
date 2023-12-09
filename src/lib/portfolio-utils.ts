@@ -32,7 +32,7 @@ const getPortfolioTableSchema = (portfolioType: AssetType) => {
 };
 
 const getPortfolioExpandableComponent = (portfolioType: AssetType) => {
-  console.log(portfolioType)
+  console.log(portfolioType);
   switch (portfolioType) {
     case AssetType.CRYPTO:
       return CryptocurrencyExpandableComponent;
@@ -184,14 +184,17 @@ function getPortfolioSummary(
         totalInvested += item.fiat;
         portfolioValue += item.holdings * item?.marketPrice;
       });
-      ringChartData = portfolioData.map(item => ({
-        value: ((item.fiat / totalInvested) * 100).toFixed(2),
+      ringChartData = portfolioData
+        .map(item => ({
+          value: item.fiat,
+          composition: ((item.fiat / totalInvested) * 100).toFixed(1),
 
-        color: generateRandomColor(),
+          color: generateRandomColor(),
 
-        // tooltip: `${item.token} (${((item.fiat / totalInvested) * 100).toFixed(2)}%)`
-        tooltip: `${item.token}`
-      }));
+          // tooltip: `${item.token} (${((item.fiat / totalInvested) * 100).toFixed(2)}%)`
+          tooltip: `${item.token}`
+        }))
+        .sort((a, b) => b.value - a.value);
       break;
     case AssetType.STOCK:
       portfolioData.forEach(item => {

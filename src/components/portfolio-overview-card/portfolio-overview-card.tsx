@@ -4,12 +4,19 @@ import { isCryptoPortfolioItem } from "../../lib/portfolio-asset-utils";
 
 interface IPortfolioOverviewCardProps {
   portfolio: Portfolio;
+  onPortfolioSelect: (value) => void;
 }
 
-const PortfolioOverviewCard: FC<IPortfolioOverviewCardProps> = ({ portfolio }) => {
+const PortfolioOverviewCard: FC<IPortfolioOverviewCardProps> = ({
+  portfolio,
+  onPortfolioSelect = value => {}
+}) => {
   const totalInvestment = portfolio.items.reduce((acc, item) => acc + item.fiat, 0);
   return (
-    <div className="block h-full w-full rounded-md border border-gray-200 bg-charcoal-400 p-6 text-sm hover:bg-charcoal-900">
+    <div
+      className="block h-full w-full rounded-md border border-gray-200 bg-charcoal-400 p-6 text-sm hover:bg-charcoal-900"
+      onClick={() => onPortfolioSelect(portfolio._id)}
+    >
       <h5 className="mb-2 font-mono text-xl font-bold tracking-tight text-white">
         Portfolio {portfolio._id}
       </h5>

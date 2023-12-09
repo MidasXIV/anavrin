@@ -6,9 +6,13 @@ import PortfolioOverviewCard from "../portfolio-overview-card/portfolio-overview
 
 interface IDashboardPortfolioSectionProps {
   portfolios: Portfolio[];
+  onPortfolioSelect: (value) => void;
 }
 
-const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({ portfolios }) => {
+const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
+  portfolios,
+  onPortfolioSelect
+}) => {
   const [ref, size] = useResizeObserver();
   const [refSecondColumn, sizeSecondColumn] = useResizeObserver();
   return (
@@ -22,7 +26,11 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({ portfo
               sx={{ height: "inherit" }}
             >
               {portfolios.map(portfolio => (
-                <PortfolioOverviewCard key={portfolio._id} portfolio={portfolio} />
+                <PortfolioOverviewCard
+                  key={portfolio._id}
+                  portfolio={portfolio}
+                  onPortfolioSelect={onPortfolioSelect}
+                />
               ))}
             </Box>
           </ScrollArea>

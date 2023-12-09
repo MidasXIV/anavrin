@@ -2,6 +2,8 @@ import { Button } from "@mantine/core";
 
 import { clsx } from "clsx";
 import { FC, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import LoremIpsum from "../components/placeholder/lorem-ipsum";
 
 import DefaultLayout from "../layouts/default";
@@ -9,11 +11,27 @@ import api from "../services/create-service";
 import DashboardPortfolioSection from "../components/dashboard-portfolio-section/dashboard-portfolio-section";
 import DashboardPortfolioSectionLoading from "../components/dashboard-portfolio-section/dashboard-portfolio-section-loading";
 import EconomicEventsPanel from "../components/economic-events-panel";
+import { createUrl } from "../util/helper";
 
 const Dashboard: FC = () => {
   const [hide, setHide] = useState(false);
   const [portfolios, setPortfolios] = useState<Array<Portfolio>>([]);
   const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const setSelectedPortfolio = selectedCrypto => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (selectedCrypto) {
+      newParams.set("q", selectedCrypto);
+    } else {
+      newParams.delete("q");
+    }
+
+    router.push(createUrl("portfolios", newParams));
+  };
 
   useEffect(() => {
     (async () => {
@@ -37,7 +55,9 @@ const Dashboard: FC = () => {
   if (!isPortfolioFetched) {
     Content = <DashboardPortfolioSectionLoading />;
   } else if (portfolios?.length > 0) {
-    Content = <DashboardPortfolioSection portfolios={portfolios} />;
+    Content = (
+      <DashboardPortfolioSection portfolios={portfolios} onPortfolioSelect={setSelectedPortfolio} />
+    );
   } else {
     Content = (
       <div className="flex h-full flex-col items-center justify-center">
