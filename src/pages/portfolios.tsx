@@ -1,9 +1,10 @@
-import { Box, ScrollArea, Tabs } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import dynamic from "next/dynamic";
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import { useResizeObserver } from "@mantine/hooks";
+import AddNewAssetPortfolioCard from "@/components/portfolio-widgets/add-new-asset-portfolio-card";
 import AddNewPortfolioModal from "../components/add-new-portfolio-modal";
 import LoadingForm from "../components/exchanges-form/loading";
 import PlusIconSVG from "../components/icons/plusIconSVG";
@@ -12,10 +13,10 @@ import useModal from "../hooks/useModal";
 import DefaultLayout from "../layouts/default";
 import { AssetType } from "../lib/portfolio-utils";
 import api from "../services/create-service";
-import { createUrl } from "../util/helper";
+import { createUrl } from "../utils/helper";
 import mockFetchUserPortfolioData from "../tests/mocks/mock-fetchUserPortfolio-1";
 import PortfolioOverviewCard from "../components/portfolio-overview-card/portfolio-overview-card";
-import isEmptyDataItem from "../util/type-gaurds";
+import isEmptyDataItem from "../utils/type-gaurds";
 
 const ADD_PORTFOLIO_TAB_VALUE = "add-portfolio";
 // const generateTabsValueForPortfolioItem = portfolio => `Portfolio::${portfolio._id}`;
@@ -25,6 +26,32 @@ const LazyLoadPortfolio = dynamic(() => import("../layouts/portfolio"), {
   loading: LoadingForm,
   ssr: false
 });
+
+const PortfolioSection = ({
+  title,
+  assetType,
+  portfolios,
+  setSelectedPortfolio,
+  handleAssetTypeSelection
+}) => (
+  <article className="mb-6">
+    <h1 className="mb-4 text-3xl font-semibold">{title}</h1>
+    <div className="outline-test grid grid-cols-1 gap-4 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {portfolios
+        .filter(portfolio => portfolio.assetType === assetType)
+        .map(portfolio => (
+          <PortfolioOverviewCard
+            key={portfolio._id}
+            portfolio={portfolio}
+            onPortfolioSelect={setSelectedPortfolio}
+          />
+        ))}
+      <AddNewAssetPortfolioCard
+        handleAssetTypeSelection={() => handleAssetTypeSelection(assetType)}
+      />
+    </div>
+  </article>
+);
 
 const Portfolio: FC = () => {
   const router = useRouter();
@@ -55,7 +82,7 @@ const Portfolio: FC = () => {
   const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
 
   const handleAssetTypeSelection = (assetType: AssetType) => {
-    toggleShowCreatePortfolioModal();
+    // toggleShowCreatePortfolioModal();
     portfolios.push({
       _id: new Date().getTime(),
       assetType,
@@ -148,11 +175,7 @@ const Portfolio: FC = () => {
         </Tabs.List>
 
         {portfolios.map(portfolio => (
-          <Tabs.Panel
-            key={portfolio._id}
-            value={generateTabsValueForPortfolioItem(portfolio)}
-            // classNames={{ root: "flex" }}
-          >
+          <Tabs.Panel key={portfolio._id} value={generateTabsValueForPortfolioItem(portfolio)}>
             {selectedPortfolio === generateTabsValueForPortfolioItem(portfolio) ? (
               <LazyLoadPortfolio portfolio={portfolio} />
             ) : null}
@@ -162,72 +185,29 @@ const Portfolio: FC = () => {
     );
   } else {
     Content = (
-      <>
-        <section className="h-full overflow-auto p-2">
-          <h1>Crypto</h1>
-          <div className="col-span-3 max-w-full outline" ref={ref}>
-            <ScrollArea w={size} className="h-full">
-              <Box
-                className="grid h-full auto-cols-[333px] grid-flow-col gap-3 py-2"
-                w={size}
-                sx={{ height: "inherit" }}
-              >
-                {portfolios
-                  .filter(portfolio => portfolio.assetType === AssetType.CRYPTO)
-                  .map(portfolio => (
-                    <PortfolioOverviewCard
-                      key={portfolio._id}
-                      portfolio={portfolio}
-                      onPortfolioSelect={setSelectedPortfolio}
-                    />
-                  ))}
-              </Box>
-            </ScrollArea>
-          </div>
-
-          <h1>Stock</h1>
-          <div className="col-span-3 max-w-full outline" ref={ref}>
-            <ScrollArea w={size} className="h-full">
-              <Box
-                className="grid h-full auto-cols-[333px] grid-flow-col gap-3 py-2"
-                w={size}
-                sx={{ height: "inherit" }}
-              >
-                {portfolios
-                  .filter(portfolio => portfolio.assetType === AssetType.STOCK)
-                  .map(portfolio => (
-                    <PortfolioOverviewCard
-                      key={portfolio._id}
-                      portfolio={portfolio}
-                      onPortfolioSelect={setSelectedPortfolio}
-                    />
-                  ))}
-              </Box>
-            </ScrollArea>
-          </div>
-
-          <h1>Dubai Financial market</h1>
-          <div className="col-span-3 max-w-full outline" ref={ref}>
-            <ScrollArea w={size} className="h-full">
-              <Box
-                className="grid h-full auto-cols-[333px] grid-flow-col gap-3 py-2"
-                w={size}
-                sx={{ height: "inherit" }}
-              >
-                {portfolios
-                  .filter(portfolio => portfolio.assetType === AssetType.DFM)
-                  .map(portfolio => (
-                    <PortfolioOverviewCard
-                      key={portfolio._id}
-                      portfolio={portfolio}
-                      onPortfolioSelect={setSelectedPortfolio}
-                    />
-                  ))}
-              </Box>
-            </ScrollArea>
-          </div>
-        </section>
-      </>
+      <section className="h-full overflow-auto p-2">
+        <PortfolioSection
+          title="Crypto"
+          assetType={AssetType.CRYPTO}
+          portfolios={portfolios}
+          setSelectedPortfolio={setSelectedPortfolio}
+          handleAssetTypeSelection={handleAssetTypeSelection}
+        />
+        <PortfolioSection
+          title="Stock"
+          assetType={AssetType.STOCK}
+          portfolios={portfolios}
+          setSelectedPortfolio={setSelectedPortfolio}
+          handleAssetTypeSelection={handleAssetTypeSelection}
+        />
+        <PortfolioSection
+          title="Dubai Financial market"
+          assetType={AssetType.DFM}
+          portfolios={portfolios}
+          setSelectedPortfolio={setSelectedPortfolio}
+          handleAssetTypeSelection={handleAssetTypeSelection}
+        />
+      </section>
     );
   }
 

@@ -4,15 +4,8 @@ import NProgress from "nprogress";
 import { useResizeObserver } from "@mantine/hooks";
 import { Drawer } from "vaul";
 
+import { Accordion, AccordionBody, AccordionHeader, AccordionList } from "@tremor/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionList,
-  List,
-  ListItem
-} from "@tremor/react";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";

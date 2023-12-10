@@ -1,6 +1,8 @@
-import { ScrollArea, Divider } from "@mantine/core";
 import { FC } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { isCryptoPortfolioItem } from "../../lib/portfolio-asset-utils";
+import { valueFormatter } from "../../utils/timeAndDateHelpers";
 
 interface IPortfolioOverviewCardProps {
   portfolio: Portfolio;
@@ -14,30 +16,36 @@ const PortfolioOverviewCard: FC<IPortfolioOverviewCardProps> = ({
   const totalInvestment = portfolio.items.reduce((acc, item) => acc + item.fiat, 0);
   return (
     <div
-      className="block h-full w-full rounded-md border border-gray-200 bg-charcoal-400 p-6 text-sm hover:bg-charcoal-900"
+      role="button"
+      className="block h-full w-full overflow-hidden rounded-xl bg-charcoal-400 text-sm outline hover:cursor-pointer hover:bg-charcoal-900"
       onClick={() => onPortfolioSelect(portfolio._id)}
     >
-      <h5 className="mb-2 font-mono text-xl font-bold tracking-tight text-white">
-        Portfolio {portfolio._id}
-      </h5>
-      <p className="my-2 text-gray-400">Asset Type: {portfolio.assetType}</p>
-      <ScrollArea h={200} offsetScrollbars scrollbarSize={4}>
-        {portfolio.items.map((item, index) => (
-          <div key={`portfolio-item-${index + 1}`} className="mb-4">
-            <p className="font-medium text-white">
-              {isCryptoPortfolioItem(item) ? item.token : item.ticker}
-            </p>
-            <p className="text-gray-400">
-              Holdings: {isCryptoPortfolioItem(item) ? item.holdings : item.shares}{" "}
-              {isCryptoPortfolioItem(item) ? item.token : item.ticker}
-            </p>
-            <p className="text-gray-400">Fiat Value: {item.fiat} USD</p>
-          </div>
-        ))}
-      </ScrollArea>
+      <div className="rounded-xl bg-gray-300">
+        <h5 className="rounded-xl bg-gray-100 p-4 py-6 font-mono text-xl font-bold tracking-tight text-gray-800 shadow-md">
+          Portfolio {portfolio._id}
+          <p className="mt-2 text-sm text-gray-700">
+            Total investment: {valueFormatter(totalInvestment)}
+          </p>
+        </h5>
+        <p className="px-4 py-6 pt-6 text-gray-800">Asset Type: {portfolio.assetType}</p>
+      </div>
 
-      <Divider my="sm" />
-      <p className="my-2 text-gray-400">Total investment: {totalInvestment}</p>
+      <section className="px-4 py-2">
+        <ScrollArea className="h-[200px]">
+          {portfolio.items.map((item, index) => (
+            <div key={`portfolio-item-${index + 1}`} className="mb-4">
+              <p className="font-medium text-white">
+                {isCryptoPortfolioItem(item) ? item.token : item.ticker}
+              </p>
+              <p className="text-gray-400">
+                Holdings: {isCryptoPortfolioItem(item) ? item.holdings : item.shares}{" "}
+                {isCryptoPortfolioItem(item) ? item.token : item.ticker}
+              </p>
+              <p className="text-gray-400">Fiat Value: {item.fiat} USD</p>
+            </div>
+          ))}
+        </ScrollArea>
+      </section>
     </div>
   );
 };
