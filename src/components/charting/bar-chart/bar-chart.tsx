@@ -24,7 +24,7 @@ const BarChartWrapper: FC<BarChartProps> = ({
   <>
     {/* <Title>{title}</Title> */}
     <BarChart
-      className="h-full"
+      className="h-full w-full"
       data={data}
       index={index}
       categories={categories}
