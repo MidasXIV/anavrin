@@ -1,5 +1,7 @@
 import { FC } from "react";
-import { Tooltip } from "@mantine/core";
+// import { Tooltip } from "@mantine/core";
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type TooltipWrapperProps = {
   label: string;
@@ -9,14 +11,16 @@ type TooltipWrapperProps = {
 };
 
 const TooltipWrapper: FC<TooltipWrapperProps> = ({ label, color, children }) => (
-  <Tooltip
-    label={label}
-    color={color}
-    transitionProps={{ transition: "fade", duration: 300, timingFunction: "ease" }}
-    withArrow
-  >
-    {children}
-  </Tooltip>
+  <TooltipProvider>
+    <Tooltip
+    // color={color}
+    // transitionProps={{ transition: "fade", duration: 300, timingFunction: "ease" }}
+    // withArrow
+    >
+      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
 );
 
 export default TooltipWrapper;
