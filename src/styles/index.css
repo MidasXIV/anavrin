@@ -100,13 +100,14 @@
 }
 
 .portfolio-default-primary-panel {
-  @apply w-full sm:w-8/12 bg-gray-300;
+  @apply w-full md:w-8/12 bg-gray-300;
   transition: width 0.5s ease;
 }
 
 .portfolio-secondary-panel {
-  @apply sm:w-4/12 bg-gray-200 p-2; 
-  @apply hidden sm:block border-gray-400;
+  @apply  bg-gray-200 p-2; 
+  /* @apply hidden sm:block border-gray-400; */
+  @apply border-gray-400;
   @apply bg-charcoal-400 text-gray-300;
   transition: width 0.5s ease;
 }

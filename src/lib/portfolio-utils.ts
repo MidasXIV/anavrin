@@ -265,11 +265,13 @@ const getPortfolioDiversificationChartData = memoize((portfolios: Portfolio[]) =
   // Generate ring chart data based on portfolio information
   const ringChartData = portfolios.map(portfolio => {
     const portfolioTotalInvestment = portfolio.items.reduce((sum, item) => sum + item.fiat, 0);
-    const value = (portfolioTotalInvestment / totalInvestment) * 100;
-    const tooltip = `${portfolio._id} (${value.toFixed(2)}%)`;
+    const value = portfolioTotalInvestment;
+    const diversificationPercentage = (portfolioTotalInvestment / totalInvestment) * 100;
+    const tooltip = `${portfolio._id}`;
 
     return {
       value,
+      diversificationPercentage,
       color: generateRandomColor(),
       tooltip
     };

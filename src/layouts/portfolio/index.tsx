@@ -122,7 +122,7 @@ const mockDividendDistributionData = {
 };
 
 const DividendDistributionBlock = ({ month, distribution }) => (
-  <div className="space-y-2 rounded-md bg-gray-100 p-2 text-xs">
+  <div className="space-y-2 rounded-md bg-gray-200 p-2 text-xs">
     <span>{month}</span>
     {/* <List>
       {distribution.map(item => (
@@ -166,15 +166,24 @@ const PortfolioLayoutSecondaryPanel = ({
   const ad = 3 + 5;
   return (
     <>
-      {/* <div>Secondary Panel -LINK - {portfolioType}</div> */}
-      <section className="flex h-full max-h-72 w-full flex-row border-2 border-red-300">
-        <div className="h-full w-full border-2 border-red-300 p-1">
+      <section className="flex h-full max-h-72 w-full flex-row">
+        <div className="h-full w-full p-1">
           <Card showHeader header="Dividend analysis">
             <div className="flex h-full w-full flex-col">
-              <div className="h-full w-full p-1 px-2">
+              <div className="flex h-full w-full flex-col justify-between p-1 px-2">
                 <span className="font-sans text-3xl font-bold text-gray-900">
                   {valueFormatter(dividendIncome)}
                 </span>
+                <div className="inline-flex justify-between py-1 text-xs font-semibold text-gray-800">
+                  <span>
+                    Annual
+                    <br />
+                    dividends
+                  </span>
+                  <button type="button" className="hover:bg-gray-200">
+                    <InfoIcon />
+                  </button>
+                </div>
               </div>
               <div className="flex h-full w-full flex-row">
                 <div className="border-1 border-success flex h-full w-full flex-col justify-between border-r-2 border-t-2 p-1 px-2">
@@ -203,10 +212,15 @@ const PortfolioLayoutSecondaryPanel = ({
             </div>
           </Card>
         </div>
-        <div className="h-full w-full border-2 border-red-300 p-1">
+        <div className="h-full w-full p-1">
           <Card showHeader header="Portfolio breakdown">
             <div className="px-10">
-              <RingChart sections={ringChartData} />
+              <RingChart
+                sections={ringChartData}
+                valueFormatterOverride={valueFormatter}
+                category="value"
+                index="tooltip"
+              />
             </div>
             <div className="flex flex-col text-xs">
               <ScrollArea className="h-[75px]">
@@ -334,8 +348,6 @@ const PortfolioLayoutSecondaryPanel = ({
 };
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
-  const [ref, size] = useResizeObserver();
-
   // Extract the portfolioType and items.
   const { assetType: portfolioType } = portfolio;
   const [portfolioDomainObject, setPortfolioDomainObject] = useState<Portfolio>({
@@ -519,11 +531,11 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
             asset={assetToBeEdited}
           />
         ) : null}
-        <div className="flex h-full w-full flex-1 flex-row space-x-2 overflow-y-auto rounded-t-lg">
+        <div className="flex h-full w-full flex-1 flex-col rounded-t-lg md:flex-row md:space-x-2">
           <div
             className={clsx("portfolio-default-primary-panel flex flex-col overflow-y-auto", {
-              "sm:w-full": hideSecondaryPanel,
-              "sm:w-8/12": !hideSecondaryPanel
+              "md:w-full": hideSecondaryPanel,
+              "md:w-8/12": !hideSecondaryPanel
             })}
             style={{ height: "100%" }}
           >
@@ -543,7 +555,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
               </div>
             </div>
             {/* Occupy Max remaining space and scroll only table */}
-            <div className="mt-2 flex-1 overflow-y-auto" ref={tableRef} style={{ height }}>
+            <section className="mt-2 flex-1 overflow-y-auto">
               <PortfolioTable
                 tableSchema={portfolioTableSchema}
                 data={portfolioData}
@@ -553,16 +565,20 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
                 showRowDeleteButton
                 onRowDelete={onPortfolioRowDelete}
               />
-            </div>
+            </section>
           </div>
           <div
-            className={clsx("portfolio-secondary-panel overflow-auto rounded-lg", {
-              "sm:hidden sm:max-w-0": hideSecondaryPanel
+            className={clsx("portfolio-secondary-panel max-h-full overflow-hidden rounded-lg", {
+              hidden: hideSecondaryPanel
             })}
-            ref={ref}
           >
             {hideSecondaryPanel ? null : (
-              <>
+              <div
+                className={clsx("h-full w-full", {
+                  hidden: hideSecondaryPanel,
+                  "hidden w-full md:block": !hideSecondaryPanel
+                })}
+              >
                 <PortfolioLayoutSecondaryPanel
                   portfolioType={portfolioType}
                   ringChartData={ringChartData}
@@ -570,12 +586,32 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
                   portfolioDividendYield={portfolioDividendYield}
                   portfolioDividendEfficiency={portfolioDividendEfficiency}
                 />
-                {/* <span className="text-md mx-auto w-full text-center font-mono text-black md:hidden">
-                  <Drawer.Trigger>click to open</Drawer.Trigger>
-                </span> */}
-              </>
+              </div>
             )}
+            {/* <span className="text-md mx-auto w-full text-center font-mono text-gray-400 md:hidden"> */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-full w-full hover:bg-transparent hover:text-white"
+            >
+              <Drawer.Trigger>Analyse Portfolio</Drawer.Trigger>
+            </Button>
+            {/* </span> */}
           </div>
+          <Drawer.Portal>
+            <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+            <Drawer.Content className="fixed bottom-0 left-0 right-0 flex max-h-[70%] flex-col rounded-t-[10px] bg-charcoal-400">
+              <div className="mx-auto flex h-full w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4">
+                <PortfolioLayoutSecondaryPanel
+                  portfolioType={portfolioType}
+                  ringChartData={ringChartData}
+                  dividendIncome={dividendIncome}
+                  portfolioDividendYield={portfolioDividendYield}
+                  portfolioDividendEfficiency={portfolioDividendEfficiency}
+                />
+              </div>
+            </Drawer.Content>
+          </Drawer.Portal>
         </div>
       </Drawer.Root>
     </>

@@ -88,10 +88,10 @@ function convertDividendDataToDTO(data: any): DividendAssetDTO {
   // Calculate other properties based on the data
   const marketValue = (marketPrice * shares).toFixed(2);
   const netValue = "";
-  // const yieldOnCost = ((dividendAmount / costBasis) * 100).toFixed(2);
-  const yieldOnCost = "";
   const income = (dividendAmount * shares).toFixed(2);
-  const avgPrice = (shares / costBasis).toFixed(2);
+  // YOC=( Annual Dividend Amount / Cost Basis )×100
+  const yieldOnCost = ((Number.parseFloat(income) / costBasis) * 100).toFixed(2);
+  const avgPrice = (costBasis / shares).toFixed(2);
 
   return {
     title,

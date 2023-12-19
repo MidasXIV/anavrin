@@ -1,5 +1,5 @@
-import { Code } from "@mantine/core";
 import { Media, TableColumn } from "react-data-table-component";
+import Card from "@/components/portfolio-widgets/Card/card";
 import BarChart from "../../components/charting/bar-chart/bar-chart";
 import { valueFormatter } from "../../utils/timeAndDateHelpers";
 
@@ -53,7 +53,7 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
     sortable: false,
     width: "150px",
     selector: row => row.title,
-    hide: Media.LG
+    hide: Media.MD
     // cell: RowComponent,
     // style: { border: "1px solid" }
   },
@@ -78,7 +78,7 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
     name: "Price",
     selector: row => row.marketPrice,
     compact: true,
-    grow: 1,
+    grow: 0,
     // width: "70px",
     center: true
     // hide: Media.SM
@@ -107,7 +107,7 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
     selector: row => row.marketValue,
     compact: true,
     // width: "170px",
-    grow: 2,
+    // grow: 1,
     center: true,
     // hide: Media.SM,
     cell: StockPortfolioMarketValueComponent
@@ -151,35 +151,43 @@ const DividendPortfolioSchema: TableColumn<DividendDataRow>[] = [
   },
   {
     name: "Annual Dividend",
+    sortable: true,
     selector: row => row.dividendAmount,
     // compact: true,
     width: "70px",
     center: true,
+    grow: 1,
     hide: Media.SM
     // style: { border: "1px solid" }
   },
   {
     name: "Dividend Yield",
+    sortable: true,
     selector: row => row.dividendYield,
     // compact: true,
     width: "70px",
     center: true,
+    grow: 1,
     hide: Media.SM
     // style: { border: "1px solid" }
   },
   {
     name: "Yield on Cost",
+    sortable: true,
     selector: row => row.yieldOnCost,
     // compact: true,
     width: "70px",
     center: true,
+    grow: 1,
     hide: Media.SM
     // style: { border: "1px solid" }
   },
   {
     name: "Annual Income",
+    sortable: true,
     selector: row => row.income,
     // compact: true,
+    grow: 1,
     width: "70px",
     center: true,
     hide: Media.SM
@@ -259,20 +267,28 @@ const StocksDividendExpandableComponent: ({
   if (!data) {
     return null;
   }
-  console.log("Open");
   const chartDataMapper = chartData =>
     Object.keys(chartData).map(chartDataKey => ({
       year: chartDataKey,
       dividend: chartData[chartDataKey]
     }));
+  const barChartData = chartDataMapper(data.AnnualDividends);
   return (
-    <BarChart
-      title="Dividend Payout"
-      data={chartDataMapper(data.AnnualDividends)}
-      categories={["dividend"]}
-      index="year"
-      colors={["blue"]}
-    />
+    <section className="h-40 w-full">
+      <div className="h-full  w-1/2 sm:w-1/4">
+        <Card showHeader header="Dividend growth">
+          <div className="h-full">
+            <BarChart
+              title="Dividend Payout"
+              data={barChartData}
+              categories={["dividend"]}
+              index="year"
+              colors={["blue"]}
+            />
+          </div>
+        </Card>
+      </div>
+    </section>
   );
 };
 

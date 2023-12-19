@@ -125,31 +125,33 @@ const PortfolioTable: FC<PortfolioTableProps<any>> = ({
     onRowDelete(removeObjFromArray(data, row, "token"));
   };
   return (
-    <DataTable
-      title="Portfolio"
-      columns={
-        showRowDeleteButton
-          ? [...columns, DeleteRowTableEntry(handleRowDelete(dataStore))]
-          : columns
-      }
-      data={dataStore}
-      expandableRows
-      expandableRowsComponent={expandableComponent}
-      expandOnRowClicked
-      expandableRowsHideExpander
-      // overflowY
-      persistTableHead
-      responsive
-      fixedHeader
-      fixedHeaderScrollHeight="100%"
-      noHeader
-      progressPending={loading}
-      theme="solarized"
-      customStyles={customStyles2}
-      highlightOnHover
-      pointerOnHover
-      onRowDoubleClicked={onRowDoubleclick}
-    />
+    <div className="w-full">
+      <DataTable
+        title="Portfolio"
+        columns={
+          showRowDeleteButton
+            ? [...columns, DeleteRowTableEntry(handleRowDelete(dataStore))]
+            : columns
+        }
+        data={dataStore}
+        expandableRows
+        expandableRowsComponent={expandableComponent}
+        expandOnRowClicked
+        expandableRowsHideExpander
+        // overflowY
+        persistTableHead
+        responsive
+        fixedHeader
+        fixedHeaderScrollHeight="100%"
+        noHeader
+        progressPending={loading}
+        theme="solarized"
+        customStyles={customStyles2}
+        highlightOnHover
+        pointerOnHover
+        onRowDoubleClicked={onRowDoubleclick}
+      />
+    </div>
   );
 };
 export default PortfolioTable;

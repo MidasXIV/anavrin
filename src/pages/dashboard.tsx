@@ -1,10 +1,7 @@
-import { Button } from "@mantine/core";
-
 import { clsx } from "clsx";
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import LoremIpsum from "../components/placeholder/lorem-ipsum";
 
 import DefaultLayout from "../layouts/default";
 import api from "../services/create-service";
