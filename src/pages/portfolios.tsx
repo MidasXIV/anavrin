@@ -1,10 +1,10 @@
-import { Tabs } from "@mantine/core";
 import dynamic from "next/dynamic";
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import { useResizeObserver } from "@mantine/hooks";
 import AddNewAssetPortfolioCard from "@/components/portfolio-widgets/add-new-asset-portfolio-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AddNewPortfolioModal from "../components/add-new-portfolio-modal";
 import LoadingForm from "../components/exchanges-form/loading";
 import PlusIconSVG from "../components/icons/plusIconSVG";
@@ -36,7 +36,7 @@ const PortfolioSection = ({
 }) => (
   <article className="mb-6">
     <h1 className="mb-4 text-3xl font-semibold">{title}</h1>
-    <div className="outline-test grid grid-cols-1 gap-4 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {portfolios
         .filter(portfolio => portfolio.assetType === assetType)
         .map(portfolio => (
@@ -70,7 +70,6 @@ const Portfolio: FC = () => {
   };
 
   const selectedPortfolio = searchParams.get("q") || undefined;
-  // const [activeTab, setActiveTab] = useState(selectedPortfolio);
 
   const { isShowing: showCreatePortfolioModal, toggle: toggleShowCreatePortfolioModal } =
     useModal(false);
@@ -164,22 +163,32 @@ const Portfolio: FC = () => {
     );
   } else if (!isEmptyDataItem(selectedPortfolio)) {
     Content = (
-      <Tabs defaultValue={selectedPortfolio} onTabChange={handleTabChange}>
-        <Tabs.List>
+      <Tabs
+        defaultValue={selectedPortfolio}
+        onValueChange={handleTabChange}
+        className="flex h-full flex-col"
+      >
+        <TabsList className="w-fit">
           {portfolios.map((portfolio, key) => (
-            <Tabs.Tab key={portfolio._id} value={generateTabsValueForPortfolioItem(portfolio)}>
+            <TabsTrigger key={portfolio._id} value={generateTabsValueForPortfolioItem(portfolio)}>
               {`Portfolio ${key}`}
-            </Tabs.Tab>
+            </TabsTrigger>
           ))}
-          <Tabs.Tab value={ADD_PORTFOLIO_TAB_VALUE} icon={<PlusIconSVG width={15} height={15} />} />
-        </Tabs.List>
+          <TabsTrigger value={ADD_PORTFOLIO_TAB_VALUE}>
+            <PlusIconSVG width={15} height={15} />
+          </TabsTrigger>
+        </TabsList>
 
         {portfolios.map(portfolio => (
-          <Tabs.Panel key={portfolio._id} value={generateTabsValueForPortfolioItem(portfolio)}>
+          <TabsContent
+            key={portfolio._id}
+            value={generateTabsValueForPortfolioItem(portfolio)}
+            className="flex-1"
+          >
             {selectedPortfolio === generateTabsValueForPortfolioItem(portfolio) ? (
               <LazyLoadPortfolio portfolio={portfolio} />
             ) : null}
-          </Tabs.Panel>
+          </TabsContent>
         ))}
       </Tabs>
     );
