@@ -1,11 +1,13 @@
 import { FC, useState, useRef, useEffect } from "react";
 import { clsx } from "clsx";
 import NProgress from "nprogress";
-import { useResizeObserver } from "@mantine/hooks";
 import { Drawer } from "vaul";
 
-import { Accordion, AccordionBody, AccordionHeader, AccordionList } from "@tremor/react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Card from "@/components/portfolio-widgets/Card/card";
+import { Button } from "@/components/ui/button";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
@@ -233,32 +235,36 @@ const PortfolioLayoutSecondaryPanel = ({
           </Card>
         </div>
       </section>
-      <section className="flex w-full flex-row border-2 border-red-300">
-        <div className="h-full w-full border-2 border-red-300 p-1">
+      <section className="flex w-full flex-row">
+        <div className="h-full w-full p-1">
           <Card
             showHeader
             showFooter
             customFooter
             header="Dividend distribution"
             footer={
-              <AccordionList className=" bg-gray-100 bg-transparent text-xs">
-                <Accordion>
-                  <AccordionHeader>view more</AccordionHeader>
-                  <AccordionBody className="text-xs">
-                    <section className="space-y-4">
-                      <div className="grid grid-cols-3 gap-2">
-                        {Object.keys(mockDividendDistributionData).map(key => (
-                          <DividendDistributionBlock
-                            key={key}
-                            month={key}
-                            distribution={mockDividendDistributionData[key]}
-                          />
-                        ))}
-                      </div>
-                    </section>
-                  </AccordionBody>
-                </Accordion>
-              </AccordionList>
+              <Collapsible className="rounded-xl bg-transparent text-xs">
+                <CollapsibleTrigger className="flex w-full items-center justify-between space-x-4 rounded-b-xl px-4 hover:bg-gray-200">
+                  <h4 className="text-sm font-semibold">view more</h4>
+                  <Button variant="ghost" size="sm">
+                    <CaretSortIcon className="h-4 w-4" />
+                    <span className="sr-only">Toggle</span>
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="rounded-xl text-xs">
+                  <section className="space-y-4">
+                    <div className="grid grid-cols-3 gap-2 p-2">
+                      {Object.keys(mockDividendDistributionData).map(key => (
+                        <DividendDistributionBlock
+                          key={key}
+                          month={key}
+                          distribution={mockDividendDistributionData[key]}
+                        />
+                      ))}
+                    </div>
+                  </section>
+                </CollapsibleContent>
+              </Collapsible>
             }
           >
             {/* bar chartt */}
