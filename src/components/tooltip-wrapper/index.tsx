@@ -1,6 +1,4 @@
 import { FC } from "react";
-// import { Tooltip } from "@mantine/core";
-
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type TooltipWrapperProps = {
@@ -10,7 +8,7 @@ type TooltipWrapperProps = {
   children?: unknown;
 };
 
-const TooltipWrapper: FC<TooltipWrapperProps> = ({ label, color, children }) => (
+const TooltipWrapper: FC<TooltipWrapperProps> = ({ label, color = undefined, children }) => (
   <TooltipProvider>
     <Tooltip
     // color={color}
