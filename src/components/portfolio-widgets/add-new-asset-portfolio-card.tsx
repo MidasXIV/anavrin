@@ -3,7 +3,7 @@ import { CardStackPlusIcon } from "@radix-ui/react-icons";
 const AddNewAssetPortfolioCard = ({ handleAssetTypeSelection }): JSX.Element => (
   <button
     type="button"
-    className="block h-full w-full rounded-xl bg-charcoal-400 outline hover:cursor-pointer hover:bg-charcoal-300 "
+    className="block h-80 w-80 rounded-xl bg-charcoal-400 outline hover:cursor-pointer hover:bg-charcoal-300"
     onClick={handleAssetTypeSelection}
   >
     <div className="h-full w-full rounded-xl ">

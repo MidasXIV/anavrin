@@ -1,13 +1,10 @@
-import { FC, useState, useRef, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { clsx } from "clsx";
 import NProgress from "nprogress";
 import { Drawer } from "vaul";
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Card from "@/components/portfolio-widgets/Card/card";
 import { Button } from "@/components/ui/button";
-import { CaretSortIcon } from "@radix-ui/react-icons";
+import PortfolioLayoutSecondaryPanel from "@/components/portfolio-secondary-panel/portfolio-secondary-panel";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
@@ -28,11 +25,7 @@ import {
 } from "../../lib/portfolio-asset-utils";
 import EditAssetModal from "../../components/edit-asset-modal";
 import PortfolioAnalysisHeader from "../../components/portfolio-analysis-header";
-import RingChart from "../../components/charting/ring-chart/ring-chart";
 import api from "../../services/create-service";
-import { valueFormatter } from "../../utils/timeAndDateHelpers";
-import InfoIcon from "../../components/icons/InfoIcon";
-import BarChartWrapper from "../../components/charting/bar-chart/bar-chart";
 
 type PortfolioLayoutProps = {
   portfolio: Portfolio;
@@ -53,299 +46,6 @@ portfolioSaveFnMapper.set(AssetType.CRYPTO, data =>
 portfolioSaveFnMapper.set(AssetType.STOCK, data =>
   data.map(item => convertDividendPortfolioItemToPersistence(item))
 );
-
-const mockDividendDistributionData = {
-  January: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    },
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    }
-  ],
-  February: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  March: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  April: [],
-  May: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  June: [],
-  July: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  August: [],
-  September: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  October: [],
-  November: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    },
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    },
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    }
-  ],
-  December: [
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    }
-  ]
-};
-
-const DividendDistributionBlock = ({ month, distribution }) => (
-  <div className="space-y-2 rounded-md bg-gray-200 p-2 text-xs">
-    <span>{month}</span>
-    {/* <List>
-      {distribution.map(item => (
-        <ListItem className="text-xs" key={item.symbol}>
-          <span>{item.symbol}</span>
-          <span>{valueFormatter(item.dividendAmount)}</span>
-        </ListItem>
-      ))}
-    </List> */}
-    <div className="flex flex-col text-xs">
-      <ScrollArea className="h-[75px]">
-        {distribution.map((item, index) => (
-          <div
-            key={`distribution-data-item-${index + 1}`}
-            className="border-1 flex w-full justify-between border-b border-gray-300 py-1"
-          >
-            <div className="inline-flex">
-              <span className="font-medium text-gray-800">{item.symbol}</span>
-            </div>
-
-            <span className="text-gray-500">{valueFormatter(item.dividendAmount)}</span>
-          </div>
-        ))}
-        {distribution.length < 1 ? (
-          <div className="flex h-full items-center justify-center">
-            <p className="text-gray-500">No dividends</p>
-          </div>
-        ) : null}
-      </ScrollArea>
-    </div>
-  </div>
-);
-
-const PortfolioLayoutSecondaryPanel = ({
-  portfolioType,
-  ringChartData,
-  dividendIncome,
-  portfolioDividendYield,
-  portfolioDividendEfficiency
-}) => {
-  const ad = 3 + 5;
-  return (
-    <>
-      <section className="flex h-full max-h-72 w-full flex-row">
-        <div className="h-full w-full p-1">
-          <Card showHeader header="Dividend analysis">
-            <div className="flex h-full w-full flex-col">
-              <div className="flex h-full w-full flex-col justify-between p-1 px-2">
-                <span className="font-sans text-3xl font-bold text-gray-900">
-                  {valueFormatter(dividendIncome)}
-                </span>
-                <div className="inline-flex justify-between py-1 text-xs font-semibold text-gray-800">
-                  <span>
-                    Annual
-                    <br />
-                    dividends
-                  </span>
-                  <button type="button" className="hover:bg-gray-200">
-                    <InfoIcon />
-                  </button>
-                </div>
-              </div>
-              <div className="flex h-full w-full flex-row">
-                <div className="border-1 border-success flex h-full w-full flex-col justify-between border-r-2 border-t-2 p-1 px-2">
-                  <div className="font-sans text-2xl font-bold text-gray-900">
-                    {portfolioDividendYield}%
-                  </div>
-                  <div className="inline-flex justify-between py-1  text-xs  font-semibold text-gray-800">
-                    <span>Dividend yield</span>
-                    <button type="button" className="hover:bg-gray-200">
-                      <InfoIcon />
-                    </button>
-                  </div>
-                </div>
-                <div className="border-1 border-success flex h-full w-full flex-col justify-between border-t-2 p-1 px-2">
-                  <div className="font-sans text-2xl font-bold text-gray-900">
-                    {portfolioDividendEfficiency}%
-                  </div>
-                  <div className="inline-flex justify-between py-1  text-xs  font-semibold text-gray-800">
-                    <span>Dividend efficiency</span>
-                    <button type="button" className="hover:bg-gray-200">
-                      <InfoIcon />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-        <div className="h-full w-full p-1">
-          <Card showHeader header="Portfolio breakdown">
-            <div className="px-10">
-              <RingChart
-                sections={ringChartData}
-                valueFormatterOverride={valueFormatter}
-                category="value"
-                index="tooltip"
-              />
-            </div>
-            <div className="flex flex-col text-xs">
-              <ScrollArea className="h-[75px]">
-                {ringChartData.map((ringChartDataItem, index) => (
-                  <div
-                    key={`ring-chart-data-item-${index + 1}`}
-                    className="border-1 flex w-full justify-between border-b border-gray-300 px-2 py-1"
-                  >
-                    <div className="inline-flex w-1/3">
-                      <div className="h-4 w-4 rounded-full bg-indigo-700 leading-none" />
-                      <span className="ml-2 font-bold text-gray-800">
-                        {ringChartDataItem.tooltip}
-                      </span>
-                    </div>
-
-                    <span className="w-1/3 text-left font-medium text-gray-500">
-                      {valueFormatter(ringChartDataItem.value)}
-                    </span>
-                    <span className="inline-flex items-center justify-center rounded-full bg-red-600 px-2 py-1 text-tiny leading-none text-red-100">
-                      {ringChartDataItem.composition} %
-                    </span>
-                  </div>
-                ))}
-              </ScrollArea>
-            </div>
-          </Card>
-        </div>
-      </section>
-      <section className="flex w-full flex-row">
-        <div className="h-full w-full p-1">
-          <Card
-            showHeader
-            showFooter
-            customFooter
-            header="Dividend distribution"
-            footer={
-              <Collapsible className="rounded-xl bg-transparent text-xs">
-                <CollapsibleTrigger className="flex w-full items-center justify-between space-x-4 rounded-b-xl px-4 hover:bg-gray-200">
-                  <h4 className="text-sm font-semibold">view more</h4>
-                  <Button variant="ghost" size="sm">
-                    <CaretSortIcon className="h-4 w-4" />
-                    <span className="sr-only">Toggle</span>
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="rounded-xl text-xs">
-                  <section className="space-y-4">
-                    <div className="grid grid-cols-3 gap-2 p-2">
-                      {Object.keys(mockDividendDistributionData).map(key => (
-                        <DividendDistributionBlock
-                          key={key}
-                          month={key}
-                          distribution={mockDividendDistributionData[key]}
-                        />
-                      ))}
-                    </div>
-                  </section>
-                </CollapsibleContent>
-              </Collapsible>
-            }
-          >
-            {/* bar chartt */}
-            <div className="h-44 w-full p-2">
-              <BarChartWrapper
-                title="Dividends in year"
-                data={[
-                  {
-                    month: "January",
-                    dividends: 300
-                  },
-                  {
-                    month: "February",
-                    dividends: 600
-                  },
-                  {
-                    month: "March",
-                    dividends: 400
-                  },
-                  {
-                    month: "April",
-                    dividends: 400
-                  },
-                  {
-                    month: "May",
-                    dividends: 400
-                  },
-                  {
-                    month: "June",
-                    dividends: 800
-                  },
-                  {
-                    month: "July",
-                    dividends: 400
-                  },
-                  {
-                    month: "August",
-                    dividends: 500
-                  },
-                  {
-                    month: "September",
-                    dividends: 600
-                  },
-                  {
-                    month: "October",
-                    dividends: 100
-                  },
-                  {
-                    month: "November",
-                    dividends: 200
-                  },
-                  {
-                    month: "December",
-                    dividends: 250
-                  }
-                ]}
-                index="month"
-                categories={["dividends"]}
-                colors={["blue"]}
-              />
-            </div>
-          </Card>
-        </div>
-      </section>
-    </>
-  );
-};
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   // Extract the portfolioType and items.
@@ -486,14 +186,10 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     setPortfolioData(updatedPortfolio);
   };
 
-  const [height, setHeight] = useState(null);
-  const tableRef = useRef(null);
   useEffect(() => {
     console.log("useEffect layouts/portfolio");
     NProgress.start();
-    if (tableRef.current) {
-      setHeight(tableRef.current.getBoundingClientRect().height);
-    }
+
     /**
      * Depending on the portfolio/asset Type hydrates data
      * such that it is understood by the tableSchema
@@ -569,7 +265,8 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
           </div>
           <div
             className={clsx("portfolio-secondary-panel max-h-full overflow-hidden rounded-lg", {
-              hidden: hideSecondaryPanel
+              hidden: hideSecondaryPanel,
+              "md:w-4/12": !hideSecondaryPanel
             })}
           >
             {hideSecondaryPanel ? null : (
@@ -588,7 +285,6 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
                 />
               </div>
             )}
-            {/* <span className="text-md mx-auto w-full text-center font-mono text-gray-400 md:hidden"> */}
             <Button
               variant="ghost"
               size="sm"
@@ -596,7 +292,6 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
             >
               <Drawer.Trigger>Analyse Portfolio</Drawer.Trigger>
             </Button>
-            {/* </span> */}
           </div>
           <Drawer.Portal>
             <Drawer.Overlay className="fixed inset-0 bg-black/40" />
