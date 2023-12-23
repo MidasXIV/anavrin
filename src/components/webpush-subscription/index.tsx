@@ -91,7 +91,7 @@ const WebpushSubscription: FC<unknown> = () => {
         header={
           // <TooltipWrapper label="Delete subscription" color="orange">
           <>
-          <span>sub</span>
+          <span>Unknown device</span>
           <DoubleClickButton
             onClick={async () => {
               setLoading(true);

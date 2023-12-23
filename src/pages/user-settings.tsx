@@ -53,6 +53,9 @@ const UserSettings: FC = () => {
         break;
       case SETTING_KEY_VALUES.webpush: // WebPush Menu Item
         setPanel(PanelKeys.WEBPUSH);
+        if (isMobileUI()) {
+          setOpened(true);
+        }
         break;
       default:
         break;
@@ -95,8 +98,8 @@ const UserSettings: FC = () => {
           <SecondaryPanel
             PanelComponentMapping={UserSettingsComponentMapping}
             panel={panel}
-            opened={opened}
-            setOpened={setOpened}
+            showDrawer={opened}
+            setShowDrawer={setOpened}
           />
         </div>
       </DefaultLayout>
