@@ -21,7 +21,7 @@ const SecondaryPanel: FC<SecondayPanelProps> = ({
   const PanelComponent = PanelComponentMapping.get(panel);
   // return <ExchangeForm />;
   return (
-    <div className="dashboard-secondary-panel overflow-y-auto">
+    <div className="dashboard-secondary-panel overflow-y-auto rounded-lg">
       <PanelComponent />
       <Drawer
         opened={opened}

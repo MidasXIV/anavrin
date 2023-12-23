@@ -276,7 +276,7 @@ const StocksDividendExpandableComponent: ({
   return (
     <section className="h-40 w-full">
       <div className="h-full  w-1/2 sm:w-1/4">
-        <Card showHeader header="Dividend growth">
+        <Card showHeader headerTitle="Dividend growth">
           <div className="h-full">
             <BarChart
               title="Dividend Payout"

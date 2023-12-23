@@ -89,7 +89,7 @@ const PortfolioLayoutSecondaryPanel = ({
     <>
       <section className="flex h-full max-h-72 w-full flex-row">
         <div className="h-full w-full p-1">
-          <Card showHeader header="Dividend analysis">
+          <Card showHeader headerTitle="Dividend analysis">
             <div className="flex h-full w-full flex-col">
               <div className="flex h-full w-full flex-col justify-between p-1 px-2">
                 <span className="font-sans text-3xl font-bold text-gray-900">
@@ -134,7 +134,7 @@ const PortfolioLayoutSecondaryPanel = ({
           </Card>
         </div>
         <div className="h-full w-full p-1">
-          <Card showHeader header="Portfolio breakdown">
+          <Card showHeader headerTitle="Portfolio breakdown">
             <div className="px-10">
               <RingChart
                 sections={ringChartData}
@@ -176,7 +176,7 @@ const PortfolioLayoutSecondaryPanel = ({
             showHeader
             showFooter
             customFooter
-            header="Dividend distribution"
+            headerTitle="Dividend distribution"
             footer={
               <Collapsible className="rounded-xl bg-transparent text-xs">
                 <CollapsibleTrigger className="flex w-full items-center justify-between space-x-4 rounded-b-xl px-4 hover:bg-gray-200">
