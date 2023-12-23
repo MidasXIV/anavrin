@@ -133,16 +133,16 @@ const WebpushSubscription: FC<unknown> = () => {
             Allow Anavrin to send push notifications on this device.
           </p>
         </div>
-        <TooltipWrapper
+        {/* <TooltipWrapper
           label={subscribed ? "Unsubscribe this device." : "Subscribe this device!"}
           color="orange"
-        >
+        > */}
           <Switch
             disabled={isDenied}
             checked={subscribed}
             onCheckedChange={isSubscribed => notificationSubscriptionChanged(isSubscribed)}
           />
-        </TooltipWrapper>
+        {/* </TooltipWrapper> */}
       </div>
       {isDenied ? (
         <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>

@@ -15,11 +15,13 @@ const SETTING_KEY_VALUES = {
 type SETTING_KEY_VALUES = (typeof SETTING_KEY_VALUES)[keyof typeof SETTING_KEY_VALUES];
 
 const UserSettings: FC = () => {
+  const defaultPanel = PanelKeys.WEBPUSH;
+  const defaultAccordianItem = SETTING_KEY_VALUES.webpush;
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const [opened, setOpened] = useState(false);
   const isSignedIn = loading ? "" : Boolean(session?.user) ?? false;
-  const [panel, setPanel] = useState<PanelKeys>(null);
+  const [panel, setPanel] = useState<PanelKeys>(defaultPanel);
   const [menuItem, setMenuItem] = useState<string>();
 
   const onExchangeButtonClick = (exchange: PanelKeys) => {
@@ -61,6 +63,8 @@ const UserSettings: FC = () => {
         break;
     }
   };
+
+  const PanelComponent = UserSettingsComponentMapping.get(panel);
   return (
     <>
       <DefaultLayout title="User setting" sidebar="" description="Update user profile">
@@ -68,7 +72,7 @@ const UserSettings: FC = () => {
           <div className="dashboard-primary-panel overflow-y-auto">
             {!isSignedIn ? <h1 className="mb-2 text-2xl">Please Login.</h1> : null}
             <Accordion
-              defaultValue={SETTING_KEY_VALUES.connectToExchange}
+              defaultValue={defaultAccordianItem}
               className="border-b border-t-0 border-gray-400"
               onChange={onMenuItemClick}
             >
@@ -96,11 +100,11 @@ const UserSettings: FC = () => {
             </Accordion>
           </div>
           <SecondaryPanel
-            PanelComponentMapping={UserSettingsComponentMapping}
-            panel={panel}
             showDrawer={opened}
             setShowDrawer={setOpened}
-          />
+          >
+            <PanelComponent />
+          </SecondaryPanel>
         </div>
       </DefaultLayout>
     </>
