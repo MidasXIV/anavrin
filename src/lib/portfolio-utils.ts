@@ -1,4 +1,5 @@
 import memoize from "fast-memoize";
+import { formatNumber } from "@/utils/helper";
 import {
   CryptocurrencyExpandableComponent,
   CryptoPortfolioSchema,
@@ -9,7 +10,6 @@ import {
   onDividendTableRowDoublceClick,
   StocksDividendExpandableComponent
 } from "./table-schema";
-import { formatNumber } from "@/utils/helper";
 
 const AssetType = {
   STOCK: "stock",
@@ -285,10 +285,9 @@ const getPortfolioDiversificationChartData = memoize((portfolios: Portfolio[]) =
 
 const getPortfolioSummaryMemoized = memoize(getPortfolioSummary);
 
-const formatPortfolioId = (portfolioId) => {
+const formatPortfolioId = portfolioId =>
   // last 6 characters
- return portfolioId.slice(-6);
-}
+  portfolioId.slice(-6);
 
 export {
   AssetType,

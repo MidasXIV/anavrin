@@ -1,6 +1,7 @@
 import { valueFormatter } from "@/utils/timeAndDateHelpers";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import mockDividendDistributionData from "tests/mocks/dividend-distribution-data-1";
 import Card from "../portfolio-widgets/Card/card";
 import InfoIcon from "../icons/InfoIcon";
 import RingChart from "../charting/ring-chart/ring-chart";
@@ -9,73 +10,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/colla
 import BarChartWrapper from "../charting/bar-chart/bar-chart";
 import DividendDistributionBlock from "../portfolio-widgets/portfolio-dividend-distribution-block";
 import { Button } from "../ui/button";
-
-const mockDividendDistributionData = {
-  January: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    },
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    }
-  ],
-  February: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  March: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  April: [],
-  May: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  June: [],
-  July: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  August: [],
-  September: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    }
-  ],
-  October: [],
-  November: [
-    {
-      symbol: "AAPL",
-      dividendAmount: 12.34
-    },
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    },
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    }
-  ],
-  December: [
-    {
-      symbol: "UNP",
-      dividendAmount: 45.34
-    }
-  ]
-};
 
 const PortfolioLayoutSecondaryPanel = ({
   portfolioType,

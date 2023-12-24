@@ -9,7 +9,7 @@ import api from "../../services/create-service";
 
 const LoadingListItem = () => (
   <li>
-    <a href="#" className="block items-center p-3 hover:bg-gray-100 dark:hover:bg-gray-700 sm:flex">
+    <a href="#" className="block items-center p-3 hover:bg-gray-100 sm:flex dark:hover:bg-gray-700">
       <div className="w-full">
         <div className="mb-2 h-6 w-3/4 animate-pulse rounded-md bg-gray-600 dark:text-gray-400" />
         <div className="mb-2 h-12 w-full animate-pulse rounded-md bg-gray-400" />
@@ -53,7 +53,7 @@ const ListItem = ({ event, day }: { event: IEcnomicEvent; day: IEcnomicCalandarI
     <li>
       <a
         href="#"
-        className="block items-center p-3 hover:bg-gray-100 dark:hover:bg-gray-700 sm:flex"
+        className="block items-center p-3 hover:bg-gray-100 sm:flex dark:hover:bg-gray-700"
       >
         <div className="w-full">
           <div className="text-left text-xs font-semibold">

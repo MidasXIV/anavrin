@@ -99,10 +99,7 @@ const UserSettings: FC = () => {
               </Accordion.Item>
             </Accordion>
           </div>
-          <SecondaryPanel
-            showDrawer={opened}
-            setShowDrawer={setOpened}
-          >
+          <SecondaryPanel showDrawer={opened} setShowDrawer={setOpened}>
             <PanelComponent />
           </SecondaryPanel>
         </div>

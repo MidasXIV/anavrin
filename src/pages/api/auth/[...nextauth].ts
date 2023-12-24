@@ -34,7 +34,7 @@ export const nextAuthOptions = {
       /* account (e.g. Twitter) linked to a user */ console.log(message);
     },
     async session(message) {
-      /* session is active */ 
+      /* session is active */
       // console.log(message);
     }
     // async error(message) {

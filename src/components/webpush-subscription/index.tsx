@@ -2,6 +2,7 @@ import { Code, LoadingOverlay } from "@mantine/core";
 import { Separator } from "@/components/ui/separator";
 
 import { FC, useEffect, useState } from "react";
+import { BellIcon } from "@radix-ui/react-icons";
 import {
   isNotificationPermissionDenied,
   isServiceWorkerSupported,
@@ -18,7 +19,6 @@ import Card from "../portfolio-widgets/Card/card";
 import DoubleClickButton from "../double-click-button";
 import CrossIconSVG from "../icons/crossIconSVG";
 import TooltipWrapper from "../tooltip-wrapper";
-import { BellIcon } from "@radix-ui/react-icons";
 
 const WebpushSubscription: FC<unknown> = () => {
   const [isIndeterminate, setIsIndeterminate] = useState(true);
@@ -91,19 +91,19 @@ const WebpushSubscription: FC<unknown> = () => {
         header={
           // <TooltipWrapper label="Delete subscription" color="orange">
           <>
-          <span>Unknown device</span>
-          <DoubleClickButton
-            onClick={async () => {
-              setLoading(true);
-              await deleteSubscriptionFromDb(pushSubscription);
-              setLoading(false);
-            }}
-            label={<CrossIconSVG />}
-            className="rounded p-1 font-bold text-white"
-            activeClassName="bg-red-500 hover:bg-red-800"
-            inactiveClassName="bg-charcoal-300 hover:bg-red-400"
-            tooltipLabel="Click again to delete!"
-          />
+            <span>Unknown device</span>
+            <DoubleClickButton
+              onClick={async () => {
+                setLoading(true);
+                await deleteSubscriptionFromDb(pushSubscription);
+                setLoading(false);
+              }}
+              label={<CrossIconSVG />}
+              className="rounded p-1 font-bold text-white"
+              activeClassName="bg-red-500 hover:bg-red-800"
+              inactiveClassName="bg-charcoal-300 hover:bg-red-400"
+              tooltipLabel="Click again to delete!"
+            />
           </>
           // </TooltipWrapper>
           // <DeleteIcon
@@ -137,11 +137,11 @@ const WebpushSubscription: FC<unknown> = () => {
           label={subscribed ? "Unsubscribe this device." : "Subscribe this device!"}
           color="orange"
         > */}
-          <Switch
-            disabled={isDenied}
-            checked={subscribed}
-            onCheckedChange={isSubscribed => notificationSubscriptionChanged(isSubscribed)}
-          />
+        <Switch
+          disabled={isDenied}
+          checked={subscribed}
+          onCheckedChange={isSubscribed => notificationSubscriptionChanged(isSubscribed)}
+        />
         {/* </TooltipWrapper> */}
       </div>
       {isDenied ? (

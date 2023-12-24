@@ -11,16 +11,16 @@ interface IPortfolioDiversificationCardProps {
 const PortfolioDiversificationCard: FC<IPortfolioDiversificationCardProps> = ({ portfolios }) => {
   const ringChartData = getPortfolioDiversificationChartData(portfolios);
   return (
-    <section className="w-full h-full flex flex-row">
-      <div className="w-1/2 p-4 text-sm border-r border-gray-300 rounded-bl-lg">
+    <section className="flex h-full w-full flex-row">
+      <div className="w-1/2 rounded-bl-lg border-r border-gray-300 p-4 text-sm">
         <RingChart
-          sections={ringChartData as Array<{tooltip:string, value:number}>}
+          sections={ringChartData as Array<{ tooltip: string; value: number }>}
           valueFormatterOverride={valueFormatter}
           category="value"
           index="tooltip"
         />
       </div>
-      <div className="flex flex-col text-xs w-1/2">
+      <div className="flex w-1/2 flex-col text-xs">
         <ScrollArea className="h-[75px]">
           {ringChartData.map((ringChartDataItem, index) => (
             <div
@@ -29,7 +29,9 @@ const PortfolioDiversificationCard: FC<IPortfolioDiversificationCardProps> = ({ 
             >
               <div className="inline-flex w-1/3">
                 <div className="h-4 w-4 rounded-full bg-indigo-700 leading-none" />
-                <span className="ml-2 font-bold text-gray-800">{formatPortfolioId(ringChartDataItem.tooltip)}</span>
+                <span className="ml-2 font-bold text-gray-800">
+                  {formatPortfolioId(ringChartDataItem.tooltip)}
+                </span>
               </div>
 
               <span className="w-1/3 text-left font-medium text-gray-500">
