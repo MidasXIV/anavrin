@@ -9,6 +9,7 @@ import {
   onDividendTableRowDoublceClick,
   StocksDividendExpandableComponent
 } from "./table-schema";
+import { formatNumber } from "@/utils/helper";
 
 const AssetType = {
   STOCK: "stock",
@@ -266,7 +267,9 @@ const getPortfolioDiversificationChartData = memoize((portfolios: Portfolio[]) =
   const ringChartData = portfolios.map(portfolio => {
     const portfolioTotalInvestment = portfolio.items.reduce((sum, item) => sum + item.fiat, 0);
     const value = portfolioTotalInvestment;
-    const diversificationPercentage = (portfolioTotalInvestment / totalInvestment) * 100;
+    const diversificationPercentage = Number.parseFloat(
+      ((portfolioTotalInvestment / totalInvestment) * 100).toFixed(2)
+    );
     const tooltip = `${portfolio._id}`;
 
     return {
@@ -282,6 +285,11 @@ const getPortfolioDiversificationChartData = memoize((portfolios: Portfolio[]) =
 
 const getPortfolioSummaryMemoized = memoize(getPortfolioSummary);
 
+const formatPortfolioId = (portfolioId) => {
+  // last 6 characters
+ return portfolioId.slice(-6);
+}
+
 export {
   AssetType,
   getPortfolioTableSchema,
@@ -292,5 +300,6 @@ export {
   updatePortfolio,
   getPortfolioSummary,
   getPortfolioSummaryMemoized,
-  getPortfolioDiversificationChartData
+  getPortfolioDiversificationChartData,
+  formatPortfolioId
 };

@@ -1,18 +1,21 @@
 import { Drawer } from "vaul";
 import { Dispatch, FC, SetStateAction } from "react";
+import { cn } from "@/utils/shadcn";
 
 interface SecondayPanelProps {
   showDrawer: boolean; // To set panel as showDrawer or not used in mobile UI
   setShowDrawer: Dispatch<SetStateAction<boolean>>;
+  className: string;
 }
 
 const SecondaryPanel: FC<SecondayPanelProps> = ({
   showDrawer,
   setShowDrawer,
-  children
+  children,
+  className = null
 }) => {
   return (
-    <div className="dashboard-secondary-panel overflow-y-auto rounded-lg">
+    <div className={cn("dashboard-secondary-panel overflow-y-auto rounded-lg", className)}>
       {showDrawer ? (
         <Drawer.Root
           open={showDrawer}

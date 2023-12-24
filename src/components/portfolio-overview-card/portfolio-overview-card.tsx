@@ -17,7 +17,7 @@ const PortfolioOverviewCard: FC<IPortfolioOverviewCardProps> = ({
   return (
     <div
       role="button"
-      className="block h-full w-full overflow-hidden rounded-xl bg-charcoal-400 text-sm outline duration-300 hover:scale-105 hover:transform hover:cursor-pointer hover:bg-charcoal-900 hover:shadow-xl"
+      className="block h-full w-full overflow-hidden rounded-xl bg-charcoal-400 text-sm outline duration-300 hover:cursor-pointer hover:bg-charcoal-900 hover:shadow-xl"
       onClick={() => onPortfolioSelect(portfolio._id)}
     >
       <div className="rounded-xl bg-gray-300">

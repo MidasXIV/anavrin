@@ -12,7 +12,7 @@ export const nextAuthOptions = {
   database: process.env.MONGODB_URI,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(user, account, profile);
+      // console.log(user, account, profile);
       return true;
     }
   },
@@ -34,7 +34,8 @@ export const nextAuthOptions = {
       /* account (e.g. Twitter) linked to a user */ console.log(message);
     },
     async session(message) {
-      /* session is active */ console.log(message);
+      /* session is active */ 
+      // console.log(message);
     }
     // async error(message) {
     //   /* error in authentication flow */ console.log(message);

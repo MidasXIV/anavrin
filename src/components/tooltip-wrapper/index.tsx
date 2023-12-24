@@ -15,7 +15,7 @@ const TooltipWrapper: FC<TooltipWrapperProps> = ({ label, color = undefined, chi
     // transitionProps={{ transition: "fade", duration: 300, timingFunction: "ease" }}
     // withArrow
     >
-      <TooltipTrigger>{children}</TooltipTrigger>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   </TooltipProvider>
