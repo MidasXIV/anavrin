@@ -1,6 +1,16 @@
 import { FC } from "react";
-import { clsx } from "clsx";
-import { Transition } from "@mantine/core";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+import { Cross1Icon } from "@radix-ui/react-icons";
 import { AssetType } from "../../lib/portfolio-utils";
 
 type AddNewPortfolioModalProps = {
@@ -14,46 +24,34 @@ const AddNewPortfolioModal: FC<AddNewPortfolioModalProps> = ({
   cancel,
   onSelection
 }) => (
-  <Transition mounted={isShowing} transition="fade" duration={400} timingFunction="ease">
-    {styles => (
-      <div style={styles}>
-        <div
-          className={clsx("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
-            hidden: !isShowing,
-            "md:hidden": !isShowing
-          })}
-        >
-          <div
-            className="absolute inset-0 z-10 w-full bg-black opacity-75"
-            onClick={cancel}
-            onKeyDown={cancel}
-            aria-hidden="true"
-          />
-          <div className="fixed inset-x-0 bottom-0 z-50 mx-4 mb-4 rounded-lg bg-white p-2 shadow-lg md:relative md:mx-auto md:w-full md:max-w-lg">
-            <div className="flex flex-col px-2 py-5 sm:px-4">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Portfolio type</h3>
-            </div>
-            <div className="flex justify-center space-x-3 py-6">
-              <button
-                type="button"
-                className="h-24 w-24 rounded-lg border-4 border-gray-500 bg-charcoal-400 text-center font-mono font-semibold text-gray-300 hover:bg-green-300 hover:text-charcoal-900"
-                onClick={() => onSelection(AssetType.STOCK)}
-              >
-                Stock
-              </button>
-              <button
-                type="submit"
-                className="h-24 w-24 rounded-lg border-4 border-gray-500 px-5 py-3  font-mono font-semibold text-gray-500 hover:bg-yellow-300 hover:text-charcoal-900"
-                onClick={() => onSelection(AssetType.CRYPTO)}
-              >
-                Crypto
-              </button>
-            </div>
+  <AlertDialog defaultOpen={false} open={isShowing}>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle className="inline-flex justify-between">
+          <span className="text-lg font-medium leading-6 text-gray-900">Portfolio type</span>
+          <AlertDialogCancel onClick={cancel}>
+            <Cross1Icon />
+          </AlertDialogCancel>
+        </AlertDialogTitle>
+        <AlertDialogDescription>
+          <div className="flex justify-center space-x-3 py-6">
+            <AlertDialogAction
+              className="h-24 w-24 rounded-xl border-2 border-gray-300 text-center font-mono font-semibold shadow-md hover:bg-green-300 hover:text-charcoal-900"
+              onClick={() => onSelection(AssetType.STOCK)}
+            >
+              Stock
+            </AlertDialogAction>
+            <AlertDialogAction
+              className="h-24 w-24 rounded-xl border-2 border-gray-300 text-center font-mono font-semibold shadow-md hover:bg-yellow-300 hover:text-charcoal-900"
+              onClick={() => onSelection(AssetType.CRYPTO)}
+            >
+              Crypto
+            </AlertDialogAction>
           </div>
-        </div>
-      </div>
-    )}
-  </Transition>
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+    </AlertDialogContent>
+  </AlertDialog>
 );
 
 export default AddNewPortfolioModal;
