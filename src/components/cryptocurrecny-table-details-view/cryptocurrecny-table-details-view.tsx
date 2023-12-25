@@ -124,17 +124,9 @@ const CryptocurrecnyTableDetailsView: FC<CryptocurrecnyTableDetailsViewProps> = 
 
   return (
     <section className="my-1 flex justify-between rounded-lg border border-gray-500 px-4 py-2 text-xs">
-      <div>
+      <div className="max-w-md">
         <p className="py-2 text-sm font-medium">Categories:</p>
         <div className="flex flex-wrap">
-          {/* {data.categories.map(category => (
-            <span
-              key={`category-${category}`}
-              className="mb-2 mr-2 rounded-lg bg-charcoal-300 p-2  text-white"
-            >
-              {category}
-            </span>
-          ))} */}
           <CategoryChipGroup categories={data.categories} />
         </div>
       </div>
