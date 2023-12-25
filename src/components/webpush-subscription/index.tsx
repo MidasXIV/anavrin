@@ -89,7 +89,6 @@ const WebpushSubscription: FC<unknown> = () => {
         showHeader
         customHeader
         header={
-          // <TooltipWrapper label="Delete subscription" color="orange">
           <>
             <span>Unknown device</span>
             <DoubleClickButton
@@ -102,17 +101,10 @@ const WebpushSubscription: FC<unknown> = () => {
               className="rounded p-1 font-bold text-white"
               activeClassName="bg-red-500 hover:bg-red-800"
               inactiveClassName="bg-charcoal-300 hover:bg-red-400"
-              tooltipLabel="Click again to delete!"
+              tooltipLabel="Delete subscription"
+              activatedTooltipLabel="Click again to delete!"
             />
           </>
-          // </TooltipWrapper>
-          // <DeleteIcon
-          //   onClick={async () => {
-          //     setLoading(true);
-          //     await deleteSubscriptionFromDb(pushSubscription);
-          //     setLoading(false);
-          //   }}
-          // />
         }
       >
         <Code block>{JSON.stringify(pushSubscription, null, 2)}</Code>

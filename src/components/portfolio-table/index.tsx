@@ -107,7 +107,8 @@ const DeleteRowTableEntry = onClickHandler => ({
       className="rounded p-1 font-bold text-white"
       activeClassName="bg-red-500 hover:bg-red-800"
       inactiveClassName="bg-charcoal-300 hover:bg-red-400"
-      tooltipLabel="Click again to delete!"
+      tooltipLabel="delete entry"
+      activatedTooltipLabel="Click again to delete!"
     />
   )
 });
