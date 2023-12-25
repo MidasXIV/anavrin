@@ -1,5 +1,11 @@
 import { FC } from "react";
-import { Divider, Menu } from "@mantine/core";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import styles from "./index.module.css";
 import TooltipWrapper from "../tooltip-wrapper";
 import AnalyseIcon from "../icons/analyseIcon";
@@ -56,42 +62,40 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
     </ul>
     {/* Options */}
     <ul className="nav flex flex-row xl:hidden">
-      <Menu
-        // trigger="hover"
-        width={200}
-        position="bottom-end"
-        offset={6}
-      >
-        <Menu.Target>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
           <button type="button" className={styles.icon}>
             <MoreOptionsIcon width={32} height={32} />
           </button>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-full" align="end" side="bottom" sideOffset={6}>
+          <DropdownMenuItem
             color="orange"
-            icon={<SaveIcon width={15} height={15} />}
             onClick={savePortfolio}
+            className="inline-flex w-full justify-between hover:cursor-pointer"
           >
-            Save
-          </Menu.Item>
-          <Menu.Item
+            <SaveIcon width={15} height={15} />
+            <span className="px-2">Save</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
             color="red"
-            icon={<DeletePortfolioIcon width={15} height={15} />}
             onClick={deletePortfolio}
+            className="inline-flex w-full justify-between hover:cursor-pointer"
           >
-            Delete
-          </Menu.Item>
-          <Divider />
-          <Menu.Item
+            <DeletePortfolioIcon width={15} height={15} />
+            <span className="px-2">Delete</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             color="green"
-            icon={<AnalyseIcon width={15} height={15} />}
             onClick={togglePortfolioAnalysisPanel}
+            className="inline-flex w-full justify-between hover:cursor-pointer"
           >
-            Analyse
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
+            <AnalyseIcon width={15} height={15} />
+            <span className="px-2">Analyse</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </ul>
   </div>
 );
