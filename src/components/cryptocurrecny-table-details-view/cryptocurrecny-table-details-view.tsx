@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Button, Popover } from "@mantine/core";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
 import BrandTelegramSVG from "../icons/BrandTelegramSVG";
 import BrandTwitterSVG from "../icons/BrandTwitterSVG";
 import BrandRedditSVG from "../icons/BrandRedditSVG";
@@ -103,15 +104,13 @@ const SocialLinksGrid = ({ links }) => {
       <GridItem link={socialLinks.reddit} svgComponent={BrandRedditSVG} />
       <GridItem link={socialLinks.telegram} svgComponent={BrandTelegramSVG} />
 
-      <Popover width={500} position="bottom" withArrow shadow="md" arrowPosition="side">
-        <Popover.Target>
-          <Button>
-            <MoreOptionsIcon width={24} height={24} />
-          </Button>
-        </Popover.Target>
-        <Popover.Dropdown>
+      <Popover>
+        <PopoverTrigger>
+          <MoreOptionsIcon width={24} height={24} />
+        </PopoverTrigger>
+        <PopoverContent className="w-[500px] text-xs">
           <LinksComponent links={links} />
-        </Popover.Dropdown>
+        </PopoverContent>
       </Popover>
     </div>
   );
