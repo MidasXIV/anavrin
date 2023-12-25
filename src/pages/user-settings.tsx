@@ -99,7 +99,11 @@ const UserSettings: FC = () => {
               </Accordion.Item>
             </Accordion>
           </div>
-          <SecondaryPanel showDrawer={opened} setShowDrawer={setOpened}>
+          <SecondaryPanel
+            showDrawer={opened}
+            setShowDrawer={setOpened}
+            className="m-2 border border-gray-400"
+          >
             <PanelComponent />
           </SecondaryPanel>
         </div>
