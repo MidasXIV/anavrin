@@ -12,9 +12,10 @@ import DashboardPortfolioSection from "../components/dashboard-portfolio-section
 import DashboardPortfolioSectionLoading from "../components/dashboard-portfolio-section/dashboard-portfolio-section-loading";
 import EconomicEventsPanel from "../components/economic-events-panel";
 import { createUrl } from "../utils/helper";
+import mockFetchUserPortfolioData from "../tests/mocks/mock-fetchUserPortfolio-1";
 
 const Dashboard: FC = () => {
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(true);
   const [opened, setOpened] = useState(false);
   const [portfolios, setPortfolios] = useState<Array<Portfolio>>([]);
   const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
@@ -22,23 +23,26 @@ const Dashboard: FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const setSelectedPortfolio = selectedCrypto => {
+  const setSelectedPortfolio = selectedPortfolio => {
     const newParams = new URLSearchParams(searchParams.toString());
 
-    if (selectedCrypto) {
-      newParams.set("q", selectedCrypto);
+    if (selectedPortfolio) {
+      newParams.set("q", selectedPortfolio);
     } else {
       newParams.delete("q");
     }
 
-    router.push(createUrl("portfolios", newParams));
+    router.push(createUrl("portfolio", newParams));
   };
 
   useEffect(() => {
     (async () => {
       try {
-        const fetchUserPortfoliosResponse = await api.fetchUserPortfolio();
-        const { portfolios: userPortfolios = [] } = fetchUserPortfoliosResponse.data;
+        // const fetchUserPortfoliosResponse = await api.fetchUserPortfolio();
+        // const { portfolios: userPortfolios = [] } = fetchUserPortfoliosResponse.data;
+
+        const userPortfolios = mockFetchUserPortfolioData;
+
         setPortfolios(userPortfolios);
       } catch (error) {
         console.error(error);
@@ -76,16 +80,40 @@ const Dashboard: FC = () => {
         description="You can see your portfolios estimated value & progress below"
       >
         <div className=" flex w-full flex-1 flex-col overflow-auto rounded-lg bg-gray-300 p-3">
-          <section className="h-2/5 w-full p-2">
-            <div className="flex h-full w-full flex-row rounded-xl border border-gray-400 bg-gray-200">
-              <div className="h-full w-1/2" />
-              <div className="h-full w-1/4 border-l border-gray-400">
-                <div className="h-1/2 w-full" />
-                <div className="h-1/2 w-full border-t border-gray-400" />
+          <section className="h-3/5 w-full p-2">
+            <div className="flex h-full w-full flex-row rounded-xl border border-gray-400 bg-gray-200 p-2">
+              <div className="h-full w-2/5 p-1">
+                <Card showHeader headerTitle="Portfolios breakdown">
+                  <div className="h-full w-full" />
+                </Card>
               </div>
-              <div className="h-full w-1/4 border-l border-gray-400">
-                <div className="h-1/2 w-full" />
-                <div className="h-1/2 w-full border-t border-gray-400" />
+              <div className="flew-row flex flex-1">
+                <div className="h-full w-1/2  border-gray-400">
+                  <div className="h-1/2 w-full p-1">
+                    <Card showHeader headerTitle="Portfolios breakdown">
+                      <div className="h-full w-full">
+                        <PortfolioDiversificationCard portfolios={portfolios} />
+                      </div>
+                    </Card>
+                  </div>
+                  <div className="h-1/2 w-full  border-gray-400 p-1">
+                    <Card showHeader headerTitle="Portfolios breakdown">
+                      <div className="h-full w-full" />
+                    </Card>
+                  </div>
+                </div>
+                <div className="h-full w-1/2  border-gray-400">
+                  <div className="h-1/2 w-full p-1">
+                    <Card showHeader headerTitle="Portfolios breakdown">
+                      <div className="h-full w-full" />
+                    </Card>
+                  </div>
+                  <div className="h-1/2 w-full  border-gray-400 p-1">
+                    <Card showHeader headerTitle="Portfolios breakdown">
+                      <div className="h-full w-full" />
+                    </Card>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -98,7 +126,7 @@ const Dashboard: FC = () => {
             >
               {Content}
             </div>
-            <SecondaryPanel
+            {/* <SecondaryPanel
               showDrawer={opened}
               setShowDrawer={setOpened}
               className="m-2 border border-gray-400"
@@ -114,7 +142,7 @@ const Dashboard: FC = () => {
                   </div>
                 </section>
               </>
-            </SecondaryPanel>
+            </SecondaryPanel> */}
           </section>
         </div>
       </DefaultLayout>

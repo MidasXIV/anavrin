@@ -12,7 +12,7 @@ const PortfolioDiversificationCard: FC<IPortfolioDiversificationCardProps> = ({ 
   const ringChartData = getPortfolioDiversificationChartData(portfolios);
   return (
     <section className="flex h-full w-full flex-row">
-      <div className="w-1/2 rounded-bl-lg border-r border-gray-300 p-4 text-sm">
+      <div className="max-h-full w-1/2 rounded-bl-lg border-r border-gray-300 p-2 text-sm">
         <RingChart
           sections={ringChartData as Array<{ tooltip: string; value: number }>}
           valueFormatterOverride={valueFormatter}
@@ -21,7 +21,7 @@ const PortfolioDiversificationCard: FC<IPortfolioDiversificationCardProps> = ({ 
         />
       </div>
       <div className="flex w-1/2 flex-col text-xs">
-        <ScrollArea className="h-[75px]">
+        <ScrollArea className="h-[150px]">
           {ringChartData.map((ringChartDataItem, index) => (
             <div
               key={`ring-chart-data-item-${index + 1}`}
