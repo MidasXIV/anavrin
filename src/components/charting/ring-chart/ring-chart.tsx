@@ -22,7 +22,7 @@ const RingChart: FC<RingChartProps> = ({
   index
 }) => (
   <DonutChart
-    className=""
+    className="h-full w-full"
     data={sections}
     category={category}
     index={index}
