@@ -13,7 +13,7 @@ const PortfolioSection = ({
 }) => (
   <article className="mb-6">
     <h1 className="mb-4 text-3xl font-semibold">{title}</h1>
-    <div className="grid auto-cols-[250px] grid-flow-col gap-5 p-2">
+    <div className="grid auto-cols-[250px] grid-flow-col gap-5 overflow-x-auto p-2">
       {portfolios
         .filter(portfolio => portfolio.assetType === assetType)
         .map(portfolio => (

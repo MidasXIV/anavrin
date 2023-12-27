@@ -69,7 +69,7 @@ const PortfolioLayoutSecondaryPanel = ({
         </div>
         <div className="h-full w-full p-1">
           <Card showHeader headerTitle="Portfolio breakdown">
-            <div className="px-10">
+            <div className="h-[65%] w-full px-10">
               <RingChart
                 sections={ringChartData}
                 valueFormatterOverride={valueFormatter}

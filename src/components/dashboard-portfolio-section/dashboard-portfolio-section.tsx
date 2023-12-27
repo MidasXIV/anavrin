@@ -10,7 +10,7 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
   portfolios,
   onPortfolioSelect
 }) => (
-  <section className="outline-test flex h-full w-full items-center justify-center">
+  <section className="flex h-full w-full items-center justify-center">
     <div className="flex w-full grid-cols-4 flex-col gap-3 lg:grid">
       <div className="col-span-3 max-w-full">
         <section className="grid h-full auto-cols-[250px] grid-flow-col gap-3">
