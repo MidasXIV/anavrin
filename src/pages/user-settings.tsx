@@ -68,7 +68,7 @@ const UserSettings: FC = () => {
   return (
     <>
       <DefaultLayout title="User setting" sidebar="" description="Update user profile">
-        <div className="flex h-full w-full flex-1 flex-row overflow-auto rounded-lg bg-gray-300">
+        <div className="flex h-full w-full flex-1 flex-row overflow-auto rounded-lg bg-gray-300 sm:mb-1">
           <div className="dashboard-primary-panel overflow-y-auto">
             {!isSignedIn ? <h1 className="mb-2 text-2xl">Please Login.</h1> : null}
             <Accordion

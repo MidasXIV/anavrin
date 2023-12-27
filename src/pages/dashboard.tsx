@@ -79,7 +79,7 @@ const Dashboard: FC = () => {
         sidebar="dashboard"
         description="You can see your portfolios estimated value & progress below"
       >
-        <div className=" flex w-full flex-1 flex-col overflow-auto rounded-lg bg-gray-300 p-3">
+        <div className="flex w-full flex-1 flex-col overflow-auto rounded-lg bg-gray-300 p-3 sm:mb-1">
           <section className="h-3/5 w-full p-2">
             <div className="flex h-full w-full flex-row rounded-xl border border-gray-400 bg-gray-200 p-2">
               <div className="h-full w-2/5 p-1">
