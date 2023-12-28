@@ -12,7 +12,7 @@ const Card = ({
   footer = null,
   className = null
 }) => (
-  <div className={`flex h-full w-full flex-col rounded-lg bg-gray-100 shadow-lg ${className}`}>
+  <div className={`flex h-full w-full flex-col rounded-lg bg-gray-100 shadow-md ${className}`}>
     {showHeader ? (
       <div className="border-success dark:border-success-300 inline-flex items-center justify-between border-b-2 px-3 pb-1 pt-2 text-xs text-neutral-600 dark:text-neutral-50">
         {customHeader ? (

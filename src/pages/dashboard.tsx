@@ -8,6 +8,8 @@ import Card from "@/components/portfolio-widgets/Card/card";
 import PortfolioDiversificationCard from "@/components/portfolio-diversification-card/portfolio-diversification-card";
 import PortfolioDashboardPanel from "@/components/portfolio-widgets/portfolio-dashboard-panel";
 import LoremIpsum from "@/components/placeholder/lorem-ipsum";
+import { useSession } from "next-auth/react";
+import DashboardGreeting from "@/components/portfolio-widgets/dashboard-greeting/dashboard-greeting";
 import DefaultLayout from "../layouts/default";
 import api from "../services/create-service";
 import DashboardPortfolioSection from "../components/dashboard-portfolio-section/dashboard-portfolio-section";
@@ -17,6 +19,7 @@ import { createUrl } from "../utils/helper";
 import mockFetchUserPortfolioData from "../tests/mocks/mock-fetchUserPortfolio-1";
 
 const Dashboard: FC = () => {
+  const { data: session, status } = useSession();
   const [hide, setHide] = useState(false);
   const [opened, setOpened] = useState(false);
   const [portfolios, setPortfolios] = useState<Array<Portfolio>>([]);
@@ -63,7 +66,22 @@ const Dashboard: FC = () => {
     Content = <DashboardPortfolioSectionLoading />;
   } else if (portfolios?.length > 0) {
     Content = (
-      <DashboardPortfolioSection portfolios={portfolios} onPortfolioSelect={setSelectedPortfolio} />
+      <section className="h-full w-full">
+        <div className="p-2">
+          {status === "loading" ? null : (
+            <DashboardGreeting
+              userName={`Hi ${status === "unauthenticated" ? "Guest" : session.user.name}`}
+              totalValue={40000}
+              totalInvestments={31000}
+            />
+          )}
+        </div>
+
+        <DashboardPortfolioSection
+          portfolios={portfolios}
+          onPortfolioSelect={setSelectedPortfolio}
+        />
+      </section>
     );
   } else {
     Content = (

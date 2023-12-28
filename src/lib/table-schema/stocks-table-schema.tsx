@@ -31,7 +31,7 @@ const StockPortfolioMarketValueComponent = (
   const { marketValue, costBasis } = row;
   const change = Number.parseFloat(marketValue) - Number.parseFloat(costBasis);
   return (
-    <div className="display: flex w-full space-x-2 px-2 text-xs" data-tag="allowRowEvents">
+    <div className="flex w-full space-x-2 px-2 text-xs" data-tag="allowRowEvents">
       <div className="w-1/2 text-right" data-tag="allowRowEvents">
         {valueFormatter(marketValue)}
       </div>

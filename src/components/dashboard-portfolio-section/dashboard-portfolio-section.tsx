@@ -14,8 +14,8 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
 }) => {
   const [filterAsset, setFilterAsset] = useState("ALL");
   return (
-    <section className="outline-test flex h-full w-full flex-col items-center justify-center overflow-hidden p-2">
-      <div className="outline-test flex w-full items-center justify-between py-3">
+    <section className="flex w-full flex-col items-center justify-center overflow-hidden p-2">
+      <div className="flex w-full items-center justify-between py-3">
         <span className="text-xl font-bold">Portfolios</span>
         <ToggleGroup
           type="single"
@@ -34,7 +34,7 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
         </ToggleGroup>
       </div>
 
-      <div className="outline-test w-full">
+      <div className="w-full">
         <section className="grid h-full auto-cols-[250px] grid-flow-col gap-3 overflow-auto p-2 pb-6">
           {portfolios
             .filter(portfolio => {
@@ -51,7 +51,7 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
                 variant="compact"
               />
             ))}
-          {portfolios.map(portfolio => (
+          {/* {portfolios.map(portfolio => (
             <PortfolioOverviewCard
               key={portfolio._id}
               portfolio={portfolio}
@@ -74,7 +74,7 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
               onPortfolioSelect={onPortfolioSelect}
               variant="compact"
             />
-          ))}
+          ))} */}
         </section>
       </div>
     </section>
