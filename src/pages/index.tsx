@@ -88,9 +88,12 @@ const Home: FC = () => (
       <div className="w-full bg-charcoal-900">
         <Register />
       </div>
-      <div className="h-28 rounded-b-full border-b bg-charcoal-900" />
+      <div className="h-28 rounded-b-full bg-charcoal-900 shadow-lg" />
     </div>
+    <div className="w-full">
+
     <WebsiteFooter />
+    </div>
   </div>
 );
 

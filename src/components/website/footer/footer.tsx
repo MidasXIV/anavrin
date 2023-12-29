@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 const WebsiteFooter: FC = () => (
-  <footer className="bg-white dark:bg-gray-900">
+  <footer className="">
     <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
       <div className="sm:flex sm:flex-row-reverse sm:items-center sm:justify-between">
         <div className="flex justify-center space-x-6">

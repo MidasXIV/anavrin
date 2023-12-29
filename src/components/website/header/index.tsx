@@ -153,7 +153,7 @@ const WebsiteHeader: FC<unknown> = () => {
                       >
                         <div className="outline-font mb-2 mt-4 font-wide text-lg">ANAVRIN</div>
                         <p className="text-sm leading-tight text-muted-foreground">
-                          Beautifully designed components built with Radix UI and Tailwind CSS.
+                        Focus on your investment strategy while we handle the details.
                         </p>
                       </a>
                     </NavigationMenuLink>
