@@ -118,7 +118,7 @@ const Dashboard: FC = () => {
                 <div className="h-2/5 w-full p-1">
                   <Card showHeader headerTitle="Portfolios breakdown">
                     <div className="h-full w-full">
-                      <PortfolioDiversificationCard portfolios={portfolios} />
+                      {/* <PortfolioDiversificationCard portfolios={portfolios} /> */}
                     </div>
                   </Card>
                 </div>
@@ -131,10 +131,20 @@ const Dashboard: FC = () => {
                         </div>
                       </Card>
                     </div>
-                    <div className="h-1/2 w-full p-1">
-                      <Card showHeader headerTitle="Portfolios breakdown 2">
+                    <div className="flex h-1/2 w-full flex-row p-1">
+                      <div className="h-full w-1/2 p-1">
+                        <Card showHeader headerTitle="Portfolios breakdown 2">
+                          <div className="h-full w-full" />
+                        </Card>
+                      </div>
+                      <div className="h-full w-1/2 p-1">
+                        <Card showHeader headerTitle="Portfolios breakdown 2">
+                          <div className="h-full w-full" />
+                        </Card>
+                      </div>
+                      {/* <Card showHeader headerTitle="Portfolios breakdown 2">
                         <div className="h-full w-full" />
-                      </Card>
+                      </Card> */}
                     </div>
                   </div>
                   <div className="h-full w-1/2">
