@@ -22,6 +22,7 @@ const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
           onValueChange={selectGroupItem => {
             setFilterAsset(selectGroupItem);
           }}
+          defaultValue="ALL"
         >
           <ToggleGroupItem key="ALL" value="ALL" className="text-xs">
             ALL
