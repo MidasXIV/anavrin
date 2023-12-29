@@ -26,7 +26,7 @@ const BlogListItem: FC<{
   const { slug, title, description, author, updatedAt } = blog;
   const formattedDate = new Date(updatedAt).toDateString();
   return (
-    <Link href={{ pathname: `/blogs/${slug}` }}>
+    <Link href={{ pathname: `/blogs/${slug}` }} legacyBehavior>
       <a
         className="text-md group flex items-center justify-between border-b py-2 text-gray-600 no-underline hover:text-blue-600"
         href={`/blogs/${slug}`}
@@ -48,7 +48,7 @@ const BlogListCard: FC<{
   const { slug, title, description, author, updatedAt, display } = blog;
   const formattedDate = new Date(updatedAt).toDateString();
   return (
-    <Link href={{ pathname: `/blogs/${slug}` }}>
+    <Link href={{ pathname: `/blogs/${slug}` }} legacyBehavior>
       <a
         className="group relative mt-2 block overflow-hidden rounded-lg border border-slate-100 bg-white p-2"
         href={`/blogs/${slug}`}
@@ -92,7 +92,7 @@ const Blog = () => {
       <WebsiteLayout title="Simulator">
         <div className="flex-grow bg-gray-50 pb-20 pt-2">
           <BlogHeader
-            title="Blogs"
+            title="Learn"
             description="Exploring Airdrops and Stock Analysis: Unveiling Insights and Opportunities"
           />
           <div className="container mx-auto max-w-4xl px-4">
