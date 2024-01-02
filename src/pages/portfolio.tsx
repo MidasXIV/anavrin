@@ -112,9 +112,9 @@ const Portfolio: FC = () => {
       <Tabs
         defaultValue={selectedPortfolio}
         onValueChange={handleTabChange}
-        className="flex h-full flex-col"
+        className="flex h-full flex-col bg-charcoal-400 sm:bg-transparent "
       >
-        <TabsList className="w-fit">
+        <TabsList className="mx-auto w-fit sm:m-0">
           {portfolios.map((portfolio, key) => (
             <TabsTrigger key={portfolio._id} value={generateTabsValueForPortfolioItem(portfolio)}>
               {`Portfolio ${key}`}
@@ -169,7 +169,7 @@ const Portfolio: FC = () => {
             cancel={toggleShowMaxPortfolioWarningModal}
           />
         ) : null}
-        <div className="portfolio-primary-panel flex h-full flex-1 flex-col overflow-y-auto rounded-lg sm:mb-1">
+        <div className="portfolio-primary-panel flex h-full flex-1 flex-col overflow-y-auto rounded-b-lg sm:mb-1 sm:rounded-lg">
           {Content}
         </div>
       </DefaultLayout>

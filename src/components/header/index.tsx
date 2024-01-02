@@ -26,11 +26,11 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
   const userImage = loading ? defaultUserImage : session?.user?.image ?? defaultUserImage;
 
   return (
-    <div className={clsx(styles.header, "flex")}>
+    <div className={clsx(styles.header, "flex bg-charcoal-300 bg-none")}>
       <div className={styles.leftHeader}>
         <div className={clsx(styles.leftContentPanel, styles.content)}>
           <h3 className="text-2xl font-black">{title}</h3>
-          <p className="font-sans text-xs font-thin">{description}</p>
+          <p className="hidden font-sans text-xs font-thin sm:block">{description}</p>
         </div>
       </div>
       <div className={styles.rightHeader}>
@@ -39,7 +39,7 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
             <DropdownMenuTrigger asChild>
               <button className="relative inline-block" type="button">
                 <Image
-                  className="inline-block h-12 w-12 rounded-lg object-cover"
+                  className="inline-block h-10 w-10 rounded-lg object-cover sm:h-12 sm:w-12"
                   src={userImage}
                   alt="Profile"
                   layout="intrinsic"

@@ -235,23 +235,30 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
             })}
             style={{ height: "100%" }}
           >
-            <div className="flex h-20 flex-row">
-              <PortfolioAnalysisHeader
-                totalInvested={totalInvested}
-                portfolioValue={portfolioValue}
-                percentageChange={percentageChange}
-              />
-              <div className="w-1/3">
+            <div className="flex flex-col rounded-b-xl bg-gradient-to-t from-charcoal-900 via-charcoal-400 to-charcoal-400 px-4 pb-4 sm:h-20 sm:flex-row sm:bg-none sm:p-0">
+              <div className="w-full sm:w-2/3">
+                <PortfolioAnalysisHeader
+                  totalInvested={totalInvested}
+                  portfolioValue={portfolioValue}
+                  percentageChange={percentageChange}
+                />
+              </div>
+              <div className="mx-auto w-3/5 sm:m-0 sm:w-1/3">
                 <PortfolioOptions
                   openAddAssetModal={toggle}
                   savePortfolio={onPortfolioSave}
                   deletePortfolio={onPortfolioDelete}
-                  togglePortfolioAnalysisPanel={() => setHideSecondaryPanel(!hideSecondaryPanel)}
+                  togglePortfolioAnalysisPanel={() => {
+                    setHideSecondaryPanel(!hideSecondaryPanel);
+                    if (isMobileUI()) {
+                      setOpened(true);
+                    }
+                  }}
                 />
               </div>
             </div>
             {/* Occupy Max remaining space and scroll only table */}
-            <section className="mt-2 flex-1 overflow-y-auto">
+            <section className="mt-2 flex-1 overflow-y-auto px-2 sm:p-0">
               <PortfolioTable
                 tableSchema={portfolioTableSchema}
                 data={portfolioData}

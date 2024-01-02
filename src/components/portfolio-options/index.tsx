@@ -30,7 +30,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
   deletePortfolio,
   togglePortfolioAnalysisPanel
 }) => (
-  <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 px-4 align-middle">
+  <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 p-4 align-middle sm:px-4 sm:py-0">
     <ul className="nav flex flex-row">
       <TooltipWrapper label="Add stock" color="orange">
         <button type="button" className={styles.icon} onClick={openAddAssetModal}>
@@ -39,7 +39,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
       </TooltipWrapper>
     </ul>
 
-    <ul className="nav hidden flex-row space-x-5 xl:flex">
+    <ul className="nav flex flex-row space-x-5 xl:flex">
       <TooltipWrapper label="Delete" color="orange">
         <button type="button" className={styles.icon} onClick={deletePortfolio}>
           <DeletePortfolioIcon width={24} height={24} />
@@ -53,7 +53,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
     </ul>
 
     {/* Transistion panel -> Open portfolio analysis panel */}
-    <ul className="nav hidden flex-row xl:flex">
+    <ul className="nav flex flex-row xl:flex">
       <TooltipWrapper label="Analyse portfolio" color="orange">
         <button type="button" className={styles.icon} onClick={togglePortfolioAnalysisPanel}>
           <AnalyseIcon width={24} height={24} />
@@ -61,7 +61,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
       </TooltipWrapper>
     </ul>
     {/* Options */}
-    <ul className="nav flex flex-row xl:hidden">
+    <ul className="nav hidden flex-row xl:hidden">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button type="button" className={styles.icon}>
