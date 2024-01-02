@@ -96,7 +96,7 @@
 }
 
 .portfolio-primary-panel {
-  @apply w-full h-full bg-gray-300 p-2 border-r border-gray-400;
+  @apply w-full h-full bg-gray-300 p-0 sm:p-2 border-r border-gray-400;
 }
 
 .portfolio-default-primary-panel {

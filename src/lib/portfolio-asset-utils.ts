@@ -1,3 +1,4 @@
+import { formatNumber } from "@/utils/helper";
 import { fetchCoinInfo } from "../utils/cryptocurrencyService";
 import getStockInformation from "../utils/getStockInformation";
 import isEmptyDataItem from "../utils/type-gaurds";
@@ -66,6 +67,7 @@ const hydrateCryptoPortfolioItems = async (portfolio: Portfolio): Promise<Crypto
   return data;
 };
 
+// FIXME: why are numeric values being passed as strings
 function convertDividendDataToDTO(data: any): DividendAssetDTO {
   const {
     name: title,
@@ -86,20 +88,20 @@ function convertDividendDataToDTO(data: any): DividendAssetDTO {
   } = data;
 
   // Calculate other properties based on the data
-  const marketValue = (marketPrice * shares).toFixed(2);
+  const marketValue = formatNumber(marketPrice * shares, 2);
   const netValue = "";
-  const income = (dividendAmount * shares).toFixed(2);
+  const income = formatNumber(dividendAmount * shares, 2);
   // YOC=( Annual Dividend Amount / Cost Basis )×100
-  const yieldOnCost = ((Number.parseFloat(income) / costBasis) * 100).toFixed(2);
+  const yieldOnCost = formatNumber((income / costBasis) * 100, 2);
   const avgPrice = (costBasis / shares).toFixed(2);
 
   return {
     title,
     symbol,
     sector,
-    shares: shares.toString(),
+    shares,
     avgPrice,
-    marketPrice: marketPrice.toFixed(2),
+    marketPrice: formatNumber(marketPrice, 2),
     costBasis,
     marketValue,
     netValue,
@@ -120,8 +122,8 @@ function convertDividendDataToDTO(data: any): DividendAssetDTO {
 function convertDividendPortfolioItemToPersistence(obj: DividendAssetDTO): StockPortfolioItem {
   return {
     ticker: obj.symbol,
-    shares: Number.parseFloat(obj.shares),
-    fiat: Number.parseFloat(obj.costBasis)
+    shares: obj.shares,
+    fiat: obj.costBasis
   };
 }
 

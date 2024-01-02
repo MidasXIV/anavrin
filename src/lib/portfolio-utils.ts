@@ -157,14 +157,31 @@ function getPortfolioSummary(
   totalInvested: number;
   portfolioValue: number;
   percentageChange: number;
-  ringChartData: {
+  ringChartData: Array<{
     value: number;
     color: string;
     tooltip: string;
-  }[];
+  }>;
+  dividendDistributionRingChartData: Array<{
+    value: number;
+    tooltip: string;
+  }>;
   dividendIncome?: number;
   portfolioDividendYield?: number;
   portfolioDividendEfficiency?: number;
+  costMarketValueChartData: Array<{
+    symbol: string;
+    costBasis: number;
+    marketValue: number;
+  }>;
+  assetsComparisionGrowthChartData: Array<{
+    symbol: string;
+    growth: number;
+  }>;
+  dividendYieldOnCostData: Array<{
+    symbol: string;
+    yield: number;
+  }>;
 } {
   let totalInvested = 0;
   let portfolioValue = 0;
@@ -178,13 +195,23 @@ function getPortfolioSummary(
    */
 
   let ringChartData = [];
+  let costMarketValueChartData = [];
+  const assetsComparisionGrowthChartData = [];
+  const dividendYieldOnCostData = [];
+  let dividendDistributionRingChartData = [];
 
   switch (portfolioType) {
     case AssetType.CRYPTO:
       portfolioData.forEach(item => {
         totalInvested += item.fiat;
         portfolioValue += item.holdings * item?.marketPrice;
+
+        assetsComparisionGrowthChartData.push({
+          symbol: item.token,
+          growth: formatNumber(((item.marketValue - item.fiat) / Math.abs(item.fiat)) * 100, 2)
+        });
       });
+
       ringChartData = portfolioData
         .map(item => ({
           value: item.fiat,
@@ -196,12 +223,35 @@ function getPortfolioSummary(
           tooltip: `${item.token}`
         }))
         .sort((a, b) => b.value - a.value);
+
+      costMarketValueChartData = portfolioData.reduce((acc, item: CryptoAssetDTO) => {
+        acc.push({
+          symbol: item.token,
+          costBasis: item.fiat,
+          marketValue: item.marketValue
+        });
+        return acc;
+      }, []);
+
       break;
     case AssetType.STOCK:
       portfolioData.forEach(item => {
         totalInvested += item.costBasis;
         portfolioValue += item.shares * item?.marketPrice;
-        dividendIncome += Number.parseFloat(item.income ?? 0);
+        dividendIncome += item.income ?? 0;
+
+        dividendYieldOnCostData.push({
+          symbol: item.symbol,
+          yield: item.yieldOnCost
+        });
+
+        assetsComparisionGrowthChartData.push({
+          symbol: item.symbol,
+          growth: formatNumber(
+            ((item.marketValue - item.costBasis) / Math.abs(item.costBasis)) * 100,
+            2
+          )
+        });
       });
       ringChartData = portfolioData
         .map(item => ({
@@ -213,6 +263,22 @@ function getPortfolioSummary(
         }))
         .sort((a, b) => b.value - a.value);
 
+      dividendDistributionRingChartData = portfolioData
+        .map(item => ({
+          value: item.income,
+          tooltip: `${item.symbol}`,
+          composition: ((item.income / dividendIncome) * 100).toFixed(1)
+        }))
+        .sort((a, b) => b.value - a.value);
+
+      costMarketValueChartData = portfolioData.reduce((acc, item: DividendAssetDTO) => {
+        acc.push({
+          symbol: item.symbol,
+          costBasis: item.costBasis,
+          marketValue: item.marketValue
+        });
+        return acc;
+      }, []);
       /**
        * Portfolio Dividend Yield=( Total Annual Dividends / Total Portfolio Value  )×100
        */
@@ -224,6 +290,7 @@ function getPortfolioSummary(
        */
 
       portfolioDividendEfficiency = parseFloat(((dividendIncome / totalInvested) * 100).toFixed(2));
+      console.log(dividendIncome, portfolioValue);
       break;
     default:
       break;
@@ -238,7 +305,11 @@ function getPortfolioSummary(
     ringChartData,
     dividendIncome,
     portfolioDividendYield,
-    portfolioDividendEfficiency
+    portfolioDividendEfficiency,
+    costMarketValueChartData,
+    assetsComparisionGrowthChartData,
+    dividendDistributionRingChartData,
+    dividendYieldOnCostData
   };
 }
 

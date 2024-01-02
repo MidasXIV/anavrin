@@ -1,4 +1,4 @@
-import { BarChart, Card, Title } from "@tremor/react";
+import { BarChart } from "@tremor/react";
 import { FC } from "react";
 
 const valueFormatter = number => `$ ${new Intl.NumberFormat("us").format(number).toString()}`;
@@ -10,6 +10,10 @@ interface BarChartProps {
   colors: Array<any>;
   title: string;
   showLegend?: boolean;
+  minValue?: number;
+  showYAxis?: boolean;
+  rotateLabelX?: boolean;
+  customValueFormatter?: (x: number) => string;
 }
 
 const BarChartWrapper: FC<BarChartProps> = ({
@@ -18,24 +22,25 @@ const BarChartWrapper: FC<BarChartProps> = ({
   index,
   categories,
   colors,
-  showLegend = false
+  showLegend = false,
+  showYAxis = true,
+  rotateLabelX = false,
+  customValueFormatter = valueFormatter,
+  minValue
 }) => (
-  // <Card className="w-full h-full">
-  <>
-    {/* <Title>{title}</Title> */}
-    <BarChart
-      className="h-full w-full"
-      data={data}
-      index={index}
-      categories={categories}
-      colors={colors}
-      valueFormatter={valueFormatter}
-      yAxisWidth={48}
-      showLegend={showLegend}
-    />
-
-    {/* </Card> */}
-  </>
+  <BarChart
+    className="h-full w-full"
+    data={data}
+    index={index}
+    categories={categories}
+    colors={colors}
+    valueFormatter={customValueFormatter}
+    yAxisWidth={48}
+    showLegend={showLegend}
+    showYAxis={showYAxis}
+    rotateLabelX={rotateLabelX ? { angle: -90 } : { angle: 0 }}
+    minValue={minValue || undefined}
+  />
 );
 
 export default BarChartWrapper;

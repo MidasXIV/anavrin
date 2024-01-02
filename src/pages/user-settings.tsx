@@ -102,7 +102,7 @@ const UserSettings: FC = () => {
           <SecondaryPanel
             showDrawer={opened}
             setShowDrawer={setOpened}
-            className="m-2 border border-gray-400"
+            className="dashboard-secondary-panel m-2 border border-gray-400"
           >
             <PanelComponent />
           </SecondaryPanel>

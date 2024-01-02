@@ -5,6 +5,8 @@ import { Drawer } from "vaul";
 
 import { Button } from "@/components/ui/button";
 import PortfolioLayoutSecondaryPanel from "@/components/portfolio-secondary-panel/portfolio-secondary-panel";
+import SecondaryPanel from "@/components/secondary-panel";
+import { isMobileUI } from "lib/viewport";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
@@ -57,6 +59,8 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   const { isShowing, toggle } = useModal(false);
   const { isShowing: isEditModalShowing, toggle: toggleEditModal } = useModal(false);
   const [hideSecondaryPanel, setHideSecondaryPanel] = useState(true);
+  const [opened, setOpened] = useState(false);
+
   const [portfolioData, setPortfolioData] = useState([]);
   const [portfolioTableLoading, setPortfolioTableLoading] = useState(false);
 
@@ -67,7 +71,11 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     ringChartData,
     dividendIncome,
     portfolioDividendYield,
-    portfolioDividendEfficiency
+    portfolioDividendEfficiency,
+    assetsComparisionGrowthChartData,
+    costMarketValueChartData,
+    dividendDistributionRingChartData,
+    dividendYieldOnCostData
   } = getPortfolioSummaryMemoized(portfolioData, portfolioType);
 
   const [assetToBeEdited, setAssetToBeEdited] = useState(undefined);
@@ -270,7 +278,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
               />
             </section>
           </div>
-          <div
+          {/* <div
             className={clsx("portfolio-secondary-panel max-h-full overflow-hidden rounded-lg", {
               hidden: hideSecondaryPanel,
               "md:w-4/12": !hideSecondaryPanel
@@ -289,6 +297,8 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
                   dividendIncome={dividendIncome}
                   portfolioDividendYield={portfolioDividendYield}
                   portfolioDividendEfficiency={portfolioDividendEfficiency}
+                  costMarketValueChartData={costMarketValueChartData}
+                  assetsComparisionGrowthChartData={assetsComparisionGrowthChartData}
                 />
               </div>
             )}
@@ -299,8 +309,28 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
             >
               <Drawer.Trigger>Analyse Portfolio</Drawer.Trigger>
             </Button>
-          </div>
-          <Drawer.Portal>
+          </div> */}
+          <SecondaryPanel
+            showDrawer={opened}
+            setShowDrawer={setOpened}
+            className={clsx("portfolio-secondary-panel", {
+              hidden: hideSecondaryPanel,
+              "hidden w-full md:block md:w-4/12": !hideSecondaryPanel
+            })}
+          >
+            <PortfolioLayoutSecondaryPanel
+              portfolioType={portfolioType}
+              ringChartData={ringChartData}
+              dividendIncome={dividendIncome}
+              portfolioDividendYield={portfolioDividendYield}
+              portfolioDividendEfficiency={portfolioDividendEfficiency}
+              costMarketValueChartData={costMarketValueChartData}
+              assetsComparisionGrowthChartData={assetsComparisionGrowthChartData}
+              dividendDistributionRingChartData={dividendDistributionRingChartData}
+              dividendYieldOnCostData={dividendYieldOnCostData}
+            />
+          </SecondaryPanel>
+          {/* <Drawer.Portal>
             <Drawer.Overlay className="fixed inset-0 bg-black/40" />
             <Drawer.Content className="fixed bottom-0 left-0 right-0 flex max-h-[70%] flex-col rounded-t-[10px] bg-charcoal-400">
               <div className="mx-auto flex h-full w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4">
@@ -310,10 +340,12 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
                   dividendIncome={dividendIncome}
                   portfolioDividendYield={portfolioDividendYield}
                   portfolioDividendEfficiency={portfolioDividendEfficiency}
+                  costMarketValueChartData={costMarketValueChartData}
+                  assetsComparisionGrowthChartData={assetsComparisionGrowthChartData}
                 />
               </div>
             </Drawer.Content>
-          </Drawer.Portal>
+          </Drawer.Portal> */}
         </div>
       </Drawer.Root>
     </>

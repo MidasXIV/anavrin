@@ -30,10 +30,10 @@ function differenceBy(array1: any[], array2: any[], iteratee: string): any[] {
  * Formats a number into a more human-readable format with commas and 2 decimal places.
  *
  * @param {number} num - The number to format
- * @returns {string} - The formatted number as a string
+ * @returns {number} - The formatted number
  */
-function formatNumber(num: number): string {
-  return num.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+function formatNumber(num: number, decimals = 2): number {
+  return Number.parseFloat(num.toFixed(decimals));
 }
 
 /**

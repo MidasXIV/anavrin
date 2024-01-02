@@ -14,7 +14,7 @@ const SecondaryPanel: FC<SecondayPanelProps> = ({
   children,
   className = null
 }) => (
-  <div className={cn("dashboard-secondary-panel overflow-y-auto rounded-lg", className)}>
+  <div className={cn("overflow-y-auto rounded-lg", className)}>
     {showDrawer ? (
       <Drawer.Root
         open={showDrawer}
