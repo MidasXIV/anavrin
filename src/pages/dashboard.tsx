@@ -112,7 +112,7 @@ const Dashboard: FC = () => {
             <SecondaryPanel
               showDrawer={opened}
               setShowDrawer={setOpened}
-              className="m-2 border border-gray-400 sm:w-3/5"
+              className="dashboard-secondary-panel m-2 border border-gray-400 sm:w-3/5"
             >
               <section className="flex h-full w-full flex-col">
                 <div className="h-2/5 w-full p-1">

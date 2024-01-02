@@ -83,7 +83,8 @@ const Home: FC = () => (
 
     <FeaturesSection />
 
-    <div className="w-full border-t" id="register">
+    <div className="h-56 bg-charcoal-300" />
+    <div className="w-full " id="register">
       <div className="h-28 bg-gradient-to-t from-charcoal-900 via-charcoal-400 to-charcoal-300" />
       <div className="w-full bg-charcoal-900">
         <Register />
@@ -91,8 +92,7 @@ const Home: FC = () => (
       <div className="h-28 rounded-b-full bg-charcoal-900 shadow-lg" />
     </div>
     <div className="w-full">
-
-    <WebsiteFooter />
+      <WebsiteFooter />
     </div>
   </div>
 );
