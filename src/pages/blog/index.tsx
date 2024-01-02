@@ -26,10 +26,10 @@ const BlogListItem: FC<{
   const { slug, title, description, author, updatedAt } = blog;
   const formattedDate = new Date(updatedAt).toDateString();
   return (
-    <Link href={{ pathname: `/blogs/${slug}` }} legacyBehavior>
+    <Link href={{ pathname: `/blog/${slug}` }} legacyBehavior>
       <a
         className="text-md group flex items-center justify-between border-b py-2 text-gray-600 no-underline hover:text-blue-600"
-        href={`/blogs/${slug}`}
+        href={`/blog/${slug}`}
         key={key}
       >
         <span className="transition-transform group-hover:translate-x-2">{title}</span>
@@ -48,10 +48,10 @@ const BlogListCard: FC<{
   const { slug, title, description, author, updatedAt, display } = blog;
   const formattedDate = new Date(updatedAt).toDateString();
   return (
-    <Link href={{ pathname: `/blogs/${slug}` }} legacyBehavior>
+    <Link href={{ pathname: `/blog/${slug}` }} legacyBehavior>
       <a
         className="group relative mt-2 block overflow-hidden rounded-lg border border-slate-100 bg-white p-2"
-        href={`/blogs/${slug}`}
+        href={`/blog/${slug}`}
         key={key}
       >
         <div className="flex justify-between">
