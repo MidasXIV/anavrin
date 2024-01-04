@@ -83,7 +83,58 @@ const Home: FC = () => (
 
     <FeaturesSection />
 
-    <div className="h-56 bg-charcoal-300" />
+    <div className="relative border-b border-t border-charcoal-400">
+      <section className="relative z-10 flex w-full flex-row p-12 px-16">
+        <section className="h-[50vh] w-1/3 rounded-l-xl bg-gradient-to-l from-black via-blue-600 to-sky-100" />
+        <section className="h-[50vh] w-1/3 bg-black" />
+        <section className="h-[50vh] w-1/3 rounded-r-xl bg-gradient-to-r from-black via-fuchsia-300 to-fuchsia-100" />
+      </section>
+      <div className="absolute inset-0  z-20 mx-auto flex w-1/2 flex-col items-center justify-center text-center text-gray-100">
+        <h1 className="mb-4 text-5xl font-thin">Anavrin is Your Trusted Portfolio Ally</h1>
+        <span className="text-md mb-8 w-5/6 text-gray-200/70">
+          Elevate your experience with a seamless mobile interface, freeing you from the confines of
+          traditional desktop solutions. Our intelligent algorithms provide swift and precise
+          portfolio insights, adapting and enhancing with every interaction.
+        </span>
+        <div className="flex space-x-5">
+          <Button
+            type="submit"
+            className="rounded-full border-2 bg-gray-100 px-10 py-6 font-light text-gray-800 transition duration-300 hover:bg-transparent hover:text-gray-100"
+            variant="default"
+          >
+            Get Started
+          </Button>
+
+          <Button
+            type="submit"
+            className="rounded-full border px-10 py-6 font-light text-gray-400"
+            variant="outline"
+          >
+            Learn More
+          </Button>
+        </div>
+      </div>
+    </div>
+
+    <div className="flex h-96 w-full flex-row bg-charcoal-300 px-8 py-4">
+      <div className=" h-full w-1/2 p-1">
+        <div className="h-full w-full rounded-xl bg-gray-300 shadow-lg">
+          Perhaps you identify with one of these situations
+        </div>
+      </div>
+      <div className="grid h-full w-1/2 grid-cols-2 gap-2 p-1">
+        <div className="col-span-1 h-full w-full rounded-xl bg-gray-300 shadow-lg">
+          Are endless Excel sheets slowing you down?
+        </div>
+        <div className="col-span-1 h-full w-full rounded-xl bg-gray-300 shadow-lg">
+          Struggling to get a clear overview of multiple portfolios simultaneously?
+        </div>
+        <div className="col-span-1 h-full w-full rounded-xl bg-gray-300 shadow-lg" />
+        <div className="col-span-1 h-full w-full rounded-xl bg-gray-300 shadow-lg" />
+      </div>
+    </div>
+
+    <div className="h-48 bg-charcoal-300" />
     <div className="w-full " id="register">
       <div className="h-28 bg-gradient-to-t from-charcoal-900 via-charcoal-400 to-charcoal-300" />
       <div className="w-full bg-charcoal-900">
