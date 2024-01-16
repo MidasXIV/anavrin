@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import { FC } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import FAQComponent from "@/components/website/FAQ";
 import Register from "../components/website/register";
 import FeaturesSection from "../components/website/features-section";
 import LaunchAppButton from "../components/website/launch-app-button";
@@ -134,6 +136,14 @@ const Home: FC = () => (
       </div>
     </div>
 
+    <div className="h-28 rounded-t-full bg-charcoal-900 shadow-lg" />
+    <div className="bg-gradient-to-b from-charcoal-900 via-charcoal-400 to-charcoal-300 text-gray-400">
+      <div className="container mx-auto p-8">
+        <div className="mx-auto w-full lg:w-2/3">
+          <FAQComponent />
+        </div>
+      </div>
+    </div>
     <div className="h-48 bg-charcoal-300" />
     <div className="w-full " id="register">
       <div className="h-28 bg-gradient-to-t from-charcoal-900 via-charcoal-400 to-charcoal-300" />
