@@ -53,6 +53,7 @@
     "clsx": "^2.0.0",
     "crypto": "^1.0.1",
     "fast-memoize": "^2.5.2",
+    "geist": "^1.2.1",
     "gray-matter": "^4.0.3",
     "mongodb": "^4.17.0",
     "next": "^14.0.3",

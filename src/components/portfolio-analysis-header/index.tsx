@@ -20,7 +20,7 @@ const PortfolioAnalysisHeader: FC<PortfolioAnalysisHeaderProps> = ({
     <div>
       <div className="pb-2 sm:hidden">
         <div className="flex flex-row items-center justify-center pb-2">
-          <span className="p-2 font-mono text-4xl leading-none text-gray-100">
+          <span className="p-2 font-sans text-4xl leading-none text-gray-100">
             {valueFormatter(portfolioValue)}
           </span>
           {/* <div className="flex flex-col border-l border-gray-300 ">

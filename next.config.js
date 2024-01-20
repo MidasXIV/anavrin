@@ -16,10 +16,12 @@ module.exports = withPWA({
       "images.unsplash.com",
       "lh3.googleusercontent.com",
       "res.cloudinary.com",
-      "assets.coingecko.com"
+      "assets.coingecko.com",
+      "github.com"
     ]
   },
 
+  transpilePackages: ["geist"],
   swcMinify: true,
 
   // This is not required to make it into a PWA, but is a nice way to clean up your imports

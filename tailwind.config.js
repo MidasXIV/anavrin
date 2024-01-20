@@ -135,7 +135,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        // sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-geist-sans)"],
         wide: ["widescreen-mixed", ...defaultTheme.fontFamily.sans]
       },
       boxShadow: {
