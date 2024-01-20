@@ -224,14 +224,17 @@ function getPortfolioSummary(
         }))
         .sort((a, b) => b.value - a.value);
 
-      costMarketValueChartData = portfolioData.reduce((acc, item: CryptoAssetDTO) => {
-        acc.push({
-          symbol: item.token,
-          costBasis: item.fiat,
-          marketValue: item.marketValue
-        });
-        return acc;
-      }, []);
+      costMarketValueChartData = (portfolioData as CryptoAssetDTO[]).reduce(
+        (acc, item: CryptoAssetDTO) => {
+          acc.push({
+            symbol: item.token,
+            costBasis: item.fiat,
+            marketValue: item.marketValue
+          });
+          return acc;
+        },
+        []
+      );
 
       break;
     case AssetType.STOCK:
@@ -271,14 +274,17 @@ function getPortfolioSummary(
         }))
         .sort((a, b) => b.value - a.value);
 
-      costMarketValueChartData = portfolioData.reduce((acc, item: DividendAssetDTO) => {
-        acc.push({
-          symbol: item.symbol,
-          costBasis: item.costBasis,
-          marketValue: item.marketValue
-        });
-        return acc;
-      }, []);
+      costMarketValueChartData = (portfolioData as DividendAssetDTO[]).reduce(
+        (acc, item: DividendAssetDTO) => {
+          acc.push({
+            symbol: item.symbol,
+            costBasis: item.costBasis,
+            marketValue: item.marketValue
+          });
+          return acc;
+        },
+        []
+      );
       /**
        * Portfolio Dividend Yield=( Total Annual Dividends / Total Portfolio Value  )×100
        */

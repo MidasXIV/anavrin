@@ -170,7 +170,9 @@ function TradingViewWidget22() {
             "all|1M"
           ]
         }`;
-    container.current.appendChild(script);
+    if (container.current) {
+      (container.current as any)?.appendChild(script);
+    }
   }, []);
 
   return (
@@ -289,7 +291,7 @@ const StockIndiciesPanel: FC<IEconomicEventsPanelProps> = ({ variant = VARIANT.d
         <section className="grid gap-4 py-4 md:grid-cols-3 lg:grid-cols-4">
           {indicies.map((event, index) => (
             <EconomicEventDayBlock
-              id={`economic-event-block-${index + 1}`}
+              // id={`economic-event-block-${index + 1}`}
               key={`economic-event-block-${index + 1}`}
               event={event}
               variant={variant}
