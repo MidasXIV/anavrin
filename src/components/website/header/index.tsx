@@ -132,7 +132,7 @@ const WebsiteHeader: FC<unknown> = () => {
         </nav> */}
         <NavigationMenu className="bg-transparent p-2">
           <NavigationMenuList className="bg-transparent">
-            <NavigationMenuItem className="bg-transparent">
+            <NavigationMenuItem className="hidden sm:block bg-transparent">
               <Link href="#" legacyBehavior passHref className="bg-transparent">
                 <NavigationMenuLink
                   className={clsx("bg-transparent", navigationMenuTriggerStyle())}

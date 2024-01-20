@@ -29,7 +29,7 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
     <div className={clsx(styles.header, "flex bg-charcoal-300 bg-none")}>
       <div className={styles.leftHeader}>
         <div className={clsx(styles.leftContentPanel, styles.content)}>
-          <h3 className="text-2xl font-black">{title}</h3>
+          <h3 className="my-auto text-2xl font-black">{title}</h3>
           <p className="hidden font-sans text-xs font-thin sm:block">{description}</p>
         </div>
       </div>

@@ -68,14 +68,16 @@ const FAQComponent: FC<unknown> = () => {
   return (
     <>
       <div className="mb-4 px-8 text-center">
-        <h1 className="text-5xl font-thin">Got a question ?</h1>
+        <h1 className="font-thin md:text-5xl">Got a question ?</h1>
       </div>
       <section className="py-6">
         <Accordion type="multiple" className="">
           {FAQData.map((content, index) => (
             <AccordionItem value={`item-${index}`} key={`item-${index}`}>
-              <AccordionTrigger className="text-2xl font-thin">{content.question}</AccordionTrigger>
-              <AccordionContent className="text-xl">{content.answer}</AccordionContent>
+              <AccordionTrigger className="font-thin md:text-2xl">
+                {content.question}
+              </AccordionTrigger>
+              <AccordionContent className="md:text-xl">{content.answer}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
