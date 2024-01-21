@@ -133,8 +133,25 @@ const Dashboard: FC = () => {
                     </div>
                     <div className="flex h-1/2 w-full flex-row p-1">
                       <div className="h-full w-1/2 p-1">
-                        <Card showHeader headerTitle="Portfolios breakdown 2">
-                          <div className="h-full w-full" />
+                        <Card showHeader headerTitle="Goals">
+                          <div className="h-full w-full">
+                            <section className="h-1/2 px-2">
+                              <TrackerBlock
+                                title="Investment"
+                                current={30983}
+                                goal={50000}
+                                formatter={valueFormatter}
+                              />
+                            </section>
+                            <section className="h-1/2 px-2">
+                              <TrackerBlock
+                                title="Dividend"
+                                current={805}
+                                goal={2000}
+                                formatter={valueFormatter}
+                              />
+                            </section>
+                          </div>
                         </Card>
                       </div>
                       <div className="h-full w-1/2 p-1">
