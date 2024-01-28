@@ -12,7 +12,10 @@ interface BarChartProps {
   showLegend?: boolean;
   minValue?: number;
   showYAxis?: boolean;
+  showXAxis?: boolean;
+  stack?: boolean;
   rotateLabelX?: boolean;
+  layout?: "vertical" | "horizontal";
   customValueFormatter?: (x: number) => string;
 }
 
@@ -24,9 +27,12 @@ const BarChartWrapper: FC<BarChartProps> = ({
   colors,
   showLegend = false,
   showYAxis = true,
+  showXAxis = true,
   rotateLabelX = false,
   customValueFormatter = valueFormatter,
-  minValue
+  minValue,
+  stack = false,
+  layout = "horizontal"
 }) => (
   <BarChart
     className="h-full w-full"
@@ -38,7 +44,10 @@ const BarChartWrapper: FC<BarChartProps> = ({
     yAxisWidth={48}
     showLegend={showLegend}
     showYAxis={showYAxis}
+    showXAxis={showXAxis}
     rotateLabelX={rotateLabelX ? { angle: -90 } : { angle: 0 }}
+    stack={stack}
+    layout={layout}
     minValue={minValue || undefined}
   />
 );
