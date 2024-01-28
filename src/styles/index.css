@@ -207,3 +207,7 @@
     animation-range: entry 25% cover 80%;
   }
 }
+
+.hero {
+  background-image: url(/images/backdrop-3.jpg);
+}

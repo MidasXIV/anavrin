@@ -20,6 +20,7 @@ import mockDividendDistributionData from "tests/mocks/dividend-distribution-data
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BarChartWrapper from "@/components/charting/bar-chart/bar-chart";
 import { twMerge } from "tailwind-merge";
+import Hero from "@/components/website/hero/hero";
 import Register from "../components/website/register";
 import FeaturesSection from "../components/website/features-section";
 import LaunchAppButton from "../components/website/launch-app-button";
@@ -71,38 +72,9 @@ const ParallaxImage = ({
 const Home: FC = () => (
   <div className="m-0 flex h-full flex-col bg-white">
     <WebsiteHeader />
-    <div className="border-b-1 flex justify-center" id="home">
-      <div className="flex max-w-6xl flex-col p-8 text-center md:p-16">
-        {/* <h6 className="uppercase text-xs text-gray-600">coming soon</h6> */}
-        {/* <h3 className="outline-font mb-2 pt-4 text-6xl font-light uppercase">
-          ANALYZE YOUR PORTFOLIO
-        </h3> */}
-        <h2 className="text-rep outline-font mx-auto my-24 flex flex-col py-12 font-wide text-[60px] md:text-[85px] lg:text-[108px]">
-          <span className="absolute -translate-y-24 bg-white leading-none">ANAVRIN</span>
-          <span className="absolute -translate-y-14 bg-white leading-none ">ANAVRIN</span>
-          <span className="absolute -translate-y-7 bg-white leading-none ">ANAVRIN</span>
-          <span className="absolute translate-y-24 bg-white leading-none ">ANAVRIN</span>
-          <span className="absolute translate-y-14 bg-white leading-none ">ANAVRIN</span>
-          <span className="absolute translate-y-7 bg-white leading-none">ANAVRIN</span>
-          <span className="relative bg-white leading-none">ANAVRIN</span>
-        </h2>
-        {/* <p className="pt-5 font-medium">
-          Simple tracking & simulation for your portfolio. Make better decisions with real data.
-        </p> */}
-        <p className="font-mono text-xs">
-          Tracking + Analytics + Simulation
-          <br />
-          <br />
-          Track and Optimize Your Portfolio with Ease; Gain control over your investments with our
-          simple yet powerful tracking and simulation tools. Make informed decisions backed by real
-          data for better portfolio management.
-          <br />
-          <br />
-          Our platform empowers you to effortlessly monitor your dividends and performance, even in
-          complex portfolios. Focus on your investment strategy while we handle the details.
-        </p>
-      </div>
-    </div>
+    <div className="hero absolute top-0 h-full w-full bg-center bg-repeat-x" />
+    <div className="absolute top-0 h-full w-full backdrop-blur-md" />
+    <Hero />
 
     {/* <div className="flex" id="about">
       <div className="mx-auto flex h-full max-w-6xl flex-col justify-center space-y-6 p-6 sm:space-x-6 sm:space-y-0 md:flex-row">
@@ -144,55 +116,67 @@ const Home: FC = () => (
 
     {/* <FeaturesSection /> */}
 
-    {/* <h1 className="mx-auto mb-4 text-5xl font-thin">
-      Perhaps you identify with one of these situations
-    </h1> */}
-    {/* <section className="h-[35rem] w-full p-12 px-16">
-      <div className="grid h-full w-full grid-cols-4 grid-rows-4 rounded-xl bg-gray-200 shadow-sm">
-        <div className="col-span-2 row-span-2  border-b border-gray-300 px-4 py-6">
-          <h1 className="ml-4 text-5xl font-thin">Tired of managing portfolios in Excel sheets?</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <h1 className="mx-auto mb-4 p-8 text-2xl font-thin outline sm:p-0 sm:text-5xl">
+        Perhaps you identify with one of these situations
+      </h1>
+      <section className="h-[35rem] w-full p-12 px-8 sm:px-16">
+        <div className="grid h-full w-full grid-cols-4 grid-rows-4 rounded-xl bg-gray-200 shadow-sm">
+          <div className="col-span-2 row-span-2 flex items-end border-r border-gray-300 px-2 py-6 sm:border-b sm:px-4">
+            <h1 className="ml-2 text-sm sm:ml-4 sm:text-5xl sm:font-thin">
+              Tired of managing portfolios in Excel sheets?
+            </h1>
+          </div>
+          <div className="col-span-2 col-start-3 row-span-2 flex items-end px-4 py-6 sm:col-start-1 sm:row-start-3">
+            <h1 className="ml-2 text-sm sm:ml-4 sm:text-5xl sm:font-thin">
+              Are endless Excel sheets slowing you down?
+            </h1>
+          </div>
+          <div className="col-span-4 row-span-4 row-start-3 flex items-end border-t border-gray-300 px-4 py-6 sm:col-span-2 sm:row-start-1 sm:border-l">
+            <h1 className="ml-2 text-sm sm:ml-4 sm:text-5xl sm:font-thin">
+              Struggling to get a clear overview of multiple portfolios simultaneously?
+            </h1>
+          </div>
         </div>
-        <div className="col-span-2 col-start-1 row-span-2 row-start-3 px-4 py-6">
-          <h1 className="ml-4 text-5xl font-thin">Are endless Excel sheets slowing you down?</h1>
-        </div>
-        <div className="col-span-2 row-span-4 row-start-1 border-l border-gray-300 px-4 py-6">
-          <h1 className="ml-4 text-5xl font-thin">
-            Struggling to get a clear overview of multiple portfolios simultaneously?
-          </h1>
-        </div>
-      </div>
-    </section> */}
+      </section>
+    </div>
 
-    <div className="grid h-[30rem] w-full grid-cols-3 grid-rows-1 gap-4 p-12 px-16">
-      <div className=" rounded-xl bg-gray-200 px-4 py-6 shadow-xl">
+    {/* <div className="sticky grid h-[30rem] min-h-screen w-full grid-cols-3 grid-rows-1 gap-4 p-12 px-16 outline">
+      <div className=" h-60 rounded-xl bg-gray-200 px-4 py-6 shadow-xl">
         <h1 className="ml-4 text-5xl font-thin">Tired of managing portfolios in Excel sheets?</h1>
       </div>
-      <div className="rounded-xl bg-gray-200 px-4 py-6 shadow-xl">
+      <div className="h-60 rounded-xl bg-gray-200 px-4 py-6  shadow-xl ">
         <h1 className="ml-4 text-5xl font-thin">Are endless Excel sheets slowing you down?</h1>
       </div>
-      <div className="rounded-xl bg-gray-200 px-4 py-6 shadow-xl">
+      <div className="h-60 rounded-xl bg-gray-200 px-4 py-6  shadow-xl">
         <h1 className="ml-4 text-5xl font-thin">
           Struggling to get a clear overview of multiple portfolios simultaneously?
         </h1>
       </div>
-    </div>
+    </div> */}
 
     <div className="mx-auto h-[400vh] max-w-3xl [view-timeline-name:--reveal-wrapper]">
       <div className="sticky top-0 flex min-h-screen flex-col items-center justify-center">
-        <h1 className="mx-auto mb-4 text-5xl font-thin">
-          Perhaps you identify with one of these situations
-        </h1>
+        <h1 className="mx-auto mb-4 text-5xl font-thin">How I can help.</h1>
         <div>
-          <p className="supports-[animation-timeline]:reveal-text text-xl text-black md:text-4xl lg:text-[50px] lg:leading-[1]">
-            Introducing the Tadpole the smallest webcam ever built. With a category-first
+          <p className="supports-[animation-timeline]:reveal-text text-xl text-black md:text-4xl lg:text-[40px] lg:leading-[1]">
+            {/* Introducing the Tadpole the smallest webcam ever built. With a category-first
             directional microphone, a mirrorless Sony sensor, and the easiest way to mute your call
-            with a tap it’s the perfect webcam to take with you everywhere
+            with a tap it’s the perfect webcam to take with you everywhere */}
+            Ever faced the chaos of Excel and thought,{" "}
+            <span className="text-blue-200">&apos;There&apos;s got to be a better way&apos;?</span>{" "}
+            Well, you&apos;re onto something, and so are we. <br />
+            Picture this: portfolio analysis without the spreadsheet mayhem. Anavrin steps in like
+            your financial superhero, cape and all. Effortlessly manage and view multiple portfolios
+            – anytime, anywhere.
+            {/* Because when it comes to investing, we&apos;re serious about
+            choices, but we like to keep things fun. */}
           </p>
         </div>
       </div>
     </div>
 
-    <section className="mx-auto max-w-4xl">
+    {/* <section className="mx-auto max-w-4xl">
       <ParallaxImage
         smallImage="/images/image-1.webp"
         largeImage="/images/image-2.webp"
@@ -206,11 +190,11 @@ const Home: FC = () => (
         smallImageSide="right"
         parallaxDistance="100%"
       />
-    </section>
+    </section> */}
 
     {/* features */}
     <section className="outlline-test" id="cards">
-      <div className="outline-test card sticky top-0 h-screen px-16 py-16">
+      <div className="outline-test card sticky top-0 h-screen sm:px-16 sm:py-16">
         <div className="card__content h-full w-full rounded-xl bg-slate-100 shadow-xl">
           <div className="border-b border-charcoal-400 p-4">
             <h1 className="ml-4 text-5xl font-thin">
@@ -230,12 +214,24 @@ const Home: FC = () => (
           </div>
         </div>
       </div>
-      <div className="outline-test card sticky top-0 h-screen px-16 py-16">
+      <div className="outline-test card sticky top-0 h-screen sm:px-16 sm:py-16">
         <div className="card__content h-full w-full overflow-hidden rounded-xl bg-blue-100 shadow-xl">
-          {/* <div className="border-b border-charcoal-400 p-4">
-            <h1 className="ml-4 text-5xl font-thin">Are endless Excel sheets slowing you down?</h1>
-          </div> */}
-
+          <div className="absolute left-24 top-32 max-w-lg">
+            <div className="p-4">
+              <h1 className="text-5xl font-thin">A Better Way to Analyze Portfolios.</h1>
+            </div>
+            <div className="p-4">
+              <p className="w-4/5 text-lg text-blue-300">
+                Mobile-first design for on-the-go accessibility. Replace complex Excel sheets with a
+                user-friendly interface.
+              </p>
+            </div>
+          </div>
+          <div className="absolute right-24 top-32 max-w-lg">
+            <h1 className="rounded-full border-4 border-blue-200 px-14 font-chakra text-[100px] text-blue-300">
+              1
+            </h1>
+          </div>
           <div className="flex h-full justify-center">
             <div className="flex h-full w-full max-w-4xl flex-col justify-end">
               <Image
@@ -247,7 +243,7 @@ const Home: FC = () => (
                 sizes="100vw"
               />
 
-              <div className="relative">
+              <div className="relative hidden sm:block">
                 <div className="absolute right-20 -mt-[17rem] flex h-64 w-52 items-start rounded-lg border-gray-200 bg-white text-gray-900 shadow-2xl outline">
                   <Card showHeader headerTitle="Dividend analysis">
                     <div className="flex h-full w-full flex-col">
@@ -296,7 +292,7 @@ const Home: FC = () => (
                   </Card>
                 </div>
               </div>
-              <div className="relative">
+              <div className="relative hidden sm:block">
                 <div className="absolute -left-20 -mt-[20rem] flex h-64 w-96 items-start rounded-lg border-gray-200 bg-white text-gray-900 shadow-2xl outline">
                   <Card showHeader headerTitle="Dividend distribution">
                     <div className="h-full w-full">
@@ -373,8 +369,8 @@ const Home: FC = () => (
                   </Card>
                 </div>
               </div>
-              {/* <div className="relative">
-                <div className="absolute left-12 -mt-[38rem] flex h-64 w-44 items-start overflow-hidden rounded-lg border-gray-200 bg-white text-gray-900 shadow-2xl outline">
+              <div className="relative">
+                <div className="absolute right-12 -mt-[38rem] flex h-64 w-44 items-start overflow-hidden rounded-lg border-gray-200 bg-white text-gray-900 shadow-2xl outline">
                   <Image
                     className="h-full w-full"
                     src="/images/widget-2.png"
@@ -384,19 +380,29 @@ const Home: FC = () => (
                     sizes="100vw"
                   />
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="outline-test card card__content sticky top-0 h-screen px-16 py-16">
+      <div className="outline-test card card__content sticky top-0 h-screen sm:px-16 sm:py-16">
         <div className="h-full w-full rounded-xl bg-fuchsia-100 shadow-xl">
-          {/* <div className="border-b border-charcoal-400 p-4">
-            <h1 className="ml-4 text-5xl font-thin">
-              Struggling to get a clear overview of multiple portfolios simultaneously?
+        <div className="absolute left-24 top-32 max-w-lg">
+            <div className="p-4">
+              <h1 className="text-5xl font-thin">Start making sense of numbers.</h1>
+            </div>
+            <div className="p-4">
+              <p className="w-4/5 text-lg text-fuchsia-300">
+              Smart algorithms for quick and accurate portfolio insights. Replace complex Excel sheets with a
+                user-friendly interface.
+              </p>
+            </div>
+          </div>
+          <div className="absolute right-24 top-32 max-w-lg">
+            <h1 className="rounded-full border-4 border-fuchsia-200 px-14 py-2 font-chakra text-[100px] text-fuchsia-300">
+              2
             </h1>
-            <span>Effortlessly manage and view multiple portfolios anytime, anywhere.</span>
-          </div> */}
+          </div>
           <div className="flex h-full justify-center">
             <div className="flex h-full w-full max-w-4xl flex-col justify-start">
               <Image
@@ -407,6 +413,39 @@ const Home: FC = () => (
                 height={0}
                 sizes="100vw"
               />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="outline-test card sticky top-0 h-screen sm:px-16 sm:py-16">
+        <div className="card__content h-full w-full rounded-xl bg-charcoal-900 shadow-xl">
+          <div className="outline-test h-full w-full">
+            <div className="grid h-1/2 w-full grid-cols-3 grid-rows-3 gap-2 p-8 outline sm:h-full sm:w-1/2">
+              <div className="h-full w-full rounded-xl bg-charcoal-400">1</div>
+              <div className="col-start-3 row-start-3 h-full w-full rounded-xl bg-charcoal-400">
+                2
+              </div>
+              <div className="col-start-2 row-start-2 h-full w-full rounded-xl bg-charcoal-400">
+                3
+              </div>
+              <div className="col-start-1 row-start-2 h-full w-full rounded-xl bg-charcoal-400">
+                4
+              </div>
+              <div className="col-start-1 row-start-3 h-full w-full rounded-xl bg-charcoal-400">
+                5
+              </div>
+              <div className="col-start-2 row-start-3 h-full w-full rounded-xl bg-charcoal-400">
+                6
+              </div>
+              <div className="col-start-2 row-start-1 h-full w-full rounded-xl bg-charcoal-400">
+                7
+              </div>
+              <div className="col-start-3 row-start-1 h-full w-full rounded-xl bg-charcoal-400">
+                8
+              </div>
+              <div className="col-start-3 row-start-2 h-full w-full rounded-xl bg-charcoal-400">
+                9
+              </div>
             </div>
           </div>
         </div>
