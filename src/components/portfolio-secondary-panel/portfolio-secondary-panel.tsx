@@ -17,6 +17,9 @@ import DividendDistributionBlock from "../portfolio-widgets/portfolio-dividend-d
 import AssetsComparisionGrowthChart from "../portfolio-widgets/assets-comparision-growth-chart/assets-comparision-growth-chart";
 import CostMarketValueChart from "../portfolio-widgets/cost-market-value-chart/cost-market-value-chart";
 import AssetsDividendYieldChart from "../portfolio-widgets/assets-dividend-yield-chart/assets-dividend-yield-chart";
+import DividendBreakdownAnalysisCard from "../portfolio-widgets/dividend-breakdown-analysis-card/dividend-breakdown-analysis-card";
+import DividendAnalysisCard from "../portfolio-widgets/dividend-analysis-card/dividend-analysis-card";
+import RingChartWithListCard from "../portfolio-widgets/ring-chart-with-list/ring-chart-with-list-card";
 
 const PortfolioLayoutSecondaryPanel = ({
   portfolioType,
@@ -48,52 +51,11 @@ const PortfolioLayoutSecondaryPanel = ({
           <section className="flex h-full w-full flex-col">
             <section className="flex h-72 w-full flex-row sm:h-1/2">
               <div className="h-full w-full p-1">
-                <Card showHeader headerTitle="Dividend analysis">
-                  <div className="flex h-full w-full flex-col">
-                    <div className="flex h-full w-full flex-col justify-between p-1 px-2">
-                      <span className="font-sans text-3xl font-bold text-gray-900">
-                        {valueFormatter(dividendIncome)}
-                      </span>
-                      <div className="inline-flex justify-between py-1 text-xs font-semibold text-gray-800">
-                        <span>
-                          Annual
-                          <br />
-                          dividends
-                        </span>
-                        <button type="button" className="rounded-lg px-2 py-1 hover:bg-gray-200">
-                          <InfoIcon />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex h-full w-full flex-row">
-                      <div className="border-1 border-success flex h-full w-full flex-col justify-between border-r-2 border-t-2 p-1 px-2">
-                        <div className="font-sans text-lg font-bold text-gray-900 sm:text-2xl">
-                          {portfolioDividendYield}%
-                        </div>
-                        <div className="inline-flex flex-col-reverse justify-between py-1 text-xs font-semibold  text-gray-800 sm:flex-row">
-                          <span>Dividend yield</span>
-                          <button type="button" className="w-fit rounded-lg px-2 py-1 hover:bg-gray-200">
-                            <InfoIcon />
-                          </button>
-                        </div>
-                      </div>
-                      <div className="border-1 border-success flex h-full w-full flex-col justify-between border-t-2 p-1 px-2">
-                        <div className="font-sans text-lg font-bold text-gray-900 sm:text-2xl">
-                          {portfolioDividendEfficiency}%
-                        </div>
-                        <div className="inline-flex flex-col-reverse justify-between py-1 text-xs font-semibold  text-gray-800 sm:flex-row">
-                          <span>Dividend efficiency</span>
-                          <button
-                            type="button"
-                            className="w-fit rounded-lg px-2 py-1 hover:bg-gray-200"
-                          >
-                            <InfoIcon />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
+                <DividendAnalysisCard
+                  dividendIncome={dividendIncome}
+                  portfolioDividendYield={portfolioDividendYield}
+                  portfolioDividendEfficiency={portfolioDividendEfficiency}
+                />
               </div>
               <div className="h-full w-full p-1">
                 <Card showHeader headerTitle="Portfolio breakdown">
@@ -208,56 +170,7 @@ const PortfolioLayoutSecondaryPanel = ({
                   </Card>
                 </div>
                 <div className="h-full w-full p-1">
-                  <Card showHeader headerTitle="Dividend breakdown">
-                    <div className="flex h-full w-full flex-col">
-                      <div className="flex h-full w-full flex-col justify-between p-1 px-2">
-                        <span className="font-sans text-3xl font-bold text-gray-900">
-                          {valueFormatter(dividendIncome / 12)}
-                        </span>
-                        <div className="inline-flex justify-between py-1 text-xs font-semibold text-gray-800">
-                          <span>
-                            Monthly average
-                            <br />
-                            dividend
-                          </span>
-                          <button type="button" className="rounded-lg px-2 py-1 hover:bg-gray-200">
-                            <InfoIcon />
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="border-1 border-success flex h-full w-full flex-col justify-between border-r-2 border-t-2 p-1 px-2">
-                        <div className="font-sans text-2xl font-bold text-gray-900">
-                          {valueFormatter(dividendIncome / 52)}
-                        </div>
-                        <div className="inline-flex justify-between py-1  text-xs  font-semibold text-gray-800">
-                          <span>
-                            Weekly average
-                            <br />
-                            dividend
-                          </span>
-                          <button type="button" className="rounded-lg px-2 py-1 hover:bg-gray-200">
-                            <InfoIcon />
-                          </button>
-                        </div>
-                      </div>
-                      <div className="border-1 border-success flex h-full w-full flex-col justify-between border-t-2 p-1 px-2">
-                        <div className="font-sans text-2xl font-bold text-gray-900">
-                          {valueFormatter(dividendIncome / 365)}
-                        </div>
-                        <div className="inline-flex justify-between py-1  text-xs  font-semibold text-gray-800">
-                          <span>
-                            Daily average
-                            <br />
-                            dividend
-                          </span>
-                          <button type="button" className="rounded-lg px-2 py-1 hover:bg-gray-200">
-                            <InfoIcon />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
+                  <DividendBreakdownAnalysisCard dividendIncome={dividendIncome} />
                 </div>
               </section>
               <section className="min-h-[20rem] w-full p-1">
@@ -375,44 +288,10 @@ const PortfolioLayoutSecondaryPanel = ({
                   </Card>
                 </div>
                 <div className="h-full w-full p-1">
-                  <Card showHeader headerTitle="Dividends per stock">
-                    <div className="h-full w-full overflow-auto">
-                      <div className="h-[65%] w-full px-10">
-                        <RingChart
-                          sections={dividendDistributionRingChartData}
-                          valueFormatterOverride={valueFormatter}
-                          category="value"
-                          index="tooltip"
-                        />
-                      </div>
-                      <div className="flex flex-col text-xs">
-                        <ScrollArea className="h-[75px]">
-                          {dividendDistributionRingChartData.map(
-                            (dividendDistributionRingChartDataItem, index) => (
-                              <div
-                                key={`ring-chart-data-item-${index + 1}`}
-                                className="border-1 flex w-full justify-between border-b border-gray-300 px-2 py-1"
-                              >
-                                <div className="inline-flex w-1/3">
-                                  <div className="h-4 w-4 rounded-full bg-indigo-700 leading-none" />
-                                  <span className="ml-2 font-bold text-gray-800">
-                                    {dividendDistributionRingChartDataItem.tooltip}
-                                  </span>
-                                </div>
-
-                                <span className="w-1/3 text-left font-medium text-gray-500">
-                                  {valueFormatter(dividendDistributionRingChartDataItem.value)}
-                                </span>
-                                <span className="inline-flex items-center justify-center rounded-full bg-red-600 px-2 py-1 text-tiny leading-none text-red-100">
-                                  {dividendDistributionRingChartDataItem.composition} %
-                                </span>
-                              </div>
-                            )
-                          )}
-                        </ScrollArea>
-                      </div>
-                    </div>
-                  </Card>
+                  <RingChartWithListCard
+                    data={dividendDistributionRingChartData}
+                    title="Dividends per stock"
+                  />
                 </div>
               </section>
             </section>
