@@ -1,6 +1,7 @@
 // You can't use import statements in your tailwind.js file
 // reference: https://github.com/tailwindlabs/discuss/issues/119#issuecomment-364932948
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const plugin = require("tailwindcss/plugin");
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
@@ -137,7 +138,8 @@ module.exports = {
       fontFamily: {
         // sans: ["Inter", ...defaultTheme.fontFamily.sans],
         sans: ["var(--font-geist-sans)"],
-        wide: ["widescreen-mixed", ...defaultTheme.fontFamily.sans]
+        wide: ["widescreen-mixed", ...defaultTheme.fontFamily.sans],
+        chakra: ["chakra-petch", ...defaultTheme.fontFamily.sans]
       },
       boxShadow: {
         // light
@@ -212,5 +214,16 @@ module.exports = {
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/
     }
   ],
-  plugins: [require("tailwindcss-animate")]
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(({ addBase }) => {
+      addBase({
+        "@font-face": {
+          fontFamily: "chakra-petch",
+          fontWeight: "400",
+          src: "url(/fonts/ChakraPetch-Regular.ttf)"
+        }
+      });
+    })
+  ]
 };
