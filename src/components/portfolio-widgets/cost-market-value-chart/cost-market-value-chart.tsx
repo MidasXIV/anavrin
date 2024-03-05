@@ -11,7 +11,7 @@ interface ICostMarketValueChartProps {
 
 const CostMarketValueChart: FC<ICostMarketValueChartProps> = ({ data }) => (
   <BarChartWrapper
-    title="Dividends in year"
+    title=""
     data={data}
     index="symbol"
     categories={["costBasis", "marketValue"]}

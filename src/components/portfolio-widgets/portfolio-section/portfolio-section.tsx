@@ -25,7 +25,7 @@ const PortfolioSection = ({
           />
         ))}
       <AddNewAssetPortfolioCard
-        handleAssetTypeSelection={() => handleAssetTypeSelection(assetType)}
+        handleAssetTypeSelection={() => handleAssetTypeSelection(assetType, [])}
       />
     </div>
   </article>

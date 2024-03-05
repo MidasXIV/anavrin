@@ -110,7 +110,7 @@
 }
 
 .dashboard-primary-panel {
-  @apply h-full w-full bg-gray-300 p-2 sm:w-8/12;
+  @apply h-full w-full bg-gray-300 sm:p-2 sm:w-8/12;
   transition: width 0.5s ease;
 }
 

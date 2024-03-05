@@ -17,14 +17,16 @@ const AssetsComparisonAreaChart: FC<IAssetsComparisonAreaChartProps> = ({
 
   console.log(categories);
   return (
-    <AreaChartWrapper
-      data={data}
-      index="timeFrame"
-      categories={categories}
-      // TODO: auto generate colors
-      colors={["blue", "red", "yellow"]}
-      customValueFormatter={customValueFormatter}
-    />
+    <div className="h-full max-h-full min-h-[14rem] w-full sm:min-h-full">
+      <AreaChartWrapper
+        data={data}
+        index="timeFrame"
+        categories={categories}
+        // TODO: auto generate colors
+        colors={["blue", "red", "yellow"]}
+        customValueFormatter={customValueFormatter}
+      />
+    </div>
   );
 };
 export default AssetsComparisonAreaChart;
