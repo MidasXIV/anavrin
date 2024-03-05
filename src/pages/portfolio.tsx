@@ -52,13 +52,19 @@ const Portfolio: FC = () => {
   const portfolioCount = portfolios.length;
   const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
 
-  const handleAssetTypeSelection = (assetType: AssetType) => {
+  const handleAssetTypeSelection = (assetType: AssetType, items = []) => {
     // toggleShowCreatePortfolioModal();
+    // router push to new page.
+
+    const portfolioId = new Date().getTime();
+
     portfolios.push({
-      _id: new Date().getTime(),
+      _id: portfolioId,
       assetType,
-      items: []
+      items
     });
+
+    setSelectedPortfolio(portfolioId);
   };
 
   const handleTabChange = (tabValue: string) => {
@@ -143,7 +149,7 @@ const Portfolio: FC = () => {
       <PortfolioSections
         portfolios={portfolios}
         setSelectedPortfolio={setSelectedPortfolio}
-        handleAssetTypeSelection={handleAssetTypeSelection}
+        handleAssetTypeSelection={() => toggleShowCreatePortfolioModal()}
       />
     );
   }
