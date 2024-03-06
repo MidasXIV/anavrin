@@ -122,7 +122,7 @@ const Home: FC = () => {
 
       {/* <FeaturesSection /> */}
 
-      <div className="flex min-h-screen flex-col items-center justify-center">
+      {/* <div className="flex min-h-screen flex-col items-center justify-center">
         <h1 className="mx-auto mb-4 p-8 text-2xl font-thin outline sm:p-0 sm:text-5xl">
           Perhaps you identify with one of these situations
         </h1>
@@ -145,6 +145,38 @@ const Home: FC = () => {
             </div>
           </div>
         </section>
+      </div> */}
+
+      <div className="mx-auto h-[200vh] max-w-5xl [view-timeline-name:--reveal-wrapper]">
+        <div className="sticky top-0 flex min-h-screen flex-col items-center justify-center">
+          <div className="flex flex-col bg-clip-text text-3xl font-extrabold [text-wrap:balance] sm:flex-row md:text-4xl">
+            <h1 className="mx-auto mb-4 p-8 text-3xl sm:p-0 sm:text-5xl sm:font-semibold">
+              Perhaps you identify with one of these situations
+            </h1>
+            <span className="px-8 sm:px-0 inline-flex h-[calc(theme(fontSize.sm)*theme(lineHeight.tight)*8)] w-fit flex-col overflow-hidden sm:h-[calc(theme(fontSize.5xl)*theme(lineHeight.tight)*2)]">
+              <ul className="block animate-text-slide text-left leading-tight [&_li]:block">
+                <li className="ml-2 py-2 text-4xl font-thin sm:ml-4 sm:text-5xl">
+                  Tired of managing portfolios in Excel sheets?
+                </li>
+                <li className="ml-2 py-2 text-4xl font-thin sm:ml-4 sm:text-5xl">
+                  Are endless Excel sheets slowing you down?
+                </li>
+                <li className="ml-2 py-2 text-4xl font-thin sm:ml-4 sm:text-5xl">
+                  Struggling to get a clear overview of multiple portfolios simultaneously?
+                </li>
+                <li className="ml-2 py-2 text-4xl font-thin sm:ml-4 sm:text-5xl">
+                  Tired of managing portfolios in Excel sheets?
+                </li>
+                <li className="ml-2 py-2 text-4xl font-thin sm:ml-4 sm:text-5xl">
+                  Are endless Excel sheets slowing you down?
+                </li>
+                <li className="ml-2 py-2 text-4xl font-thin sm:ml-4 sm:text-5xl">
+                  Struggling to get a clear overview of multiple portfolios simultaneously?
+                </li>
+              </ul>
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* <div className="sticky grid h-[30rem] min-h-screen w-full grid-cols-3 grid-rows-1 gap-4 p-12 px-16 outline">

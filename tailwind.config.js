@@ -160,6 +160,26 @@ module.exports = {
         "tremor-full": "9999px"
       },
       keyframes: {
+        "text-slide": {
+          "0%, 16%": {
+            transform: "translateY(0%)"
+          },
+          "20%, 36%": {
+            transform: "translateY(-16.66%)"
+          },
+          "40%, 56%": {
+            transform: "translateY(-33.33%)"
+          },
+          "60%, 76%": {
+            transform: "translateY(-50%)"
+          },
+          "80%, 96%": {
+            transform: "translateY(-66.66%)"
+          },
+          "100%": {
+            transform: "translateY(-83.33%)"
+          }
+        },
         "accordion-down": {
           from: { height: 0 },
           to: { height: "var(--radix-accordion-content-height)" }
@@ -171,7 +191,8 @@ module.exports = {
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out"
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "text-slide": "text-slide 12.5s cubic-bezier(0.83, 0, 0.17, 1) infinite"
       },
       fontSize: {
         tiny: "0.65rem",
