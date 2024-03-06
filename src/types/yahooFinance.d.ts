@@ -19,6 +19,10 @@ interface AnnualDividendInterface {
   [key: string]: number;
 }
 
+interface AnnualDividendDistributionInterface {
+  [key: string]: number;
+}
+
 interface AnnualDividendGrowthInterface {
   [key: string]: {
     dividend: number;
@@ -43,6 +47,7 @@ interface ParseDividendInformationDTO {
   dividendCurrency: string;
   AnnualDividends: AnnualDividendInterface;
   AnnualDividendGrowth: AnnualDividendGrowthInterface;
+  dividendDistibution: AnnualDividendDistributionInterface;
 }
 
 interface DividendInfoScraper {

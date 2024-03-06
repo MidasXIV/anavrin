@@ -1,11 +1,14 @@
 import memoize from "fast-memoize";
+import { formatNumber } from "@/utils/helper";
 import {
   CryptocurrencyExpandableComponent,
   CryptoPortfolioSchema,
   DFMDividendExpandableComponent,
   DFMDividendPortfolioSchema,
   DividendPortfolioSchema,
-  onCryptocurrencyTableRowDoublceClick
+  onCryptocurrencyTableRowDoublceClick,
+  onDividendTableRowDoublceClick,
+  StocksDividendExpandableComponent
 } from "./table-schema";
 
 const AssetType = {
@@ -30,13 +33,14 @@ const getPortfolioTableSchema = (portfolioType: AssetType) => {
 };
 
 const getPortfolioExpandableComponent = (portfolioType: AssetType) => {
+  console.log(portfolioType);
   switch (portfolioType) {
     case AssetType.CRYPTO:
       return CryptocurrencyExpandableComponent;
     case AssetType.DFM:
       return DFMDividendExpandableComponent;
     case AssetType.STOCK:
-      return undefined;
+      return StocksDividendExpandableComponent;
     default:
       return undefined;
   }
@@ -93,6 +97,7 @@ const getPortfolioRowDoubleClickHandler = (
     (parentComponentProps: any) => (row: any, event: any) => void
   >();
 
+  portfolioRowDBClickHandlerMapper.set(AssetType.STOCK, onDividendTableRowDoublceClick);
   portfolioRowDBClickHandlerMapper.set(AssetType.CRYPTO, onCryptocurrencyTableRowDoublceClick);
 
   // Get the row double click handler function for the given portfolio type from the mapper,
@@ -131,6 +136,30 @@ const updatePortfolio = <T extends { [key: string]: any }>(
  * @returns {string} - The randomly generated color code.
  */
 function generateRandomColor() {
+  const validColors = [
+    "amber",
+    "zinc",
+    "stone",
+    "fuchsia",
+    "red",
+    "orange",
+    "yellow",
+    "lime",
+    "green",
+    "emerald",
+    "pink",
+    "teal",
+    "gray",
+    "cyan",
+    "sky",
+    "blue",
+    "slate",
+    "indigo",
+    "violet",
+    "purple",
+    "rose",
+    "neutral"
+  ];
   const letters = "0123456789ABCDEF";
   let color = "#";
   for (let i = 0; i < 6; i += 1) {
@@ -145,48 +174,172 @@ function generateRandomColor() {
  * @param {Array} portfolioData - Array of portfolio data objects
  * @returns {Object} - Object containing total invested amount and portfolio value
  */
-function getPortfolioSummary(portfolioData: CryptoAssetDTO[]): {
+function getPortfolioSummary(
+  portfolioData: CryptoAssetDTO[] | DividendAssetDTO[],
+  portfolioType: AssetType
+): {
   totalInvested: number;
   portfolioValue: number;
   percentageChange: number;
-  ringChartData: {
+  ringChartData: Array<{
     value: number;
     color: string;
     tooltip: string;
-  }[];
+  }>;
+  dividendDistributionRingChartData: Array<{
+    value: number;
+    tooltip: string;
+  }>;
+  dividendIncome?: number;
+  portfolioDividendYield?: number;
+  portfolioDividendEfficiency?: number;
+  costMarketValueChartData: Array<{
+    symbol: string;
+    costBasis: number;
+    marketValue: number;
+  }>;
+  assetsComparisionGrowthChartData: Array<{
+    symbol: string;
+    growth: number;
+  }>;
+  dividendYieldOnCostData: Array<{
+    symbol: string;
+    yield: number;
+  }>;
 } {
   let totalInvested = 0;
   let portfolioValue = 0;
-  portfolioData.forEach(item => {
-    totalInvested += item.fiat;
-    portfolioValue += item.holdings * item?.marketPrice;
-  });
-  const percentageChange = (portfolioValue / totalInvested - 1) * 100;
-
+  let dividendIncome = 0;
+  let portfolioDividendYield = 0;
+  let portfolioDividendEfficiency = 0;
   /**
    * Calculates the data for a ring chart based on the portfolio data.
-   * Each item in the portfolio data will contribute a portion of the total invested amount to the chart.
+   * Each item in the portfolio data will contribute a portion of the total
+   * invested amount to the chart.
    */
 
-  const ringChartData = portfolioData.map(item => ({
-    value: (item.fiat / totalInvested) * 100,
+  let ringChartData = [];
+  let costMarketValueChartData = [];
+  const assetsComparisionGrowthChartData = [];
+  const dividendYieldOnCostData = [];
+  let dividendDistributionRingChartData = [];
 
-    color: generateRandomColor(),
+  switch (portfolioType) {
+    case AssetType.CRYPTO:
+      portfolioData.forEach(item => {
+        totalInvested += item.fiat;
+        portfolioValue += item.holdings * item?.marketPrice;
 
-    tooltip: `${item.token} (${((item.fiat / totalInvested) * 100).toFixed(2)}%)`
-  }));
+        assetsComparisionGrowthChartData.push({
+          symbol: item.token,
+          growth: formatNumber(((item.marketValue - item.fiat) / Math.abs(item.fiat)) * 100, 2)
+        });
+      });
 
-  // const formattedTotalInvested = totalInvested.toLocaleString(undefined, {
-  //   style: "currency",
-  //   currency: "USD",
-  //   minimumFractionDigits: 2,
-  //   maximumFractionDigits: 2
-  // });
+      ringChartData = portfolioData
+        .map(item => ({
+          value: item.fiat,
+          composition: ((item.fiat / totalInvested) * 100).toFixed(1),
+
+          color: generateRandomColor(),
+
+          // tooltip: `${item.token} (${((item.fiat / totalInvested) * 100).toFixed(2)}%)`
+          tooltip: `${item.token}`
+        }))
+        .sort((a, b) => b.value - a.value);
+
+      costMarketValueChartData = (portfolioData as CryptoAssetDTO[]).reduce(
+        (acc, item: CryptoAssetDTO) => {
+          acc.push({
+            symbol: item.token,
+            costBasis: item.fiat,
+            marketValue: item.marketValue
+          });
+          return acc;
+        },
+        []
+      );
+
+      break;
+    case AssetType.STOCK:
+      portfolioData.forEach(item => {
+        totalInvested += item.costBasis;
+        portfolioValue += item.shares * item?.marketPrice;
+        dividendIncome += item.income ?? 0;
+
+        dividendYieldOnCostData.push({
+          symbol: item.symbol,
+          yield: item.yieldOnCost
+        });
+
+        assetsComparisionGrowthChartData.push({
+          symbol: item.symbol,
+          growth: formatNumber(
+            ((item.marketValue - item.costBasis) / Math.abs(item.costBasis)) * 100,
+            2
+          )
+        });
+      });
+      ringChartData = portfolioData
+        .map(item => ({
+          value: item.costBasis,
+          composition: ((item.costBasis / totalInvested) * 100).toFixed(1),
+          color: generateRandomColor(),
+          tooltip: `${item.symbol}`
+          // tooltip: `${item.symbol} (${((item.costBasis / totalInvested) * 100).toFixed(2)}%)`
+        }))
+        .sort((a, b) => b.value - a.value);
+
+      dividendDistributionRingChartData = portfolioData
+        .map(item => ({
+          value: item.income,
+          tooltip: `${item.symbol}`,
+          composition: ((item.income / dividendIncome) * 100).toFixed(1)
+        }))
+        .sort((a, b) => b.value - a.value);
+
+      costMarketValueChartData = (portfolioData as DividendAssetDTO[]).reduce(
+        (acc, item: DividendAssetDTO) => {
+          acc.push({
+            symbol: item.symbol,
+            costBasis: item.costBasis,
+            marketValue: item.marketValue
+          });
+          return acc;
+        },
+        []
+      );
+      /**
+       * Portfolio Dividend Yield=( Total Annual Dividends / Total Portfolio Value  )×100
+       */
+      portfolioDividendYield = parseFloat(((dividendIncome / portfolioValue) * 100).toFixed(2));
+
+      /**
+       * "Dividend Efficiency" or "Dividend Yield on Investment
+       * =( Total Annual Dividends / Total Fiat Value  )×100
+       */
+
+      portfolioDividendEfficiency = parseFloat(((dividendIncome / totalInvested) * 100).toFixed(2));
+      console.log(dividendIncome, portfolioValue);
+      break;
+    default:
+      break;
+  }
+
+  const percentageChange = (portfolioValue / totalInvested - 1) * 100;
+
   return {
     totalInvested,
     portfolioValue,
     percentageChange,
-    ringChartData
+    ringChartData,
+    dividendIncome,
+    portfolioDividendYield,
+    portfolioDividendEfficiency,
+    costMarketValueChartData,
+    assetsComparisionGrowthChartData,
+    dividendDistributionRingChartData,
+    dividendYieldOnCostData
   };
 }
 
@@ -214,11 +367,15 @@ const getPortfolioDiversificationChartData = memoize((portfolios: Portfolio[]) =
   // Generate ring chart data based on portfolio information
   const ringChartData = portfolios.map(portfolio => {
     const portfolioTotalInvestment = portfolio.items.reduce((sum, item) => sum + item.fiat, 0);
-    const value = (portfolioTotalInvestment / totalInvestment) * 100;
-    const tooltip = `${portfolio._id} (${value.toFixed(2)}%)`;
+    const value = portfolioTotalInvestment;
+    const diversificationPercentage = Number.parseFloat(
+      ((portfolioTotalInvestment / totalInvestment) * 100).toFixed(2)
+    );
+    const tooltip = `${portfolio._id}`;
 
     return {
       value,
+      diversificationPercentage,
       color: generateRandomColor(),
       tooltip
     };
@@ -228,6 +385,10 @@ const getPortfolioDiversificationChartData = memoize((portfolios: Portfolio[]) =
 });
 
 const getPortfolioSummaryMemoized = memoize(getPortfolioSummary);
+
+const formatPortfolioId = portfolioId =>
+  // last 6 characters
+  portfolioId.slice(-6);
 
 export {
   AssetType,
@@ -239,5 +400,6 @@ export {
   updatePortfolio,
   getPortfolioSummary,
   getPortfolioSummaryMemoized,
-  getPortfolioDiversificationChartData
+  getPortfolioDiversificationChartData,
+  formatPortfolioId
 };

@@ -30,7 +30,7 @@ const getRequestedBlog = async (slug: string): Promise<Blog | null> => {
       // data,
       content,
       ...blog,
-      author: authors.find(author => author.username === blog.author)
+      author: authors.find(author => author.username === blog.author) as unknown as string
     };
   } catch (e) {
     console.error(e);

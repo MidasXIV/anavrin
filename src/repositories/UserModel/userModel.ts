@@ -1,5 +1,5 @@
 import { Db, Document, FindOneAndUpdateOptions, ModifyResult, ObjectId } from "mongodb";
-import { isEmpty } from "../../util/helper";
+import { isEmpty } from "../../utils/helper";
 
 export default class UserModel implements IUserModel {
   private db: Db;

@@ -1,10 +1,12 @@
 .header {
   @apply flex flex-row content-center items-center; 
-  @apply border-b border-gray-400;
+  /* @apply border-b border-gray-400; */
   @apply text-gray-300;
   font-size: 1.2em;
   /* @apply bg-gradient-to-b from-charcoal-900 via-charcoal-400 to-charcoal-300; */
-  background: linear-gradient(90deg, #2b2b2b 0%, #2b2b2b 50%, 70%, #404040);
+  @apply bg-gradient-to-t from-charcoal-400 via-charcoal-400 to-charcoal-300;
+  @apply sm:bg-gradient-to-r sm:from-charcoal-400 sm:from-50% sm:via-charcoal-400 sm:to-70% sm:to-charcoal-300;
+  /* background: linear-gradient(90deg, #2b2b2b 0%, #2b2b2b 50%, 70%, #404040); */
 }
 
 .leftHeader {

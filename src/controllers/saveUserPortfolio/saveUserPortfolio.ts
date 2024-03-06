@@ -38,11 +38,6 @@ export default class SaveUserPortfolio implements ISaveUserPortfolio {
       // Fetch User portfolios
       const userPortfolios = await this.userRepo.getUserPortfolio(user);
 
-      // If more than 2 portfolios do not save portfolio.
-      if (userPortfolios.length >= 2) {
-        return Result.fail({ type: "MaxPortfoliosReached" });
-      }
-
       const isUserPortfolioPresent = userPortfolios.some(userPortfolio =>
         // eslint-disable-next-line no-underscore-dangle
         userPortfolio._id.equals(portfolio._id)
@@ -57,6 +52,11 @@ export default class SaveUserPortfolio implements ISaveUserPortfolio {
       if (isUserPortfolioPresent) {
         updateUserPortfolioResult = await this.userRepo.updateUserPortfolio(user, portfolio);
       } else {
+        // If more than 2 portfolios do not save portfolio.
+        if (userPortfolios.length >= 2) {
+          return Result.fail({ type: "MaxPortfoliosReached" });
+        }
+
         updateUserPortfolioResult = await this.userRepo.addUserPortfolioItem(user, portfolio);
       }
 

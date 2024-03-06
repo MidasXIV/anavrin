@@ -1,5 +1,5 @@
-import { Tooltip } from "@mantine/core";
 import { useState } from "react";
+import TooltipWrapper from "../tooltip-wrapper";
 
 /**
  * A button component that executes an onClick event only on double click.
@@ -9,7 +9,8 @@ import { useState } from "react";
  * @param {string} props.className - The CSS classes to apply to the button.
  * @param {function} props.onClick - The function to execute on double click.
  * @param {string} [props.label] - The label for the button.
- * @param {string} [props.tooltipLabel] - The label for the Tooltip when button is active.
+ * @param {string} [props.tooltipLabel] - The label for the Tooltip when button is not active ( initial tooltip ).
+ * @param {string} [props.activatedTooltipLabel] - The label for the Tooltip when button is active.
  * @param {string} [props.activeClassName='bg-red-500'] - The CSS class to apply when button is active.
  * @param {string} [props.inactiveClassName='bg-gray-500'] - The CSS class to apply when button is inactive.
  *
@@ -20,6 +21,7 @@ function DoubleClickButton({
   onClick,
   label,
   tooltipLabel = "",
+  activatedTooltipLabel = "",
   className,
   activeClassName,
   inactiveClassName
@@ -35,11 +37,12 @@ function DoubleClickButton({
   };
 
   return (
-    <Tooltip
-      label={tooltipLabel}
-      opened={isActive}
-      transitionProps={{ transition: "fade", duration: 200 }}
-      position="bottom-end"
+    <TooltipWrapper
+      label={isActive ? activatedTooltipLabel : tooltipLabel}
+      // opened={isActive}
+      // transitionProps={{ transition: "fade", duration: 200 }}
+      // position="bottom-end"
+      color="orange"
     >
       <button
         type="button"
@@ -48,7 +51,7 @@ function DoubleClickButton({
       >
         {label}
       </button>
-    </Tooltip>
+    </TooltipWrapper>
   );
 }
 

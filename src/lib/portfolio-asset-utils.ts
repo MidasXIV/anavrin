@@ -1,7 +1,11 @@
-import { fetchCoinInfo } from "../util/cryptocurrencyService";
-import isEmptyDataItem from "../util/type-gaurds";
+import { formatNumber } from "@/utils/helper";
+import { fetchCoinInfo } from "../utils/cryptocurrencyService";
+import getStockInformation from "../utils/getStockInformation";
+import isEmptyDataItem from "../utils/type-gaurds";
 import { AssetType } from "./portfolio-utils";
 import rateLimit from "./rate-limiting";
+import MockCryptoPortfolio from "../tests/mocks/mock-crypto-portfolio-1";
+import MockDividendPortfolio from "../tests/mocks/mock-dividend-portfolio-1";
 
 /**
  * Converts a CoinGecko API coin object to a simplified DTO understood by CryptoPortfolioSchema
@@ -48,24 +52,123 @@ const hydrateCryptoPortfolioItems = async (portfolio: Portfolio): Promise<Crypto
   }
 
   const { items } = portfolio;
-  const data = await Promise.all(
-    items.map(
-      rateLimit(async (item: CryptoPortfolioItem) => {
-        const tokenInformation = await fetchCoinInfo(item.token);
-        const asset = { ...item, ...tokenInformation };
-        const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDTO(asset);
-        return cryptoAssetDTO;
-      }, 5)
-    )
-  );
+  // const data = await Promise.all(
+  //   items.map(
+  //     rateLimit(async (item: CryptoPortfolioItem) => {
+  //       const tokenInformation = await fetchCoinInfo(item.token);
+  //       const asset = { ...item, ...tokenInformation };
+  //       const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDTO(asset);
+  //       return cryptoAssetDTO;
+  //     }, 5)
+  //   )
+  // );
 
+  const data = MockCryptoPortfolio as any as CryptoAssetDTO[];
   return data;
 };
 
+// FIXME: why are numeric values being passed as strings
+function convertDividendDataToDTO(data: any): DividendAssetDTO {
+  const {
+    name: title,
+    ticker: symbol,
+    sector,
+    shares,
+    price: marketPrice,
+    dividendAmount,
+    dividendYield,
+    EPS: earningPerShare,
+    peRatio: pricePerEarning,
+    beta,
+    exchange,
+    marketCap,
+    fiat: costBasis,
+    AnnualDividends,
+    AnnualDividendGrowth
+  } = data;
+
+  // Calculate other properties based on the data
+  const marketValue = formatNumber(marketPrice * shares, 2);
+  const netValue = "";
+  const income = formatNumber(dividendAmount * shares, 2);
+  // YOC=( Annual Dividend Amount / Cost Basis )×100
+  const yieldOnCost = formatNumber((income / costBasis) * 100, 2);
+  const avgPrice = (costBasis / shares).toFixed(2);
+
+  return {
+    title,
+    symbol,
+    sector,
+    shares,
+    avgPrice,
+    marketPrice: formatNumber(marketPrice, 2),
+    costBasis,
+    marketValue,
+    netValue,
+    earningPerShare,
+    pricePerEarning,
+    dividendAmount: dividendAmount.toFixed(2),
+    dividendYield,
+    yieldOnCost,
+    income,
+    beta,
+    exchange,
+    marketCap,
+    AnnualDividends,
+    AnnualDividendGrowth
+  };
+}
+
+function convertDividendPortfolioItemToPersistence(obj: DividendAssetDTO): StockPortfolioItem {
+  return {
+    ticker: obj.symbol,
+    shares: obj.shares,
+    fiat: obj.costBasis
+  };
+}
+
+const hydrateDividendPortfolioItems = async (portfolio: Portfolio): Promise<unknown[]> => {
+  if (portfolio.assetType !== AssetType.STOCK) {
+    throw new Error("InvalidPortfolioItem");
+  }
+
+  const { items } = portfolio;
+  console.log("hydrating dividend info");
+
+  const data = MockDividendPortfolio;
+  // const data = await Promise.all(
+  //   items.map(
+  //     rateLimit(async (item: StockPortfolioItem) => {
+  //       const stockInformationData = await getStockInformation(item.ticker);
+  //       if (stockInformationData.status !== 200) {
+  //         console.error(`Unable to get information for ticker ${item.ticker}`);
+  //         return item;
+  //       }
+  //       const { data: stockInformation } = stockInformationData;
+  //       const asset = { ...item, ...stockInformation };
+  //       const dividendAssetDTO = convertDividendDataToDTO(asset);
+  //       return dividendAssetDTO;
+  //     }, 3)
+  //   )
+  // );
+  return data;
+};
+
+/**
+ * Whenever a new portfolio type is created, we need to add the following functions
+ * 1. ToDTO  ( What gets used by the app )
+ * 2. ToPersistence ( what gets saved to DB )
+ * 3. Hydrating fn ( converts to persistence to DTO )
+ * 4. Typegaurd
+ */
+
 export {
+  isCryptoPortfolioItem,
+  isStockPortfolioItem,
   convertCoinGeckoApiCoinObjectToDTO,
   convertCryptoPortfolioItemToPersistence,
   hydrateCryptoPortfolioItems,
-  isCryptoPortfolioItem,
-  isStockPortfolioItem
+  convertDividendPortfolioItemToPersistence,
+  hydrateDividendPortfolioItems,
+  convertDividendDataToDTO
 };
