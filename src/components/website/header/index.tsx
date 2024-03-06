@@ -132,7 +132,7 @@ const WebsiteHeader: FC<unknown> = () => {
         </nav> */}
         <NavigationMenu className="bg-transparent p-2">
           <NavigationMenuList className="bg-transparent">
-            <NavigationMenuItem className="hidden sm:block bg-transparent">
+            <NavigationMenuItem className="hidden bg-transparent sm:block">
               <Link href="#" legacyBehavior passHref className="bg-transparent">
                 <NavigationMenuLink
                   className={clsx("bg-transparent", navigationMenuTriggerStyle())}
@@ -153,7 +153,7 @@ const WebsiteHeader: FC<unknown> = () => {
                       >
                         <div className="outline-font mb-2 mt-4 font-wide text-lg">ANAVRIN</div>
                         <p className="text-sm leading-tight text-muted-foreground">
-                        Focus on your investment strategy while we handle the details.
+                          Focus on your investment strategy while we handle the details.
                         </p>
                       </a>
                     </NavigationMenuLink>

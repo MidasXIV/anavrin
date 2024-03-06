@@ -19,28 +19,28 @@ const BlogHeader: FC<{
     </div>
   </div>
 );
-const BlogListItem: FC<{
-  blog: Blog;
-  key: string;
-}> = ({ blog, key }) => {
-  const { slug, title, description, author, updatedAt } = blog;
-  const formattedDate = new Date(updatedAt).toDateString();
-  return (
-    <Link href={{ pathname: `/blog/${slug}` }} legacyBehavior>
-      <a
-        className="text-md group flex items-center justify-between border-b py-2 text-gray-600 no-underline hover:text-blue-600"
-        href={`/blog/${slug}`}
-        key={key}
-      >
-        <span className="transition-transform group-hover:translate-x-2">{title}</span>
+// const BlogListItem: FC<{
+//   blog: Blog;
+//   key: string;
+// }> = ({ blog, key }) => {
+//   const { slug, title, description, author, updatedAt } = blog;
+//   const formattedDate = new Date(updatedAt).toDateString();
+//   return (
+//     <Link href={{ pathname: `/blog/${slug}` }} legacyBehavior>
+//       <a
+//         className="text-md group flex items-center justify-between border-b py-2 text-gray-600 no-underline hover:text-blue-600"
+//         href={`/blog/${slug}`}
+//         key={key}
+//       >
+//         <span className="transition-transform group-hover:translate-x-2">{title}</span>
 
-        <span className="hidden text-xs capitalize text-gray-500 sm:block">{author}</span>
+//         <span className="hidden text-xs capitalize text-gray-500 sm:block">{author}</span>
 
-        <span className="block text-xs text-gray-400 sm:hidden"> &raquo;</span>
-      </a>
-    </Link>
-  );
-};
+//         <span className="block text-xs text-gray-400 sm:hidden"> &raquo;</span>
+//       </a>
+//     </Link>
+//   );
+// };
 const BlogListCard: FC<{
   blog: Blog;
   key: string;

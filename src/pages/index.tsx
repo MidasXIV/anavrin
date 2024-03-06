@@ -153,7 +153,7 @@ const Home: FC = () => {
             <h1 className="mx-auto mb-4 p-8 text-3xl sm:p-0 sm:text-5xl sm:font-semibold">
               Perhaps you identify with one of these situations
             </h1>
-            <span className="px-8 sm:px-0 inline-flex h-[calc(theme(fontSize.sm)*theme(lineHeight.tight)*8)] w-fit flex-col overflow-hidden sm:h-[calc(theme(fontSize.5xl)*theme(lineHeight.tight)*2)]">
+            <span className="inline-flex h-[calc(theme(fontSize.sm)*theme(lineHeight.tight)*8)] w-fit flex-col overflow-hidden px-8 sm:h-[calc(theme(fontSize.5xl)*theme(lineHeight.tight)*2)] sm:px-0">
               <ul className="block animate-text-slide text-left leading-tight [&_li]:block">
                 <li className="ml-2 py-2 text-4xl font-thin sm:ml-4 sm:text-5xl">
                   Tired of managing portfolios in Excel sheets?

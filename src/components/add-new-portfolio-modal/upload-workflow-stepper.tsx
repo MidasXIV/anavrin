@@ -33,8 +33,8 @@ const UploadWorkflowStepper = () => {
           { content: "Payment" },
           { content: "Step 4" }
         ]}
-      />
-    </> */}
+      /> */}
+    </>
   );
 };
 

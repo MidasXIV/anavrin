@@ -26,4 +26,3 @@ export function validateData(data: DataItem[]): ValidationResult {
 
   return { valid, invalid };
 }
-

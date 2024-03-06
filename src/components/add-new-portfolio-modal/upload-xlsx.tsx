@@ -1,6 +1,12 @@
 import { FC, useState } from "react";
 
-import { ArrowRightIcon, CaretLeftIcon, FileIcon, LoopIcon, UploadIcon } from "@radix-ui/react-icons";
+import {
+  ArrowRightIcon,
+  CaretLeftIcon,
+  FileIcon,
+  LoopIcon,
+  UploadIcon
+} from "@radix-ui/react-icons";
 import useDragDrop from "hooks/useDragDrop";
 import { cn } from "@/utils/index";
 import xlsx from "node-xlsx";

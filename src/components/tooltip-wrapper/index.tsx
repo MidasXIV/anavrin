@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type TooltipWrapperProps = {
   label: string;
   color: string;
   // eslint-disable-next-line react/require-default-props
-  children?: unknown;
+  children?: ReactNode;
 };
 
 const TooltipWrapper: FC<TooltipWrapperProps> = ({ label, color = undefined, children }) => (

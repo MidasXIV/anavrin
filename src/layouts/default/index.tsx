@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import Head from "next/head";
 import Header from "../../components/header";
 import Sidebar from "../../components/sidebar";
@@ -13,7 +13,7 @@ type DefaultLayoutProps = {
   description: string;
   sidebar: string;
   // eslint-disable-next-line react/require-default-props
-  children?: unknown;
+  children?: ReactNode;
 };
 
 const DefaultLayout: FC<DefaultLayoutProps> = ({ title, description, sidebar, children }) => {

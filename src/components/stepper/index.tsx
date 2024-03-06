@@ -23,7 +23,7 @@ const Stepper = ({ steps }) => {
 
   return (
     <>
-      <div className="flex h-full w-full justify-between bg-neutral-200 flex-col">
+      <div className="flex h-full w-full flex-col justify-between bg-neutral-200">
         {/* {steps.map((step, index) => (
           <div
             key={index}

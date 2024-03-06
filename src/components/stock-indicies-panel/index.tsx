@@ -17,7 +17,7 @@ type VARIANT = keyof typeof VARIANT;
 
 const LoadingListItem = () => (
   <li>
-    <a href="#" className="block items-center p-3 hover:bg-gray-100 sm:flex dark:hover:bg-gray-700">
+    <a href="#" className="block items-center p-3 hover:bg-gray-100 dark:hover:bg-gray-700 sm:flex">
       <div className="w-full">
         <div className="mb-2 h-6 w-3/4 animate-pulse rounded-md bg-gray-600 dark:text-gray-400" />
         <div className="mb-2 h-12 w-full animate-pulse rounded-md bg-gray-400" />
@@ -69,7 +69,7 @@ const ListItem = ({
     <li>
       <a
         href="#"
-        className={clsx("block items-center hover:bg-gray-100 sm:flex dark:hover:bg-gray-700", {
+        className={clsx("block items-center hover:bg-gray-100 dark:hover:bg-gray-700 sm:flex", {
           "px-2 py-2": variant === VARIANT.compact,
           "p-3": variant === VARIANT.default
         })}

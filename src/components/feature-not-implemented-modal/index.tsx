@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -8,7 +8,6 @@ import {
   AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import React from "react";
 
 type NotYetImplementedModalProps = {
   isShowing: boolean;

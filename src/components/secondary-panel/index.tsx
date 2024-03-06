@@ -1,11 +1,12 @@
 import { Drawer } from "vaul";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, ReactNode, SetStateAction } from "react";
 import { cn } from "@/utils/shadcn";
 
 interface SecondayPanelProps {
   showDrawer: boolean; // To set panel as showDrawer or not used in mobile UI
   setShowDrawer: Dispatch<SetStateAction<boolean>>;
   className?: string;
+  children?: ReactNode;
 }
 
 const SecondaryPanel: FC<SecondayPanelProps> = ({
