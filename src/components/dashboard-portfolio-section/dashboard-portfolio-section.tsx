@@ -1,43 +1,82 @@
-import { FC } from "react";
-import { useResizeObserver } from "@mantine/hooks";
-import { ScrollArea, Box } from "@mantine/core";
-import PortfolioDiversificationCard from "../portfolio-diversification-card/portfolio-diversification-card";
+import { FC, useState } from "react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { AssetType } from "lib/portfolio-utils";
 import PortfolioOverviewCard from "../portfolio-overview-card/portfolio-overview-card";
 
 interface IDashboardPortfolioSectionProps {
   portfolios: Portfolio[];
+  onPortfolioSelect: (value) => void;
 }
 
-const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({ portfolios }) => {
-  const [ref, size] = useResizeObserver();
-  const [refSecondColumn, sizeSecondColumn] = useResizeObserver();
+const DashboardPortfolioSection: FC<IDashboardPortfolioSectionProps> = ({
+  portfolios,
+  onPortfolioSelect
+}) => {
+  const [filterAsset, setFilterAsset] = useState("ALL");
   return (
-    <section className="flex h-full w-full items-center justify-center">
-      <div className="flex w-full grid-cols-4 flex-col gap-3 px-6 lg:grid">
-        <div className="col-span-3 max-w-full" ref={ref}>
-          <ScrollArea w={size} className="h-full">
-            <Box
-              className="grid h-full auto-cols-[333px] grid-flow-col gap-3"
-              w={size}
-              sx={{ height: "inherit" }}
-            >
-              {portfolios.map(portfolio => (
-                <PortfolioOverviewCard key={portfolio._id} portfolio={portfolio} />
-              ))}
-            </Box>
-          </ScrollArea>
-        </div>
-        <div className="col-span-1 max-w-full">
-          <div
-            className="grid h-full w-full max-w-full grid-cols-2 gap-3 lg:grid-cols-none lg:grid-rows-2"
-            ref={refSecondColumn}
-          >
-            <PortfolioDiversificationCard portfolios={portfolios} size={sizeSecondColumn} />
-            <div className="block h-full w-full rounded-md border border-gray-200 bg-charcoal-400 p-6 text-sm hover:bg-charcoal-900">
-              {/* <Button onClick={() => setHide(!hide)}>Transistion</Button> */}
-            </div>
-          </div>
-        </div>
+    <section className="flex w-full flex-col items-center justify-center overflow-hidden p-2">
+      <div className="flex w-full items-center justify-between py-3">
+        <span className="text-xl font-bold">Portfolios</span>
+        <ToggleGroup
+          type="single"
+          onValueChange={selectGroupItem => {
+            setFilterAsset(selectGroupItem);
+          }}
+          defaultValue="ALL"
+        >
+          <ToggleGroupItem key="ALL" value="ALL" className="text-xs">
+            ALL
+          </ToggleGroupItem>
+          {Object.keys(AssetType).map(assetTypeKey => (
+            <ToggleGroupItem key={assetTypeKey} value={AssetType[assetTypeKey]} className="text-xs">
+              {AssetType[assetTypeKey].toUpperCase()}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </div>
+
+      <div className="w-full">
+        <section className="grid h-full auto-cols-[250px] grid-flow-col gap-3 overflow-auto p-2 pb-6">
+          {portfolios
+            .filter(portfolio => {
+              if (filterAsset === "ALL") {
+                return true;
+              }
+              return portfolio.assetType === filterAsset;
+            })
+            .map(portfolio => (
+              <PortfolioOverviewCard
+                key={portfolio._id}
+                portfolio={portfolio}
+                onPortfolioSelect={onPortfolioSelect}
+                variant="compact"
+              />
+            ))}
+          {/* {portfolios.map(portfolio => (
+            <PortfolioOverviewCard
+              key={portfolio._id}
+              portfolio={portfolio}
+              onPortfolioSelect={onPortfolioSelect}
+              variant="compact"
+            />
+          ))}
+          {portfolios.map(portfolio => (
+            <PortfolioOverviewCard
+              key={portfolio._id}
+              portfolio={portfolio}
+              onPortfolioSelect={onPortfolioSelect}
+              variant="compact"
+            />
+          ))}
+          {portfolios.map(portfolio => (
+            <PortfolioOverviewCard
+              key={portfolio._id}
+              portfolio={portfolio}
+              onPortfolioSelect={onPortfolioSelect}
+              variant="compact"
+            />
+          ))} */}
+        </section>
       </div>
     </section>
   );

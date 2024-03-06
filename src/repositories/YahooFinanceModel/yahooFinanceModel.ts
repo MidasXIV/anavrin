@@ -185,6 +185,25 @@ class YahooFinanceModel implements DividendInfoScraper {
     return AnnualDividends;
   }
 
+  private getDividendDistribution(
+    DividendHistory: Array<DividendInformationItemInterface>
+  ): AnnualDividendDistributionInterface {
+    const currentYear = new Date().getFullYear().toString();
+    const dividendDistibution = {};
+
+    DividendHistory.forEach((DividendHistoryItem: DividendInformationItemInterface) => {
+      const { date, dividend } = DividendHistoryItem;
+      const dividendYear = new Date(date).getFullYear().toString();
+      const dividendMonth = new Date(date).getMonth().toString();
+
+      if (dividendYear === currentYear) {
+        dividendDistibution[dividendMonth] = dividend;
+      }
+    });
+
+    return dividendDistibution;
+  }
+
   private getAnnualDividendGrowth(
     AnnualDividends: AnnualDividendInterface
   ): AnnualDividendGrowthInterface {
@@ -257,10 +276,12 @@ class YahooFinanceModel implements DividendInfoScraper {
     const dividendCurrency = this.parseStockCurrency(parser);
     const DividendHistory = this.parseDividendHistory(parser);
     const AnnualDividends = this.getAnnualDividends(DividendHistory, stockSummary.dividendAmount);
+    const dividendDistibution = this.getDividendDistribution(DividendHistory);
     const AnnualDividendGrowth = this.getAnnualDividendGrowth(AnnualDividends);
 
     return {
       dividendCurrency,
+      dividendDistibution,
       AnnualDividends,
       AnnualDividendGrowth
     };

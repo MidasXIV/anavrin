@@ -1,5 +1,5 @@
 import { Db, ObjectId, WithId } from "mongodb";
-import isEmptyDataItem from "../../util/type-gaurds";
+import isEmptyDataItem from "../../utils/type-gaurds";
 
 /**
  * Options for configuring the `MongoBase` class.

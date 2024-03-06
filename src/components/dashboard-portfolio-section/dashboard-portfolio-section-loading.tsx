@@ -1,5 +1,5 @@
-import { Divider } from "@mantine/core";
 import { FC } from "react";
+import { Separator } from "../ui/separator";
 
 const DashboardPortfolioSectionLoading: FC<unknown> = () => (
   <section className="flex h-full w-full items-center justify-center">
@@ -10,7 +10,7 @@ const DashboardPortfolioSectionLoading: FC<unknown> = () => (
             <p className="mb-2 h-6 w-3/4 animate-pulse rounded-md bg-gray-600" />
             <p className="my-2 h-12 w-1/2 animate-pulse rounded-md border bg-gray-400 text-gray-400" />
             <p className="my-2 h-36 animate-pulse rounded-md border bg-gray-400 text-gray-400" />
-            <Divider my="sm" />
+            <Separator className="my-2 bg-gray-400" />
             <p className="my-2 h-24 animate-pulse rounded-md border bg-gray-400 text-gray-400" />
           </div>
 
@@ -18,7 +18,7 @@ const DashboardPortfolioSectionLoading: FC<unknown> = () => (
             <p className="mb-2 h-6 w-3/4  animate-pulse rounded-md bg-gray-600" />
             <p className="my-2 h-12 w-1/2 animate-pulse rounded-md border bg-gray-400 text-gray-400" />
             <p className="my-2 h-36 animate-pulse rounded-md border bg-gray-400 text-gray-400" />
-            <Divider my="sm" />
+            <Separator className="my-2 bg-gray-400" />
             <p className="my-2 h-24 animate-pulse rounded-md border bg-gray-400 text-gray-400" />
           </div>
         </div>

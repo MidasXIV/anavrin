@@ -1,4 +1,5 @@
-import { Chip, Group } from "@mantine/core";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
 import { FC, useState } from "react";
 
 interface CategoryChipGroupProps {
@@ -10,15 +11,19 @@ const CategoryChipGroup: FC<CategoryChipGroupProps> = ({ categories }) => {
   const [value, setValue] = useState(categories[0]);
 
   return (
-    <Chip.Group multiple={false} value={value} onChange={setValue}>
-      <Group position="left" spacing="xs">
-        {categories.map(category => (
-          <Chip color="dark" size="sm" radius="md" variant="filled" key={category} value={category}>
-            <span className="text-xs">{category}</span>
-          </Chip>
-        ))}
-      </Group>
-    </Chip.Group>
+    <ToggleGroup
+      type="single"
+      variant="outline"
+      value={value}
+      onValueChange={setValue}
+      className="flex w-full flex-wrap"
+    >
+      {categories.map(category => (
+        <ToggleGroupItem color="dark" key={category} value={category} className="bg-gray-200">
+          <span className="text-xs">{category}</span>
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
   );
 };
 

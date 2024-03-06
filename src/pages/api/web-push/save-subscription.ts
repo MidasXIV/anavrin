@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+
+import { getServerSession } from "next-auth";
 import {
   SaveSubscription,
   CreateSaveSubscriptionController
@@ -7,10 +8,11 @@ import {
 import connectToDatabase from "../../../lib/mongodb";
 import createHandlers from "../../../lib/rest-utils";
 import UserModel from "../../../repositories/UserModel/userModel";
+import { nextAuthOptions } from "../auth/[...nextauth]";
 
 const handlers = {
   POST: async (req: NextApiRequest, res: NextApiResponse) => {
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, nextAuthOptions);
     const db = await connectToDatabase();
 
     const userModel = new UserModel(db);

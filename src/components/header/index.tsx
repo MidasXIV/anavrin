@@ -1,8 +1,15 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { FC } from "react";
-import { Menu, Divider, Text } from "@mantine/core";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import cn from "classnames";
+import { clsx } from "clsx";
 import Image from "next/image";
 import styles from "./index.module.css";
 
@@ -19,25 +26,20 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
   const userImage = loading ? defaultUserImage : session?.user?.image ?? defaultUserImage;
 
   return (
-    <div className={cn(styles.header, "flex")}>
+    <div className={clsx(styles.header, "flex bg-charcoal-300 bg-none")}>
       <div className={styles.leftHeader}>
-        <div className={cn(styles.leftContentPanel, styles.content)}>
-          <h3 className="text-2xl font-black">{title}</h3>
-          <p className="font-sans text-xs font-thin">{description}</p>
+        <div className={clsx(styles.leftContentPanel, styles.content)}>
+          <h3 className="my-auto text-2xl font-black">{title}</h3>
+          <p className="hidden font-sans text-xs font-thin sm:block">{description}</p>
         </div>
       </div>
       <div className={styles.rightHeader}>
-        <div className={cn(styles.content, styles.rightContentPanel)}>
-          <Menu
-            // trigger="hover"
-            width={200}
-            position="top-end"
-            offset={6}
-          >
-            <Menu.Target>
+        <div className={clsx(styles.content, styles.rightContentPanel)}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <button className="relative inline-block" type="button">
                 <Image
-                  className="inline-block h-12 w-12 rounded-lg object-cover"
+                  className="inline-block h-10 w-10 rounded-lg object-cover sm:h-12 sm:w-12"
                   src={userImage}
                   alt="Profile"
                   layout="intrinsic"
@@ -46,37 +48,32 @@ const Header: FC<HeaderProps> = ({ title, description }) => {
                 />
                 <span className="absolute bottom-0 right-0 -mr-1 inline-block h-3 w-3 rounded-full border-2 border-white bg-green-600" />
               </button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item>
-                <Link href="./user-settings">Settings</Link>
-              </Menu.Item>
-              {/* <Menu.Item>
-                <a href="./user-settings">Messages</a>
-              </Menu.Item> */}
-              {/* <Menu.Item>Gallery</Menu.Item> */}
-              {/* <Menu.Item
-                rightSection={
-                  <Text size="sm" color="gray">
-                    ⌘K
-                  </Text>
-                }
-              >
-                Search
-              </Menu.Item> */}
-              <Divider />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full" align="end" side="bottom" sideOffset={6}>
+              <DropdownMenuLabel className="w-48">My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link className="w-full" href="./user-settings">
+                  Settings
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>GitHub</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem disabled>API</DropdownMenuItem>
+              <DropdownMenuSeparator />
               {/* <Menu.Item disabled>Delete my data</Menu.Item> */}
               {session ? (
-                <Menu.Item color="red" onClick={() => signOut()}>
+                <DropdownMenuItem className="text-red-300" onClick={() => signOut()}>
                   Sign out
-                </Menu.Item>
+                </DropdownMenuItem>
               ) : (
-                <Menu.Item color="green" onClick={() => signIn()}>
+                <DropdownMenuItem className="text-green-300" onClick={() => signIn()}>
                   Sign in
-                </Menu.Item>
+                </DropdownMenuItem>
               )}
-            </Menu.Dropdown>
-          </Menu>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>

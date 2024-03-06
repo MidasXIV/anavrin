@@ -58,14 +58,19 @@ export const apiMapper = {
     url: "/api/services/economic-events/",
     method: "get"
   },
+  // world-stock-indicies-api
+  fetchWorldStockIndiciesData: {
+    url: "/api/services/world-stock-indicies/",
+    method: "get"
+  },
   // user-portfolio-apis
   deleteUserPortfolio: {
-    url: "/api/portfolio/",
+    url: "/api/portfolio",
     method: "delete",
     requestType: "deleteUserPortfolioRequest"
   },
   saveUserPortfolio: {
-    url: "/api/portfolio/",
+    url: "/api/portfolio",
     method: "post",
     requestType: "saveUserPortfolioRequest"
   },

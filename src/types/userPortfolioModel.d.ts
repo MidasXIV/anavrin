@@ -29,6 +29,35 @@ interface CryptoAssetDTO {
   links: LinksData;
 }
 
+interface DividendAssetDTO {
+  title: string;
+  symbol: string;
+  sector: string;
+  shares: number;
+  avgPrice: string;
+  marketPrice: number;
+  costBasis: number;
+  marketValue: number;
+  netValue: string;
+  earningPerShare: string;
+  pricePerEarning: string;
+  dividendAmount: string;
+  dividendYield: string;
+  yieldOnCost: number;
+  income: number;
+  beta: string;
+  exchange: string;
+  marketCap: string;
+  AnnualDividends: Record<string, number>;
+  AnnualDividendGrowth: Record<
+    string,
+    {
+      dividend: number;
+      growth: number;
+    }
+  >;
+}
+
 interface StockPortfolioItem {
   ticker: string;
   shares: number;

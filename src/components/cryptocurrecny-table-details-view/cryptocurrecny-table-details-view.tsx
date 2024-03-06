@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Button, Popover } from "@mantine/core";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
 import BrandTelegramSVG from "../icons/BrandTelegramSVG";
 import BrandTwitterSVG from "../icons/BrandTwitterSVG";
 import BrandRedditSVG from "../icons/BrandRedditSVG";
@@ -103,15 +104,13 @@ const SocialLinksGrid = ({ links }) => {
       <GridItem link={socialLinks.reddit} svgComponent={BrandRedditSVG} />
       <GridItem link={socialLinks.telegram} svgComponent={BrandTelegramSVG} />
 
-      <Popover width={500} position="bottom" withArrow shadow="md" arrowPosition="side">
-        <Popover.Target>
-          <Button>
-            <MoreOptionsIcon width={24} height={24} />
-          </Button>
-        </Popover.Target>
-        <Popover.Dropdown>
+      <Popover>
+        <PopoverTrigger>
+          <MoreOptionsIcon width={24} height={24} />
+        </PopoverTrigger>
+        <PopoverContent className="w-[500px] text-xs">
           <LinksComponent links={links} />
-        </Popover.Dropdown>
+        </PopoverContent>
       </Popover>
     </div>
   );
@@ -124,17 +123,9 @@ const CryptocurrecnyTableDetailsView: FC<CryptocurrecnyTableDetailsViewProps> = 
 
   return (
     <section className="my-1 flex justify-between rounded-lg border border-gray-500 px-4 py-2 text-xs">
-      <div>
+      <div className="max-w-md">
         <p className="py-2 text-sm font-medium">Categories:</p>
         <div className="flex flex-wrap">
-          {/* {data.categories.map(category => (
-            <span
-              key={`category-${category}`}
-              className="mb-2 mr-2 rounded-lg bg-charcoal-300 p-2  text-white"
-            >
-              {category}
-            </span>
-          ))} */}
           <CategoryChipGroup categories={data.categories} />
         </div>
       </div>

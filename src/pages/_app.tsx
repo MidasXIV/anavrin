@@ -5,6 +5,8 @@ import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { JssProvider, createGenerateId } from "react-jss";
 import { MantineProvider } from "@mantine/core";
+import { GeistSans } from "geist/font/sans";
+import { Toaster } from "@/components/ui/sonner";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -201,9 +203,10 @@ const MyApp: FC<AppProps<{ session: Session }>> = ({ Component, pageProps }) => 
               colorScheme: "light"
             }}
           >
-            <main>
+            <main className={GeistSans.className}>
               <Component {...pageProps} />
             </main>
+            <Toaster />
           </MantineProvider>
         </JssProvider>
       </SessionProvider>

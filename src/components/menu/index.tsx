@@ -1,5 +1,5 @@
 import React, { useRef, FC, CSSProperties } from "react";
-import useOutsideClick from "../../util/useOutsideClick";
+import useOutsideClick from "../../utils/useOutsideClick";
 
 type MenuProps = {
   children: JSX.Element[];

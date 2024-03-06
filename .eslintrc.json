@@ -50,6 +50,7 @@
         "endOfLine": "auto"
       }
     ],
+    "react/require-default-props": "off",
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
     "max-len": [

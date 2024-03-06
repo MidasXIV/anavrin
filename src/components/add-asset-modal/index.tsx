@@ -1,5 +1,5 @@
 import { FC } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 import UtilityFooter from "./stock-modal-utility-footer";
 import { AssetType, getAddAssetModalTitle } from "../../lib/portfolio-utils";
 import AddCryptoForm from "./add-crypto-form";
@@ -18,7 +18,7 @@ const ButtonPanel = ({ cancel, formState, formValid }) => (
     <ul className="nav flex flex-row items-center text-xs">
       <button
         type="button"
-        className={cn(
+        className={clsx(
           "inline-block w-auto rounded-lg py-2 pl-1 pr-2 text-xs font-semibold text-gray-500",
           {
             "animate-bounce": formValid
@@ -111,7 +111,7 @@ const AddAssetModal: FC<AddAssetModalProps> = ({ isShowing, cancel, assetType, o
 
   return (
     <div
-      className={cn("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
+      className={clsx("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
         hidden: !isShowing,
         "md:hidden": !isShowing
       })}

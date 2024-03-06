@@ -31,7 +31,7 @@ const makeRequestWithCancelToken = async <T>(
   } catch (error) {
     if (axios.isCancel(error)) {
       // Request was canceled
-      throw new Error("Request canceled");
+      console.error("Request canceled");
     }
 
     return errorHandler(error) as AxiosResponse;

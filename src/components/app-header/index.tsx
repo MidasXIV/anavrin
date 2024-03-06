@@ -33,13 +33,11 @@ const AppHeader: FC<AppHeaderProps> = ({ title, description, currentPage, otherP
         }
         menu={
           <Menu onOutsideClick={() => setMenuOpened(false)} style={{ top: "2.5rem" }}>
-            <Link href={currentPage.path}>
-              <a>{currentPage.label}</a>
-            </Link>
+            <Link href={currentPage.path}>{currentPage.label}</Link>
             <>
               {otherPages.map(page => (
                 <Link href={page.path} key={page.path + page.label}>
-                  <a>{page.label}</a>
+                  {page.label}
                 </Link>
               ))}
             </>

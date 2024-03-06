@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-const options = {
+export const nextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -12,7 +12,7 @@ const options = {
   database: process.env.MONGODB_URI,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(user, account, profile);
+      // console.log(user, account, profile);
       return true;
     }
   },
@@ -34,12 +34,13 @@ const options = {
       /* account (e.g. Twitter) linked to a user */ console.log(message);
     },
     async session(message) {
-      /* session is active */ console.log(message);
-    },
-    async error(message) {
-      /* error in authentication flow */ console.log(message);
+      /* session is active */
+      // console.log(message);
     }
+    // async error(message) {
+    //   /* error in authentication flow */ console.log(message);
+    // }
   }
 };
 
-export default (req, res) => NextAuth(req, res, options);
+export default (req, res) => NextAuth(req, res, nextAuthOptions);

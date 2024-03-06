@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import Result from "../../lib/result";
-import makeRequest from "../../util/makeRequest";
+import makeRequest from "../../utils/makeRequest";
 
 export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalendarModel {
   private baseURL = "https://finviz.com/calendar.ashx";
@@ -25,13 +25,26 @@ export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalen
     // console.log(`Information for the next ${tables.length} Days.`);
 
     tables.each((index, entry) => {
-      const tableBody = $(entry).children("tbody").eq(0);
-      const tableEntries = $(tableBody).children("tr").get();
-
       const tableDataItem = {
         day: "",
         events: []
       };
+
+      const tableHead = $(entry).children("thead").eq(0);
+      const tableHeadEntries = $(tableHead).children("tr").get();
+      $(tableHeadEntries).each((tableEntryIndex, row) => {
+        const hhd = $(row)
+          .children("th")
+          .map((_index, col) => $(col).text())
+          .get();
+        if (tableEntryIndex === 0) {
+          // eslint-disable-next-line prefer-destructuring
+          tableDataItem.day = hhd[0];
+        }
+      });
+
+      const tableBody = $(entry).children("tbody").eq(0);
+      const tableEntries = $(tableBody).children("tr").get();
 
       $(tableEntries).each((tableEntryIndex, row) => {
         const hhd = $(row)
@@ -44,13 +57,6 @@ export default class FinvizEconomicCalendarModel implements IFinvizEconomicCalen
             return $(col).text();
           })
           .get();
-
-        // Table entry header
-        if (tableEntryIndex === 0) {
-          // eslint-disable-next-line prefer-destructuring
-          tableDataItem.day = hhd[0];
-          return;
-        }
 
         tableDataItem.events.push({
           time: hhd[0],

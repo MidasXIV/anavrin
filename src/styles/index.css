@@ -2,56 +2,156 @@
 
 @tailwind base;
 @tailwind components;
-
 @tailwind utilities;
 
 @font-face {
-  font-family:"widescreen-mixed";
-  src:url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff2"),url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff"),url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("opentype");
-  font-display:auto;font-style:normal;font: weight 100px;;font-stretch:normal;
+  font-family: "widescreen-mixed";
+  src: url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff2"),
+    url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff"),
+    url("https://use.typekit.net/af/b8857c/00000000000000007735fb5d/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("opentype");
+  font-display: auto;
+  font-style: normal;
+  font: weight 100px;
+  font-stretch: normal;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  @keyframes fill-text {
+    to {
+      --progress: 100%;
+    }
+  }
+
+  @keyframes parallax-movement {
+    to {
+      transform: translateY(var(--movement));
+    }
+  }
+
+  /* The @property tells the browser what type this variable is,
+    a percentage in our case. If we would not add that here, the
+    browser would not be able to animate it from 0% to 100%.
+  */
+  @property --progress {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+  }
 }
 
 .dashboard-primary-panel {
-  @apply w-full sm:w-8/12 bg-gray-300 p-2;
+  @apply h-full w-full bg-gray-300 sm:p-2 sm:w-8/12;
   transition: width 0.5s ease;
 }
 
 .dashboard-secondary-panel {
-  @apply sm:w-4/12 bg-gray-200 p-2; 
-  @apply hidden sm:block border-l border-gray-400;
+  @apply bg-gray-200 p-2 sm:w-4/12;
+  @apply hidden border-l border-gray-400 sm:block;
   background-color: #eaeaea;
   transition: width 0.5s ease;
 }
 
 .portfolio-primary-panel {
-  @apply w-full h-full bg-gray-300 p-2 border-r border-gray-400;
+  @apply h-full w-full border-r border-gray-400 bg-gray-300 p-0 sm:p-2;
 }
 
 .portfolio-default-primary-panel {
-  @apply w-full sm:w-8/12 bg-gray-300;
+  @apply w-full bg-gray-300 md:w-8/12;
   transition: width 0.5s ease;
 }
 
 .portfolio-secondary-panel {
-  @apply sm:w-4/12 bg-gray-200 p-2; 
-  @apply hidden sm:block border-gray-400;
-  @apply bg-charcoal-400 text-gray-300;
+  @apply bg-charcoal-400 p-2 text-gray-300;
   transition: width 0.5s ease;
 }
 
-
 .rdt_TableHeadRow {
-  @apply font-mono bg-red-600;
+  @apply bg-red-600 font-mono;
   margin-right: 12px;
 }
 
 .rdt_TableRow {
-  @apply font-mono bg-red-600 text-xs;
+  @apply bg-red-600 font-mono text-xs;
 }
 
 .clearNav {
   backdrop-filter: saturate(180%) blur(5px) !important;
   background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.translucent-bg-charcoal-900 {
+  backdrop-filter: saturate(180%) blur(5px) !important;
+  background-color: #151515 !important;
 }
 
 .outline-font {
@@ -61,7 +161,53 @@
   /* --font-line: .745; */
 }
 
+.outline-test {
+  @apply border-2 border-red-300;
+}
+
 .mask-gradient {
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 50%, transparent);
   mask-image: linear-gradient(to bottom, transparent, black 50%, transparent);
+}
+
+@layer components {
+  .reveal-text {
+    --faded-color: #ccc;
+    --higlighted-color: #111;
+    /* Compared to the video, I updated this article to reflect
+       a solution that's so much easier. Creating a single gradient
+       with two colors, and then animating the starting/end point of
+       the two colors with a CSS variable --progress. CSS @property
+       makes this so much easier for us now.
+    */
+    --progress: 0%;
+    background-image: linear-gradient(to right,
+        var(--higlighted-color),
+        var(--higlighted-color) var(--progress),
+        var(--faded-color) var(--progress),
+        var(--faded-color));
+    background-clip: text;
+    background-repeat: no-repeat;
+    color: transparent;
+    display: inline;
+    animation: fill-text linear both;
+    /* animation-timeline: --reveal-wrapper; */
+    animation-timeline: view();
+    /* animation-range: entry 200% cover 80%; */
+    animation-range-start: 80%;
+    animation-range-end: 200%;
+    /* animation-range: contain; */
+  }
+
+  .parallax-image {
+    transform: translateY(0px);
+    animation: parallax-movement linear both;
+    /* animation-timeline: --parallax-wrapper; */
+    animation-timeline: view();
+    animation-range: entry 25% cover 80%;
+  }
+}
+
+.hero {
+  background-image: url(/images/backdrop-3.jpg);
 }

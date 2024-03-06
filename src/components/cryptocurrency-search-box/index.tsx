@@ -1,19 +1,21 @@
 import { useState, FC, useEffect } from "react";
 import { Group, Avatar, Text, Autocomplete } from "@mantine/core";
-import { fetchCoinList } from "../../util/cryptocurrencyService";
+import { fetchCoinList } from "../../utils/cryptocurrencyService";
 
 type CryptocurrencySearchBoxProps = {
   // eslint-disable-next-line react/require-default-props
   hideHeader?: boolean;
   setCyptocurrency: (token) => void;
+  cyptocurrency: string;
 };
 
 const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({
   hideHeader = false,
-  setCyptocurrency
+  setCyptocurrency,
+  cyptocurrency
 }) => {
   const [data, setData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(cyptocurrency);
   const [disabled, setDisabled] = useState(true);
 
   function AutoCompleteItem({ id, symbol, name, ...others }) {

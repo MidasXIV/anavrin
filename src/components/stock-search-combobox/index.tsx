@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 import useModal from "../../hooks/useModal";
 import useStockSearch from "../../hooks/useStockSearch";
 
@@ -286,7 +286,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
       {state === SearchState.FAILURE ? <FailureIconComponent /> : null}
       <ul
         ref={stockSearchOptions}
-        className={cn("absolute -mt-1 w-full max-w-md rounded-lg bg-white p-2 shadow-lg", {
+        className={clsx("absolute -mt-1 w-full max-w-md rounded-lg bg-white p-2 shadow-lg", {
           hidden: !isShowing
         })}
       >

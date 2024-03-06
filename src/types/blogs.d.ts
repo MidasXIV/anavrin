@@ -5,13 +5,7 @@ interface Blog {
   slug: string;
   featured?: boolean;
   draft?: boolean;
-  author:
-    | {
-        username: string;
-        name: string;
-        avatar: string;
-      }
-    | string;
+  author: string;
   updatedAt: string;
   createdAt: string;
   content?: string;

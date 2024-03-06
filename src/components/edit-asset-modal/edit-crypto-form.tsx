@@ -2,7 +2,7 @@ import { useForm } from "@mantine/form";
 import { NumberInput } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import SlideToSubmit from "../slide-to-submit";
-import { fetchCoinInfo } from "../../util/cryptocurrencyService";
+import { fetchCoinInfo } from "../../utils/cryptocurrencyService";
 import CryptoInformationTable from "../add-asset-modal/crypto-information-table";
 import { convertCoinGeckoApiCoinObjectToDTO } from "../../lib/portfolio-asset-utils";
 

@@ -1,4 +1,4 @@
-import { Button } from "@mantine/core";
+import { Button } from "@/components/ui/button";
 import { FC } from "react";
 import { ExchangeKeys } from "..";
 import { UserSettingsExchangeButton } from "../types";
