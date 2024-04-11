@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import makeRequest from "../../util/makeRequest";
+import makeRequest from "../../utils/makeRequest";
 
 export default class CoinGeckoModel {
   constructor() {}

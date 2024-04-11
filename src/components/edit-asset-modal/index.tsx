@@ -1,5 +1,5 @@
 import { FC } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 import { AssetType, getEditAssetModalTitle } from "../../lib/portfolio-utils";
 import EditCryptoForm from "./edit-crypto-form";
 import AddStockForm from "../add-asset-modal/add-stock-form";
@@ -36,7 +36,7 @@ const EditAssetModal: FC<EditAssetModalProps> = ({
 
   return (
     <div
-      className={cn("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
+      className={clsx("fixed inset-0 z-10 px-4 md:flex md:items-center md:justify-center", {
         hidden: !isShowing,
         "md:hidden": !isShowing
       })}

@@ -1,5 +1,11 @@
 import { FC } from "react";
-import { Divider, Menu } from "@mantine/core";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 import styles from "./index.module.css";
 import TooltipWrapper from "../tooltip-wrapper";
 import AnalyseIcon from "../icons/analyseIcon";
@@ -24,7 +30,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
   deletePortfolio,
   togglePortfolioAnalysisPanel
 }) => (
-  <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 px-4 align-middle">
+  <div className="flex h-full flex-row items-center justify-between rounded-lg bg-charcoal-900 p-4 align-middle sm:px-4 sm:py-0">
     <ul className="nav flex flex-row">
       <TooltipWrapper label="Add stock" color="orange">
         <button type="button" className={styles.icon} onClick={openAddAssetModal}>
@@ -33,7 +39,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
       </TooltipWrapper>
     </ul>
 
-    <ul className="nav hidden flex-row space-x-5 xl:flex">
+    <ul className="nav flex flex-row space-x-5 xl:flex">
       <TooltipWrapper label="Delete" color="orange">
         <button type="button" className={styles.icon} onClick={deletePortfolio}>
           <DeletePortfolioIcon width={24} height={24} />
@@ -47,7 +53,7 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
     </ul>
 
     {/* Transistion panel -> Open portfolio analysis panel */}
-    <ul className="nav hidden flex-row xl:flex">
+    <ul className="nav flex flex-row xl:flex">
       <TooltipWrapper label="Analyse portfolio" color="orange">
         <button type="button" className={styles.icon} onClick={togglePortfolioAnalysisPanel}>
           <AnalyseIcon width={24} height={24} />
@@ -55,43 +61,41 @@ const PortfolioOptions: FC<PortfolioOptionsProps> = ({
       </TooltipWrapper>
     </ul>
     {/* Options */}
-    <ul className="nav flex flex-row xl:hidden">
-      <Menu
-        // trigger="hover"
-        width={200}
-        position="bottom-end"
-        offset={6}
-      >
-        <Menu.Target>
+    <ul className="nav hidden flex-row xl:hidden">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
           <button type="button" className={styles.icon}>
             <MoreOptionsIcon width={32} height={32} />
           </button>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-full" align="end" side="bottom" sideOffset={6}>
+          <DropdownMenuItem
             color="orange"
-            icon={<SaveIcon width={15} height={15} />}
             onClick={savePortfolio}
+            className="inline-flex w-full justify-between hover:cursor-pointer"
           >
-            Save
-          </Menu.Item>
-          <Menu.Item
+            <SaveIcon width={15} height={15} />
+            <span className="px-2">Save</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
             color="red"
-            icon={<DeletePortfolioIcon width={15} height={15} />}
             onClick={deletePortfolio}
+            className="inline-flex w-full justify-between hover:cursor-pointer"
           >
-            Delete
-          </Menu.Item>
-          <Divider />
-          <Menu.Item
+            <DeletePortfolioIcon width={15} height={15} />
+            <span className="px-2">Delete</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
             color="green"
-            icon={<AnalyseIcon width={15} height={15} />}
             onClick={togglePortfolioAnalysisPanel}
+            className="inline-flex w-full justify-between hover:cursor-pointer"
           >
-            Analyse
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
+            <AnalyseIcon width={15} height={15} />
+            <span className="px-2">Analyse</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </ul>
   </div>
 );

@@ -3,7 +3,7 @@ import PortfolioTable from "../../components/portfolio-table";
 import useModal from "../../hooks/useModal";
 import DefaultLayout from "../../layouts/default";
 import { DFMDividendExpandableComponent, DFMDividendPortfolioSchema } from "../../lib/table-schema";
-import getStockInformation from "../../util/getStockInformation";
+import getStockInformation from "../../utils/getStockInformation";
 import rateLimit from "../../lib/rate-limiting";
 
 const SimulatorDFM: FC = () => {

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import cn from "classnames";
+import { clsx } from "clsx";
 
 const CryptoInformationTable: FC<any> = ({ coin }) => (
   <div className="flex flex-row rounded-sm bg-gray-100 px-2 py-2 text-gray-600">
@@ -23,7 +23,7 @@ const CryptoInformationTable: FC<any> = ({ coin }) => (
         <div className="flex-1 pl-3 text-right">
           {coin.market_data.current_price.usd}
           <span
-            className={cn({
+            className={clsx({
               "text-green-500": coin.market_data.price_change_percentage_24h >= 0,
               "text-red-500": coin.market_data.price_change_percentage_24h < 0
             })}

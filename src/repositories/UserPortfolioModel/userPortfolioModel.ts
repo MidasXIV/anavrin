@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Db, FindOneAndUpdateOptions, UpdateResult } from "mongodb";
-import { isEmpty } from "../../util/helper";
+import { isEmpty } from "../../utils/helper";
 import MongoBase from "../MongoDbBase/mongoDBBase";
 
 // UserPortfolioModel implements the IUserPortfolioModel interface

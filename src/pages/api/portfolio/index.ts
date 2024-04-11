@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 import {
   CreateDeleteUserPortfolioController,
   DeleteUserPortfolio
@@ -15,10 +16,11 @@ import {
 import connectToDatabase from "../../../lib/mongodb";
 import createHandlers from "../../../lib/rest-utils";
 import UserPortfolioModel from "../../../repositories/UserPortfolioModel/userPortfolioModel";
+import { nextAuthOptions } from "../auth/[...nextauth]";
 
 const handlers = {
   POST: async (req: NextApiRequest, res: NextApiResponse) => {
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, nextAuthOptions);
     const db = await connectToDatabase();
 
     const userPortfolioModel = new UserPortfolioModel(db);
@@ -38,7 +40,7 @@ const handlers = {
     await fetchUserPortfolioController.execute(req, res);
   },
   DELETE: async (req: NextApiRequest, res: NextApiResponse) => {
-    const session = await getSession({ req });
+    const session = await getServerSession(req, res, nextAuthOptions);
     const db = await connectToDatabase();
 
     const userPortfolioModel = new UserPortfolioModel(db);

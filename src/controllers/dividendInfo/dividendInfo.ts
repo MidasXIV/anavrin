@@ -78,8 +78,15 @@ export default class DividendInfo implements IDividendInfo {
       yahooFinanceDividendHistoryURL
     );
     const dividendHistoryPageParser = cheerio.load(dividendHistoryPage);
-    const { dividendCurrency, AnnualDividends, AnnualDividendGrowth }: ParseDividendInformationDTO =
-      this.dividendInfoScrapper.parseDividendInformation(dividendHistoryPageParser, stockSummary);
+    const {
+      dividendCurrency,
+      AnnualDividends,
+      AnnualDividendGrowth,
+      dividendDistibution
+    }: ParseDividendInformationDTO = this.dividendInfoScrapper.parseDividendInformation(
+      dividendHistoryPageParser,
+      stockSummary
+    );
 
     if (isDFMTicker) {
       const { dividend, dividendYield } = this.coerceForDFM({ price, AnnualDividends });
@@ -94,6 +101,7 @@ export default class DividendInfo implements IDividendInfo {
       ...stockSummary,
       dividendCurrency,
       AnnualDividends,
+      dividendDistibution,
       AnnualDividendGrowth
     });
   }

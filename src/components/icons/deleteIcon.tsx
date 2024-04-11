@@ -1,10 +1,10 @@
-import cn from "classnames";
+import { clsx } from "clsx";
 import styles from "./index.module.css";
 
 const DeleteIcon = ({ onClick }) => (
   <button
     type="button"
-    className={cn(styles.icon, "rounded-lg border-2 border-gray-500")}
+    className={clsx(styles.icon, "rounded-lg border-2 border-gray-500")}
     onClick={onClick}
   >
     <svg

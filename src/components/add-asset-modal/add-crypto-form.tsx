@@ -3,7 +3,7 @@ import { Input, NumberInput } from "@mantine/core";
 import { FC, useState } from "react";
 import CryptocurrencySearchBox from "../cryptocurrency-search-box";
 import SlideToSubmit from "../slide-to-submit";
-import { fetchCoinInfo } from "../../util/cryptocurrencyService";
+import { fetchCoinInfo } from "../../utils/cryptocurrencyService";
 import CryptoInformationTable from "./crypto-information-table";
 import { convertCoinGeckoApiCoinObjectToDTO } from "../../lib/portfolio-asset-utils";
 
@@ -62,6 +62,7 @@ const AddCryptoForm: FC<AddCryptoFormProps> = ({ onSubmit }) => {
         >
           <CryptocurrencySearchBox
             hideHeader
+            cyptocurrency={searchTerm}
             setCyptocurrency={token => {
               setSearchTerm(token);
               fetchTokenInformation(token);

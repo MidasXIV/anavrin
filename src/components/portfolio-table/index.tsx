@@ -5,7 +5,7 @@ import {
   dataStoreDefault,
   defaultExpandableComponent
 } from "../../lib/table-schema";
-import { removeObjFromArray } from "../../util/helper";
+import { removeObjFromArray } from "../../utils/helper";
 import DoubleClickButton from "../double-click-button";
 import CrossIconSVG from "../icons/crossIconSVG";
 
@@ -66,7 +66,8 @@ const customStyles2 = {
       borderBottomColor: "#FFFFFF",
       borderRadius: "5px",
       // outline: "1px solid #FFFFFF",
-      marginBottom: "5px"
+      marginBottom: "5px",
+      size: "10px"
     },
     highlightOnHoverStyle: {
       backgroundColor: "rgb(230, 244, 244, 0.5)",
@@ -106,7 +107,8 @@ const DeleteRowTableEntry = onClickHandler => ({
       className="rounded p-1 font-bold text-white"
       activeClassName="bg-red-500 hover:bg-red-800"
       inactiveClassName="bg-charcoal-300 hover:bg-red-400"
-      tooltipLabel="Click again to delete!"
+      tooltipLabel="delete entry"
+      activatedTooltipLabel="Click again to delete!"
     />
   )
 });
@@ -124,31 +126,33 @@ const PortfolioTable: FC<PortfolioTableProps<any>> = ({
     onRowDelete(removeObjFromArray(data, row, "token"));
   };
   return (
-    <DataTable
-      title="Portfolio"
-      columns={
-        showRowDeleteButton
-          ? [...columns, DeleteRowTableEntry(handleRowDelete(dataStore))]
-          : columns
-      }
-      data={dataStore}
-      expandableRows
-      expandableRowsComponent={expandableComponent}
-      expandOnRowClicked
-      expandableRowsHideExpander
-      // overflowY
-      persistTableHead
-      responsive
-      fixedHeader
-      fixedHeaderScrollHeight="100%"
-      noHeader
-      progressPending={loading}
-      theme="solarized"
-      customStyles={customStyles2}
-      highlightOnHover
-      pointerOnHover
-      onRowDoubleClicked={onRowDoubleclick}
-    />
+    <div className="w-full">
+      <DataTable
+        title="Portfolio"
+        columns={
+          showRowDeleteButton
+            ? [...columns, DeleteRowTableEntry(handleRowDelete(dataStore))]
+            : columns
+        }
+        data={dataStore}
+        expandableRows
+        expandableRowsComponent={expandableComponent}
+        expandOnRowClicked
+        expandableRowsHideExpander
+        // overflowY
+        persistTableHead
+        responsive
+        fixedHeader
+        fixedHeaderScrollHeight="100%"
+        noHeader
+        progressPending={loading}
+        theme="solarized"
+        customStyles={customStyles2}
+        highlightOnHover
+        pointerOnHover
+        onRowDoubleClicked={onRowDoubleclick}
+      />
+    </div>
   );
 };
 export default PortfolioTable;

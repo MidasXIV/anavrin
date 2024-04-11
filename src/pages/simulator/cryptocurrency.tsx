@@ -1,12 +1,18 @@
 import { FC, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { clsx } from "clsx";
+import { Drawer } from "vaul";
 import CryptocurrencySearchBox from "../../components/cryptocurrency-search-box";
 import Ranker from "../../components/ranker";
 import DefaultLayout from "../../layouts/default";
-import { fetchCoinInfo } from "../../util/cryptocurrencyService";
+import { fetchCoinInfo } from "../../utils/cryptocurrencyService";
+import { createUrl } from "../../utils/helper";
+import VerticalRanker from "../../components/ranker/vertical-ranker";
 
 const CoinInfo = ({ coin }) => (
   <div className="flex flex-col overflow-y-scroll bg-white p-4 shadow-md sm:flex-row">
-    <div className="flex w-full flex-col justify-between rounded-lg bg-charcoal-900 p-4 text-gray-100 md:w-1/2 lg:w-1/4">
+    <div className="flex w-full flex-col justify-between rounded-lg bg-charcoal-900 p-4 text-gray-100 md:w-1/2">
       <div className="flex items-center py-2">
         <img className="mr-4 h-12 w-12 rounded-full" src={coin.image.large} alt={coin.name} />
         <div>
@@ -107,7 +113,24 @@ const CoinInfo = ({ coin }) => (
 );
 
 const SimulatorCryptoCurrency: FC = () => {
-  const [selectedCrypto, setSelectedCrypto] = useState(undefined);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [hide, setHide] = useState(false);
+
+  const setSelectedCrypto = selectedCrypto => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (selectedCrypto) {
+      newParams.set("q", selectedCrypto);
+    } else {
+      newParams.delete("q");
+    }
+
+    router.push(createUrl("cryptocurrency", newParams));
+  };
+
+  const selectedCrypto = searchParams.get("q") || "";
   const [coinInfo, setCoinInfo] = useState(undefined);
   const [cryptoWatchlist, setCryptoWatchlist] = useState([]);
   useEffect(() => {
@@ -130,23 +153,68 @@ const SimulatorCryptoCurrency: FC = () => {
   }, [cryptoWatchlist, selectedCrypto]);
   return (
     <>
-      <DefaultLayout
-        title="Simulator"
-        sidebar="simulator"
-        description="You can see your portfolios estimated value & progress below"
-      >
-        <div className="bg-gray-200 p-6 shadow-md">
-          <CryptocurrencySearchBox setCyptocurrency={token => setSelectedCrypto(token)} />
-        </div>
-        {selectedCrypto && coinInfo ? (
-          <div className="flex-1 overflow-auto">
-            <CoinInfo coin={coinInfo} />
+      <Drawer.Root>
+        <DefaultLayout
+          title="Simulator"
+          sidebar="simulator"
+          description="You can see your portfolios estimated value & progress below"
+        >
+          <div className="flex w-full flex-1 flex-col overflow-auto  rounded-t-lg bg-gray-300 md:flex-row">
+            {/* Left hand panel */}
+            <div
+              // className={clsx("w-full overflow-y-auto p-2 sm:w-8/12", {
+              className={clsx("flex h-full w-full flex-col overflow-y-auto p-2 md:w-8/12", {
+                "sm:w-full": hide
+                // "sm:w-8/12": !hide
+              })}
+            >
+              <div className="bg-gray-200 p-6 shadow-md">
+                {cryptoWatchlist ? (
+                  <CryptocurrencySearchBox
+                    cyptocurrency={selectedCrypto}
+                    setCyptocurrency={token => setSelectedCrypto(token)}
+                  />
+                ) : null}
+              </div>
+              {selectedCrypto && coinInfo ? (
+                <div className="h-full flex-1">
+                  <CoinInfo coin={coinInfo} />
+                </div>
+              ) : null}
+              {/* <div className="bottom-0 h-20 border-t-2 border-charcoal-900">
+              <Ranker items={cryptoWatchlist} />
+            </div> */}
+            </div>
+
+            {/* Right hand panel */}
+            <div
+              className={clsx(
+                "border-gray-400bg-charcoal-400 m-2 flex items-center justify-center overflow-hidden rounded-lg bg-gray-200 p-2 text-gray-300 md:block md:w-4/12 md:overflow-auto",
+                {
+                  // "sm:hidden sm:max-w-0": hide
+                  // "sm:hidden sm:max-w-0": hide
+                }
+              )}
+            >
+              {/* Secondary Panel */}
+              <div className="hidden md:block">
+                <VerticalRanker items={cryptoWatchlist} />
+              </div>
+              <span className="text-md mx-auto w-full text-center font-mono text-black md:hidden">
+                <Drawer.Trigger>click to open</Drawer.Trigger>
+              </span>
+            </div>
           </div>
-        ) : null}
-        <div className="bottom-0 h-20 border-t-2 border-charcoal-900">
-          <Ranker items={cryptoWatchlist} />
-        </div>
-      </DefaultLayout>
+          <Drawer.Portal>
+            <Drawer.Overlay className="fixed inset-0 bg-black/40" />
+            <Drawer.Content className="fixed bottom-0 left-0 right-0 flex max-h-[70%] flex-col rounded-t-[10px] bg-white">
+              <div className="mx-auto flex w-full max-w-md flex-col overflow-auto rounded-t-[10px] p-4">
+                <VerticalRanker items={cryptoWatchlist} />
+              </div>
+            </Drawer.Content>
+          </Drawer.Portal>
+        </DefaultLayout>
+      </Drawer.Root>
     </>
   );
 };
