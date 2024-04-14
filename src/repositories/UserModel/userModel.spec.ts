@@ -131,4 +131,26 @@ defineFeature(feature, test => {
       );
     });
   });
+
+  test("Retrieving all user subscriptions", ({ given, when, then }) => {
+    given("there are multiple users with push subscriptions", async () => {
+      // Arrange
+      userModel = new UserModel(db);
+      // Perform setup actions, like seeding the database with test data
+      // Make sure there are multiple users with push subscriptions in the database
+    });
+
+    when("the user requests all subscriptions", async () => {
+      // Call the getAllUserSubscriptions function from your model
+      subscription = await userModel.getAllUserSubscription();
+    });
+
+    then("the user should receive all subscriptions from the database", () => {
+      // Assert that subscriptions were retrieved successfully
+      expect(subscription).toBeDefined();
+      expect(subscription.length).toBeGreaterThan(0);
+
+      // Add more specific assertions as needed
+    });
+  });
 });
