@@ -15,17 +15,17 @@ const options = {
 
 const handlers = {
   POST: async (req: NextApiRequest, res: NextApiResponse) => {
-    const { subscription } = req.body;
+    const { subscription, title, message } = req.body;
     webPush
-      .sendNotification(
-        subscription,
-        JSON.stringify({ title: "Hello Web Push", message: "Your web push notification is here!" }),
-        options
-      )
+      .sendNotification(subscription, JSON.stringify({ title, message }), options)
       .then(response => {
         res.writeHead(response.statusCode, response.headers).end(response.body);
       })
       .catch(err => {
+        if (err.statusCode === 404 || err.statusCode === 410) {
+          // console.log("Subscription has expired or is no longer valid: ", err);
+          // return deleteSubscriptionFromDatabase(subscription._id);
+        }
         if ("statusCode" in err) {
           res.writeHead(err.statusCode, err.headers).end(err.body);
         } else {
