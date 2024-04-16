@@ -3,7 +3,6 @@ import { findMatchingEvent, formatNotificationMessage } from "lib/financial-even
 import UserModel from "repositories/UserModel/userModel";
 import connectToDatabase from "lib/mongodb";
 import createHandlers from "../../../lib/rest-utils";
-import Result from "../../../lib/result";
 
 const handlers = {
   POST: async (req: NextApiRequest, res: NextApiResponse) => {
@@ -50,7 +49,8 @@ const handlers = {
 
       const db = await connectToDatabase();
       const userModel = new UserModel(db);
-      const subscriptions = await userModel.getAllUserSubscription();
+      const subscriptions =
+        (await userModel.getAllUserSubscription()) as PushSubscriptionDocument[];
 
       const baseUrl = process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
