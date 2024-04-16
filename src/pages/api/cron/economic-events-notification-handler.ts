@@ -10,6 +10,7 @@ const handlers = {
       // Parse the request body
 
       let scheduledReminderObject = req.body;
+      console.log(scheduledReminderObject);
       const { code } = req.body;
 
       // Check the value of the 'code' property
@@ -40,6 +41,7 @@ const handlers = {
         default:
           // Handle other cases if necessary
           console.log("Received unknown code:", code);
+          res.status(400).json({ message: "Improper request body" });
           break;
       }
 
@@ -87,7 +89,7 @@ const handlers = {
     } catch (err) {
       // Report the error to metrics + logging app
       console.log(err);
-      res.status(500);
+      res.status(500).json(err);
     }
   }
 };
