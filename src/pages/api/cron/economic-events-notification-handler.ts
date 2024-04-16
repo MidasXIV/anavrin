@@ -56,6 +56,13 @@ const handlers = {
 
       // Array to hold fetch promises
       const fetchPromises = subscriptions.map(async subscription => {
+        console.log(
+          JSON.stringify({
+            title,
+            message,
+            subscription
+          })
+        );
         try {
           // Send fetch request for each subscription
           const response = await fetch(`${baseUrl}/api/web-push/trigger-web-push`, {
