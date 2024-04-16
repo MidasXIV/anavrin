@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { findMatchingEvent, formatNotificationMessage } from "lib/financial-event-webpush";
 import UserModel from "repositories/UserModel/userModel";
 import connectToDatabase from "lib/mongodb";
+import api from "services/create-service";
 import createHandlers from "../../../lib/rest-utils";
 
 const handlers = {
@@ -10,7 +11,6 @@ const handlers = {
       // Parse the request body
 
       let scheduledReminderObject = req.body;
-      console.log(scheduledReminderObject);
       const { code } = req.body;
 
       // Check the value of the 'code' property
@@ -52,29 +52,14 @@ const handlers = {
       const subscriptions =
         (await userModel.getAllUserSubscription()) as PushSubscriptionDocument[];
 
-      const baseUrl = process.env.NEXTAUTH_URL;
-
       // Array to hold fetch promises
       const fetchPromises = subscriptions.map(async subscription => {
-        console.log(
-          JSON.stringify({
+        try {
+          // Send fetch request for each subscription
+          const response = await api.triggerPushSubscription({
             title,
             message,
             subscription
-          })
-        );
-        try {
-          // Send fetch request for each subscription
-          const response = await fetch(`${baseUrl}/api/web-push/trigger-web-push`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              title,
-              message,
-              subscription
-            })
           });
 
           // Handle response status

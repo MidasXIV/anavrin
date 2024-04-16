@@ -18,12 +18,19 @@ type deleteUserPortfolioRequest = {
   portfolio: Portfolio;
 };
 
+type triggerPushSubscriptionRequest = {
+  title: string;
+  message: string;
+  subscription: PushSubscriptionDocument;
+};
+
 export interface ApiRequests {
   postSubscribeUserRequest: postSubscribeUserRequest;
   postDeleteSubscriptionRequest: postDeleteSubscriptionRequest;
   postSaveSubscriptionRequest: postSaveSubscriptionRequest;
   saveUserPortfolioRequest: saveUserPortfolioRequest;
   deleteUserPortfolioRequest: deleteUserPortfolioRequest;
+  triggerPushSubscriptionRequest: triggerPushSubscriptionRequest;
 }
 
 // type postSubscribeUserRequest2 = Pick< ApiRequests, "postSubscribeUserRequest" >["postSubscribeUserRequest"];
@@ -47,6 +54,11 @@ export const apiMapper = {
   fetchPushSubscription: {
     url: "/api/web-push/fetch-subscription/",
     method: "get"
+  },
+  triggerPushSubscription: {
+    url: `${process.env.NEXTAUTH_URL}/api/web-push/trigger-web-push`,
+    method: "post",
+    requestType: "triggerPushSubscriptionRequest"
   },
   postSubscribeUser: {
     url: "/api/subscribe",
