@@ -16,8 +16,10 @@ const options = {
 const handlers = {
   POST: async (req: NextApiRequest, res: NextApiResponse) => {
     const { subscription, title, message } = req.body;
+    console.log(req)
+    console.log(req.body);
     console.log({ title, message, subscription });
-     
+
     webPush
       .sendNotification(subscription, JSON.stringify({ title, message }), options)
       .then(response => {
