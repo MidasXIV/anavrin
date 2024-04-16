@@ -27,9 +27,7 @@ const handlers = {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const baseUrl = process.env.NEXTAUTH_URL
-        ? `${process.env.NEXTAUTH_URL}`
-        : "http://localhost:3000";
+      const baseUrl = process.env.NEXTAUTH_URL;
 
       const response = await fetch(`${baseUrl}/api/services/economic-events`);
       const data: EcnomicEventsDTO = await response.json();

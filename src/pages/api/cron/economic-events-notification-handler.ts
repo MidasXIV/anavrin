@@ -24,9 +24,7 @@ const handlers = {
             // Handle the case when code is 'EVENT_RESULT'
             console.log("Received EVENT_RESULT");
             // Your logic for EVENT_RESULT
-            const baseUrl = process.env.NEXTAUTH_URL
-              ? `${process.env.NEXTAUTH_URL}`
-              : "http://localhost:3000";
+            const baseUrl = process.env.NEXTAUTH_URL;
 
             const response = await fetch(`${baseUrl}/api/services/economic-events`);
             const data: EcnomicEventsDTO = await response.json();
@@ -52,9 +50,7 @@ const handlers = {
       const subscriptions =
         (await userModel.getAllUserSubscription()) as PushSubscriptionDocument[];
 
-      const baseUrl = process.env.NEXTAUTH_URL
-        ? `${process.env.NEXTAUTH_URL}`
-        : "http://localhost:3000";
+      const baseUrl = process.env.NEXTAUTH_URL;
 
       // Array to hold fetch promises
       const fetchPromises = subscriptions.map(async subscription => {
