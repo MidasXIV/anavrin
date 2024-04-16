@@ -27,8 +27,8 @@ const handlers = {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const baseUrl = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
+      const baseUrl = process.env.NEXTAUTH_URL
+        ? `${process.env.NEXTAUTH_URL}`
         : "http://localhost:3000";
 
       const response = await fetch(`${baseUrl}/api/services/economic-events`);

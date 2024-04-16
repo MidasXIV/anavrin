@@ -49,8 +49,8 @@ export function createScheduledReminderObjects(
   const scheduledReminders: ScheduledReminderObject[] = [];
 
   events.forEach(calendarItem => {
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
+    const baseUrl = process.env.NEXTAUTH_URL
+      ? `${process.env.NEXTAUTH_URL}`
       : `${process.env.NGROK_DOMAIN}`;
     const endPoint = "api/cron/economic-events-notification-handler";
     const { day, events: calendarEvents } = calendarItem;

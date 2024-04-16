@@ -24,8 +24,8 @@ const handlers = {
             // Handle the case when code is 'EVENT_RESULT'
             console.log("Received EVENT_RESULT");
             // Your logic for EVENT_RESULT
-            const baseUrl = process.env.VERCEL_URL
-              ? `https://${process.env.VERCEL_URL}`
+            const baseUrl = process.env.NEXTAUTH_URL
+              ? `${process.env.NEXTAUTH_URL}`
               : "http://localhost:3000";
 
             const response = await fetch(`${baseUrl}/api/services/economic-events`);
@@ -52,8 +52,8 @@ const handlers = {
       const subscriptions =
         (await userModel.getAllUserSubscription()) as PushSubscriptionDocument[];
 
-      const baseUrl = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
+      const baseUrl = process.env.NEXTAUTH_URL
+        ? `${process.env.NEXTAUTH_URL}`
         : "http://localhost:3000";
 
       // Array to hold fetch promises
