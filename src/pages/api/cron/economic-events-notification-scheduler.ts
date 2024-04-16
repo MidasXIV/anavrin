@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import MergentSchedulerModel from "repositories/MergentTaskSchedulerModel/mergentTaskSchedulerModel";
 import { createScheduledReminderObjects } from "lib/financial-event-webpush";
-import FinvizEconomicCalendarModel from "repositories/FinvizEconomicCalendarModel/finvizEconomicCalendarModel";
 import createHandlers from "../../../lib/rest-utils";
 import Result from "../../../lib/result";
 
@@ -30,29 +29,8 @@ const handlers = {
 
       const baseUrl = process.env.NEXTAUTH_URL;
 
-      const finvizEconomicCalendarModel = new FinvizEconomicCalendarModel();
-      const response: EcnomicEventsResponse = await finvizEconomicCalendarModel.getEcnomicEvents();
-
-      if (Result.isFail(response)) {
-        const responseError = Result.getError(response);
-        switch (responseError.type) {
-          case "UnableToParseData":
-            res.status(500).json(responseError);
-            break;
-          case "UnableToFetchData":
-            res.status(500).json(responseError);
-            break;
-          default:
-            res.status(500).json(responseError);
-            break;
-        }
-        console.log(responseError);
-      }
-
-      const data = Result.getValue(response);
-
-      // const response = await fetch(`${baseUrl}/api/services/economic-events`);
-      // const data: EcnomicEventsDTO = await response.json();
+      const response = await fetch(`${baseUrl}/api/services/economic-events`);
+      const data: EcnomicEventsDTO = await response.json();
 
       const { events } = data;
       const scheduledReminders: ScheduledReminderObject[] = createScheduledReminderObjects(events);
