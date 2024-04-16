@@ -50,6 +50,8 @@ VAPID_SUBJECT=test:test@test.app
 | **MONGODB_URI** / **MONGODB_DB**| Required for loggin-in and is the primary database | [Guide to creating MogoDB Atlas Cluster Credentials][google-auth-mongodb-setup-guide] |
 |**VAPID_PUBLIC_KEY**, **VAPID_PRIVATE_KEY**, **VAPID_SUBJECT**| Required for creating and sending webpush notifications | In the terminal, run `npx web-push generate-vapid-keys`. Copy the private key and public key values. |
 |**NEXTAUTH_SECRET**| Required in production  |run `openssl rand -base64 32` or visit [this](https://generate-secret.vercel.app/32) site.|
+|**MERGENT_APIKEY**| Required to schedule notifications and run cron jobs |get API key from [Mergent](https://mergent.co/) site.|
+|**MERGENT_AUTH_TOKEN**| Required to authorize cron jobs |run `openssl rand -base64 32` or visit [this](https://generate-secret.vercel.app/32) site.|
 
 ***
 
@@ -75,3 +77,5 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
    1. the Nextjs API endpoint -> A Handler is created and objects are initialized. (The object for createController, the UseCase and all the repositories passed to the UseCase) 
    2. The CreateController class handles controller functions such as Request params validation and mapping to DTO.
    3. The UseCase handles to Application logic of the controller.
+
+* ngrok http --domain=amazed-saving-lynx.ngrok-free.app 3000

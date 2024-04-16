@@ -307,19 +307,19 @@ const EconomicEventsPanel: FC<IEconomicEventsPanelProps> = ({ variant = VARIANT.
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    // setLoading(true);
+    setLoading(true);
 
-    // api.fetchEconomicEvents().then(({ status, data }) => {
-    //   setLoading(false);
+    api.fetchEconomicEvents().then(({ status, data }) => {
+      setLoading(false);
 
-    //   if (status === 200) {
-    //     setEvents(data.events);
-    //     console.log(data.events)
-    //   }
-    //   // TODO: handle case for error
-    // });
+      if (status === 200) {
+        setEvents(data.events);
+        // console.log(data.events)
+      }
+      // TODO: handle case for error
+    });
 
-    setEvents(mockEE);
+    // setEvents(mockEE);
 
     // Mon = 1
     // const currentDayInNumberFormat = new Date().getDay();

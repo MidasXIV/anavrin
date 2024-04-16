@@ -12,7 +12,7 @@ import mockPortfolios from "tests/mocks/mock-portfolios-1";
 import PortfolioOverviewCard from "@/components/portfolio-overview-card/portfolio-overview-card";
 
 const Hero = () => (
-  <div className="border-b-1 flex min-h-screen outline" id="home">
+  <div className="flex min-h-screen" id="home">
     {/* <Image
       className="absolute top-0 z-0 w-fit bg-repeat-x"
       src="/images/backdrop.jpg"
