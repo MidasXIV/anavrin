@@ -309,8 +309,8 @@ const EconomicEventsPanel: FC<IEconomicEventsPanelProps> = ({ variant = VARIANT.
   useEffect(() => {
     // setLoading(true);
 
-    // api.fetchEconomicEvents().then(({ status, data }) => {
-    //   setLoading(false);
+    api.fetchEconomicEvents().then(({ status, data }) => {
+      setLoading(false);
 
       if (status === 200) {
         setEvents(data.events);
