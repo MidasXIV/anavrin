@@ -66,6 +66,20 @@ export default class UserModel implements IUserModel {
     return pushSubscriptionsDocument.subscriptions;
   }
 
+  public async getAllUserSubscription(): Promise<Array<PushSubscription>> {
+    const query = {};
+    const projection = { projection: { subscriptions: 1, _id: 0 } };
+    const pushSubscriptionsDocuments = await this.db
+      .collection("users")
+      .find(query, projection)
+      .toArray();
+
+    return pushSubscriptionsDocuments
+      .map(doc => doc.subscriptions)
+      .filter(doc => typeof doc !== "undefined")
+      .flat();
+  }
+
   public async updateUserSubscription(
     email: string,
     subscription: Array<PushSubscription>

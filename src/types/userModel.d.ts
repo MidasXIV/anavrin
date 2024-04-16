@@ -19,6 +19,7 @@ interface IUserModel {
   getUserById(userId: string): Promise<UserDocument>;
   getUserByEmail(email: string): Promise<UserDocument>;
   getUserSubscription(email: string): Promise<Array<PushSubscription>>;
+  getAllUserSubscription(): Promise<Array<PushSubscription>>;
   updateUserSubscription(
     email: string,
     subscription: Array<PushSubscription>

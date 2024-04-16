@@ -217,24 +217,24 @@ const Home: FC = () => {
       </div>
 
       {/* <section className="mx-auto max-w-4xl">
-      <ParallaxImage
-        smallImage="/images/image-1.webp"
-        largeImage="/images/image-2.webp"
-        smallImageSide="left"
-        parallaxDistance="100%"
-      />
+        <ParallaxImage
+          smallImage="/images/image-1.webp"
+          largeImage="/images/image-2.webp"
+          smallImageSide="left"
+          parallaxDistance="100%"
+        />
 
-      <ParallaxImage
-        smallImage="/images/image-1.webp"
-        largeImage="/images/image-2.webp"
-        smallImageSide="right"
-        parallaxDistance="100%"
-      />
-    </section> */}
+        <ParallaxImage
+          smallImage="/images/image-1.webp"
+          largeImage="/images/image-2.webp"
+          smallImageSide="right"
+          parallaxDistance="100%"
+        />
+      </section> */}
 
       {/* features */}
-      <section className="outlline-test" id="cards">
-        <div className="outline-test card sticky top-0 h-screen sm:px-16 sm:py-16">
+      <section className="" id="cards">
+        <div className="card sticky top-0 h-screen sm:px-16 sm:py-16">
           <div className="card__content h-full w-full rounded-xl bg-slate-100 shadow-xl">
             <div className="absolute top-32 max-w-lg sm:sm:left-24">
               <div className="p-4">
@@ -290,7 +290,7 @@ const Home: FC = () => {
             </div>
           </div>
         </div>
-        <div className="outline-test card sticky top-0 h-screen sm:px-16 sm:py-16">
+        <div className="card sticky top-0 h-screen sm:px-16 sm:py-16">
           <div className="card__content h-full w-full overflow-hidden rounded-xl bg-blue-100 shadow-xl">
             <div className="absolute top-32 max-w-lg sm:left-24">
               <div className="p-4">
@@ -468,7 +468,7 @@ const Home: FC = () => {
             </div>
           </div>
         </div>
-        <div className="outline-test card card__content sticky top-0 h-screen sm:px-16 sm:py-16">
+        <div className="card card__content sticky top-0 h-screen sm:px-16 sm:py-16">
           <div className="h-full w-full rounded-xl bg-fuchsia-100 shadow-xl">
             <div className="absolute top-32 max-w-lg sm:left-24">
               <div className="p-4">
@@ -537,15 +537,15 @@ const Home: FC = () => {
               </h1>
               <div className="p-4">
                 <h1 className="text-4xl font-thin sm:text-5xl">
-                  Regular updates and customer feedback integration for continuous improvement.
+                  {/* Regular updates and customer feedback integration for continuous improvement. */}
+                  Your feedback matters.
                 </h1>
               </div>
               <div className="flex justify-end p-4">
                 <p className="w-4/5 text-lg text-gray-500">
-                  Continuous Improvement Through Feedback: "We believe in constant enhancement.
-                  LibraView is committed to regular updates, introducing new features and
-                  improvements." "Your feedback matters. Our integrated customer feedback system
-                  allows us to evolve and adapt to meet your evolving needs."
+                  &quot;We believe in constant enhancement. Anavrin is committed to regular updates,
+                  introducing new features and improvements.&quot; <br /> Our integrated customer
+                  feedback system allows us to evolve and adapt to meet your evolving needs.
                 </p>
               </div>
             </div>
