@@ -2,5 +2,15 @@ POST http://localhost:3000/api/web-push/trigger-web-push
 content-type: application/json
 
 {
-  "subscription": <"Before executing replace with push subscription json">
+  "subscription": {
+  "_id": "660c5e0b516486cf72faeb70",
+  "endpoint": "https://fcm.googleapis.com/fcm/send/eYpXLlcP0Zc:APA91bEzx7juWOqAsr3sk40IgVsEpypogGIUndXHVdkBryE8kJcNMMfqaYq9n5L2paKpN604uvOxc3vMQseZly6TJXxjNOdyP7TvqLChuQBrGFUzdeP3nNYksO2PmuQ2s5VF2QWFBVdD",
+  "expirationTime": null,
+  "keys": {
+    "p256dh": "BOANl-WB_eBJXPgWxDv2KezKZOssXVRKjjb2iq2yuiie74cBDclw-ifblF0QvKu58On8Gq7xcu4nVZy-xMlObHs",
+    "auth": "Hr3oDqOlVd6KSZCrzxJhlA"
+  }
+},
+"title": "Hello Web Push", 
+"message": "Your web push notification is here!"
 }
