@@ -8,6 +8,17 @@ export const nextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
     })
   ],
+  cookies: {
+    pkceCodeVerifier: {
+      name: "next-auth.pkce.code_verifier",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true
+      }
+    }
+  },
   debug: false,
   database: process.env.MONGODB_URI,
   callbacks: {
