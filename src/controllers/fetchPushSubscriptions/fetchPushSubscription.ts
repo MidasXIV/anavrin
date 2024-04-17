@@ -14,6 +14,7 @@ export default class FetchPushSubscription implements IFetchPushSubscription {
   public async execute(): Promise<FetchPushSubscriptionResponse> {
     try {
       const isSignedIn = Boolean(this.session?.user) ?? false;
+      console.log(this.session);
       if (!isSignedIn) {
         return Result.fail({ type: "UserNotLoggedIn" });
       }
