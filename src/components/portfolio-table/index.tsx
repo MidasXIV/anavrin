@@ -142,7 +142,7 @@ const PortfolioTable: FC<PortfolioTableProps<any>> = ({
         // overflowY
         persistTableHead
         responsive
-        fixedHeader
+        // fixedHeader
         fixedHeaderScrollHeight="100%"
         noHeader
         progressPending={loading}
