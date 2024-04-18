@@ -58,7 +58,8 @@ export const apiMapper = {
   triggerPushSubscription: {
     url: `${process.env.NEXTAUTH_URL}/api/web-push/trigger-web-push`,
     method: "post",
-    requestType: "triggerPushSubscriptionRequest"
+    requestType: "triggerPushSubscriptionRequest",
+    doNotLimit: true
   },
   postSubscribeUser: {
     url: "/api/subscribe",
