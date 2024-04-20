@@ -8,23 +8,25 @@ const cancelTokenDict: Record<string, CancelTokenSource> = {};
 let cancelToken;
 
 const makeRequestWithCancelToken = async <T>(
-  requestConfig: AxiosRequestConfig
+  requestConfig: AxiosRequestConfig & { doNotLimit?: boolean }
 ): Promise<AxiosResponse<T>> => {
-  const { url } = requestConfig;
+  const { url, doNotLimit } = requestConfig;
 
   // Check if there is a cancel token associated with the URL endpoint
-  if (cancelTokenDict[url]) {
+  if (cancelTokenDict[url] && !doNotLimit) {
     cancelTokenDict[url].cancel("Operation canceled due to new request.");
   }
 
-  // Create a new cancel token for the current request
-  cancelToken = axios.CancelToken.source();
-  cancelTokenDict[url] = cancelToken;
+  // Create a new cancel token for the current request if the request is not "doNotLimit"
+  if (!doNotLimit) {
+    cancelToken = axios.CancelToken.source();
+    cancelTokenDict[url] = cancelToken;
+  }
 
   try {
     const response = await axios({
       ...requestConfig,
-      cancelToken: cancelToken.token
+      cancelToken: doNotLimit ? undefined : cancelToken.token
     });
 
     return response;
@@ -36,9 +38,12 @@ const makeRequestWithCancelToken = async <T>(
 
     return errorHandler(error) as AxiosResponse;
   } finally {
-    // Clear the cancelToken once the request is complete
-    cancelTokenDict[url].cancel();
-    delete cancelTokenDict[url];
+    // Clear the cancelToken once the request is complete, if it was used
+    if (!doNotLimit && cancelTokenDict[url]) {
+      // Clear the cancelToken once the request is complete
+      cancelTokenDict[url].cancel();
+      delete cancelTokenDict[url];
+    }
   }
 };
 
@@ -48,6 +53,7 @@ type ApiMapper = {
     method: "get" | "post" | "put" | "delete";
     requestType?: keyof ApiRequests; // Specify the request type for each endpoint
     responseType?: unknown; // Specify the response type for each endpoint
+    doNotLimit?: boolean; // whether to pass cancelToken or not
   };
 };
 
@@ -68,14 +74,14 @@ function createApiFunctions(_apiMapper: ApiMapper): ApiFunctions {
 
   for (const key in _apiMapper) {
     if (Object.prototype.hasOwnProperty.call(_apiMapper, key)) {
-      const { url, method, requestType } = _apiMapper[key];
+      const { url, method, requestType, doNotLimit = false } = _apiMapper[key];
       api[key] = async (params?: Pick<ApiRequests, typeof requestType>[typeof requestType]) => {
-        const requestConfig: AxiosRequestConfig = {
+        const requestConfig: AxiosRequestConfig & { doNotLimit?: boolean } = {
           url,
           method,
-          data: params
+          data: params,
+          doNotLimit
         };
-        console.log(requestConfig);
         return makeRequestWithCancelToken<ApiMapper[typeof key]["responseType"]>(requestConfig);
       };
     }
