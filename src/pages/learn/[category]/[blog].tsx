@@ -23,18 +23,14 @@ export async function getStaticPaths() {
     }
   })); // Fetch all blog paths in each category
 
+  // console.log(JSON.stringify(paths));
   return { paths, fallback: false };
 }
 
 // This also gets called at build time
 export async function getStaticProps({ params }) {
-  /**
-   * params contains the `blog` key passed in path of getStaticPaths.
-   * If the route is like /blog/first-post, then params.blog is first-post
-   */
   const { category, blog } = params;
   const slug = path.join(category, blog);
-
   const blogData = await getRequestedLearnContent(category, blog);
 
   // Pass blog data to the page via props

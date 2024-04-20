@@ -81,6 +81,18 @@
     ],
     "trading-strategies": [],
     "algorithmic-trading": [],
-    "crypto-investment": []
+    "crypto-investment": [
+      {
+        "title": "Linea (L2) Airdrop Farming",
+        "description": "Linea aims to support the development of the next generation of dApps on Ethereum while providing devs with low fees and a scalable blockchain.",
+        "url": "learn/crypto-investment/linea-airdrop-farming",
+        "slug": "linea-airdrop-farming",
+        "featured": true,
+        "author": "midasxiv",
+        "updatedAt": "2023-09-22T19:59:14.191Z",
+        "createdAt": "2023-09-22T19:59:14.191Z",
+        "display": "https://l2beat.com/icons/linea.png"
+      }
+    ]
   }
 }
