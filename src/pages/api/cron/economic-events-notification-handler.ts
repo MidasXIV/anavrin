@@ -51,7 +51,7 @@ const handlers = {
       const userModel = new UserModel(db);
       const subscriptions =
         (await userModel.getAllUserSubscription()) as PushSubscriptionDocument[];
-
+      let failedSubscriptionCount = 0;
       // Array to hold fetch promises
       const fetchPromises = subscriptions.map(async subscription => {
         try {
@@ -62,20 +62,27 @@ const handlers = {
             subscription
           });
 
-          // Handle response status
-          if (!response.ok) {
+          if (response.status !== 201) {
             console.error(`Failed to send notification for subscription ${subscription._id}`);
+            failedSubscriptionCount += 1;
           }
         } catch (error) {
           console.error(
             `Error occurred while sending notification for subscription ${subscription._id}:`,
             error
           );
+          failedSubscriptionCount += 1;
         }
       });
 
       // Execute all fetch promises concurrently and wait for all to settle
       await Promise.allSettled(fetchPromises);
+
+      console.log(
+        `Successful : ${
+          subscriptions.length - failedSubscriptionCount
+        } Unsuccessful : ${failedSubscriptionCount} Total : ${subscriptions.length}`
+      );
 
       res.status(200).json({ message: "Notification sent" });
     } catch (err) {

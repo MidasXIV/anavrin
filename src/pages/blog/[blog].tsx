@@ -1,6 +1,6 @@
 import BlogLayout from "../../layouts/blog";
 import WebsiteLayout from "../../layouts/website";
-import getRequestedBlog from "../../lib/blog-utils";
+import { getRequestedBlog } from "../../lib/blog-utils";
 import { getAllBlogs } from "../../lib/blog-utils-client";
 
 export default function BlogPost({ blog }) {

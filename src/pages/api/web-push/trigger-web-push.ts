@@ -26,6 +26,7 @@ const handlers = {
           // console.log("Subscription has expired or is no longer valid: ", err);
           // return deleteSubscriptionFromDatabase(subscription._id);
         }
+        console.log(err);
         if ("statusCode" in err) {
           res.writeHead(err.statusCode, err.headers).end(err.body);
         } else {
