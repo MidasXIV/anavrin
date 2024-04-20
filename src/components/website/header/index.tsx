@@ -35,22 +35,22 @@ const resourcesOptions: { title: string; href: string; description: string }[] =
 const learnOptions: { title: string; href: string; description: string }[] = [
   {
     title: "Trading Strategies",
-    href: "/docs/primitives/alert-dialog",
+    href: "/learn/trading-strategies",
     description: "Discover effective trading strategies to optimize decisions."
   },
   {
     title: "Dividend Investing",
-    href: "/docs/primitives/hover-card",
+    href: "/learn/dividend-investing",
     description: "Explore creating a steady income stream through dividends."
   },
   {
     title: "Algorithmic Trading",
-    href: "/docs/primitives/progress",
+    href: "/learn/algorithmic-trading",
     description: "Dive into the world of algorithmic trading and automated systems."
   },
   {
     title: "Crypto Investment",
-    href: "/docs/primitives/scroll-area",
+    href: "/learn/crypto-investment",
     description: "Navigate the complexities of cryptocurrency investment."
   }
 ];
