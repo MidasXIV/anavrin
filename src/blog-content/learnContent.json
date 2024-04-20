@@ -1,0 +1,86 @@
+{
+  "categories": [
+    {
+      "title": "Trading Strategies",
+      "slug": "trading-strategies",
+      "description": "Discover effective trading strategies to optimize decisions."
+    },
+    {
+      "title": "Dividend Investing",
+      "slug": "dividend-investing",
+      "description": "Explore creating a steady income stream through dividends."
+    },
+    {
+      "title": "Algorithmic Trading",
+      "slug": "algorithmic-trading",
+      "description": "Dive into the world of algorithmic trading and automated systems."
+    },
+    {
+      "title": "Crypto Investment",
+      "slug": "crypto-investment",
+      "description": "Navigate the complexities of cryptocurrency investment."
+    }
+  ],
+  "blogsWithinCategories": {
+    "dividend-investing": [
+      {
+        "title": "Demystifying Dividends",
+        "description": "An in-depth look at the world of dividends and their potential for investors.",
+        "url": "learn/dividend-investing/demystifying-dividends.md",
+        "slug": "demystifying-dividends",
+        "featured": false,
+        "author": "midasxiv",
+        "updatedAt": "2024-04-19T00:00:00.000Z",
+        "createdAt": "2024-04-19T00:00:00.000Z",
+        "display": "https://example.com/image1.png"
+      },
+      {
+        "title": "Dividend Reinvestment Plans",
+        "description": "Learn how to maximize returns and compound wealth with DRIPs.",
+        "url": "learn/dividend-investing/dividend-reinvestment-plans.md",
+        "slug": "dividend-reinvestment-plans",
+        "featured": true,
+        "author": "midasxiv",
+        "updatedAt": "2024-04-19T00:00:00.000Z",
+        "createdAt": "2024-04-19T00:00:00.000Z",
+        "display": "https://example.com/image2.png"
+      },
+      {
+        "title": "Income for the Long Haul",
+        "description": "Discover strategies to maintain steady income for long-term investment goals.",
+        "url": "learn/dividend-investing/income-for-the-long-haul.md",
+        "slug": "income-for-the-long-haul",
+        "featured": false,
+        "author": "midasxiv",
+        "updatedAt": "2024-04-19T00:00:00.000Z",
+        "createdAt": "2024-04-19T00:00:00.000Z",
+        "display": "https://example.com/image3.png"
+      },
+      {
+        "title": "Navigating the Dividend Landscape",
+        "description": "A guide to understanding the complexities of the dividend investing world.",
+        "url": "learn/dividend-investing/navigating-the-dividend-landscape.md",
+        "slug": "navigating-the-dividend-landscape",
+        "featured": false,
+        "author": "midasxiv",
+        "updatedAt": "2024-04-19T00:00:00.000Z",
+        "createdAt": "2024-04-19T00:00:00.000Z",
+        "display": "https://example.com/image4.png"
+      },
+      {
+        "title": "The Power of Passive Investing",
+        "description": "Discover how passive investing can maximize returns and minimize effort.",
+        "url": "learn/dividend-investing/the-power-of-passive-investing.md",
+        "slug": "the-power-of-passive-investing",
+        "featured": false,
+        "author": "midasxiv",
+        "updatedAt": "2024-04-19T00:00:00.000Z",
+        "createdAt": "2024-04-19T00:00:00.000Z",
+        "display": "https://example.com/image5.png"
+      }
+    ],
+    "trading-strategies": [],
+    "algorithmic-trading": [],
+    "crypto-investment": []
+  }
+}
