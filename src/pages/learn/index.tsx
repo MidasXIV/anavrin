@@ -1,7 +1,24 @@
 import Link from "next/link";
 import { FC } from "react";
+import {
+  CardTitle,
+  CardHeader,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  Card
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator
+} from "@/components/ui/breadcrumb";
 import WebsiteLayout from "../../layouts/website";
-import { getAllBlogs } from "../../lib/blog-utils-client";
+import { getCategories } from "../../lib/blog-utils-client";
 
 const BlogHeader: FC<{
   title: string;
@@ -9,84 +26,94 @@ const BlogHeader: FC<{
 }> = ({ title, description }) => (
   <div className="border-b bg-white pb-5 pt-6 sm:pb-10">
     <div className="container mx-auto max-w-4xl px-4 text-center">
-      {/* <h1 className="mb-1 text-3xl font-bold sm:mb-2 sm:text-5xl">{title}</h1> */}
-
       <h2 className="text-rep outline-font mx-auto flex flex-col py-4 font-wide text-[60px] md:text-[85px] lg:text-[108px]">
         <span className="relative bg-white leading-none">{title}</span>
       </h2>
 
       <p className="text-sm text-gray-500 sm:text-lg">{description}</p>
     </div>
+    <div className="mx-auto mt-4 w-fit">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/learn">Learn</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
   </div>
 );
 const BlogListItem: FC<{
-  blog: Blog;
+  category: {
+    title: string;
+    slug: string;
+    description: string;
+  };
   key: string;
-}> = ({ blog, key }) => {
-  const { slug, title, description, author, updatedAt } = blog;
-  const formattedDate = new Date(updatedAt).toDateString();
-  return (
-    <Link href={{ pathname: `/blogs/${slug}` }} legacyBehavior>
-      <a
-        className="text-md group flex items-center justify-between border-b py-2 text-gray-600 no-underline hover:text-blue-600"
-        href={`/blogs/${slug}`}
-        key={key}
-      >
-        <span className="transition-transform group-hover:translate-x-2">{title}</span>
+}> = ({ key, category }) => (
+  <Link href={{ pathname: `/learn/${category.slug}` }} legacyBehavior>
+    <a
+      className="text-md group flex items-center justify-between border-b py-8 text-gray-600 no-underline hover:text-blue-600"
+      href={`/learn/${category.slug}`}
+      key={key}
+    >
+      <div className="flex flex-col px-4">
+        <span className="transition-transform group-hover:translate-x-2">{category.title}</span>
 
-        <span className="hidden text-xs capitalize text-gray-500 sm:block">{author}</span>
+        <span className="hidden text-xs capitalize text-gray-500 sm:block">
+          {category.description}
+        </span>
+      </div>
 
-        <span className="block text-xs text-gray-400 sm:hidden"> &raquo;</span>
-      </a>
-    </Link>
-  );
-};
+      <div className="flex flex-row space-x-2 px-4 transition-transform group-hover:translate-x-2">
+        <span className="block text-xs font-semibold text-gray-600">READ</span>
+        <ArrowRightIcon className="block text-xs text-gray-600" />
+      </div>
+    </a>
+  </Link>
+);
+
 const BlogListCard: FC<{
-  blog: Blog;
+  category: {
+    title: string;
+    slug: string;
+    description: string;
+  };
   key: string;
-}> = ({ blog, key }) => {
-  const { slug, title, description, author, updatedAt, display } = blog;
-  const formattedDate = new Date(updatedAt).toDateString();
-  return (
-    <Link href={{ pathname: `/blogs/${slug}` }} legacyBehavior>
-      <a
-        className="group relative mt-2 block overflow-hidden rounded-lg border border-slate-100 bg-white p-2"
-        href={`/blogs/${slug}`}
-        key={key}
-      >
-        <div className="flex justify-between">
-          <div className="pl-2 group-hover:translate-x-2">
-            <h5 className="text-md font-bold text-slate-900">{title}</h5>
-            <p className="mt-1 text-sm text-slate-500">{description}</p>
-          </div>
+}> = ({ key, category }) => (
+  <Link href={{ pathname: `/learn/${category.slug}` }} legacyBehavior>
+    <a className="group relative block " href={`/learn/${category.slug}`} key={key}>
+      {/* <div className="pl-2">
+        <h5 className="text-md font-bold text-slate-900">{slug}</h5>
+        <p className="mt-1 text-sm text-slate-500">{slug}</p>
+      </div> */}
+      <Card className="bg-[#e6f8ff]">
+        <CardHeader>
+          <CardTitle>{category.title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription>{category.description}</CardDescription>
+        </CardContent>
+        <CardFooter>
+          <Button className="text-blue-600" variant="ghost">
+            Learn more
+          </Button>
+        </CardFooter>
+      </Card>
+    </a>
+  </Link>
+);
 
-          <div className="flex min-w-max flex-row space-x-4 sm:ml-3">
-            <dl className="hidden sm:flex">
-              <div className="my-auto flex flex-col-reverse">
-                <dt className="text-sm font-medium text-slate-600">Published</dt>
-                <dd className="text-xs text-slate-500">{formattedDate}</dd>
-              </div>
-
-              <div className="my-auto ml-6 flex flex-col-reverse">
-                <dt className="text-sm font-medium text-slate-600">Author</dt>
-                <dd className="text-xs text-slate-500">{author}</dd>
-              </div>
-            </dl>
-            <img
-              className="h-16 w-16 rounded-lg object-cover shadow-sm"
-              src={display}
-              alt="blog display"
-            />
-          </div>
-        </div>
-      </a>
-    </Link>
-  );
-};
-
-const Blog = () => {
-  const blogs = getAllBlogs();
-
+const CategoryPage = () => {
+  const categories = getCategories();
   return (
     <>
       <WebsiteLayout title="Simulator">
@@ -96,11 +123,8 @@ const Blog = () => {
             description="Exploring Airdrops and Stock Analysis: Unveiling Insights and Opportunities"
           />
           <div className="container mx-auto max-w-4xl px-4">
-            {/* {blogs.map(blog => (
-              <BlogListItem blog={blog} key={blog.slug} />
-            ))} */}
-            {blogs.map(blog => (
-              <BlogListCard blog={blog} key={blog.slug} />
+            {categories.map(category => (
+              <BlogListItem key={category.slug} category={category} />
             ))}
           </div>
         </div>
@@ -108,4 +132,5 @@ const Blog = () => {
     </>
   );
 };
-export default Blog;
+
+export default CategoryPage;
