@@ -1,19 +1,9 @@
 import Link from "next/link";
 import { FC } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator
-} from "@/components/ui/breadcrumb";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import BlogHeader from "@/components/blog-header/blog-header";
 import WebsiteLayout from "../../../layouts/website";
-import {
-  getAllBlogs,
-  getAllBlogsWithinCategories,
-  getCategories
-} from "../../../lib/blog-utils-client";
+import { getAllBlogsWithinCategories, getCategories } from "../../../lib/blog-utils-client";
 
 export async function getStaticPaths() {
   const categories = await getCategories(); // Fetch available categories
@@ -32,49 +22,6 @@ export async function getStaticProps({ params }) {
     props: { category, blogs }
   };
 }
-
-const BlogHeader: FC<{
-  title: string;
-  description: string;
-  slug: string;
-}> = ({ title, description, slug }) => (
-  <div className="border-b bg-white pb-5 pt-6 sm:pb-10">
-    <div className="container mx-auto max-w-4xl px-4 text-center">
-      {/* <h1 className="mb-1 text-3xl font-bold sm:mb-2 sm:text-5xl">{title}</h1> */}
-
-      <h2 className="text-rep outline-font mx-auto flex flex-col py-4 font-wide text-[60px] md:text-[85px] lg:text-[108px]">
-        <span className="relative bg-white leading-none">{title}</span>
-      </h2>
-
-      <p className="text-sm text-gray-500 sm:text-lg">{description}</p>
-    </div>
-    <div className="group mx-auto mt-4 flex w-fit items-center space-x-2  text-center">
-      <span className="font-mono text-gray-400 group-hover:-translate-x-2">[</span>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/learn">Learn</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href={`/learn/${slug}`}>{title}</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <span className="font-mono text-gray-400 group-hover:translate-x-2">]</span>
-    </div>
-  </div>
-);
 
 const BlogListCard: FC<{
   blog: Blog;
@@ -115,7 +62,7 @@ const BlogListCard: FC<{
                 alt="blog display"
               /> */}
             </div>
-            <div className="flex flex-row space-x-2 px-4 transition-transform group-hover:translate-x-2 items-center">
+            <div className="flex flex-row items-center space-x-2 px-4 transition-transform group-hover:translate-x-2">
               <span className="block text-xs font-semibold text-gray-600">READ</span>
               <ArrowRightIcon className="block text-xs text-gray-600" />
             </div>
@@ -133,7 +80,11 @@ const CategoryPage = ({ blogs, category }) => (
         <BlogHeader
           title={category.title}
           description={category.description}
-          slug={category.slug}
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "Learn", href: "/learn" },
+            { label: category.title, href: `/learn/${category.slug}` }
+          ]}
         />
         <div className="container mx-auto max-w-4xl px-4">
           {blogs.map(blog => (

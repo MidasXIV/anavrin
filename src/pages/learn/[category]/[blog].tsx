@@ -1,14 +1,13 @@
 import * as path from "path";
 import BlogLayout from "../../../layouts/blog";
 import WebsiteLayout from "../../../layouts/website";
-import getRequestedBlog, { getRequestedLearnContent } from "../../../lib/blog-utils";
+import { getRequestedLearnContent } from "../../../lib/blog-utils";
 import { getAllBlogsInLearnContent } from "../../../lib/blog-utils-client";
 
 export default function BlogPost({ blog }) {
   const { content, title } = blog;
 
   if (!content) return <></>;
-  console.log(title);
   return (
     <WebsiteLayout title={title}>
       <BlogLayout title={title} blog={blog} />
@@ -24,7 +23,6 @@ export async function getStaticPaths() {
     }
   })); // Fetch all blog paths in each category
 
-  console.log(paths);
   return { paths, fallback: false };
 }
 

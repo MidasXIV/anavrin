@@ -10,47 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator
-} from "@/components/ui/breadcrumb";
+import BlogHeader from "@/components/blog-header/blog-header";
 import WebsiteLayout from "../../layouts/website";
 import { getCategories } from "../../lib/blog-utils-client";
 
-const BlogHeader: FC<{
-  title: string;
-  description: string;
-}> = ({ title, description }) => (
-  <div className="border-b bg-white pb-5 pt-6 sm:pb-10">
-    <div className="container mx-auto max-w-4xl px-4 text-center">
-      <h2 className="text-rep outline-font mx-auto flex flex-col py-4 font-wide text-[60px] md:text-[85px] lg:text-[108px]">
-        <span className="relative bg-white leading-none">{title}</span>
-      </h2>
-
-      <p className="text-sm text-gray-500 sm:text-lg">{description}</p>
-    </div>
-    <div className="mx-auto mt-4 w-fit">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/learn">Learn</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-    </div>
-  </div>
-);
 const BlogListItem: FC<{
   category: {
     title: string;
@@ -121,6 +84,10 @@ const CategoryPage = () => {
           <BlogHeader
             title="Learn"
             description="Exploring Airdrops and Stock Analysis: Unveiling Insights and Opportunities"
+            breadcrumbs={[
+              { label: "Home", href: "/" },
+              { label: "Learn", href: "/learn" }
+            ]}
           />
           <div className="container mx-auto max-w-4xl px-4">
             {categories.map(category => (
