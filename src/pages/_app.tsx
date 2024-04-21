@@ -8,6 +8,7 @@ import { MantineProvider } from "@mantine/core";
 import { GeistSans } from "geist/font/sans";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -207,6 +208,7 @@ const MyApp: FC<AppProps<{ session: Session }>> = ({ Component, pageProps }) => 
             <main className={GeistSans.className}>
               <Component {...pageProps} />
               <Analytics />
+              <SpeedInsights />
             </main>
             <Toaster />
           </MantineProvider>
