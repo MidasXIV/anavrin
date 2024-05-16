@@ -56,4 +56,8 @@ interface DividendInfoScraper {
     parser: cheerio.Root,
     stockSummary: StockSummaryInterface
   ): ParseDividendInformationDTO;
+  getHistoricalData(
+    ticker: string,
+    queryOptions: ChartOptionsWithReturnObject
+  ): Promise<ChartResultObject>;
 }

@@ -2,6 +2,8 @@
  * Handles Fetching and parseing of data from Yahoo Finance
  */
 import axios from "axios";
+import yahooFinance from "yahoo-finance2";
+import { ChartOptionsWithReturnObject } from "yahoo-finance2/dist/esm/src/modules/chart";
 
 class YahooFinanceModel implements DividendInfoScraper {
   nameQuerySelector = "h1.D\\(ib\\)";
@@ -285,6 +287,12 @@ class YahooFinanceModel implements DividendInfoScraper {
       AnnualDividends,
       AnnualDividendGrowth
     };
+  }
+
+  public async getHistoricalData(ticker: string, queryOptions: ChartOptionsWithReturnObject) {
+    // const queryOptions = { period1: "2021-05-08" /* ... */, interval: "1mo" };
+    const result = await yahooFinance.chart(ticker, queryOptions);
+    return result;
   }
 }
 

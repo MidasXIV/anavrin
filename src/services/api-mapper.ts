@@ -24,6 +24,17 @@ type triggerPushSubscriptionRequest = {
   subscription: PushSubscriptionDocument;
 };
 
+type postBacktestAnalyzeRequest = {
+  benchmark: string;
+  initialInvestment: number;
+  startYear: string;
+  endYear: string;
+  portfolioConfig: Array<{
+    ticker: string;
+    portfolioDistribution: Array<{ distribution: number }>;
+  }>;
+};
+
 export interface ApiRequests {
   postSubscribeUserRequest: postSubscribeUserRequest;
   postDeleteSubscriptionRequest: postDeleteSubscriptionRequest;
@@ -31,6 +42,7 @@ export interface ApiRequests {
   saveUserPortfolioRequest: saveUserPortfolioRequest;
   deleteUserPortfolioRequest: deleteUserPortfolioRequest;
   triggerPushSubscriptionRequest: triggerPushSubscriptionRequest;
+  postBacktestAnalyzeRequest: postBacktestAnalyzeRequest;
 }
 
 // type postSubscribeUserRequest2 = Pick< ApiRequests, "postSubscribeUserRequest" >["postSubscribeUserRequest"];
@@ -90,6 +102,11 @@ export const apiMapper = {
   fetchUserPortfolio: {
     url: "/api/portfolio/",
     method: "get"
+  },
+  postBacktestAnalyze: {
+    url: "/api/backtest/analyze",
+    method: "post",
+    requestType: "postBacktestAnalyzeRequest"
   }
 } as const;
 

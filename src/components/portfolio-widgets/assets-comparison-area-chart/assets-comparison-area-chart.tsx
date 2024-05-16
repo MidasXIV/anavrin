@@ -6,12 +6,14 @@ interface IAssetsComparisonAreaChartProps {
     timeFrame: string;
     [key: string]: number | string;
   }>;
-  customValueFormatter: (varr: number) => string;
+  customValueFormatter?: (varr: number) => string;
 }
+
+const valueFormatter = number => `$ ${new Intl.NumberFormat("us").format(number).toString()}`;
 
 const AssetsComparisonAreaChart: FC<IAssetsComparisonAreaChartProps> = ({
   data,
-  customValueFormatter
+  customValueFormatter = valueFormatter
 }) => {
   const categories = data && Object.keys(data[0]).filter(key => key !== "timeFrame");
 
