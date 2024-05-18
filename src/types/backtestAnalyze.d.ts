@@ -47,6 +47,7 @@ interface CombinedInvestment {
 }
 
 interface BacktestAnalyzeDTO {
+  request: BacktestAnalyzeData;
   benchMarkGrowth: InvestmentData[];
   portfoliosGrowth: BacktestInvestmentData[][];
 }

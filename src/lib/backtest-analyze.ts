@@ -1,5 +1,6 @@
 import isEmptyDataItem from "@/utils/type-gaurds";
 import { ChartResultArray } from "yahoo-finance2/dist/esm/src/modules/chart";
+import { generateRandomColor } from "./tremor-color";
 
 export function backtestCoerceData(data: BacktestHistoricalData[]): BacktestYearlyAverage[] {
   const groupedByYear: { [year: number]: BacktestHistoricalData[] } = {};
@@ -138,4 +139,43 @@ export function convertToCombinedFormat(
   });
 
   return combinedResult;
+}
+
+// value: number;
+// composition: string;
+// color: string;
+// tooltip: string;
+export function convertPortfolioConfigToPortfolios(backtestConfig: BacktestAnalyzeData): {
+  value: number;
+  composition: string;
+  color: string;
+  tooltip: string;
+}[][] {
+  const { initialInvestment, portfolioConfig } = backtestConfig;
+  const numberOfPortfolios = portfolioConfig[0].portfolioDistribution.length;
+  const portfolios = new Array(numberOfPortfolios).fill(0).map((_, index) =>
+    portfolioConfig.map(configItem => {
+      const { ticker, portfolioDistribution } = configItem;
+      return {
+        tooltip: ticker,
+        color: generateRandomColor(),
+        composition: portfolioDistribution[index].distribution.toString(),
+        value: initialInvestment * (portfolioDistribution[index].distribution / 100)
+      };
+    })
+  );
+  // const portfolios = new Array(numberOfPortfolios).fill(0).map((_, index) => ({
+  //   _id: index,
+  //   assetType: "stock",
+  //   items: portfolioConfig.map(configItem => {
+  //     const { ticker, portfolioDistribution } = configItem;
+  //     return {
+  //       ticker,
+  //       shares: 0,
+  //       fiat: initialInvestment * (portfolioDistribution[index].distribution / 100)
+  //     };
+  //   })
+  // }));
+
+  return portfolios;
 }

@@ -1,9 +1,22 @@
 import RingChart from "@/components/charting/ring-chart/ring-chart";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { valueFormatter } from "@/utils/timeAndDateHelpers";
+import { FC } from "react";
 import Card from "../Card/card";
 
-const RingChartWithListCard = ({ data, title }) => (
+interface DataItem {
+  value: number;
+  composition: string;
+  color: string;
+  tooltip: string;
+}
+
+interface RingChartWithListCardProps {
+  data: DataItem[];
+  title: string;
+}
+
+const RingChartWithListCard: FC<RingChartWithListCardProps> = ({ data, title }) => (
   <Card showHeader headerTitle={title}>
     <div className="h-full w-full overflow-auto">
       <div className="h-[65%] w-full px-10">

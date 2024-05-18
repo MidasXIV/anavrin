@@ -33,9 +33,10 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import api from "services/create-service";
+import clsx from "clsx";
 
 const portfolioConfigSchema = z.object({
-  ticker: z.string().refine(name => typeof name !== "undefined"),
+  ticker: z.string().min(1, { message: "Non valid ticker" }),
   // portfolioDistribution: z.array(z.number().refine(distribution => distribution > 1))
   portfolioDistribution: z.array(
     z.object({
@@ -43,26 +44,52 @@ const portfolioConfigSchema = z.object({
     })
   )
 });
-
-const formSchema = z.object({
-  benchmark: z.string().min(2, {
-    message: "Benchmark must be at least 2 characters."
-  }),
-  initialInvestment: z.number().min(100, {
-    message: "Initial investment must be greater than 0."
-  }),
-  startYear: z.string(),
-  endYear: z.string(),
-  numberOfPortfolios: z
-    .number()
-    .min(1, {
-      message: "Number of portfolios must be greater than 1."
-    })
-    .max(5, {
-      message: "Number of portfolios must be lesser than 5."
+const formSchema = z
+  .object({
+    benchmark: z.string().min(2, {
+      message: "Benchmark must be at least 2 characters."
     }),
-  portfolioConfig: z.array(portfolioConfigSchema)
-});
+    initialInvestment: z.number().min(100, {
+      message: "Initial investment must be greater than 0."
+    }),
+    startYear: z.string(),
+    endYear: z.string(),
+    numberOfPortfolios: z
+      .string()
+      .min(1, {
+        message: "Number of portfolios must be greater than 1."
+      })
+      .max(5, {
+        message: "Number of portfolios must be lesser than 5."
+      }),
+    portfolioConfig: z.array(portfolioConfigSchema)
+  })
+  .refine(
+    data => {
+      const { portfolioConfig: distribution } = data;
+      const isValidDistribution = distribution
+        .reduce((result, item) => {
+          const portfolioDistributionColumn = item.portfolioDistribution.map(
+            row => row.distribution
+          );
+          result.push(portfolioDistributionColumn);
+          return result;
+        }, [])
+        .reduce((acc, item, index) => {
+          if (index === 0) {
+            return item.map(a => parseInt(a, 10));
+          }
+          return acc.map((a, ind) => a + parseInt(item[ind], 10));
+        }, [])
+        .every(column => column === 100);
+      console.log(isValidDistribution);
+      return isValidDistribution;
+    },
+    {
+      message: "Sum of distribution values must equal 100.",
+      path: ["portfolioConfig"]
+    }
+  );
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -122,7 +149,6 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
     2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024
   ];
 
-  console.log("config render");
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -131,7 +157,7 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
       initialInvestment: 100,
       startYear: "1985",
       endYear: "2020",
-      numberOfPortfolios: 1,
+      numberOfPortfolios: "2",
       portfolioConfig: [
         {
           ticker: "HDFCBANK.NS",
@@ -145,17 +171,17 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
     }
   });
 
-  const { fields, append } = useFieldArray({ name: "portfolioConfig", control: form.control });
+  const { fields, append, update } = useFieldArray({
+    name: "portfolioConfig",
+    control: form.control
+  });
 
   const [rowCount, setRowCount] = useState(3);
-  const numberOfPortfolios = 5;
-  
-  const addRow = () => {
-    setRowCount(rowCount + 1);
-    append({
-      ticker: "HDFCBANK.NS",
-      portfolioDistribution: [{ distribution: "0" }, { distribution: "0" }]
-    });
+  const numberOfPortfolios: string = form.watch("numberOfPortfolios").toString();
+
+  const getDefaultPortfolioDistribution = numberOfPortfolio => {
+    const val = Math.round(100 / numberOfPortfolio);
+    return new Array(numberOfPortfolio).fill({ distribution: val.toString() });
   };
 
   // 2. Define a submit handler.
@@ -181,6 +207,29 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
       // setError("An error occurred. Please try again later.");
     }
   }
+
+  const portfolioConfigData = form.watch("portfolioConfig");
+  const portfolioAggregateDistribution = portfolioConfigData
+    .reduce((result, item) => {
+      const portfolioDistributionColumn = item.portfolioDistribution.map(row => row.distribution);
+      result.push(portfolioDistributionColumn);
+      return result;
+    }, [])
+    .reduce((acc, item, index) => {
+      if (index === 0) {
+        return item.map(a => parseInt(a, 10));
+      }
+      return acc.map((a, ind) => a + parseInt(item[ind], 10));
+    }, []);
+
+  const addRow = () => {
+    const numberOfPortfoliosInt = parseInt(numberOfPortfolios, 10);
+    setRowCount(rowCount + 1);
+    append({
+      ticker: "HDFCBANK.NS",
+      portfolioDistribution: getDefaultPortfolioDistribution(numberOfPortfoliosInt)
+    });
+  };
 
   return (
     <>
@@ -360,6 +409,20 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
               Portfolio configuration
             </h1>
 
+            <div className="flex w-full items-center rounded-md border border-gray-300 p-2">
+              <span className="w-full border-r-2 border-gray-300 font-medium" />
+              <span className="w-full border-r-2 border-gray-300 font-medium" />
+              {Array.from({ length: numberOfPortfolios }).map((_, index) => (
+                <div
+                  key={index.toString()}
+                  className="flex w-full items-center justify-center border-l-2 border-gray-300 px-1 text-center"
+                >
+                  <span className="w-full border-gray-300 font-medium">{`Portfolio ${
+                    index + 1
+                  }`}</span>
+                </div>
+              ))}
+            </div>
             {fields.map((field, index2) => (
               <div
                 key={field.id}
@@ -383,11 +446,94 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
                 <NestedOptionValueForm control={form.control} nestIndex={index2} />
               </div>
             ))}
+            <div className="flex w-full items-center rounded-md border border-gray-300 p-2">
+              <span className="w-full border-r-2 border-gray-300 font-medium" />
+              <span className="w-full border-r-2 border-gray-300 font-medium" />
+              {Array.from({ length: numberOfPortfolios }).map((_, index) => (
+                <div
+                  key={index.toString()}
+                  className="flex w-full items-center justify-center border-l-2 border-gray-300 px-1 text-center"
+                >
+                  <span className="flex w-full items-center border-gray-300 px-2 font-medium text-black">
+                    <Input
+                      disabled
+                      value={portfolioAggregateDistribution[index]?.toString()}
+                      className={clsx("mr-2  font-bold text-black", {
+                        "bg-red-200": portfolioAggregateDistribution[index] !== 100,
+                        "bg-green-200": portfolioAggregateDistribution[index] === 100
+                      })}
+                    />
+                    <span className="">%</span>
+                  </span>
+                </div>
+              ))}
+            </div>
 
-            <Button type="button" onClick={addRow}>
-              Add Row
-            </Button>
+            <div className="flex items-center justify-between">
+              <FormField
+                control={form.control}
+                name="numberOfPortfolios"
+                render={({ field }) => (
+                  <FormItem className="flex w-1/2 items-center align-middle">
+                    <FormLabel className="w-1/2">Number of Portfolios</FormLabel>
+                    <Select
+                      onValueChange={event => {
+                        field.onChange(event);
+                        const numberOfPortfoliosInt = parseInt(event, 10);
+                        portfolioConfigData.forEach((row, index) => {
+                          const portfolioDistributionLength = row.portfolioDistribution?.length;
+                          if (portfolioDistributionLength !== numberOfPortfoliosInt) {
+                            const newRow = row;
+                            if (portfolioDistributionLength > numberOfPortfoliosInt) {
+                              newRow.portfolioDistribution.splice(
+                                numberOfPortfoliosInt - portfolioDistributionLength
+                              );
+                            } else {
+                              const distribution = newRow.portfolioDistribution.concat(
+                                new Array(numberOfPortfoliosInt - portfolioDistributionLength).fill(
+                                  {
+                                    distribution: "0"
+                                  }
+                                )
+                              );
+                              newRow.portfolioDistribution = distribution;
+                            }
+                            update(index, newRow);
+                            console.log(row);
+                          }
+                        });
+                      }}
+                      defaultValue={field.value.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Number of Portfolios" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {[1, 2, 3, 4, 5].map(year => (
+                          <SelectItem value={year.toString()} key={year.toString()}>
+                            {year.toString()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {/* <FormDescription>
+                      This is the number of portfolios for your portfolio.
+                    </FormDescription> */}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="button" onClick={addRow}>
+                Add Row
+              </Button>
+            </div>
           </section>
+
+          {form.formState?.errors?.portfolioConfig?.root?.message
+            ? form.formState?.errors?.portfolioConfig?.root?.message
+            : null}
           <Button type="submit" className="mt-4 w-full p-2 font-thin">
             Analyse portfolio
           </Button>

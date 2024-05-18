@@ -111,6 +111,7 @@ export default class BacktestAnalyze implements IBacktestAnalyze {
 
       // Return Empty Array or the subscriptions.
       return Result.ok({
+        request: data,
         benchMarkGrowth,
         portfoliosGrowth: dd
       });
