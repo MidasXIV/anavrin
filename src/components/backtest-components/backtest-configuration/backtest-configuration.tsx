@@ -379,28 +379,15 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="numberOfPortfolios"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Number of Portfolios</FormLabel>
                     <FormControl>
-                      {/* <StockSearchCombobox
-                        {...field}
-                        searchTerm="HDFC"
-                        setSearchTerm={tocker => {
-                          console.log(tocker);
-                        }}
-                        state="STABLE"
-                      /> */}
-                      <CommandSearch
-                        commands={[
-                          { value: "calendar", label: "Calendar" },
-                          { value: "search-emoji", label: "Search Emoji" },
-                          { value: "calculator", label: "Calculator" }
-                        ]}
-                      />
+                      
+                      <CommandSearch {...field} />
                     </FormControl>
                     <FormDescription>
                       This is the number of portfolios for your portfolio.
@@ -408,7 +395,7 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </div>
           </section>
           <section>
@@ -438,7 +425,7 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
                 <span className="w-full border-r-2 border-gray-300 font-medium">
                   {`Asset ${index2 + 1}`}
                 </span>
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name={`portfolioConfig.${index2}.ticker`}
                   render={({ field }) => (
@@ -449,7 +436,8 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
+                <CommandSearch form={form} fieldName={`portfolioConfig.${index2}.ticker`} />
                 <NestedOptionValueForm control={form.control} nestIndex={index2} />
               </div>
             ))}
