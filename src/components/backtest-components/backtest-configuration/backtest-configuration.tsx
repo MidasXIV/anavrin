@@ -34,6 +34,8 @@ import {
 import { useState } from "react";
 import api from "services/create-service";
 import clsx from "clsx";
+import StockSearchCombobox from "@/components/stock-search-combobox";
+import CommandSearch from "../backtest-analysis/stock-search";
 
 const portfolioConfigSchema = z.object({
   ticker: z.string().min(1, { message: "Non valid ticker" }),
@@ -49,9 +51,11 @@ const formSchema = z
     benchmark: z.string().min(2, {
       message: "Benchmark must be at least 2 characters."
     }),
-    initialInvestment: z.number().min(100, {
-      message: "Initial investment must be greater than 0."
-    }),
+    initialInvestment: z.coerce // SOLUTION
+      .number()
+      .min(100, {
+        message: "Initial investment must be greater than 0."
+      }),
     startYear: z.string(),
     endYear: z.string(),
     numberOfPortfolios: z
@@ -181,7 +185,7 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
 
   const getDefaultPortfolioDistribution = numberOfPortfolio => {
     const val = Math.round(100 / numberOfPortfolio);
-    return new Array(numberOfPortfolio).fill({ distribution: val.toString() });
+    return new Array(numberOfPortfolio).fill({ distribution: "0" });
   };
 
   // 2. Define a submit handler.
@@ -375,33 +379,36 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
                 )}
               />
 
-              {/* <FormField
-              control={form.control}
-              name="numberOfPortfolios"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Number of Portfolios</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
+              <FormField
+                control={form.control}
+                name="numberOfPortfolios"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Number of Portfolios</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Number of Portfolios" />
-                      </SelectTrigger>
+                      {/* <StockSearchCombobox
+                        {...field}
+                        searchTerm="HDFC"
+                        setSearchTerm={tocker => {
+                          console.log(tocker);
+                        }}
+                        state="STABLE"
+                      /> */}
+                      <CommandSearch
+                        commands={[
+                          { value: "calendar", label: "Calendar" },
+                          { value: "search-emoji", label: "Search Emoji" },
+                          { value: "calculator", label: "Calculator" }
+                        ]}
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {[1, 2, 3, 4, 5].map(year => (
-                        <SelectItem value={year.toString()} key={year.toString()}>
-                          {year.toString()}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    This is the number of portfolios for your portfolio.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
+                    <FormDescription>
+                      This is the number of portfolios for your portfolio.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </section>
           <section>

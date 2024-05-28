@@ -153,6 +153,12 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
                       Crypto
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link className="w-full hover:cursor-pointer" href="/simulator/backtest">
+                      Backtest
+                    </Link>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </li>

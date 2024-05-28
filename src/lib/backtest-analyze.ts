@@ -141,10 +141,6 @@ export function convertToCombinedFormat(
   return combinedResult;
 }
 
-// value: number;
-// composition: string;
-// color: string;
-// tooltip: string;
 export function convertPortfolioConfigToPortfolios(backtestConfig: BacktestAnalyzeData): {
   value: number;
   composition: string;
@@ -164,18 +160,120 @@ export function convertPortfolioConfigToPortfolios(backtestConfig: BacktestAnaly
       };
     })
   );
-  // const portfolios = new Array(numberOfPortfolios).fill(0).map((_, index) => ({
-  //   _id: index,
-  //   assetType: "stock",
-  //   items: portfolioConfig.map(configItem => {
-  //     const { ticker, portfolioDistribution } = configItem;
-  //     return {
-  //       ticker,
-  //       shares: 0,
-  //       fiat: initialInvestment * (portfolioDistribution[index].distribution / 100)
-  //     };
-  //   })
-  // }));
 
   return portfolios;
+}
+
+function calculateMean(values: number[]): number {
+  return values.reduce((acc, current) => acc + current, 0) / values.length;
+}
+
+function calculateCagr(years: number[], values: number[]): number {
+  const cagr =
+    Math.pow(values[values.length - 1] / values[0], 1 / (years[years.length - 1] - years[0])) - 1;
+  return cagr * 100;
+}
+
+function calculateStdev(values: number[]): number {
+  const mean = calculateMean(values);
+  const variance =
+    values.reduce((acc, current) => acc + Math.pow(current - mean, 2), 0) / values.length;
+  return Math.sqrt(variance);
+}
+
+function calculateBestYearPercentageIncrease(values: number[]): number {
+  let maxIncrease = 0;
+  for (let i = 1; i < values.length; i++) {
+    const increase = (values[i] / values[i - 1] - 1) * 100;
+    if (increase > maxIncrease) {
+      maxIncrease = increase;
+    }
+  }
+  return maxIncrease;
+}
+
+function calculateWorstYearPercentageDecrease(values: number[]): number {
+  let maxDecrease = 0;
+  for (let i = 1; i < values.length; i++) {
+    const decrease = (values[i - 1] / values[i] - 1) * 100;
+    if (decrease > maxDecrease) {
+      maxDecrease = decrease;
+    }
+  }
+  return maxDecrease;
+}
+
+function calculateMaxDrawdown(values: number[]): number {
+  let maxDrawdown = 0;
+  let peak = values[0];
+  let trough = values[0];
+  for (let i = 1; i < values.length; i++) {
+    if (values[i] > peak) {
+      peak = values[i];
+    } else if (values[i] < trough) {
+      trough = values[i];
+      const drawdown = ((peak - trough) / peak) * 100;
+      if (drawdown > maxDrawdown) {
+        maxDrawdown = drawdown;
+      }
+    }
+  }
+  return maxDrawdown;
+}
+
+function calculateSharpeRatio(values: number[]): number {
+  const mean = calculateMean(values);
+  const stdev = calculateStdev(values);
+  return (mean - 0) / stdev;
+}
+
+function calculateSortinoRatio(values: number[]): number {
+  const mean = calculateMean(values);
+  const stdev = calculateStdev(values);
+  return (mean - 0) / stdev;
+}
+
+function calculateMarketCorrelation(years: number[], values: number[]): number {
+  // TO DO: implement market correlation calculation
+  return 0;
+}
+
+export function calculatePortfolioMetrics(portfolio: BacktestInvestmentData[]): {
+  initialBalance: number;
+  finalBalance: number;
+  cagr: number;
+  stdev: number;
+  bestYearPercentageIncrease: number;
+  worstYearPercentageDecrease: number;
+  maxDrawdown: number;
+  sharpeRatio: number;
+  sortinoRatio: number;
+  marketCorrelation: number;
+} {
+  const years = portfolio.map(item => item.year);
+  const values = portfolio.map(item => item.investment);
+
+  const initialBalance = values[0];
+  const finalBalance = values[values.length - 1];
+  const cagr = calculateCagr(years, values);
+  const stdev = calculateStdev(values);
+  const bestYearPercentageIncrease = calculateBestYearPercentageIncrease(values);
+  const worstYearPercentageDecrease = calculateWorstYearPercentageDecrease(values);
+  const maxDrawdown = calculateMaxDrawdown(values);
+  const sharpeRatio = calculateSharpeRatio(values);
+  const sortinoRatio = calculateSortinoRatio(values);
+  const marketCorrelation = calculateMarketCorrelation(years, values);
+
+  return {
+    initialBalance,
+    finalBalance,
+    cagr,
+    stdev,
+    bestYearPercentageIncrease,
+    worstYearPercentageDecrease,
+    maxDrawdown,
+    sharpeRatio,
+    sortinoRatio,
+    marketCorrelation
+  };
 }
