@@ -6,9 +6,7 @@ const fetcher = url => axios(url).then(res => res.data);
 const useStockSearch = (ticker: string): any => {
   const API_KEY = process.env.ALPHAVANTAGE_API_KEY;
   const { data, error } = useSWR(
-    ticker
-      ? `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${ticker}&apikey=${API_KEY}`
-      : null,
+    ticker ? `/api/services/yahoo-finance-autocomplete/?ticker=${ticker}` : null,
     fetcher
   );
   return {
