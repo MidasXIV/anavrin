@@ -17,46 +17,53 @@ interface PortfolioPerformanceOverviewTableProps {
 }
 
 export function TableUsageExample({ data }) {
+  const metrics = [
+    { prop: "initialInvestment", text: "Initial Balance" },
+    { prop: "finalBalance", text: "Final Balance" },
+    { prop: "cagr", text: "CAGR" },
+    { prop: "stdev", text: "Stdev" },
+    { prop: "bestYearPercentageIncrease", text: "Best Year" },
+    { prop: "worstYearPercentageDecrease", text: "Worst Year" },
+    { prop: "maxDrawdown", text: "Max. Drawdown" },
+    { prop: "sharpeRatio", text: "Sharpe Ratio" },
+    { prop: "sortinoRatio", text: "Sortino Ratio" },
+    { prop: "marketCorrelation", text: "Market Correlation" }
+  ];
+
   return (
-    <Card>
-      <h3 className="font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
-        List of Swiss Federal Councillours
-      </h3>
-      <Table className="mt-5">
-        <TableHead>
-          <TableRow>
-            <TableHeaderCell>Portfolio</TableHeaderCell>
-            <TableHeaderCell>Initial Balance</TableHeaderCell>
-            <TableHeaderCell>Final Balance</TableHeaderCell>
-            <TableHeaderCell>CAGR</TableHeaderCell>
-            <TableHeaderCell>Stdev</TableHeaderCell>
-            <TableHeaderCell>Best Year</TableHeaderCell>
-            <TableHeaderCell>Worst Year</TableHeaderCell>
-            <TableHeaderCell>Max. Drawdown</TableHeaderCell>
-            <TableHeaderCell>Sharpe Ratio</TableHeaderCell>
-            <TableHeaderCell>Sortino Ratio</TableHeaderCell>
-            <TableHeaderCell>Market Correlation</TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map(item => (
-            <TableRow key={item.name}>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{item.initialInvestment}</TableCell>
-              <TableCell>{item.finalBalance}</TableCell>
-              <TableCell>{item.cagr}</TableCell>
-              <TableCell>{item.stdev}</TableCell>
-              <TableCell>{item.bestYearPercentageIncrease}</TableCell>
-              <TableCell>{item.worstYearPercentageDecrease}</TableCell>
-              <TableCell>{item.maxDrawdown}</TableCell>
-              <TableCell>{item.sharpeRatio}</TableCell>
-              <TableCell>{item.sortinoRatio}</TableCell>
-              <TableCell>{item.marketCorrelation}</TableCell>
-            </TableRow>
+    <div>
+      <div className="flex w-full items-center rounded-md border border-gray-300 p-2">
+        <span className="inline-flex w-full items-center justify-center border-gray-300 font-medium ">
+          Metric
+        </span>
+        {Array.from({ length: data.length }).map((_, index) => (
+          <div
+            key={index.toString()}
+            className="flex w-full items-center justify-center border-l-2 border-gray-300 px-1 text-center"
+          >
+            <span className="w-full border-gray-300 font-medium">{`Portfolio ${index + 1}`}</span>
+          </div>
+        ))}
+      </div>
+      {metrics.map(metric => (
+        <div
+          className="flex w-full items-center rounded-md border border-gray-300 p-2"
+          key={metric.prop}
+        >
+          <span className="inline-flex w-full items-center justify-center border-gray-300 font-medium ">
+            {metric.text}
+          </span>
+          {data.map((_, index) => (
+            <div
+              key={index.toString()}
+              className="flex w-full items-center justify-center border-l-2 border-gray-300 px-1 text-center"
+            >
+              <span className="w-full border-gray-300">{_[metric.prop]}</span>
+            </div>
           ))}
-        </TableBody>
-      </Table>
-    </Card>
+        </div>
+      ))}
+    </div>
   );
 }
 

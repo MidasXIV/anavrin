@@ -3,6 +3,7 @@ import AssetsComparisonAreaChart from "@/components/portfolio-widgets/assets-com
 import RingChartWithListCard from "@/components/portfolio-widgets/ring-chart-with-list/ring-chart-with-list-card";
 import { convertPortfolioConfigToPortfolios, convertToCombinedFormat } from "lib/backtest-analyze";
 import { FC } from "react";
+import { Button } from "@/components/ui/button";
 import PortfolioPerformanceOverviewTable from "./portfolio-performance-overview-table";
 
 interface BacktestAnalysisProps {
@@ -25,7 +26,7 @@ const BacktestAnalysis: FC<BacktestAnalysisProps> = ({ analysisData }) => {
       </div>
       <div className="w-full p-1">
         <Card showHeader headerTitle="Portfolios breakdown">
-          <div className="flex justify-between">
+          <div className="flex justify-between flex-col md:flex-row md:space-y-0 space-y-2">
             {configPortfolios.map((portfolio, index) => (
               <div key={index} className="h-[20rem] w-full">
                 <div className="h-full w-full">
@@ -36,7 +37,11 @@ const BacktestAnalysis: FC<BacktestAnalysisProps> = ({ analysisData }) => {
           </div>
         </Card>
       </div>
-      <PortfolioPerformanceOverviewTable analysisData={analysisData} />
+      <div className="w-full p-1">
+        <Card showHeader headerTitle="Portfolios metrics">
+          <PortfolioPerformanceOverviewTable analysisData={analysisData} />
+        </Card>
+      </div>
     </section>
   );
 };

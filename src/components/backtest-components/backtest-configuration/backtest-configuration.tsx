@@ -35,6 +35,8 @@ import { useState } from "react";
 import api from "services/create-service";
 import clsx from "clsx";
 import StockSearchCombobox from "@/components/stock-search-combobox";
+import { encrypt } from "lib/crypto";
+import { gunzipSync, gzipSync, inflateSync } from "zlib";
 import CommandSearch from "../backtest-analysis/stock-search";
 
 const portfolioConfigSchema = z.object({
@@ -109,15 +111,18 @@ const NestedOptionValueForm = ({ nestIndex, control }: NestedOptionValueFormProp
   });
   return (
     <>
-      {portfolioDistribution.fields.map((field, index2) => (
+      {portfolioDistribution.fields.map((field, index) => (
         <FormField
           key={field.id}
           control={control}
-          name={`portfolioConfig.${nestIndex}.portfolioDistribution.${index2}.distribution`}
+          name={`portfolioConfig.${nestIndex}.portfolioDistribution.${index}.distribution`}
           render={({ field }) => (
-            <FormItem className="flex w-full items-center border-l-2 border-gray-300 px-2">
+            <FormItem className="flex w-full items-center border-gray-300 px-2 md:border-l-2">
               <FormControl>
                 <>
+                  <span className="w-full border-r-2 border-gray-300 md:hidden">{`Portfolio ${
+                    index + 1
+                  }`}</span>
                   <Input max="100" min="0" step="1" type="number" className="mr-2" {...field} />
                   <span className="text-gray-500 dark:text-gray-300">%</span>
                 </>
@@ -144,7 +149,11 @@ function convertData(data) {
   };
 }
 
-const BacktestConfiguration = ({ setAnalysisData }) => {
+const BacktestConfiguration = ({
+  defaultConfiguration: configuration,
+  setAnalysisData,
+  setConfiguration
+}) => {
   // const currentYear = new Date().getFullYear();
   // const years = Array.from({ length: currentYear - 1985 }, (_, i) => 1985 + i);
   const years = [
@@ -153,26 +162,27 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
     2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024
   ];
 
+  const defaultConfiguration = {
+    benchmark: "^BSESN",
+    initialInvestment: 100,
+    startYear: "1985",
+    endYear: "2020",
+    numberOfPortfolios: "2",
+    portfolioConfig: [
+      {
+        ticker: "HDFCBANK.NS",
+        portfolioDistribution: [{ distribution: "40" }, { distribution: "50" }]
+      },
+      {
+        ticker: "TCS.NS",
+        portfolioDistribution: [{ distribution: "60" }, { distribution: "50" }]
+      }
+    ]
+  };
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      benchmark: "^BSESN",
-      initialInvestment: 100,
-      startYear: "1985",
-      endYear: "2020",
-      numberOfPortfolios: "2",
-      portfolioConfig: [
-        {
-          ticker: "HDFCBANK.NS",
-          portfolioDistribution: [{ distribution: "40" }, { distribution: "50" }]
-        },
-        {
-          ticker: "TCS.NS",
-          portfolioDistribution: [{ distribution: "60" }, { distribution: "50" }]
-        }
-      ]
-    }
+    defaultValues: configuration ?? defaultConfiguration
   });
 
   const { fields, append, update } = useFieldArray({
@@ -191,7 +201,18 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
   // 2. Define a submit handler.
   async function onSubmit(data: z.infer<typeof formSchema>) {
     toast(`You submitted the following values:${JSON.stringify(data, null, 2)}`);
+    // const compressedString = gzipSync(JSON.stringify(data)).toString("base64");
+
+    // const buffer = Buffer.from(compressedString, "base64");
+    // const inflatedBuffer = gunzipSync(buffer);
+    // const decompressedString = inflatedBuffer.toString("utf8");
+
+    // console.log(compressedString);
+    // console.log(decompressedString);
+    // toast(compressedString);
     try {
+      setConfiguration(data);
+
       const postRequestData = convertData(data);
       const response = await api.postBacktestAnalyze(postRequestData);
 
@@ -239,8 +260,8 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <section className="flex border-b-2 border-gray-300">
-            <div className="w-full space-y-4 border-r-2 border-gray-300 p-4">
+          <section className="flex flex-col border-b-2 border-gray-300 md:flex-row max-w-full max-h-full">
+            <div className="w-full space-y-4 border-gray-300 p-4 md:border-r-2">
               <FormField
                 control={form.control}
                 name="benchmark"
@@ -403,10 +424,10 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
               Portfolio configuration
             </h1>
 
-            <div className="flex w-full items-center rounded-md border border-gray-300 p-2">
+            <div className="hidden w-full items-center rounded-md border border-gray-300 p-2 md:flex">
               <span className="w-full border-r-2 border-gray-300 font-medium" />
               <span className="w-full border-r-2 border-gray-300 font-medium" />
-              {Array.from({ length: numberOfPortfolios }).map((_, index) => (
+              {Array.from({ length: Number(numberOfPortfolios) }).map((_, index) => (
                 <div
                   key={index.toString()}
                   className="flex w-full items-center justify-center border-l-2 border-gray-300 px-1 text-center"
@@ -420,46 +441,39 @@ const BacktestConfiguration = ({ setAnalysisData }) => {
             {fields.map((field, index2) => (
               <div
                 key={field.id}
-                className="mb-2 flex w-full items-center rounded-md border border-gray-300 p-2"
+                className="mb-2 flex w-full flex-col items-center rounded-md border border-gray-300 p-2 md:flex-row"
               >
-                <span className="w-full border-r-2 border-gray-300 font-medium">
+                <span className="w-full border-gray-300 pl-4 font-medium md:border-r-2 md:pl-0">
                   {`Asset ${index2 + 1}`}
                 </span>
-                {/* <FormField
-                  control={form.control}
-                  name={`portfolioConfig.${index2}.ticker`}
-                  render={({ field }) => (
-                    <FormItem className="mx-2 w-full">
-                      <FormControl>
-                        <Input placeholder="Ticker Symbol" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
                 <CommandSearch form={form} fieldName={`portfolioConfig.${index2}.ticker`} />
                 <NestedOptionValueForm control={form.control} nestIndex={index2} />
               </div>
             ))}
-            <div className="flex w-full items-center rounded-md border border-gray-300 p-2">
-              <span className="w-full border-r-2 border-gray-300 font-medium" />
-              <span className="w-full border-r-2 border-gray-300 font-medium" />
+            <div className="flex w-full flex-col items-center rounded-md border border-gray-300 p-2 md:flex-row">
+              <span className="hidden w-full border-r-2 border-gray-300 font-medium md:block" />
+              <span className="hidden w-full border-r-2 border-gray-300 font-medium md:block" />
               {Array.from({ length: numberOfPortfolios }).map((_, index) => (
-                <div
-                  key={index.toString()}
-                  className="flex w-full items-center justify-center border-l-2 border-gray-300 px-1 text-center"
-                >
-                  <span className="flex w-full items-center border-gray-300 px-2 font-medium text-black">
-                    <Input
-                      disabled
-                      value={portfolioAggregateDistribution[index]?.toString()}
-                      className={clsx("mr-2  font-bold text-black", {
-                        "bg-red-200": portfolioAggregateDistribution[index] !== 100,
-                        "bg-green-200": portfolioAggregateDistribution[index] === 100
-                      })}
-                    />
-                    <span className="">%</span>
-                  </span>
+                <div key={`oriocorio_${index}`} className="flex w-full space-y-2 md:space-y-0">
+                  <span className="w-full border-gray-300 px-2 md:hidden">{`Portfolio ${
+                    index + 1
+                  }`}</span>
+                  <div
+                    key={index.toString()}
+                    className="flex w-full items-center justify-center border-l-2 border-gray-300 px-2 md:px-1 text-center"
+                  >
+                    <span className="flex w-full items-center border-gray-300 px-2 font-medium text-black">
+                      <Input
+                        disabled
+                        value={portfolioAggregateDistribution[index]?.toString()}
+                        className={clsx("mr-2  font-bold text-black", {
+                          "bg-red-200": portfolioAggregateDistribution[index] !== 100,
+                          "bg-green-200": portfolioAggregateDistribution[index] === 100
+                        })}
+                      />
+                      <span className="">%</span>
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
