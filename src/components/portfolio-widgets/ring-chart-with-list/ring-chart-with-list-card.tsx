@@ -7,7 +7,7 @@ import Card from "../Card/card";
 interface DataItem {
   value: number;
   composition: string;
-  color: string;
+  color?: string;
   tooltip: string;
 }
 

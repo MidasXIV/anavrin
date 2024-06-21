@@ -427,7 +427,7 @@ const BacktestConfiguration = ({
             <div className="hidden w-full items-center rounded-md border border-gray-300 p-2 md:flex">
               <span className="w-full border-r-2 border-gray-300 font-medium" />
               <span className="w-full border-r-2 border-gray-300 font-medium" />
-              {Array.from({ length: Number(numberOfPortfolios) }).map((_, index) => (
+              {Array.from({ length: Number(numberOfPortfolios) }, (_, index) => (
                 <div
                   key={index.toString()}
                   className="flex w-full items-center justify-center border-l-2 border-gray-300 px-1 text-center"
@@ -453,7 +453,7 @@ const BacktestConfiguration = ({
             <div className="flex w-full flex-col items-center rounded-md border border-gray-300 p-2 md:flex-row">
               <span className="hidden w-full border-r-2 border-gray-300 font-medium md:block" />
               <span className="hidden w-full border-r-2 border-gray-300 font-medium md:block" />
-              {Array.from({ length: numberOfPortfolios }).map((_, index) => (
+              {Array.from({ length: Number(numberOfPortfolios) }, (_, index) => (
                 <div key={`oriocorio_${index}`} className="flex w-full space-y-2 md:space-y-0">
                   <span className="w-full border-gray-300 px-2 md:hidden">{`Portfolio ${
                     index + 1

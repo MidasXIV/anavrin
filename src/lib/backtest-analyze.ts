@@ -140,6 +140,31 @@ export function convertToCombinedFormat(
 
   return combinedResult;
 }
+export function convertToCombinedFormat2(
+  investments: InvestmentData[][],
+  benchmark: InvestmentData[]
+): Array<{time: string, value:number, ticker: string}> {
+  
+  const combinedResult = [];
+
+  investments.forEach((investment,index) => {
+    combinedResult.push(investment.map(a => {
+      return {
+        ticker: `portfolio${index + 1}`,
+        time: `${a.year}-01-01`,
+        value: a.investment
+      };
+    }));
+  })
+  combinedResult.push(benchmark.map(a => {
+    return {
+      ticker: "benchmark",
+      time: `${a.year}-01-01`,
+      value: a.investment
+    };
+  }));
+  return combinedResult;
+}
 
 export function convertPortfolioConfigToPortfolios(backtestConfig: BacktestAnalyzeData): {
   value: number;

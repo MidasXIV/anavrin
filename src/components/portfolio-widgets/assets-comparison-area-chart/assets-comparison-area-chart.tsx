@@ -17,7 +17,7 @@ const AssetsComparisonAreaChart: FC<IAssetsComparisonAreaChartProps> = ({
 }) => {
   const categories = data && Object.keys(data[0]).filter(key => key !== "timeFrame");
 
-  console.log(categories);
+  console.log(categories, data);
   return (
     <div className="h-full max-h-full min-h-[14rem] w-full sm:min-h-full">
       <AreaChartWrapper
