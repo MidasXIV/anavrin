@@ -1,3 +1,4 @@
+import isEmptyDataItem from "@/utils/type-gaurds";
 import { generateRandomColor } from "lib/tremor-color";
 import { createChart, ColorType } from "lightweight-charts";
 import React, { useEffect, useRef } from "react";
@@ -20,16 +21,17 @@ export const StockLineChart = props => {
   const chartContainerRef = useRef();
 
   useEffect(() => {
+    const width = (chartContainerRef?.current as any)?.clientWidth;
     const handleResize = () => {
-      chart.applyOptions({ width: chartContainerRef?.current?.clientWidth ?? 0 });
+      chart.applyOptions({ width: width });
     };
 
-    const chart = createChart(chartContainerRef.current, {
+    const chart = createChart(chartContainerRef?.current, {
       layout: {
         background: { type: ColorType.Solid, color: backgroundColor },
         textColor
       },
-      width: chartContainerRef?.current?.clientWidth,
+      width: width,
       height: 300
     });
     chart.timeScale().fitContent();
