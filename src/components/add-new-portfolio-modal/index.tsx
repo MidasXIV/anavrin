@@ -114,11 +114,12 @@ const AddNewPortfolioModal: FC<AddNewPortfolioModalProps> = ({
     );
   } else if (uploadedPortfolio) {
     Content = (
-      <UploadedPortfolioParser
-        file={uploadedPortfolio}
-        columnLabels={["Token", "Fiat", "Coins"]}
-        onUpload={onSelection}
-      />
+      <></>
+      // <UploadedPortfolioParser
+      //   file={uploadedPortfolio}
+      //   columnLabels={["Token", "Fiat", "Coins"]}
+      //   onUpload={onSelection}
+      // />
     );
   } else {
     Content = (
