@@ -35,7 +35,7 @@ const RingChartWithListCard: FC<RingChartWithListCardProps> = ({ data, title }) 
               className="border-1 flex w-full justify-between border-b border-gray-300 px-2 py-1"
             >
               <div className="inline-flex w-1/3">
-                <div className="h-4 w-4 rounded-full bg-indigo-700 leading-none" />
+                <div className="h-4 w-4 rounded-full leading-none" style={{backgroundColor: dataItem.color}}/>
                 <span className="ml-2 font-bold text-gray-800">{dataItem.tooltip}</span>
               </div>
 
