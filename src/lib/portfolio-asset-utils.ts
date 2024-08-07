@@ -6,6 +6,7 @@ import { AssetType } from "./portfolio-utils";
 import rateLimit from "./rate-limiting";
 import MockCryptoPortfolio from "../tests/mocks/mock-crypto-portfolio-1";
 import MockDividendPortfolio from "../tests/mocks/mock-dividend-portfolio-1";
+import api from "services/create-service";
 
 /**
  * Converts a CoinGecko API coin object to a simplified DTO understood by CryptoPortfolioSchema
@@ -65,6 +66,81 @@ const hydrateCryptoPortfolioItems = async (portfolio: Portfolio): Promise<Crypto
 
   const data = MockCryptoPortfolio as any as CryptoAssetDTO[];
   return data;
+};
+
+const hydrateCryptoPortfolioItemsV2 = async (portfolio: Portfolio): Promise<CryptoAssetDTOV2[]> => {
+  if (portfolio.assetType !== AssetType.CRYPTO) {
+    throw new Error("InvalidPortfolioItem");
+  }
+
+  const { items } = portfolio as { items : CryptoPortfolioItem[] };
+  const queryOptions: YahooFinanceQueryOptions  = { period1: "2024-01-01", interval: "1d", return: "object" };
+
+  const portfolioConfigChartPromises = items.map((item: CryptoPortfolioItem) =>
+    api.yahooFinanceQuery({ ticker: item.token, queryOptions })
+  );
+
+  const datav2 = await Promise.allSettled(portfolioConfigChartPromises);
+
+  // Process settled promises and combine data
+  const combinedData = datav2.map((result, index) => {
+    if (result.status === "fulfilled") {
+      const {
+        data: { meta, quotes }
+      } = result.value;
+      return { ...items[index], meta, quotes };
+    } else {
+      console.error(
+        `Failed to fetch data for ${(items[index] as CryptoPortfolioItem).token}:`,
+        result.reason
+      );
+      return { ...items[index], meta: null, quotes: null };
+    }
+  });
+
+  // console.log(combinedData);
+
+  // const data = MockCryptoPortfolio as any as CryptoAssetDTO[];
+  // return data;
+
+  return combinedData;
+};
+
+
+const calculateCrptoPortfolioValue = (portfolioItems: CryptoAssetDTOV2[]): CrptoPortfolioValue => {
+  const meta = {
+    portfolioItems: portfolioItems.map(item => ({
+      token: item.token,
+      holdings: item.holdings,
+      fiat: item.fiat
+    }))
+  };
+
+  const quotesMap: { [date: string]: { totalValue: number; breakdown: { item: string; value: number }[] } } = {};
+
+  portfolioItems.forEach(item => {
+    item.quotes.forEach(quote => {
+      const date = quote.date.split('T')[0]; // Extract the date part, ignoring the time
+      const value = quote.close * item.holdings;
+      if (quotesMap[date]) {
+        quotesMap[date].totalValue += value;
+        quotesMap[date].breakdown.push({ item: item.token, value });
+      } else {
+        quotesMap[date] = {
+          totalValue: value,
+          breakdown: [{ item: item.token, value }]
+        };
+      }
+    });
+  });
+
+  const quotes = Object.keys(quotesMap).map(date => ({
+    date,
+    value: quotesMap[date].totalValue,
+    meta: quotesMap[date].breakdown
+  }));
+
+  return { meta, quotes };
 };
 
 // FIXME: why are numeric values being passed as strings
@@ -168,7 +244,9 @@ export {
   convertCoinGeckoApiCoinObjectToDTO,
   convertCryptoPortfolioItemToPersistence,
   hydrateCryptoPortfolioItems,
+  hydrateCryptoPortfolioItemsV2,
   convertDividendPortfolioItemToPersistence,
   hydrateDividendPortfolioItems,
-  convertDividendDataToDTO
+  convertDividendDataToDTO,
+  calculateCrptoPortfolioValue
 };

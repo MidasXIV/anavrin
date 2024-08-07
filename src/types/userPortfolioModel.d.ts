@@ -93,3 +93,97 @@ interface IUserPortfolioModel {
   ): Promise<UpdateResult & { value: Portfolio; ok: boolean }>;
   deleteUserPortfolioItem(email: string, itemId: string): Promise<UpdateResult & { ok: boolean }>;
 }
+
+interface TradingPeriod {
+  timezone: string;
+  end: string;
+  start: string;
+  gmtoffset: number;
+}
+
+interface CurrentTradingPeriod {
+  pre: TradingPeriod;
+  regular: TradingPeriod;
+  post: TradingPeriod;
+}
+
+interface Meta {
+  currency: string;
+  symbol: string;
+  exchangeName: string;
+  fullExchangeName: string;
+  instrumentType: string;
+  firstTradeDate: string;
+  regularMarketTime: string;
+  hasPrePostMarketData: boolean;
+  gmtoffset: number;
+  timezone: string;
+  exchangeTimezoneName: string;
+  regularMarketPrice: number;
+  fiftyTwoWeekHigh: number;
+  fiftyTwoWeekLow: number;
+  regularMarketDayHigh: number;
+  regularMarketDayLow: number;
+  regularMarketVolume: number;
+  chartPreviousClose: number;
+  priceHint: number;
+  currentTradingPeriod: CurrentTradingPeriod;
+  dataGranularity: string;
+  range: string;
+  validRanges: string[];
+}
+
+interface Quote {
+  date: string;
+  high: number;
+  volume: number;
+  open: number;
+  low: number;
+  close: number;
+  adjclose: number;
+}
+
+interface CryptoAssetDTOV2 {
+  token: string;
+  holdings: number;
+  fiat: number;
+  meta: Meta;
+  quotes: Quote[];
+}
+
+interface YahooFinanceQueryOptions {
+  period1: string;
+  period2?: string;
+  interval:
+    | "1mo"
+    | "1m"
+    | "2m"
+    | "5m"
+    | "15m"
+    | "30m"
+    | "60m"
+    | "90m"
+    | "1h"
+    | "1d"
+    | "5d"
+    | "1wk"
+    | "3mo";
+  return: "object";
+}
+interface CrptoPortfolioValue {
+  meta: {
+    portfolioItems: {
+      token: string;
+      holdings: number;
+      fiat: number;
+    }[];
+  };
+  quotes: {
+    date: string;
+    value: number;
+    meta: {
+      item: string;
+      value: number;
+    }[];
+  }[];
+}

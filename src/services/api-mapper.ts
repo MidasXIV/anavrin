@@ -24,6 +24,29 @@ type triggerPushSubscriptionRequest = {
   subscription: PushSubscriptionDocument;
 };
 
+type yahooFinanceQueryRequest = {
+  ticker: string;
+  queryOptions?: {
+    period1: string;
+    period2?: string;
+    interval:
+      | "1mo"
+      | "1m"
+      | "2m"
+      | "5m"
+      | "15m"
+      | "30m"
+      | "60m"
+      | "90m"
+      | "1h"
+      | "1d"
+      | "5d"
+      | "1wk"
+      | "3mo";
+    return: "object";
+  };
+};
+
 type postBacktestAnalyzeRequest = {
   benchmark: string;
   initialInvestment: number;
@@ -43,6 +66,7 @@ export interface ApiRequests {
   deleteUserPortfolioRequest: deleteUserPortfolioRequest;
   triggerPushSubscriptionRequest: triggerPushSubscriptionRequest;
   postBacktestAnalyzeRequest: postBacktestAnalyzeRequest;
+  yahooFinanceQueryRequest: yahooFinanceQueryRequest;
 }
 
 // type postSubscribeUserRequest2 = Pick< ApiRequests, "postSubscribeUserRequest" >["postSubscribeUserRequest"];
@@ -107,6 +131,13 @@ export const apiMapper = {
     url: "/api/backtest/analyze",
     method: "post",
     requestType: "postBacktestAnalyzeRequest"
+  },
+  // yahoo-finance-query
+  yahooFinanceQuery: {
+    url: "/api/services/yahoo-finance-query",
+    method: "post",
+    requestType: "yahooFinanceQueryRequest",
+    doNotLimit: true
   }
 } as const;
 
