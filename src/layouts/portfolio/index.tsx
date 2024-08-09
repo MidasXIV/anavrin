@@ -28,6 +28,9 @@ import {
 import EditAssetModal from "../../components/edit-asset-modal";
 import PortfolioAnalysisHeader from "../../components/portfolio-analysis-header";
 import api from "../../services/create-service";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { createUrl } from "@/utils/helper";
 
 type PortfolioLayoutProps = {
   portfolio: Portfolio;
@@ -50,6 +53,22 @@ portfolioSaveFnMapper.set(AssetType.STOCK, data =>
 );
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const setIsPanelOpen = isPanelOpen => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (isPanelOpen) {
+      newParams.set("panelOpen", isPanelOpen);
+    } else {
+      newParams.delete("panelOpen");
+    }
+
+    router.push(createUrl("portfolio", newParams));
+  };
+
+  const isPanelOpen = Boolean(searchParams.get("panelOpen")) || false;
+
   // Extract the portfolioType and items.
   const { assetType: portfolioType } = portfolio;
   const [portfolioDomainObject, setPortfolioDomainObject] = useState<Portfolio>({
@@ -58,7 +77,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   });
   const { isShowing, toggle } = useModal(false);
   const { isShowing: isEditModalShowing, toggle: toggleEditModal } = useModal(false);
-  const [hideSecondaryPanel, setHideSecondaryPanel] = useState(true);
+  const [hideSecondaryPanel, setHideSecondaryPanel] = useState(!isPanelOpen);
   const [opened, setOpened] = useState(false);
 
   const [portfolioData, setPortfolioData] = useState([]);
@@ -213,6 +232,12 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
 
     setPortfolioDomainObject(portfolio);
   }, [portfolio]);
+
+  useEffect(() => {
+    console.log("useEffect Opened changed")
+    setIsPanelOpen(!hideSecondaryPanel);
+    return () => {};
+  }, [hideSecondaryPanel]);
 
   console.log("layouts/Portfolio -> render");
   return (
