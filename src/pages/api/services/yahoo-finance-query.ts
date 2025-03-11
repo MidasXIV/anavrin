@@ -9,9 +9,9 @@ const handlers = {
         ? request.query.ticker[0]
         : request.query.ticker;
 
-        const { queryOptions: requestQueryOptions } = request.query;
-        
-        console.log(requestQueryOptions)
+      const { queryOptions: requestQueryOptions } = request.query;
+
+      console.log(requestQueryOptions);
       // Validation logic goes here
       if (!ticker) {
         return response.status(400).json({
@@ -36,7 +36,7 @@ const handlers = {
           | "5d"
           | "1wk"
           | "3mo";
-      } = { period1: "2024-01-01" /* ... */, interval: "1d" };
+      } = { period1: "2025-01-01" /* ... */, interval: "1d" };
 
       const result = await yahooFinance.chart(ticker, queryOptions);
 
@@ -76,7 +76,7 @@ const handlers = {
           | "5d"
           | "1wk"
           | "3mo";
-      } = { period1: "2024-01-01" /* ... */, interval: "1d" };
+      } = { period1: "2025-01-01" /* ... */, interval: "1d" };
 
       const result = await yahooFinance.chart(ticker, queryOptions);
       response.status(200).json(result);

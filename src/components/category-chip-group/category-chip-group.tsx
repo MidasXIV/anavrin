@@ -8,7 +8,7 @@ interface CategoryChipGroupProps {
 
 const CategoryChipGroup: FC<CategoryChipGroupProps> = ({ categories }) => {
   // string value when multiple is false (default)
-  const [value, setValue] = useState(categories[0]);
+  const [value, setValue] = useState(categories?.[0]);
 
   return (
     <ToggleGroup

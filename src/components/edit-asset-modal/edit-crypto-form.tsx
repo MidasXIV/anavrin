@@ -4,7 +4,10 @@ import { FC, useEffect, useState } from "react";
 import SlideToSubmit from "../slide-to-submit";
 import { fetchCoinInfo } from "../../utils/cryptocurrencyService";
 import CryptoInformationTable from "../add-asset-modal/crypto-information-table";
-import { convertCoinGeckoApiCoinObjectToDTO } from "../../lib/portfolio-asset-utils";
+import {
+  convertCoinGeckoApiCoinObjectToDTO,
+  convertYahooFinanceCoinInfoObjectToDTO
+} from "../../lib/portfolio-asset-utils";
 
 type EditCryptoFormProps = {
   asset: CryptoAssetDTO;
@@ -27,15 +30,16 @@ const EditCryptoForm: FC<EditCryptoFormProps> = ({ asset, onSubmit }) => {
   });
 
   const handleFormSubmit = form.onSubmit(values => {
-    const _asset = { ...values, ...tokenInformation };
-    const cryptoAssetDTO = convertCoinGeckoApiCoinObjectToDTO(_asset);
+    const _asset = { ...tokenInformation, ...values };
+    const cryptoAssetDTO = convertYahooFinanceCoinInfoObjectToDTO(_asset);
     onSubmit(cryptoAssetDTO);
   });
 
   const fetchTokenInformation = _token => {
     fetchCoinInfo(_token)
       .then(tokenInfo => {
-        setTokenInformation(tokenInfo);
+        const dto = convertYahooFinanceCoinInfoObjectToDTO(tokenInfo);
+        setTokenInformation(dto);
       })
       .catch(e => {
         console.error(e);
