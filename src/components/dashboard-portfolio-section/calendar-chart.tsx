@@ -4,6 +4,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { valueFormatter } from "@/utils/timeAndDateHelpers";
 import { Separator } from "../ui/separator";
 
+enum CalendarMode {
+  OneMonth = "1-month",
+  SixMonths = "6-months",
+  EntireYear = "entire-year",
+  YearToMonth = "year-to-month"
+}
+
 interface DashboardCalendarChartProps {
   data: CrptoPortfolioValue;
   mode: CalendarMode;
@@ -16,13 +23,6 @@ function percentageDifference(valueA: number, valueB: number): number {
     const percentageDiff = ((valueA - valueB) / valueB) * 100;
     return percentageDiff;
   }
-}
-
-enum CalendarMode {
-  OneMonth = "1-month",
-  SixMonths = "6-months",
-  EntireYear = "entire-year",
-  YearToMonth = "year-to-month"
 }
 
 const DashboardCalendarChart: FC<DashboardCalendarChartProps> = ({ data, mode }) => {

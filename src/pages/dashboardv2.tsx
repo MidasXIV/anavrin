@@ -34,6 +34,13 @@ import {
 } from "lib/portfolio-asset-utils";
 import { StockLineChart } from "@/components/charting/stock-line-chart/stock-line-chart";
 
+enum CalendarMode {
+  OneMonth = "1-month",
+  SixMonths = "6-months",
+  EntireYear = "entire-year",
+  YearToMonth = "year-to-month"
+}
+
 const Dashboard: FC = () => {
   const { data: session, status } = useSession();
   const [hide, setHide] = useState(false);
@@ -102,7 +109,7 @@ const Dashboard: FC = () => {
   } else if (portfolios?.length > 0) {
     Content = (
       <section className="h-full w-full">
-        <DashboardCalendarChart data={portfolioPerformance} mode='year-to-month' />
+        <DashboardCalendarChart data={portfolioPerformance} mode={CalendarMode.YearToMonth} />
         <StockLineChart data={[portfolioPerformanceStockLineChartData]} />
       </section>
     );
@@ -127,7 +134,7 @@ const Dashboard: FC = () => {
             className={clsx("dashboard-primary-panel overflow-y-auto", {
               "sm:w-full": hide,
               // "sm:w-2/5": !hide
-              "sm:w-full": !hide
+              // "sm:w-full": !hide
             })}
           >
             {Content}
