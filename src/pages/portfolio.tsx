@@ -13,7 +13,7 @@ import DefaultLayout from "../layouts/default";
 import { AssetType } from "../lib/portfolio-utils";
 import api from "../services/create-service";
 import { createUrl } from "../utils/helper";
-import mockFetchUserPortfolioData from "../tests/mocks/mock-fetchUserPortfolio-1";
+import mockFetchUserPortfolioData from "../tests/mocks/mock-fetchUserPortfolio-v2-1";
 import isEmptyDataItem from "../utils/type-gaurds";
 
 const ADD_PORTFOLIO_TAB_VALUE = "add-portfolio";

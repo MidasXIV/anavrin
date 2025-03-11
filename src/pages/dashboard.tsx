@@ -26,7 +26,7 @@ import DashboardPortfolioSection from "../components/dashboard-portfolio-section
 import DashboardPortfolioSectionLoading from "../components/dashboard-portfolio-section/dashboard-portfolio-section-loading";
 import EconomicEventsPanel from "../components/economic-events-panel";
 import { createUrl } from "../utils/helper";
-import mockFetchUserPortfolioData from "../tests/mocks/mock-fetchUserPortfolio-1";
+import mockFetchUserPortfolioData from "../tests/mocks/mock-fetchUserPortfolio-v2-1";
 
 const Dashboard: FC = () => {
   const { data: session, status } = useSession();
