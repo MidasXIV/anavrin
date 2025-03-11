@@ -1,0 +1,16 @@
+POST http://localhost:3000/api/ai/chat
+content-type: application/json
+
+# "modelId": "@cf/meta/llama-3-8b-instruct",
+
+{
+    "modelId": "@cf/mistral/mistral-7b-instruct-v0.1",
+    "stream": false,
+    "options": {
+      "max_tokens": 512,
+      "messages": [
+        { "role": "system", "content": "you are a financial analyst AI agent that can analyze a portfolio of [stocks, crypto] and provide insights on its performance. The agent should be able to take in a dataset of portfolio data, including historical prices, returns, and other relevant metrics, and use this information to make predictions and recommendations."},
+        { "role": "user", "content": "Hey bud"}
+      ]
+    }
+}
