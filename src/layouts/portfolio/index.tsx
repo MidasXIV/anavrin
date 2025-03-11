@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import PortfolioLayoutSecondaryPanel from "@/components/portfolio-secondary-panel/portfolio-secondary-panel";
 import SecondaryPanel from "@/components/secondary-panel";
 import { isMobileUI } from "lib/viewport";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { createUrl } from "@/utils/helper";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
@@ -23,14 +26,12 @@ import {
   convertCryptoPortfolioItemToPersistence,
   convertDividendPortfolioItemToPersistence,
   hydrateCryptoPortfolioItems,
+  hydrateCryptoPortfolioItemsV2,
   hydrateDividendPortfolioItems
 } from "../../lib/portfolio-asset-utils";
 import EditAssetModal from "../../components/edit-asset-modal";
 import PortfolioAnalysisHeader from "../../components/portfolio-analysis-header";
 import api from "../../services/create-service";
-import { useRouter } from "next/router";
-import { useSearchParams } from "next/navigation";
-import { createUrl } from "@/utils/helper";
 
 type PortfolioLayoutProps = {
   portfolio: Portfolio;
@@ -40,7 +41,7 @@ const portfolioHydrationFnMapper = new Map<
   AssetType,
   (portfolio: Portfolio) => Promise<unknown[]>
 >();
-portfolioHydrationFnMapper.set(AssetType.CRYPTO, hydrateCryptoPortfolioItems);
+portfolioHydrationFnMapper.set(AssetType.CRYPTO, hydrateCryptoPortfolioItemsV2);
 portfolioHydrationFnMapper.set(AssetType.STOCK, hydrateDividendPortfolioItems);
 
 const portfolioSaveFnMapper = new Map<AssetType, (portfolioItem) => Promise<PortfolioItem[]>>();
@@ -234,7 +235,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   }, [portfolio]);
 
   useEffect(() => {
-    console.log("useEffect Opened changed")
+    console.log("useEffect Opened changed");
     setIsPanelOpen(!hideSecondaryPanel);
     return () => {};
   }, [hideSecondaryPanel]);
@@ -353,6 +354,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
               assetsComparisionGrowthChartData={assetsComparisionGrowthChartData}
               dividendDistributionRingChartData={dividendDistributionRingChartData}
               dividendYieldOnCostData={dividendYieldOnCostData}
+              portfolioData={portfolioData}
             />
           </SecondaryPanel>
           {/* <Drawer.Portal>

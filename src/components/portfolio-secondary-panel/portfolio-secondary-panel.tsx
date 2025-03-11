@@ -20,6 +20,8 @@ import AssetsDividendYieldChart from "../portfolio-widgets/assets-dividend-yield
 import DividendBreakdownAnalysisCard from "../portfolio-widgets/dividend-breakdown-analysis-card/dividend-breakdown-analysis-card";
 import DividendAnalysisCard from "../portfolio-widgets/dividend-analysis-card/dividend-analysis-card";
 import RingChartWithListCard from "../portfolio-widgets/ring-chart-with-list/ring-chart-with-list-card";
+import { ChatBar } from "../chat-ui/chat-bar";
+import ChatLayout from "../component/chat-layout";
 import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import { createUrl } from "@/utils/helper";
@@ -33,7 +35,8 @@ const PortfolioLayoutSecondaryPanel = ({
   assetsComparisionGrowthChartData,
   portfolioDividendEfficiency,
   dividendDistributionRingChartData,
-  dividendYieldOnCostData
+  dividendYieldOnCostData,
+  portfolioData
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -320,7 +323,8 @@ const PortfolioLayoutSecondaryPanel = ({
           Notes{" "}
         </TabsContent>
         <TabsContent key="chat-panel" value="chat" className="flex-1">
-          Chat{" "}
+          {/* <ChatBar /> */}
+          <ChatLayout portfolioData={portfolioData}/>
         </TabsContent>
       </Tabs>
     </section>
