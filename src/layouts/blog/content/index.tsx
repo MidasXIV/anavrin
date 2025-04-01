@@ -6,7 +6,11 @@ const BlogContent = ({ blog }) => {
   return (
     <div>
       <article className="blog-border xs:w-full mx-auto border border-l border-r px-4 py-4 sm:w-1/2">
-        <ReactMarkdown className={styles.markdown}>{content}</ReactMarkdown>
+        <ReactMarkdown
+          components={{ div: ({ children }) => <div className={styles.markdown}>{children}</div> }}
+        >
+          {content}
+        </ReactMarkdown>
       </article>
       {/* <style jsx>{`
         .blog-border {

@@ -38,7 +38,7 @@ const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({
 
   const handleSelect = (item: AutocompleteItem) => {
     setCyptocurrency(item.id);
-    setValue(item.label);
+    setValue(item.symbol);
   };
 
   return (
@@ -63,14 +63,14 @@ const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({
         renderItem={item => (
           <div className="flex items-center space-x-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
-              {item.description
-                .split(" ")
+              {item.name
+                ?.split(" ")
                 .map(part => part.charAt(0).toUpperCase())
                 .join("")}
             </div>
             <div>
-              <div className="font-medium">{item.description}</div>
-              <div className="text-sm text-blue-600">{item.label}</div>
+              <div className="font-medium">{item.name}</div>
+              <div className="text-sm text-blue-600">{item.symbol}</div>
             </div>
           </div>
         )}

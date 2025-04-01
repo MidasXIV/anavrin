@@ -49,7 +49,9 @@ const SimulatorBacktest: FC = () => {
       <div className="flex max-h-full max-w-full flex-1 flex-row overflow-hidden rounded-xl bg-gray-300 sm:mb-1 sm:mr-1 sm:rounded-lg">
         <div
           // className={clsx("w-full overflow-y-auto p-2 sm:w-8/12", {
-          className={clsx("flex flex-1 max-h-full max-w-full flex-col space-y-2 overflow-y-auto p-2")}
+          className={clsx(
+            "flex max-h-full max-w-full flex-1 flex-col space-y-2 overflow-y-auto p-2"
+          )}
         >
           {loading === false ? (
             <>

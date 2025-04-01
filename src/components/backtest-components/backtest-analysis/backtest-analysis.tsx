@@ -8,8 +8,8 @@ import {
 } from "lib/backtest-analyze";
 import { FC } from "react";
 import { Button } from "@/components/ui/button";
-import PortfolioPerformanceOverviewTable from "./portfolio-performance-overview-table";
 import { StockLineChart } from "@/components/charting/stock-line-chart/stock-line-chart";
+import PortfolioPerformanceOverviewTable from "./portfolio-performance-overview-table";
 
 interface BacktestAnalysisProps {
   analysisData: BacktestAnalyzeDTO;
@@ -21,7 +21,7 @@ const BacktestAnalysis: FC<BacktestAnalysisProps> = ({ analysisData }) => {
   const stockLineChartData = convertToCombinedFormat2(portfoliosGrowth, benchMarkGrowth);
 
   console.log(stockLineChartData);
-  
+
   return (
     <section className="flex h-full w-full flex-col">
       <div className="h-[20rem] w-full p-1">

@@ -154,7 +154,7 @@ export const apiMapper = {
     method: "post",
     requestType: "aiChatRequest",
     doNotLimit: true
-  },
+  }
 } as const;
 
 export type ApiEndpoints = keyof typeof apiMapper;

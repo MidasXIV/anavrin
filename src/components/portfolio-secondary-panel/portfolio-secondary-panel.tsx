@@ -8,6 +8,9 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { createUrl } from "@/utils/helper";
 import Card from "../portfolio-widgets/Card/card";
 import InfoIcon from "../icons/InfoIcon";
 import RingChart from "../charting/ring-chart/ring-chart";
@@ -22,9 +25,6 @@ import DividendAnalysisCard from "../portfolio-widgets/dividend-analysis-card/di
 import RingChartWithListCard from "../portfolio-widgets/ring-chart-with-list/ring-chart-with-list-card";
 import { ChatBar } from "../chat-ui/chat-bar";
 import ChatLayout from "../component/chat-layout";
-import { useRouter } from "next/router";
-import { useSearchParams } from "next/navigation";
-import { createUrl } from "@/utils/helper";
 
 const PortfolioLayoutSecondaryPanel = ({
   portfolioType,
@@ -53,7 +53,7 @@ const PortfolioLayoutSecondaryPanel = ({
   };
 
   const selectedTab = searchParams.get("panel") || undefined;
-  console.log(`selectedTab :: ${selectedTab}`)
+  console.log(`selectedTab :: ${selectedTab}`);
   return (
     <section className="flex h-full w-full flex-col">
       <Tabs
@@ -324,7 +324,7 @@ const PortfolioLayoutSecondaryPanel = ({
         </TabsContent>
         <TabsContent key="chat-panel" value="chat" className="flex-1">
           {/* <ChatBar /> */}
-          <ChatLayout portfolioData={portfolioData}/>
+          <ChatLayout portfolioData={portfolioData} />
         </TabsContent>
       </Tabs>
     </section>

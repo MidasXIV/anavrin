@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { cn } from "utils";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 import { Markdown } from "./markdown";

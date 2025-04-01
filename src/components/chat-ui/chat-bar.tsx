@@ -9,11 +9,11 @@ import { toast } from "sonner";
 
 import { useEnterSubmit } from "hooks/use-enter-submit";
 import { useLocalStorage } from "hooks/use-local-storage";
+import { cn } from "@/utils/index";
 import { Button } from "../ui/button";
 import { ChatMessages } from "./chat-messages";
 import { UserMessage } from "./chat-ui";
 import InitialPrompts from "./intial-prompts";
-import { cn } from "@/utils/index";
 
 export interface ChatProps extends React.ComponentProps<"div"> {
   id?: string;
@@ -49,8 +49,8 @@ export function ChatBar({ id, isShared }: ChatProps) {
         description: "Please start a new chat to continue.",
         action: {
           label: "Undo",
-          onClick: () => console.log("Undo"),
-        },
+          onClick: () => console.log("Undo")
+        }
       });
     }
   }, [id, path, messages]);
@@ -58,10 +58,7 @@ export function ChatBar({ id, isShared }: ChatProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "/") {
-        if (
-          e.target &&
-          ["INPUT", "TEXTAREA"].includes((e.target as any).nodeName)
-        ) {
+        if (e.target && ["INPUT", "TEXTAREA"].includes((e.target as any).nodeName)) {
           return;
         }
         e.preventDefault();
@@ -82,19 +79,19 @@ export function ChatBar({ id, isShared }: ChatProps) {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
-        <div className="px-8 md:px-12 pt-20 md:pt-16 pb-32 md:pb-40 max-w-3xl mx-auto flex flex-col space-y-3 md:space-y-6 overflow-y-auto">
+        <div className="mx-auto flex max-w-3xl flex-col space-y-3 overflow-y-auto px-8 pb-32 pt-20 md:space-y-6 md:px-12 md:pb-40 md:pt-16">
           <ChatMessages isShared={isShared} />
           {!isShared && (
             <div
               className={cn(
                 messages.length === 0
-                  ? "fixed bottom-1 left-0 right-0 top-10 mx-auto h-screen flex flex-col items-center justify-center"
-                  : "fixed bottom-10 md:bottom-12 left-0 right-0 flex justify-center items-center mx-auto pt-2 bg-[#2b2b27] w-full z-10"
+                  ? "fixed bottom-1 left-0 right-0 top-10 mx-auto flex h-screen flex-col items-center justify-center"
+                  : "fixed bottom-10 left-0 right-0 z-10 mx-auto flex w-full items-center justify-center bg-[#2b2b27] pt-2 md:bottom-12"
               )}
             >
               <form
                 ref={formRef}
-                onSubmit={async (e) => {
+                onSubmit={async e => {
                   e.preventDefault();
                   const value = input.trim();
                   setInput("");
@@ -118,49 +115,47 @@ export function ChatBar({ id, isShared }: ChatProps) {
                     console.error(error);
                   }
                 }}
-                className="max-w-2xl w-full px-2"
+                className="w-full max-w-2xl px-2"
               >
-                <div className="relative flex items-center w-full">
+                <div className="relative flex w-full items-center">
                   <input
                     ref={inputRef}
                     type="text"
                     name="input"
                     autoComplete="off"
                     autoCorrect="off"
-                    onKeyDown={(e) => {
+                    onKeyDown={e => {
                       if (e.key === "Enter") {
                         e.preventDefault();
                         formRef.current?.requestSubmit();
                       }
                     }}
                     placeholder="Ask a question..."
-                    autoFocus={isShared ? false : true}
+                    autoFocus={!isShared}
                     value={input}
-                    className="w-full pl-6 pr-10 h-14 rounded-full bg-[#393937] text-[#D4D4D4] focus-within:outline-none outline-none focus:ring-0 border-none backdrop-blur-lg shadow-lg"
-                    onChange={(e) => {
+                    className="h-14 w-full rounded-full border-none bg-[#393937] pl-6 pr-10 text-[#D4D4D4] shadow-lg outline-none backdrop-blur-lg focus-within:outline-none focus:ring-0"
+                    onChange={e => {
                       setInput(e.target.value);
                     }}
                     disabled={isInputDisabled || isShared}
                   />
                   <Button
                     type="submit"
-                    size={"lg"}
-                    variant={"default"}
+                    size="lg"
+                    variant="default"
                     className={cn(
-                      `flex items-center justify-center absolute right-5 top-1/2 transform -translate-y-1/2 text-white dark:text-black hover:bg-white/25 focus:bg-white/25 w-20 h-8 ring-0 outline-0 bg-[#ae5630]  rounded-xl`,
-                      input ? "px-0 w-10" : "px-4"
+                      `absolute right-5 top-1/2 flex h-8 w-20 -translate-y-1/2 transform items-center justify-center rounded-xl bg-[#ae5630] text-white outline-0 ring-0 hover:bg-white/25 focus:bg-white/25  dark:text-black`,
+                      input ? "w-10 px-0" : "px-4"
                     )}
                     disabled={input.length === 0 || isInputDisabled || isShared}
                   >
                     {!input ? <span className="mr-1 text-sm">Chat</span> : null}
-                    <div>
-                      {/* <SendHorizontal className="text-white h-3 w-3" /> */}
-                    </div>
+                    <div>{/* <SendHorizontal className="text-white h-3 w-3" /> */}</div>
                   </Button>
                 </div>
               </form>
               {messages.length === 0 && (
-                <div className="max-w-xl w-full px-2 mt-4">
+                <div className="mt-4 w-full max-w-xl px-2">
                   {" "}
                   <InitialPrompts />
                 </div>

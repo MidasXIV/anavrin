@@ -20,8 +20,8 @@ export function ChatMessages({ isShared }: ChatMessages) {
   return (
     <>
       {messages.length
-        ? messages.map((message) => (
-            <div key={message.id} className="text-white/80 gap-2">
+        ? messages.map(message => (
+            <div key={message.id} className="gap-2 text-white/80">
               {message.spinner}
               {message.display}
               {message.attachments}

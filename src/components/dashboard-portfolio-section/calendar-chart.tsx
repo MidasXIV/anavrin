@@ -19,10 +19,9 @@ interface DashboardCalendarChartProps {
 function percentageDifference(valueA: number, valueB: number): number {
   if (valueB === 0) {
     return 0;
-  } else {
-    const percentageDiff = ((valueA - valueB) / valueB) * 100;
-    return percentageDiff;
   }
+  const percentageDiff = ((valueA - valueB) / valueB) * 100;
+  return percentageDiff;
 }
 
 const DashboardCalendarChart: FC<DashboardCalendarChartProps> = ({ data, mode }) => {
@@ -83,7 +82,8 @@ const DashboardCalendarChart: FC<DashboardCalendarChartProps> = ({ data, mode })
       <div
         className={clsx({
           "flex w-full flex-wrap items-center justify-center": true,
-          "md:grid md:grid-cols-2 lg:grid-cols-3": mode === CalendarMode.EntireYear || mode === CalendarMode.YearToMonth
+          "md:grid md:grid-cols-2 lg:grid-cols-3":
+            mode === CalendarMode.EntireYear || mode === CalendarMode.YearToMonth
         })}
       >
         {months.map(({ year, month }) => {
@@ -109,7 +109,7 @@ const DashboardCalendarChart: FC<DashboardCalendarChartProps> = ({ data, mode })
                   <div
                     key={index}
                     className="w-full cursor-pointer rounded-xl px-4 py-3 text-center font-chakra"
-                  ></div>
+                  />
                 ))}
                 {Array.from({ length: daysInMonth }).map((_, dayIndex) => {
                   const day = dayIndex + 1;
@@ -117,7 +117,10 @@ const DashboardCalendarChart: FC<DashboardCalendarChartProps> = ({ data, mode })
                   const quoteIndex = getQuoteIndex(date);
                   const quoteOfDay = quotes[quoteIndex];
                   const quoteOfPreviousDay = quotes[quoteIndex - 1 || 0];
-                  const percentageDiff = percentageDifference(quoteOfDay?.value, quoteOfPreviousDay?.value);
+                  const percentageDiff = percentageDifference(
+                    quoteOfDay?.value,
+                    quoteOfPreviousDay?.value
+                  );
                   return (
                     <Tooltip key={dayIndex}>
                       <TooltipTrigger>
@@ -125,8 +128,11 @@ const DashboardCalendarChart: FC<DashboardCalendarChartProps> = ({ data, mode })
                           <div
                             className={clsx({
                               "h-full w-full rounded-lg border-[3px] px-3 py-2 text-center": true,
-                              "border-gray-900": !(day === currentDate.getDate() && month === currentDate.getMonth()),
-                              "border-teal-300": day === currentDate.getDate() && month === currentDate.getMonth(),
+                              "border-gray-900": !(
+                                day === currentDate.getDate() && month === currentDate.getMonth()
+                              ),
+                              "border-teal-300":
+                                day === currentDate.getDate() && month === currentDate.getMonth(),
                               "bg-gray-200": typeof quoteOfDay === "undefined",
                               "bg-green-500": percentageDiff >= 15,
                               "bg-green-400": percentageDiff >= 10,
