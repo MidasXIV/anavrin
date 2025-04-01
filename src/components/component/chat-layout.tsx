@@ -18,12 +18,18 @@ To read more about using these font, please visit the Next.js documentation:
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 * */
 import { Button } from "components/ui/button";
-import { Input } from "components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import api from "services/create-service";
 import { cn } from "@/utils/shadcn";
+import { ArrowUp, Square } from "lucide-react";
+import {
+  PromptInput,
+  PromptInputAction,
+  PromptInputActions,
+  PromptInputTextarea
+} from "components/ui/prompt-input";
+import { Message, MessageAvatar, MessageContent } from "components/ui/message";
 import { ScrollArea } from "../ui/scroll-area";
-import { Textarea } from "../ui/textarea";
 import DoubleClickButton from "../double-click-button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
@@ -209,7 +215,7 @@ Portfolio JSON property labels:
 - \`title\`: The name of the asset, paired with its fiat currency (e.g., "Ethereum USD").
 - \`marketPrice\`: Current price of one unit of the asset.
 - \`marketValue\`: The total current value of your holdings for this asset (calculated as \`holdings × marketPrice\`).
-- \`change\`: Percentage change in the asset’s price (usually over the last 24 hours).
+- \`change\`: Percentage change in the asset's price (usually over the last 24 hours).
 - \`categories\`: Asset categorization (e.g., sectors, use cases, or types—can be empty).
 `;
 
@@ -237,6 +243,7 @@ const ChatLayout = ({ portfolioData }) => {
   >([]);
   const [newMessage, setNewMessage] = useState("");
   const [isThinking, setIsThinking] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSendMessage = async event => {
     event?.preventDefault?.();
@@ -396,13 +403,13 @@ const ChatLayout = ({ portfolioData }) => {
                 {messages.map((message, index) => (
                   <HoverCard key={`message-hover-card-${index}`}>
                     <HoverCardTrigger>
-                      <div
+                      <Message
                         key={index}
                         className={`flex items-start gap-3 ${
-                          message.role === "user" ? "justify-end" : ""
+                          message.role === "user" ? "justify-end" : "justify-start"
                         }`}
                       >
-                        <div
+                        <MessageContent
                           className={`rounded-xl px-3 py-2 ${
                             message.role === "user"
                               ? "justify-end bg-primary"
@@ -413,8 +420,8 @@ const ChatLayout = ({ portfolioData }) => {
                           style={{ whiteSpace: "pre-wrap" }} // Ensures \n creates a new line
                         >
                           {message.content}
-                        </div>
-                      </div>
+                        </MessageContent>
+                      </Message>
                     </HoverCardTrigger>
                     <HoverCardContent className="w-fit p-1">
                       <Button variant="ghost" size="icon">
@@ -438,14 +445,7 @@ const ChatLayout = ({ portfolioData }) => {
               </div>
             </ScrollArea>
           </div>
-          <form className="mt-4 flex items-center gap-2">
-            {/* <Input
-              type="text"
-              placeholder="Type your message..."
-              value={newMessage}
-              onChange={event => setNewMessage(event.target.value)}
-              className="flex-1"
-            /> */}
+          {/* <form className="mt-4 flex items-center gap-2">
             <Textarea
               // ref={inputRef}
               tabIndex={0}
@@ -465,7 +465,34 @@ const ChatLayout = ({ portfolioData }) => {
               <IconArrowElbow className="h-5 w-5" />
               <span className="sr-only">Send</span>
             </Button>
-          </form>
+          </form> */}
+          <PromptInput
+            value={newMessage}
+            onValueChange={(value: string) => {
+              setNewMessage(value);
+            }}
+            isLoading={isLoading}
+            onSubmit={() => handleSendMessage({ preventDefault: () => {} } as any)}
+            className="max-w-(--breakpoint-md) w-full"
+          >
+            <PromptInputTextarea placeholder="Ask me anything..." />
+            <PromptInputActions className="justify-end pt-2">
+              <PromptInputAction tooltip={isLoading ? "Stop generation" : "Send message"}>
+                <Button
+                  variant="default"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={handleSendMessage}
+                >
+                  {isLoading ? (
+                    <Square className="size-5 fill-current" />
+                  ) : (
+                    <ArrowUp className="size-5" />
+                  )}
+                </Button>
+              </PromptInputAction>
+            </PromptInputActions>
+          </PromptInput>
         </div>
       </div>
     </div>

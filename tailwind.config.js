@@ -181,28 +181,68 @@ module.exports = {
           }
         },
         "accordion-down": {
-          from: { height: 0 },
-          to: { height: "var(--radix-accordion-content-height)" }
+          from: {
+            height: 0
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)"
+          }
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: 0 }
+          from: {
+            height: "var(--radix-accordion-content-height)"
+          },
+          to: {
+            height: 0
+          }
+        },
+        "accordion-down": {
+          from: {
+            height: "0"
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)"
+          }
+        },
+        "accordion-up": {
+          from: {
+            height: "var(--radix-accordion-content-height)"
+          },
+          to: {
+            height: "0"
+          }
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "text-slide": "text-slide 12.5s cubic-bezier(0.83, 0, 0.17, 1) infinite"
+        "text-slide": "text-slide 12.5s cubic-bezier(0.83, 0, 0.17, 1) infinite",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out"
       },
       fontSize: {
         tiny: "0.65rem",
         "tremor-label": ["0.75rem"],
-        "tremor-default": ["0.875rem", { lineHeight: "1.25rem" }],
-        "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
-        "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }]
+        "tremor-default": [
+          "0.875rem",
+          {
+            lineHeight: "1.25rem"
+          }
+        ],
+        "tremor-title": [
+          "1.125rem",
+          {
+            lineHeight: "1.75rem"
+          }
+        ],
+        "tremor-metric": [
+          "1.875rem",
+          {
+            lineHeight: "2.25rem"
+          }
+        ]
       }
     },
-
     transparent: "transparent",
     current: "currentColor"
   },
