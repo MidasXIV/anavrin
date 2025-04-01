@@ -23,7 +23,7 @@ import AssetsDividendYieldChart from "../portfolio-widgets/assets-dividend-yield
 import DividendBreakdownAnalysisCard from "../portfolio-widgets/dividend-breakdown-analysis-card/dividend-breakdown-analysis-card";
 import DividendAnalysisCard from "../portfolio-widgets/dividend-analysis-card/dividend-analysis-card";
 import RingChartWithListCard from "../portfolio-widgets/ring-chart-with-list/ring-chart-with-list-card";
-import ChatLayout from "../component/chat-layout";
+import ChatLayout from "../chat-ui/chat-layout";
 
 const PortfolioLayoutSecondaryPanel = ({
   portfolioType,
