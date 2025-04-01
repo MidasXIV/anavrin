@@ -1,83 +1,81 @@
 import { useState, FC, useEffect } from "react";
-import { Group, Avatar, Text, Autocomplete } from "@mantine/core";
 import { fetchCoinList } from "../../utils/cryptocurrencyService";
+import Autocomplete, { AutocompleteItem } from "../ui/autocomplete";
 
-type CryptocurrencySearchBoxProps = {
-  // eslint-disable-next-line react/require-default-props
+interface CryptocurrencySearchBoxProps {
   hideHeader?: boolean;
-  setCyptocurrency: (token) => void;
+  setCyptocurrency: (token: string) => void;
   cyptocurrency: string;
-};
+}
 
 const CryptocurrencySearchBox: FC<CryptocurrencySearchBoxProps> = ({
   hideHeader = false,
   setCyptocurrency,
   cyptocurrency
 }) => {
-  const [data, setData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(cyptocurrency);
-  const [disabled, setDisabled] = useState(true);
-
-  function AutoCompleteItem({ id, symbol, name, ...others }) {
-    return (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <div {...others} key={id}>
-        <Group>
-          <Avatar color="blue">
-            {name
-              .split(" ")
-              .map(part => part.charAt(0).toUpperCase())
-              .join("")}
-          </Avatar>
-
-          <div>
-            <Text>{name}</Text>
-            <Text size="xs" color="blue">
-              {symbol}
-            </Text>
-          </div>
-        </Group>
-      </div>
-    );
-  }
+  const [value, setValue] = useState(cyptocurrency);
+  const [items, setItems] = useState<AutocompleteItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setDisabled(true);
-
-    fetchCoinList().then(list => {
-      setDisabled(false);
-      console.log(list);
-      setData(
-        list.map(item => ({
-          value: item.id,
-          ...item
-        }))
-      );
-
-      // TODO: handle case for error
-    });
+    setIsLoading(true);
+    fetchCoinList()
+      .then(list => {
+        const formattedItems = list.map(item => ({
+          id: item.id,
+          label: item.symbol.toUpperCase(),
+          description: item.name,
+          ...item // Include all other coin properties
+        }));
+        setItems(formattedItems);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error("Error fetching coin list:", error);
+        setIsLoading(false);
+      });
   }, []);
 
+  const handleSelect = (item: AutocompleteItem) => {
+    setCyptocurrency(item.id);
+    setValue(item.label);
+  };
+
   return (
-    <Autocomplete
-      label={`${hideHeader ? "" : "Choose cryptocurrency"}`}
-      placeholder="Pick one"
-      disabled={disabled}
-      value={searchTerm}
-      onChange={setSearchTerm}
-      onItemSubmit={token => {
-        setCyptocurrency(token.id);
-      }}
-      className="w-full"
-      itemComponent={AutoCompleteItem}
-      nothingFound="CoinGecko cannot find this token."
-      limit={6}
-      data={data}
-      filter={(_value, item) =>
-        item.name.toLowerCase().startsWith(_value.toLowerCase().trim()) ||
-        item.symbol.toLowerCase().startsWith(_value.toLowerCase().trim())
-      }
-    />
+    <div className="w-full">
+      {!hideHeader && (
+        <label className="mb-2 block text-sm font-medium text-gray-700">
+          Choose cryptocurrency
+        </label>
+      )}
+      <Autocomplete
+        value={value}
+        onChange={setValue}
+        onSelect={handleSelect}
+        items={items}
+        placeholder="Search cryptocurrencies..."
+        isLoading={isLoading}
+        limit={6}
+        filter={(_value, item) =>
+          item.name.toLowerCase().startsWith(_value.toLowerCase().trim()) ||
+          item.symbol.toLowerCase().startsWith(_value.toLowerCase().trim())
+        }
+        renderItem={item => (
+          <div className="flex items-center space-x-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
+              {item.description
+                .split(" ")
+                .map(part => part.charAt(0).toUpperCase())
+                .join("")}
+            </div>
+            <div>
+              <div className="font-medium">{item.description}</div>
+              <div className="text-sm text-blue-600">{item.label}</div>
+            </div>
+          </div>
+        )}
+      />
+    </div>
   );
 };
 
