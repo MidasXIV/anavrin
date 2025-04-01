@@ -7,7 +7,7 @@
 
 * Frontend Framework - Next JS
 * CSS Framework - Tailwind CSS
-* Frontend Components -Mantine components
+* Frontend Components - shadcn components
 * Frontend API connection - React Query
 * Backend API - Next.js API Routes 
 * Auth - NextAuth.js

@@ -30,12 +30,7 @@ class MyDocument extends Document {
 
     return {
       ...initialProps,
-      styles: (
-        <>
-          {initialProps.styles}
-          <style id="mantine-ssr-styles">{registry.toString()}</style>
-        </>
-      )
+      styles: <>{initialProps.styles}</>
     };
   }
 
