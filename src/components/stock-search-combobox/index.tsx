@@ -34,9 +34,7 @@ type StockSearchComboboxProps = {
   state: SearchStateType;
 };
 
-const tempStockSearchData = {
-  bestMatches: []
-};
+const tempStockSearchData = [];
 
 const SPACEBAR_KEY_CODE = [0, 32];
 const ENTER_KEY_CODE = 13;
@@ -130,7 +128,7 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
   const { isShowing, open, close } = useModal(false);
   const stockSearchOptions = useRef<HTMLUListElement>();
   const stockSearchInput = useRef<HTMLInputElement>();
-  const { stockSuggestions, _isLoading, _isError } = useStockSearch(stockTicker || null);
+  const { stockSuggestions } = useStockSearch(stockTicker || null);
 
   const handleKeyDown = e => {
     switch (e.keyCode) {
@@ -175,17 +173,18 @@ const StockSearchCombobox: FC<StockSearchComboboxProps> = ({
   };
 
   // Current API limit is 5 API calls per minute
-  const stockSuggestionsIsValid = !!stockSuggestions?.bestMatches;
+  const stockSuggestionsIsValid = !!stockSuggestions;
   const paddedStockSuggestions = stockSuggestionsIsValid ? stockSuggestions : tempStockSearchData;
 
-  const stockSearchSuggestionsData = paddedStockSuggestions.bestMatches.map(stock => ({
-    symbol: stock["1. symbol"],
-    name: stock["2. name"],
-    type: stock["3. type"],
-    region: stock["4. region"],
-    currency: stock["8. currency"],
-    matchScore: stock["9. matchScore"]
-  }));
+  const stockSearchSuggestionsData = paddedStockSuggestions
+    .filter(stock => stock.isYahooFinance)
+    .map(stock => ({
+      symbol: stock.symbol,
+      name: stock.longname || stock.shortname || stock.name || stock.symbol,
+      type: stock.quoteType,
+      exchange: stock.exchange ? `${stock.exchange} (${stock.exchDisp})` : undefined,
+      matchScore: stock.score
+    }));
 
   const stockSearchSuggestions = stockSearchSuggestionsData.map(suggestion => (
     <li

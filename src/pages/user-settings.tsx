@@ -1,6 +1,11 @@
 import { FC, useState } from "react";
-import { Accordion } from "@mantine/core";
 import { useSession } from "next-auth/react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from "@/components/ui/accordion";
 import DefaultLayout from "../layouts/default";
 import * as exchanges from "../components/exchanges-form";
 import { isMobileUI } from "../lib/viewport";
@@ -22,7 +27,6 @@ const UserSettings: FC = () => {
   const [opened, setOpened] = useState(false);
   const isSignedIn = loading ? "" : Boolean(session?.user) ?? false;
   const [panel, setPanel] = useState<PanelKeys>(defaultPanel);
-  const [menuItem, setMenuItem] = useState<string>();
 
   const onExchangeButtonClick = (exchange: PanelKeys) => {
     // Pass in the exchange name which can be understood by the Form Factory.
@@ -40,16 +44,6 @@ const UserSettings: FC = () => {
   );
 
   const onMenuItemClick = (selectedMenuItem: SETTING_KEY_VALUES) => {
-    // MenuState: {0: true, 1: false}
-
-    // TODO add null check; null is emmited when the panel is clicked
-    // TODO: implement unSetPanel
-
-    // const selectedMenuItem = Object.entries(MenuState).find(menuStateItem => {
-    //   const [menuKey, isOpened] = menuStateItem;
-    //   return isOpened;
-    // })?.[0];
-
     switch (selectedMenuItem) {
       case SETTING_KEY_VALUES.connectToExchange: // Exchange Selection
         break;
@@ -72,31 +66,36 @@ const UserSettings: FC = () => {
           <div className="dashboard-primary-panel overflow-y-auto">
             {!isSignedIn ? <h1 className="mb-2 text-2xl">Please Login.</h1> : null}
             <Accordion
+              type="single"
+              collapsible
               defaultValue={defaultAccordianItem}
-              className="border-b border-t-0 border-gray-400"
-              onChange={onMenuItemClick}
+              className="border-t-0 border-gray-400 p-2"
+              onValueChange={onMenuItemClick}
             >
-              <Accordion.Item
-                className="border-b border-t-0 border-gray-400 font-normal"
+              <AccordionItem
+                className="border-b border-t-0 border-gray-400 px-2 font-normal"
                 value={SETTING_KEY_VALUES.connectToExchange}
               >
-                <Accordion.Control>
+                <AccordionTrigger>
                   <h1 className="mb-2 text-2xl">
                     Connect <span className="font-semibold">Anavrin</span> to an exchange account.
                   </h1>
-                </Accordion.Control>
-                <Accordion.Panel>
+                </AccordionTrigger>
+                <AccordionContent>
                   <p className="text-md text-gray-600">
                     We currently only support Binance exchange.
                   </p>
                   <section className="my-4 grid grid-cols-4 gap-4">{Exchanges}</section>
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item value={SETTING_KEY_VALUES.webpush}>
-                <Accordion.Control>
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem
+                value={SETTING_KEY_VALUES.webpush}
+                className="border-b border-t-0 border-gray-400 px-2 font-normal"
+              >
+                <AccordionTrigger>
                   <h1 className="mb-2 text-2xl">Authorize webpush subscriptions.</h1>
-                </Accordion.Control>
-              </Accordion.Item>
+                </AccordionTrigger>
+              </AccordionItem>
             </Accordion>
           </div>
           <SecondaryPanel

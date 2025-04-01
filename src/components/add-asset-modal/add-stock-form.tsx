@@ -1,11 +1,29 @@
-import { useForm } from "@mantine/form";
-import { Input, NumberInput } from "@mantine/core";
 import { FC, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import SlideToSubmit from "../slide-to-submit";
 import StockSearchCombobox from "../stock-search-combobox";
 import StockInformationTable from "./stock-information-table";
 import getStockInformation from "../../utils/getStockInformation";
 import { convertDividendDataToDTO } from "../../lib/portfolio-asset-utils";
+
+const formSchema = z.object({
+  ticker: z.string().min(1, "Ticker is required"),
+  shares: z.number().min(0, "Shares must be a positive number"),
+  fiat: z.number().min(0, "Buy price must be a positive number")
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 type AddStockFormProps = {
   onSubmit: (asset) => void;
@@ -23,26 +41,20 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
   const [searchState, setSearchState] = useState(SearchState.STABLE);
   const [stockInformation, setStockInformation] = useState<Record<string, unknown>>(null);
 
-  const form = useForm({
-    initialValues: {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
       ticker: "",
       shares: 0,
       fiat: 0
     }
-
-    // validationRules: {
-    //   email: (value) => /^\S+@\S+$/.test(value),
-    // },
   });
 
-  const handleFormSubmit = form.onSubmit(values => {
+  const handleFormSubmit = (values: FormValues) => {
     const asset = { ...values, ...stockInformation };
-
     const dividendAssetDTO = convertDividendDataToDTO(asset);
-
-    console.log(asset);
     onSubmit(dividendAssetDTO);
-  });
+  };
 
   const updateStockInformation = async stockTicker => {
     setStockInformation(null);
@@ -64,43 +76,74 @@ const AddStockForm: FC<AddStockFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form>
-      <section className="px-2 py-2">
-        <Input.Wrapper id="stock-searchbox" required label="Ticker" className="pb-2">
-          <StockSearchCombobox
-            searchTerm={searchTerm}
-            setSearchTerm={ticker => {
-              setSearchTerm(ticker);
-              updateStockInformation(ticker);
-              form.setFieldValue("ticker", ticker);
-            }}
-            state={searchState}
+    <Form {...form}>
+      <form>
+        <section className="px-2 py-2">
+          <FormField
+            control={form.control}
+            name="ticker"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ticker</FormLabel>
+                <FormControl>
+                  <StockSearchCombobox
+                    searchTerm={searchTerm}
+                    setSearchTerm={ticker => {
+                      setSearchTerm(ticker);
+                      updateStockInformation(ticker);
+                      field.onChange(ticker);
+                    }}
+                    state={searchState}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Input.Wrapper>
-        <Input.Wrapper id="stock-shares" required label="Shares" className="pb-2">
-          <NumberInput
-            id="stock-shares"
-            placeholder="10"
-            variant="filled"
-            value={form.values.shares}
-            onChange={shares => form.setFieldValue("shares", Number(shares))}
-          />
-        </Input.Wrapper>
 
-        <Input.Wrapper id="stock-fiat" required label="Buy Price" className="pb-2">
-          <NumberInput
-            id="stock-fiat"
-            placeholder="500"
-            variant="filled"
-            value={form.values.fiat}
-            onChange={fiat => form.setFieldValue("fiat", Number(fiat))}
+          <FormField
+            control={form.control}
+            name="shares"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Shares</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="10"
+                    {...field}
+                    onChange={e => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </Input.Wrapper>
 
-        {stockInformation ? <StockInformationTable stock={stockInformation} /> : null}
-        <SlideToSubmit onSubmit={handleFormSubmit} />
-      </section>
-    </form>
+          <FormField
+            control={form.control}
+            name="fiat"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Buy Price</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="500"
+                    {...field}
+                    onChange={e => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {stockInformation ? <StockInformationTable stock={stockInformation} /> : null}
+          <SlideToSubmit onSubmit={form.handleSubmit(handleFormSubmit)} />
+        </section>
+      </form>
+    </Form>
   );
 };
 
