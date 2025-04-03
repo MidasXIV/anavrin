@@ -8,6 +8,7 @@ import { useState } from "react";
 import { IconDownload, ResetIcon, SettingsIcon, InfoIcon } from "../icons";
 import DoubleClickButton from "../../double-click-button";
 import RiskConfigFlyout, { RiskConfig } from "./RiskConfigFlyout";
+import InfoFlyout from "./InfoFlyout";
 import { TokenUsage } from "../types";
 
 interface ChatHeaderProps {
@@ -26,6 +27,7 @@ const ChatHeader = ({
   totalTokens
 }: ChatHeaderProps) => {
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
+  const [isInfoFlyoutOpen, setIsInfoFlyoutOpen] = useState(false);
 
   return (
     <div className="flex items-center justify-between border-b px-4 py-2">
@@ -62,17 +64,23 @@ const ChatHeader = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-full" align="end" side="bottom" sideOffset={6}>
             <RiskConfigFlyout
-              // isOpen={isFlyoutOpen}
               onClose={() => setIsFlyoutOpen(false)}
               config={riskConfig}
               onConfigChange={handleConfigChange}
             />
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <InfoIcon className="h-4 w-4" />
-          <span className="sr-only">Open info</span>
-        </Button>
+        <DropdownMenu open={isInfoFlyoutOpen} onOpenChange={setIsInfoFlyoutOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <InfoIcon className="h-4 w-4" />
+              <span className="sr-only">Open info</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-full" align="end" side="bottom" sideOffset={6}>
+            <InfoFlyout onClose={() => setIsInfoFlyoutOpen(false)} />
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
