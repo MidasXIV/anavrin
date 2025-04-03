@@ -2,13 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import api from "services/create-service";
 import { Message } from "../types";
 import { SYSTEM_PROMPT } from "../constants";
+import { RiskConfig } from "../components/RiskConfigFlyout";
 
 /**
  * Formats portfolio data into a human-readable string.
  * @param portfolio - Array of portfolio objects.
  * @returns A formatted string describing the portfolio.
  */
-function formatPortfolioToHumanReadable(portfolio): string {
+function formatPortfolioToHumanReadable(portfolio: any[]): string {
   if (!Array.isArray(portfolio) || portfolio.length === 0) {
     return "No portfolio data available.";
   }
@@ -30,7 +31,21 @@ function formatPortfolioToHumanReadable(portfolio): string {
     .join("\n\n");
 }
 
-const replacer = (key, value) => {
+/**
+ * Formats risk configuration into a human-readable string.
+ * @param config - Risk configuration object.
+ * @returns A formatted string describing the risk preferences.
+ */
+function formatRiskConfigToHumanReadable(config: RiskConfig): string {
+  return `
+- **Risk Tolerance**: ${config.riskTolerance}/10
+- **Investment Horizon**: ${config.investmentHorizon}
+- **Investment Goals**: ${config.investmentGoals.join(", ")}
+- **Preferred Asset Types**: ${config.preferredAssetTypes.join(", ")}
+  `.trim();
+}
+
+const replacer = (key: string, value: any) => {
   if (key === "AnnualDividendGrowth") return undefined;
   if (key === "links") return undefined;
   if (key === "meta") return undefined;
@@ -39,9 +54,10 @@ const replacer = (key, value) => {
   return value;
 };
 
-const useChat = (portfolioData: any) => {
+const useChat = (portfolioData: any[], riskConfig: RiskConfig) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isThinking, setIsThinking] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalTokens, setTotalTokens] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -53,8 +69,11 @@ const useChat = (portfolioData: any) => {
   }, [messages]);
 
   const handleSendMessage = async (message: string) => {
-    setIsThinking(true);
-    setMessages(currentMessages => [...currentMessages, { content: message, role: "user" }]);
+    setIsLoading(true);
+    setMessages(currentMessages => [
+      ...currentMessages,
+      { content: message, role: "user", timestamp: new Date() }
+    ]);
 
     try {
       const postRequestData = {
@@ -67,7 +86,7 @@ const useChat = (portfolioData: any) => {
               role: "system",
               content: `${SYSTEM_PROMPT}\nContext, portfolio data: ${formatPortfolioToHumanReadable(
                 JSON.parse(JSON.stringify(portfolioData, replacer))
-              )}`
+              )}\n\nUser risk preferences: ${formatRiskConfigToHumanReadable(riskConfig)}`
             }
           ]
             .concat(messages)
@@ -75,49 +94,62 @@ const useChat = (portfolioData: any) => {
         }
       };
 
+      console.log(postRequestData);
       const response = await api.aiChat(postRequestData);
 
       if (response.status === 200 && response.data.success) {
-        setMessages(currentMessages => [
-          ...currentMessages,
-          { content: response.data.result.response, role: "system" }
-        ]);
-      } else if (response.data.errors?.length > 0) {
+        const aiResponse = response.data.result.response;
+        const assistantMessage: Message = {
+          content: aiResponse,
+          role: "assistant",
+          usage: response.data.result.usage,
+          timestamp: new Date() // Use Date object directly instead of string
+        };
+        setMessages(currentMessages => [...currentMessages, assistantMessage]);
+        setTotalTokens(prev => prev + (response.data.result.usage?.total_tokens || 0));
+      } else if (response.data.errors && response.data.errors.length > 0) {
+        console.error("API Errors:", response.data.errors);
         setMessages(currentMessages => [
           ...currentMessages,
           {
             content: "Sorry, something went wrong with the analysis. Please try again later.",
-            role: "error"
+            role: "error",
+            timestamp: new Date() // Fix timestamp type mismatch by using Date object directly
           }
         ]);
       } else {
+        console.warn("Unexpected response:", response);
         setMessages(currentMessages => [
           ...currentMessages,
           {
             content: "An unexpected error occurred. Please try again later.",
-            role: "error"
+            role: "error",
+            timestamp: new Date() // Fix timestamp type mismatch by using Date object directly
           }
         ]);
       }
     } catch (err) {
+      console.error("Error:", err);
       setMessages(currentMessages => [
         ...currentMessages,
         {
           content:
             "Unable to connect to the server. Please check your network connection and try again.",
-          role: "error"
+          role: "error",
+          timestamp: new Date() // Fix timestamp type mismatch by using Date object directly
         }
       ]);
     } finally {
-      setIsThinking(false);
+      setIsLoading(false);
     }
   };
 
   return {
     messages,
-    isThinking,
-    messagesEndRef,
-    handleSendMessage
+    isLoading,
+    totalTokens,
+    handleSendMessage,
+    messagesEndRef
   };
 };
 

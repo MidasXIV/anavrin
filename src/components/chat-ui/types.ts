@@ -1,18 +1,25 @@
+export interface TokenUsage {
+  prompt_tokens: number;
+  completion_tokens: number;
+  total_tokens: number;
+}
+
 export interface Message {
-  role: "user" | "system" | "error";
+  role: "user" | "assistant" | "error";
   content: string;
+  timestamp: Date;
+  usage?: TokenUsage;
 }
 
 export interface ExampleMessage {
-  heading: string;
-  subheading: string;
-  message: string;
+  content: string;
+  onClick: () => void;
 }
 
 export interface ChatLayoutProps {
   portfolioData: any; // TODO: Define proper portfolio type
 }
 
-export interface IconProps extends React.ComponentProps<"svg"> {
+export interface IconProps {
   className?: string;
-} 
+}

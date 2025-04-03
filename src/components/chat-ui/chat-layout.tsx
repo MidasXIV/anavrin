@@ -13,10 +13,22 @@ import useChat from "./hooks/useChat";
 import { exampleMessages } from "./constants";
 import { ChatLayoutProps } from "./types";
 import { ChatContainer } from "../ui/chat-container";
+import { RiskConfig } from "./components/RiskConfigFlyout";
 
 const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
   const [newMessage, setNewMessage] = useState("");
-  const { messages, isThinking, messagesEndRef, handleSendMessage } = useChat(portfolioData);
+  const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
+  const [riskConfig, setRiskConfig] = useState<RiskConfig>({
+    riskTolerance: 5,
+    investmentHorizon: "medium",
+    investmentGoals: ["Growth"],
+    preferredAssetTypes: ["Stocks", "Cryptocurrencies"]
+  });
+
+  const { messages, isLoading, messagesEndRef, handleSendMessage, totalTokens } = useChat(
+    portfolioData,
+    riskConfig
+  );
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,6 +47,14 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
     link.click();
   };
 
+  const handleSettingsClick = () => {
+    setIsFlyoutOpen(true);
+  };
+
+  const handleConfigChange = (newConfig: RiskConfig) => {
+    setRiskConfig(newConfig);
+  };
+
   return (
     <div className="flex h-full w-full flex-col items-center justify-center font-chakra text-foreground">
       <div
@@ -43,7 +63,13 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
       >
         <div className="flex h-full w-full flex-col bg-card">
           <div className="flex-none p-4">
-            <ChatHeader onDownload={handleDownloadClick} />
+            <ChatHeader
+              totalTokens={totalTokens}
+              onDownload={handleDownloadClick}
+              onSettingsClick={handleSettingsClick}
+              riskConfig={riskConfig}
+              handleConfigChange={handleConfigChange}
+            />
           </div>
 
           <ChatContainer className="flex-1 overflow-y-auto p-4">
@@ -74,7 +100,7 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
                   index={messages.indexOf(message)}
                 />
               ))}
-              {isThinking ? (
+              {isLoading ? (
                 <div className="flex items-start justify-center gap-3">
                   <div className="animate-pulse rounded-xl bg-secondary px-3 py-2 text-secondary-foreground">
                     Thinking
@@ -92,20 +118,20 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
             <PromptInput
               value={newMessage}
               onValueChange={setNewMessage}
-              isLoading={isThinking}
+              isLoading={isLoading}
               onSubmit={() => handleSendMessage(newMessage)}
               className="max-w-(--breakpoint-md) w-full"
             >
               <PromptInputTextarea placeholder="Ask me anything..." />
               <PromptInputActions className="justify-end pt-2">
-                <PromptInputAction tooltip={isThinking ? "Stop generation" : "Send message"}>
+                <PromptInputAction tooltip={isLoading ? "Stop generation" : "Send message"}>
                   <Button
                     variant="default"
                     size="icon"
                     className="h-8 w-8 rounded-full"
                     onClick={() => handleSendMessage(newMessage)}
                   >
-                    {isThinking ? (
+                    {isLoading ? (
                       <Square className="size-5 fill-current" />
                     ) : (
                       <ArrowUp className="size-5" />
