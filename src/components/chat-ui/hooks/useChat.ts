@@ -54,7 +54,7 @@ const replacer = (key: string, value: any) => {
   return value;
 };
 
-const useChat = (portfolioData: any[], riskConfig: RiskConfig) => {
+const useChat = (portfolioData: any[], riskConfig: RiskConfig, systemPrompt: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalTokens, setTotalTokens] = useState(0);
@@ -84,7 +84,7 @@ const useChat = (portfolioData: any[], riskConfig: RiskConfig) => {
           messages: [
             {
               role: "system",
-              content: `${SYSTEM_PROMPT}\nContext, portfolio data: ${formatPortfolioToHumanReadable(
+              content: `${systemPrompt}\nContext, portfolio data: ${formatPortfolioToHumanReadable(
                 JSON.parse(JSON.stringify(portfolioData, replacer))
               )}\n\nUser risk preferences: ${formatRiskConfigToHumanReadable(riskConfig)}`
             }

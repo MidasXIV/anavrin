@@ -9,7 +9,6 @@ import { IconDownload, ResetIcon, SettingsIcon, InfoIcon } from "../icons";
 import DoubleClickButton from "../../double-click-button";
 import RiskConfigFlyout, { RiskConfig } from "./RiskConfigFlyout";
 import InfoFlyout from "./InfoFlyout";
-import { TokenUsage } from "../types";
 
 interface ChatHeaderProps {
   onDownload: () => void;
@@ -17,6 +16,9 @@ interface ChatHeaderProps {
   riskConfig: RiskConfig;
   handleConfigChange: (config: RiskConfig) => void;
   totalTokens: number;
+  portfolioData: string;
+  systemPrompt: string;
+  onPromptChange: (prompt: string) => void;
 }
 
 const ChatHeader = ({
@@ -24,7 +26,10 @@ const ChatHeader = ({
   onSettingsClick,
   riskConfig,
   handleConfigChange,
-  totalTokens
+  totalTokens,
+  portfolioData,
+  systemPrompt,
+  onPromptChange
 }: ChatHeaderProps) => {
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
   const [isInfoFlyoutOpen, setIsInfoFlyoutOpen] = useState(false);
@@ -62,7 +67,7 @@ const ChatHeader = ({
               <span className="sr-only">Open settings</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full" align="end" side="bottom" sideOffset={6}>
+          <DropdownMenuContent className="w-full z-10" align="end" side="bottom" sideOffset={6}>
             <RiskConfigFlyout
               onClose={() => setIsFlyoutOpen(false)}
               config={riskConfig}
@@ -77,8 +82,14 @@ const ChatHeader = ({
               <span className="sr-only">Open info</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full" align="end" side="bottom" sideOffset={6}>
-            <InfoFlyout onClose={() => setIsInfoFlyoutOpen(false)} />
+          <DropdownMenuContent className="w-full z-10" align="end" side="bottom" sideOffset={6}>
+            <InfoFlyout
+              onClose={() => setIsInfoFlyoutOpen(false)}
+              riskConfig={riskConfig}
+              portfolioData={portfolioData}
+              systemPrompt={systemPrompt}
+              onPromptChange={onPromptChange}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

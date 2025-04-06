@@ -10,7 +10,7 @@ import { useState, useRef, useEffect } from "react";
 import ChatHeader from "./components/ChatHeader";
 import ChatMessage from "./components/ChatMessage";
 import useChat from "./hooks/useChat";
-import { exampleMessages } from "./constants";
+import { exampleMessages, SYSTEM_PROMPT } from "./constants";
 import { ChatLayoutProps } from "./types";
 import { ChatContainer } from "../ui/chat-container";
 import { RiskConfig } from "./components/RiskConfigFlyout";
@@ -24,10 +24,12 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
     investmentGoals: ["Growth"],
     preferredAssetTypes: ["Stocks", "Cryptocurrencies"]
   });
+  const [systemPrompt, setSystemPrompt] = useState(SYSTEM_PROMPT);
 
   const { messages, isLoading, messagesEndRef, handleSendMessage, totalTokens } = useChat(
     portfolioData,
-    riskConfig
+    riskConfig,
+    systemPrompt
   );
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -69,6 +71,9 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
               onSettingsClick={handleSettingsClick}
               riskConfig={riskConfig}
               handleConfigChange={handleConfigChange}
+              systemPrompt={systemPrompt}
+              portfolioData={JSON.stringify(portfolioData)}
+              onPromptChange={setSystemPrompt}
             />
           </div>
 

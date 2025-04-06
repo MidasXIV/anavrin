@@ -29,7 +29,7 @@ const ChatMessage = ({ message, onUndo }: ChatMessageProps) => {
       <HoverCardTrigger asChild>
         <div
           className={cn(
-            "group relative flex items-start gap-2 rounded-lg px-3 py-2 text-sm",
+            "group relative flex items-start gap-2 rounded-lg text-sm",
             getMessageStyles(message.role),
             "bg-transparent"
           )}
@@ -40,7 +40,7 @@ const ChatMessage = ({ message, onUndo }: ChatMessageProps) => {
             </div> */}
             <MessageContent
               className={cn(
-                "prose prose-sm dark:prose-invert flex w-fit",
+                "prose prose-sm dark:prose-invert flex w-fit p-2",
                 getMessageStyles(message.role)
               )}
               style={{ whiteSpace: "pre-wrap" }}
@@ -54,20 +54,29 @@ const ChatMessage = ({ message, onUndo }: ChatMessageProps) => {
                 <span>Prompt: {message.usage.prompt_tokens.toLocaleString()}</span>
                 <span>•</span>
                 <span>Completion: {message.usage.completion_tokens.toLocaleString()}</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
+                  onClick={onUndo}
+                >
+                  <Undo2 className="h-4 w-4" />
+                  <span className="sr-only">Undo message</span>
+                </Button>
               </div>
             )}
           </div>
-          {onUndo && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2 h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
-              onClick={onUndo}
-            >
-              <Undo2 className="h-4 w-4" />
-              <span className="sr-only">Undo message</span>
-            </Button>
-          )}
+          {/* {onUndo && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 top-2 h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
+            onClick={onUndo}
+          >
+            <Undo2 className="h-4 w-4" />
+            <span className="sr-only">Undo message</span>
+          </Button>
+          )} */}
         </div>
       </HoverCardTrigger>
       <HoverCardContent className="w-80">
