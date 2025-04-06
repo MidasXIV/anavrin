@@ -14,7 +14,8 @@ import { UserSettingsComponentMapping, PanelKeys } from "../lib/user-settings-co
 
 const SETTING_KEY_VALUES = {
   connectToExchange: "connect-to-exchange",
-  webpush: "webpush"
+  webpush: "webpush",
+  aiAPIKeys: "ai-api-keys"
 } as const;
 
 type SETTING_KEY_VALUES = (typeof SETTING_KEY_VALUES)[keyof typeof SETTING_KEY_VALUES];
@@ -49,6 +50,12 @@ const UserSettings: FC = () => {
         break;
       case SETTING_KEY_VALUES.webpush: // WebPush Menu Item
         setPanel(PanelKeys.WEBPUSH);
+        if (isMobileUI()) {
+          setOpened(true);
+        }
+        break;
+      case SETTING_KEY_VALUES.aiAPIKeys: // AI API Keys Menu Item
+        setPanel(PanelKeys.AI_API_KEYS);
         if (isMobileUI()) {
           setOpened(true);
         }
@@ -94,6 +101,14 @@ const UserSettings: FC = () => {
               >
                 <AccordionTrigger>
                   <h1 className="mb-2 text-2xl">Authorize webpush subscriptions.</h1>
+                </AccordionTrigger>
+              </AccordionItem>
+              <AccordionItem
+                value={SETTING_KEY_VALUES.aiAPIKeys}
+                className="border-b border-t-0 border-gray-400 px-2 font-normal"
+              >
+                <AccordionTrigger>
+                  <h1 className="mb-2 text-2xl">Configure AI API Keys</h1>
                 </AccordionTrigger>
               </AccordionItem>
             </Accordion>
