@@ -14,6 +14,7 @@ import { exampleMessages, SYSTEM_PROMPT } from "./constants";
 import { ChatLayoutProps } from "./types";
 import { ChatContainer } from "../ui/chat-container";
 import { RiskConfig } from "./components/RiskConfigFlyout";
+import { AIModel } from "./components/InfoFlyout";
 
 const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
   const [newMessage, setNewMessage] = useState("");
@@ -25,12 +26,15 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
     preferredAssetTypes: ["Stocks", "Cryptocurrencies"]
   });
   const [systemPrompt, setSystemPrompt] = useState(SYSTEM_PROMPT);
+  // const [selectedModel, setSelectedModel] = useState<AIModel>(AIModel.MISTRAL_7B);
+  const [selectedModel, setSelectedModel] = useState<AIModel>(AIModel.GEMINI_FLASH);
 
-  const { messages, isLoading, messagesEndRef, handleSendMessage, totalTokens } = useChat(
+  const { messages, isLoading, handleSendMessage, totalTokens, messagesEndRef } = useChat({
     portfolioData,
     riskConfig,
-    systemPrompt
-  );
+    systemPrompt,
+    selectedModel
+  });
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,6 +78,8 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
               systemPrompt={systemPrompt}
               portfolioData={JSON.stringify(portfolioData)}
               onPromptChange={setSystemPrompt}
+              selectedModel={selectedModel}
+              onModelChange={setSelectedModel}
             />
           </div>
 

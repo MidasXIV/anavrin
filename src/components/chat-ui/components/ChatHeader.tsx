@@ -8,7 +8,7 @@ import { useState } from "react";
 import { IconDownload, ResetIcon, SettingsIcon, InfoIcon } from "../icons";
 import DoubleClickButton from "../../double-click-button";
 import RiskConfigFlyout, { RiskConfig } from "./RiskConfigFlyout";
-import InfoFlyout from "./InfoFlyout";
+import InfoFlyout, { AIModel } from "./InfoFlyout";
 
 interface ChatHeaderProps {
   onDownload: () => void;
@@ -19,6 +19,8 @@ interface ChatHeaderProps {
   portfolioData: string;
   systemPrompt: string;
   onPromptChange: (prompt: string) => void;
+  selectedModel: AIModel;
+  onModelChange: (model: AIModel) => void;
 }
 
 const ChatHeader = ({
@@ -29,7 +31,9 @@ const ChatHeader = ({
   totalTokens,
   portfolioData,
   systemPrompt,
-  onPromptChange
+  onPromptChange,
+  selectedModel,
+  onModelChange
 }: ChatHeaderProps) => {
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
   const [isInfoFlyoutOpen, setIsInfoFlyoutOpen] = useState(false);
@@ -67,7 +71,7 @@ const ChatHeader = ({
               <span className="sr-only">Open settings</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full z-10" align="end" side="bottom" sideOffset={6}>
+          <DropdownMenuContent className="z-10 w-full" align="end" side="bottom" sideOffset={6}>
             <RiskConfigFlyout
               onClose={() => setIsFlyoutOpen(false)}
               config={riskConfig}
@@ -82,13 +86,15 @@ const ChatHeader = ({
               <span className="sr-only">Open info</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full z-10" align="end" side="bottom" sideOffset={6}>
+          <DropdownMenuContent className="z-10 w-full" align="end" side="bottom" sideOffset={6}>
             <InfoFlyout
               onClose={() => setIsInfoFlyoutOpen(false)}
               riskConfig={riskConfig}
               portfolioData={portfolioData}
               systemPrompt={systemPrompt}
               onPromptChange={onPromptChange}
+              selectedModel={selectedModel}
+              onModelChange={onModelChange}
             />
           </DropdownMenuContent>
         </DropdownMenu>

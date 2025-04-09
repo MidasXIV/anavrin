@@ -23,7 +23,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
   const { isShowing: showNotYetImplementedModal, toggle: toggleShowNotYetImplementedModal } =
     useModal(false);
   return (
-    <nav className={clsx(styles.sidebar, "flex")}>
+    <nav className={clsx(styles.sidebar, "flex font-sans")}>
       {showNotYetImplementedModal ? (
         <NotYetImplementedModal
           isShowing={showNotYetImplementedModal}

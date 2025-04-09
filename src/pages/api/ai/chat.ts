@@ -64,53 +64,73 @@ interface RequestBody {
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID!;
 const apiToken = process.env.CLOUDFLARE_API_TOKEN!;
+const geminiApiKey = process.env.GEMINI_API_KEY!;
+const geminiBaseUrl = "https://generativelanguage.googleapis.com/v1beta/models";
 
-const handlers = {
-  POST: async (req: NextApiRequest, res: NextApiResponse): Promise<Response> => {
-    const { modelId, options } = req.body;
-    const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${modelId}`;
-    const headers = {
-      Authorization: `Bearer ${apiToken}`,
-      "Content-Type": "application/json"
-    };
-    const body = JSON.stringify(options);
-
-    console.log(url, {
-      method: "POST",
-      headers,
-      body
-    });
-    const response = await fetch(url, {
-      method: "POST",
-      headers,
-      body
-    });
-
-    if (!response.ok) {
-      return new Response(`HTTP error! status: ${response.status}`, {
-        status: response.status
-      });
+// Handler for Gemini API
+async function handleGeminiRequest(modelId: string, options: any): Promise<Response> {
+  const url = `${geminiBaseUrl}/${modelId}:streamGenerateContent?key=${geminiApiKey}`;
+  const headers = {
+    "Content-Type": "application/json"
+  };
+  const body = JSON.stringify({
+    contents: options.messages.map((message: any) => ({
+      role: message.role === "system" ? "model" : message.role,
+      parts: [{ text: message.content }]
+    })),
+    generationConfig: {
+      responseMimeType: "text/plain"
     }
+  });
 
-    console.log(JSON.stringify(response));
+  console.log(url, { method: "POST", headers, body });
 
-    const result = await response.json();
-    console.log(result);
-    res.status(200).json(result);
-    return result;
+  const response = await fetch(url, { method: "POST", headers, body });
+  if (!response.ok) {
+    console.error("Gemini API error:", response);
+    throw new Error(`Gemini API error! Status: ${response.status}`);
+  }
 
-    // Create a TransformStream to process the response
-    // const { readable, writable } = new TransformStream();
-    // const writer = writable.getWriter();
+  return response.json();
+}
 
-    // // Start streaming the response
-    // streamResponse(response, writer);
+// Handler for Mistral API
+async function handleMistralRequest(modelId: string, options: any): Promise<Response> {
+  const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${modelId}`;
+  const headers = {
+    Authorization: `Bearer ${apiToken}`,
+    "Content-Type": "application/json"
+  };
+  const body = JSON.stringify(options);
 
-    // return new Response(readable, {
-    //   headers: {
-    //     "content-type": "text/plain",
-    //   },
-    // });
+  console.log(url, { method: "POST", headers, body });
+
+  const response = await fetch(url, { method: "POST", headers, body });
+  if (!response.ok) {
+    throw new Error(`Mistral API error! Status: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// Main handler
+const handlers = {
+  POST: async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+    const { modelId, options } = req.body;
+    console.log(modelId);
+    try {
+      let result;
+      if (modelId.startsWith("gemini")) {
+        result = await handleGeminiRequest(modelId, options);
+      } else {
+        result = await handleMistralRequest(modelId, options);
+      }
+
+      res.status(200).json(result);
+    } catch (error: any) {
+      console.error("Error handling request:", error.message);
+      res.status(500).json({ error: error.message });
+    }
   }
 };
 

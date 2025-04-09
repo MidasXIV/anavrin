@@ -1,3 +1,7 @@
+/* eslint-disable camelcase */
+import { RiskConfig } from "./components/RiskConfigFlyout";
+import { AIModel } from "./components/InfoFlyout";
+
 export interface TokenUsage {
   prompt_tokens: number;
   completion_tokens: number;
@@ -12,12 +16,17 @@ export interface Message {
 }
 
 export interface ExampleMessage {
+  role: "user" | "assistant";
   content: string;
-  onClick: () => void;
+  heading: string;
 }
 
 export interface ChatLayoutProps {
-  portfolioData: any; // TODO: Define proper portfolio type
+  portfolioData: string;
+  riskConfig: RiskConfig;
+  handleConfigChange: (config: RiskConfig) => void;
+  systemPrompt: string;
+  onPromptChange: (prompt: string) => void;
 }
 
 export interface IconProps {

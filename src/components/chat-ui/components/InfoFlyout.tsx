@@ -2,7 +2,70 @@ import { Button } from "components/ui/button";
 import { Label } from "components/ui/label";
 import { Textarea } from "components/ui/textarea";
 import { X } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import { RiskConfig } from "./RiskConfigFlyout";
+
+// Define available AI models
+export enum AIModel {
+  MISTRAL_7B = "@cf/mistral/mistral-7b-instruct-v0.1",
+  MISTRAL_8X7B = "@cf/mistral/mistral-8x7b-instruct-v0.1",
+  LLAMA_2_7B = "@cf/meta/llama-2-7b-chat-int8",
+  LLAMA_2_13B = "@cf/meta/llama-2-13b-chat-int8",
+  GEMINI_PRO_PREVIEW = "gemini-2.5-pro-preview-03-25",
+  GEMINI_FLASH = "gemini-2.0-flash",
+  GPT_3_5 = "gpt-3.5-turbo",
+  GPT_4 = "gpt-4"
+}
+
+// Model-specific information
+export const modelInfo = {
+  [AIModel.MISTRAL_7B]: {
+    name: "Mistral 7B",
+    description: "Fast and efficient 7B parameter model",
+    provider: "Cloudflare"
+  },
+  [AIModel.MISTRAL_8X7B]: {
+    name: "Mistral 8x7B",
+    description: "Powerful 8x7B parameter model with improved reasoning",
+    provider: "Cloudflare"
+  },
+  [AIModel.LLAMA_2_7B]: {
+    name: "Llama 2 7B",
+    description: "Meta's 7B parameter model with good performance",
+    provider: "Cloudflare"
+  },
+  [AIModel.LLAMA_2_13B]: {
+    name: "Llama 2 13B",
+    description: "Meta's larger 13B parameter model with enhanced capabilities",
+    provider: "Cloudflare"
+  },
+  [AIModel.GEMINI_PRO_PREVIEW]: {
+    name: "Gemini Pro",
+    description: "Google's advanced language model",
+    provider: "Google"
+  },
+  [AIModel.GEMINI_FLASH]: {
+    name: "Gemini 2.0 Flash",
+    description: "Google's advanced language model",
+    provider: "Google"
+  },
+  [AIModel.GPT_3_5]: {
+    name: "GPT-3.5 Turbo",
+    description: "OpenAI's efficient and cost-effective model",
+    provider: "OpenAI"
+  },
+  [AIModel.GPT_4]: {
+    name: "GPT-4",
+    description: "OpenAI's most advanced model with superior reasoning",
+    provider: "OpenAI"
+  }
+};
 
 interface InfoFlyoutProps {
   onClose: () => void;
@@ -10,6 +73,8 @@ interface InfoFlyoutProps {
   portfolioData: string;
   systemPrompt: string;
   onPromptChange?: (prompt: string) => void;
+  selectedModel: AIModel;
+  onModelChange?: (model: AIModel) => void;
 }
 
 const InfoFlyout = ({
@@ -17,7 +82,9 @@ const InfoFlyout = ({
   riskConfig,
   portfolioData,
   systemPrompt,
-  onPromptChange
+  onPromptChange,
+  selectedModel,
+  onModelChange
 }: InfoFlyoutProps) => (
   <div className="w-96 rounded-lg border border-border bg-card p-2 shadow-lg">
     <div className="flex items-center justify-between px-4">
@@ -29,6 +96,23 @@ const InfoFlyout = ({
     </div>
 
     <div className="mt-4 max-h-[24rem] space-y-4 overflow-auto p-4">
+      <div className="space-y-2">
+        <Label>AI Model</Label>
+        <Select value={selectedModel} onValueChange={value => onModelChange?.(value as AIModel)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select AI Model" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.values(AIModel).map(model => (
+              <SelectItem key={model} value={model}>
+                {modelInfo[model].name} ({modelInfo[model].provider})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-xs text-muted-foreground">{modelInfo[selectedModel].description}</p>
+      </div>
+
       <div className="space-y-2">
         <Label>System Prompt</Label>
         <Textarea

@@ -3,6 +3,7 @@ import api from "services/create-service";
 import { Message } from "../types";
 import { SYSTEM_PROMPT } from "../constants";
 import { RiskConfig } from "../components/RiskConfigFlyout";
+import { AIModel } from "../components/InfoFlyout";
 
 /**
  * Formats portfolio data into a human-readable string.
@@ -54,7 +55,17 @@ const replacer = (key: string, value: any) => {
   return value;
 };
 
-const useChat = (portfolioData: any[], riskConfig: RiskConfig, systemPrompt: string) => {
+const useChat = ({
+  portfolioData,
+  riskConfig,
+  systemPrompt,
+  selectedModel
+}: {
+  portfolioData: any[];
+  riskConfig: RiskConfig;
+  systemPrompt: string;
+  selectedModel: AIModel;
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalTokens, setTotalTokens] = useState(0);
@@ -77,7 +88,8 @@ const useChat = (portfolioData: any[], riskConfig: RiskConfig, systemPrompt: str
 
     try {
       const postRequestData = {
-        modelId: "@cf/mistral/mistral-7b-instruct-v0.1",
+        // modelId: "@cf/mistral/mistral-7b-instruct-v0.1",
+        modelId: selectedModel,
         stream: false,
         options: {
           max_tokens: 2000,
@@ -97,36 +109,93 @@ const useChat = (portfolioData: any[], riskConfig: RiskConfig, systemPrompt: str
       console.log(postRequestData);
       const response = await api.aiChat(postRequestData);
 
-      if (response.status === 200 && response.data.success) {
-        const aiResponse = response.data.result.response;
-        const assistantMessage: Message = {
-          content: aiResponse,
-          role: "assistant",
-          usage: response.data.result.usage,
-          timestamp: new Date() // Use Date object directly instead of string
-        };
-        setMessages(currentMessages => [...currentMessages, assistantMessage]);
-        setTotalTokens(prev => prev + (response.data.result.usage?.total_tokens || 0));
-      } else if (response.data.errors && response.data.errors.length > 0) {
-        console.error("API Errors:", response.data.errors);
-        setMessages(currentMessages => [
-          ...currentMessages,
-          {
-            content: "Sorry, something went wrong with the analysis. Please try again later.",
-            role: "error",
-            timestamp: new Date() // Fix timestamp type mismatch by using Date object directly
-          }
-        ]);
-      } else {
-        console.warn("Unexpected response:", response);
-        setMessages(currentMessages => [
-          ...currentMessages,
-          {
-            content: "An unexpected error occurred. Please try again later.",
-            role: "error",
-            timestamp: new Date() // Fix timestamp type mismatch by using Date object directly
-          }
-        ]);
+      const handleMistralResponse = async response => {
+        if (response.status === 200 && response.data.success) {
+          const aiResponse = response.data.result.response;
+          const assistantMessage: Message = {
+            content: aiResponse,
+            role: "assistant",
+            usage: response.data.result.usage,
+            timestamp: new Date() // Use Date object directly instead of string
+          };
+          setMessages(currentMessages => [...currentMessages, assistantMessage]);
+          setTotalTokens(prev => prev + (response.data.result.usage?.total_tokens || 0));
+        } else if (response.data.errors && response.data.errors.length > 0) {
+          console.error("API Errors:", response.data.errors);
+          throw new Error(`API Errors: ${response.data.errors.join(", ")}`);
+        }
+      };
+
+      const handleGeminiResponse = async (response: any) => {
+        if (response.status === 200 && Array.isArray(response.data)) {
+          // Extract and concatenate all text parts from the response
+          const concatenatedText = response.data
+            .flatMap((item: any) =>
+              item.candidates.flatMap((candidate: any) =>
+                candidate.content.parts.map((part: any) => part.text)
+              )
+            )
+            .join("");
+
+          const lastIndex = response.data.length - 1;
+          const lastResponse = response.data[lastIndex];
+          const usage = {
+            prompt_tokens: lastResponse.usageMetadata?.promptTokenCount || 0,
+            completion_tokens: lastResponse.usageMetadata?.candidatesTokenCount || 0,
+            total_tokens: 0 // Initialize total_tokens
+          };
+          usage.total_tokens = usage.prompt_tokens + usage.completion_tokens;
+
+          // // Extract token usage metadata
+          // const totalTokens = response.data.reduce(
+          //   (sum: number, item: any) => sum + (item.usageMetadata?.totalTokenCount || 0),
+          //   0
+          // );
+
+          // Create the assistant message
+          const assistantMessage: Message = {
+            content: concatenatedText,
+            role: "assistant",
+            usage,
+            timestamp: new Date() // Use Date object directly
+          };
+
+          // Update the messages state
+          setMessages(currentMessages => [...currentMessages, assistantMessage]);
+          setTotalTokens(prev => prev + usage.total_tokens);
+        } else {
+          console.error("Unexpected Gemini API response:", response);
+          throw new Error("Unexpected Gemini API response format.");
+        }
+      };
+
+      try {
+        if (selectedModel.startsWith("gemini")) {
+          await handleGeminiResponse(response);
+        } else {
+          await handleMistralResponse(response);
+        }
+      } catch (err) {
+        if (err.message.includes("API Errors")) {
+          setMessages(currentMessages => [
+            ...currentMessages,
+            {
+              content: "Sorry, something went wrong with the analysis. Please try again later.",
+              role: "error",
+              timestamp: new Date() // Fix timestamp type mismatch by using Date object directly
+            }
+          ]);
+        } else {
+          console.warn("Unexpected response:", response);
+          setMessages(currentMessages => [
+            ...currentMessages,
+            {
+              content: "An unexpected error occurred. Please try again later.",
+              role: "error",
+              timestamp: new Date() // Fix timestamp type mismatch by using Date object directly
+            }
+          ]);
+        }
       }
     } catch (err) {
       console.error("Error:", err);
