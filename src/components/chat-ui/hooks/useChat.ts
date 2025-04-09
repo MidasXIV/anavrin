@@ -33,6 +33,58 @@ function formatPortfolioToHumanReadable(portfolio: any[]): string {
 }
 
 /**
+ * Formats stock portfolio data into a human-readable string.
+ * @param portfolio - Array of stock portfolio objects.
+ * @returns A formatted string describing the stock portfolio.
+ */
+function formatStockPortfolioToHumanReadable(portfolio: any[]): string {
+  if (!Array.isArray(portfolio) || portfolio.length === 0) {
+    return "No stock portfolio data available.";
+  }
+
+  return portfolio
+    .map(item => {
+      const {
+        title,
+        symbol,
+        shares,
+        avgPrice,
+        marketPrice,
+        costBasis,
+        marketValue,
+        earningPerShare,
+        pricePerEarning,
+        dividendAmount,
+        dividendYield,
+        yieldOnCost,
+        income,
+        beta,
+        exchange,
+        marketCap
+      } = item;
+
+      return `
+- **${title} (${symbol})**:
+  - Shares: ${shares}
+  - Average Purchase Price: $${parseFloat(avgPrice).toFixed(2)}
+  - Current Market Price: $${marketPrice.toFixed(2)}
+  - Cost Basis: $${costBasis.toFixed(2)}
+  - Market Value: $${marketValue.toFixed(2)}
+  - Earnings Per Share (EPS): $${earningPerShare.toFixed(2)}
+  - Price-to-Earnings Ratio (P/E): ${pricePerEarning.toFixed(2)}
+  - Dividend Amount: $${parseFloat(dividendAmount).toFixed(2)}
+  - Dividend Yield: ${dividendYield}
+  - Yield on Cost: ${yieldOnCost.toFixed(2)}%
+  - Annual Income: $${income.toFixed(2)}
+  - Beta: ${beta.toFixed(2)}
+  - Exchange: ${exchange}
+  - Market Cap: ${marketCap}
+      `.trim();
+    })
+    .join("\n\n");
+}
+
+/**
  * Formats risk configuration into a human-readable string.
  * @param config - Risk configuration object.
  * @returns A formatted string describing the risk preferences.
@@ -44,6 +96,45 @@ function formatRiskConfigToHumanReadable(config: RiskConfig): string {
 - **Investment Goals**: ${config.investmentGoals.join(", ")}
 - **Preferred Asset Types**: ${config.preferredAssetTypes.join(", ")}
   `.trim();
+}
+
+/**
+ * Determines if a portfolio is of type "crypto" or "stocks".
+ * @param portfolio - Array of portfolio objects.
+ * @returns "crypto" if the portfolio is a crypto portfolio, "stocks" if it's a stock portfolio.
+ */
+function getPortfolioType(portfolio: any[]): "crypto" | "stocks" | "unknown" {
+  if (!Array.isArray(portfolio) || portfolio.length === 0) {
+    return "unknown";
+  }
+
+  const firstItem = portfolio[0];
+  if ("fiat" in firstItem && "holdings" in firstItem && "marketPrice" in firstItem) {
+    return "crypto";
+  }
+  if ("shares" in firstItem && "avgPrice" in firstItem && "earningPerShare" in firstItem) {
+    return "stocks";
+  }
+
+  return "unknown";
+}
+
+/**
+ * Formats a portfolio based on its type (crypto or stocks).
+ * @param portfolio - Array of portfolio objects.
+ * @returns A formatted string describing the portfolio.
+ */
+function formatPortfolio(portfolio: any[]): string {
+  const portfolioType = getPortfolioType(portfolio);
+
+  switch (portfolioType) {
+    case "crypto":
+      return formatPortfolioToHumanReadable(portfolio);
+    case "stocks":
+      return formatStockPortfolioToHumanReadable(portfolio);
+    default:
+      return "Unknown portfolio type or no data available.";
+  }
 }
 
 const replacer = (key: string, value: any) => {
@@ -88,7 +179,6 @@ const useChat = ({
 
     try {
       const postRequestData = {
-        // modelId: "@cf/mistral/mistral-7b-instruct-v0.1",
         modelId: selectedModel,
         stream: false,
         options: {
@@ -96,7 +186,7 @@ const useChat = ({
           messages: [
             {
               role: "system",
-              content: `${systemPrompt}\nContext, portfolio data: ${formatPortfolioToHumanReadable(
+              content: `${systemPrompt}\nContext, portfolio data: ${formatPortfolio(
                 JSON.parse(JSON.stringify(portfolioData, replacer))
               )}\n\nUser risk preferences: ${formatRiskConfigToHumanReadable(riskConfig)}`
             }
