@@ -19,6 +19,12 @@ const handlers = {
         });
       }
 
+      // Default query options
+      const defaultQueryOptions = {
+        period1: "2025-01-01",
+        interval: "1d"
+      };
+
       const queryOptions: {
         period1: string;
         period2?: string;
@@ -36,7 +42,27 @@ const handlers = {
           | "5d"
           | "1wk"
           | "3mo";
-      } = { period1: "2025-01-01" /* ... */, interval: "1d" };
+      } = {
+        ...defaultQueryOptions,
+        ...(requestQueryOptions as unknown as {
+          period1: string;
+          period2?: string;
+          interval:
+            | "1mo"
+            | "1m"
+            | "2m"
+            | "5m"
+            | "15m"
+            | "30m"
+            | "60m"
+            | "90m"
+            | "1h"
+            | "1d"
+            | "5d"
+            | "1wk"
+            | "3mo";
+        })
+      };
 
       const result = await yahooFinance.chart(ticker, queryOptions);
 

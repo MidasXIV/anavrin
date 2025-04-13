@@ -17,10 +17,10 @@ function formatPortfolioToHumanReadable(portfolio: any[]): string {
 
   return portfolio
     .map(item => {
-      const { title, fiat, holdings, marketPrice, marketValue, change, pnl } = item;
+      const { token, title, fiat, holdings, marketPrice, marketValue, change, pnl } = item;
 
       return `
-- **${title}**:
+- **${title} (${token})**:
   - Fiat Investment: $${fiat.toFixed(2)}
   - Holdings: ${holdings.toFixed(4)} units
   - Current Market Price: $${marketPrice.toFixed(2)} per unit
