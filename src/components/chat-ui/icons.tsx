@@ -83,4 +83,4 @@ export const InfoIcon = ({ className, ...props }: IconProps) => (
     <path d="M12 16v-4" />
     <path d="M12 8h.01" />
   </svg>
-); 
+);

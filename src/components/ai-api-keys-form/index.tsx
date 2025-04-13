@@ -72,15 +72,15 @@ const providerInfo = {
 // Create a dynamic schema based on the selected provider
 const createFormSchema = (provider: AIProvider) => {
   const schema: Record<string, z.ZodString> = {};
-  
+
   // Add the API key field for the selected provider
   schema[providerInfo[provider].apiKeyFieldName] = z.string().min(1, "API Key is required");
-  
+
   // For custom provider, add a name field
   if (provider === AIProvider.CUSTOM) {
     schema.customAPIName = z.string().min(1, "API Name is required");
   }
-  
+
   return z.object(schema);
 };
 
@@ -89,7 +89,7 @@ type FormValues = Record<string, string>;
 const AIAPIKeysForm: FC<unknown> = () => {
   const [selectedProvider, setSelectedProvider] = useState<AIProvider>(AIProvider.GEMINI);
   const [formSchema, setFormSchema] = useState(createFormSchema(selectedProvider));
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -102,7 +102,7 @@ const AIAPIKeysForm: FC<unknown> = () => {
     setSelectedProvider(provider);
     const newSchema = createFormSchema(provider);
     setFormSchema(newSchema);
-    
+
     // Reset form with new default values
     form.reset({
       [providerInfo[provider].apiKeyFieldName]: "",
@@ -117,7 +117,7 @@ const AIAPIKeysForm: FC<unknown> = () => {
     console.log(`Encrypted API Key: ${encryptedAPIKey}`);
     const decryptedAPIKey = decrypt(encryptedAPIKey);
     console.log(`Decrypted API Key: ${decryptedAPIKey}`);
-    
+
     // Here you would save the encrypted API key to your database
     // You might want to store the provider type along with the key
   };
@@ -140,17 +140,17 @@ const AIAPIKeysForm: FC<unknown> = () => {
             Your API keys will be encrypted before storage. Never share your API keys with anyone.
           </AlertDescription>
         </Alert>
-        
+
         <div className="mb-6">
           <Select
             value={selectedProvider}
-            onValueChange={(value) => handleProviderChange(value as AIProvider)}
+            onValueChange={value => handleProviderChange(value as AIProvider)}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select AI Provider" />
             </SelectTrigger>
             <SelectContent>
-              {Object.values(AIProvider).map((provider) => (
+              {Object.values(AIProvider).map(provider => (
                 <SelectItem key={provider} value={provider}>
                   {providerInfo[provider].name}
                 </SelectItem>
@@ -158,7 +158,7 @@ const AIAPIKeysForm: FC<unknown> = () => {
             </SelectContent>
           </Select>
         </div>
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             {selectedProvider === AIProvider.CUSTOM && (
@@ -171,15 +171,13 @@ const AIAPIKeysForm: FC<unknown> = () => {
                     <FormControl>
                       <Input placeholder="Enter a name for this API" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      A friendly name to identify this API service
-                    </FormDescription>
+                    <FormDescription>A friendly name to identify this API service</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             )}
-            
+
             <FormField
               control={form.control}
               name={currentProvider.apiKeyFieldName}
@@ -187,10 +185,10 @@ const AIAPIKeysForm: FC<unknown> = () => {
                 <FormItem>
                   <FormLabel>{currentProvider.name} API Key</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="password" 
-                      placeholder={currentProvider.apiKeyPlaceholder} 
-                      {...field} 
+                    <Input
+                      type="password"
+                      placeholder={currentProvider.apiKeyPlaceholder}
+                      {...field}
                     />
                   </FormControl>
                   <FormDescription>
@@ -198,9 +196,9 @@ const AIAPIKeysForm: FC<unknown> = () => {
                     {currentProvider.apiKeyUrl && (
                       <>
                         {" "}
-                        <a 
-                          href={currentProvider.apiKeyUrl} 
-                          target="_blank" 
+                        <a
+                          href={currentProvider.apiKeyUrl}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-500 hover:underline"
                         >
@@ -222,4 +220,4 @@ const AIAPIKeysForm: FC<unknown> = () => {
   );
 };
 
-export default AIAPIKeysForm; 
+export default AIAPIKeysForm;

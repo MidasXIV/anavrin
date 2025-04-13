@@ -17,16 +17,17 @@ export interface Message {
 
 export interface ExampleMessage {
   role: "user" | "assistant";
-  content: string;
+  message: string;
+  subheading: string;
   heading: string;
 }
 
 export interface ChatLayoutProps {
-  portfolioData: string;
-  riskConfig: RiskConfig;
-  handleConfigChange: (config: RiskConfig) => void;
-  systemPrompt: string;
-  onPromptChange: (prompt: string) => void;
+  portfolioData: any[];
+  // riskConfig: RiskConfig;
+  // handleConfigChange: (config: RiskConfig) => void;
+  // systemPrompt: string;
+  // onPromptChange: (prompt: string) => void;
 }
 
 export interface IconProps {

@@ -108,7 +108,7 @@ const ChatLayout = ({ portfolioData }: ChatLayoutProps) => {
                 <ChatMessage
                   key={`message-${message.role}-${message.content.substring(0, 10)}`}
                   message={message}
-                  index={messages.indexOf(message)}
+                  // index={messages.indexOf(message)}
                 />
               ))}
               {isLoading ? (

@@ -2,21 +2,25 @@ import { ExampleMessage } from "./types";
 
 export const exampleMessages: ExampleMessage[] = [
   {
+    role: "assistant",
     heading: "What are the",
     subheading: "trending memecoins today?",
     message: `What are the trending memecoins today?`
   },
   {
+    role: "assistant",
     heading: "What is the price of",
     subheading: "$DOGE right now?",
     message: "What is the price of $DOGE right now?"
   },
   {
+    role: "assistant",
     heading: "I would like to buy",
     subheading: "42 $DOGE",
     message: `I would like to buy 42 $DOGE`
   },
   {
+    role: "assistant",
     heading: "What are some",
     subheading: `recent events about $DOGE?`,
     message: `What are some recent events about $DOGE?`
@@ -44,4 +48,4 @@ Portfolio JSON property labels:
 - \`marketValue\`: The total current value of your holdings for this asset (calculated as \`holdings × marketPrice\`).
 - \`change\`: Percentage change in the asset's price (usually over the last 24 hours).
 - \`categories\`: Asset categorization (e.g., sectors, use cases, or types—can be empty).
-`; 
+`;

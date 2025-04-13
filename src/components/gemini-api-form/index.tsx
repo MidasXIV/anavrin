@@ -54,10 +54,11 @@ const GeminiAPIForm: FC<unknown> = () => {
           <InfoIcon className="h-4 w-4" />
           <AlertTitle>Important</AlertTitle>
           <AlertDescription>
-            Your API key will be encrypted before storage. You can obtain a Gemini API key from the Google AI Studio.
+            Your API key will be encrypted before storage. You can obtain a Gemini API key from the
+            Google AI Studio.
           </AlertDescription>
         </Alert>
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <FormField
@@ -85,4 +86,4 @@ const GeminiAPIForm: FC<unknown> = () => {
   );
 };
 
-export default GeminiAPIForm; 
+export default GeminiAPIForm;
