@@ -23,7 +23,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
   const { isShowing: showNotYetImplementedModal, toggle: toggleShowNotYetImplementedModal } =
     useModal(false);
   return (
-    <nav className={clsx(styles.sidebar, "flex")}>
+    <nav className={clsx(styles.sidebar, "flex font-sans")}>
       {showNotYetImplementedModal ? (
         <NotYetImplementedModal
           isShowing={showNotYetImplementedModal}
@@ -119,27 +119,27 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
             <li
               className={clsx(styles.icon, { [styles.active]: select === "simulator" })}
               // TODO: remove modal when implemented, not intended for MVP
-              onClick={toggleShowNotYetImplementedModal}
+              // onClick={toggleShowNotYetImplementedModal}
             >
               <DropdownMenu>
-                {/* <DropdownMenuTrigger> */}
-                <svg
-                  className="bi bi-collection icon"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                {/* </DropdownMenuTrigger> */}
+                <DropdownMenuTrigger>
+                  <svg
+                    className="bi bi-collection icon"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M14.5 13.5h-13A.5.5 0 011 13V6a.5.5 0 01.5-.5h13a.5.5 0 01.5.5v7a.5.5 0 01-.5.5zm-13 1A1.5 1.5 0 010 13V6a1.5 1.5 0 011.5-1.5h13A1.5 1.5 0 0116 6v7a1.5 1.5 0 01-1.5 1.5h-13zM2 3a.5.5 0 00.5.5h11a.5.5 0 000-1h-11A.5.5 0 002 3zm2-2a.5.5 0 00.5.5h7a.5.5 0 000-1h-7A.5.5 0 004 1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-full" align="center" side="right" sideOffset={25}>
-                  <DropdownMenuItem asChild>
+                  {/* <DropdownMenuItem asChild>
                     <Link
                       className="w-full hover:cursor-pointer"
                       href="/simulator/dubai-financial-markets"
@@ -153,7 +153,7 @@ const Sidebar: FC<SidebarProps> = ({ select }) => {
                       Crypto
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator /> */}
                   <DropdownMenuItem>
                     <Link className="w-full hover:cursor-pointer" href="/simulator/backtest">
                       Backtest

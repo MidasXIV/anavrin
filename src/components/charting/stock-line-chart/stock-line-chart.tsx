@@ -15,15 +15,13 @@ export const StockLineChart = props => {
     } = {}
   } = props;
 
-  const chartData = data.map(item => {
-    return { color: generateRandomColor(), data: item };
-  });
+  const chartData = data.map(item => ({ color: generateRandomColor(), data: item }));
   const chartContainerRef = useRef();
 
   useEffect(() => {
     const width = (chartContainerRef?.current as any)?.clientWidth;
     const handleResize = () => {
-      chart.applyOptions({ width: width });
+      chart.applyOptions({ width });
     };
 
     const chart = createChart(chartContainerRef?.current, {
@@ -31,7 +29,7 @@ export const StockLineChart = props => {
         background: { type: ColorType.Solid, color: backgroundColor },
         textColor
       },
-      width: width,
+      width,
       height: 300
     });
     chart.timeScale().fitContent();
@@ -61,7 +59,7 @@ export const StockLineChart = props => {
             <span
               className="me-1.5 flex h-2.5 w-2.5 flex-shrink-0 rounded-full"
               style={{ backgroundColor: item.color }}
-            ></span>
+            />
             {item.data?.[0].ticker}
           </span>
         ))}

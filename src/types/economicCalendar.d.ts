@@ -32,3 +32,10 @@ type EcnomicEventsResponse = Either<UnableToFetchData | UnableToParseData, Ecnom
 interface IFinvizEconomicCalendarModel {
   getEcnomicEvents(): Promise<EcnomicEventsResponse>;
 }
+
+enum CalendarMode {
+  OneMonth = "1-month",
+  SixMonths = "6-months",
+  EntireYear = "entire-year",
+  YearToMonth = "year-to-month"
+}

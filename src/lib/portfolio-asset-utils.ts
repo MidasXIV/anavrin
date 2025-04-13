@@ -1,4 +1,5 @@
 import { formatNumber } from "@/utils/helper";
+import api from "services/create-service";
 import { fetchCoinInfo } from "../utils/cryptocurrencyService";
 import getStockInformation from "../utils/getStockInformation";
 import isEmptyDataItem from "../utils/type-gaurds";
@@ -6,7 +7,7 @@ import { AssetType } from "./portfolio-utils";
 import rateLimit from "./rate-limiting";
 import MockCryptoPortfolio from "../tests/mocks/mock-crypto-portfolio-1";
 import MockDividendPortfolio from "../tests/mocks/mock-dividend-portfolio-1";
-import api from "services/create-service";
+import findCoinGeckoAssetByName from "./crypto-icons-fuzzy-search";
 
 /**
  * Converts a CoinGecko API coin object to a simplified DTO understood by CryptoPortfolioSchema
@@ -25,9 +26,54 @@ function convertCoinGeckoApiCoinObjectToDTO(obj: any): CryptoAssetDTO {
     marketValue: obj?.market_data?.current_price.usd * obj.holdings, // marketPrice * holdings
     fiat: obj?.fiat,
     change: obj?.market_data?.price_change_percentage_24h,
-    iconSrc: obj?.image?.thumb,
+    iconSrc: "",
+    pnl: 0,
     categories: obj.categories,
     links: obj.links
+  };
+}
+
+export function convertYahooFinanceCoinInfoObjectToDTO(obj: any): CryptoAssetDTO {
+  const marketValue = obj?.meta?.regularMarketPrice * obj.holdings; // marketPrice * holdings
+  const PnL = parseFloat((marketValue - obj?.fiat).toFixed(2));
+  const PnLChange = parseFloat((((marketValue - obj?.fiat) / obj?.fiat) * 100).toFixed(3));
+
+  return {
+    token: obj?.token,
+    fiat: obj?.fiat,
+    holdings: obj?.holdings,
+    quotes: obj.quotes,
+    meta: obj.meta,
+
+    pnl: PnLChange,
+    title: obj?.meta?.shortName || "",
+    marketPrice: obj?.meta?.regularMarketPrice,
+    marketValue,
+    change: parseFloat(
+      (
+        ((obj?.meta?.regularMarketPrice - obj?.meta?.chartPreviousClose) /
+          obj?.meta?.regularMarketPrice) *
+        100
+      ).toFixed(2)
+    ),
+    iconSrc: obj?.coinGeckoAsset?.images?.small,
+    categories: [],
+    links: {
+      homepage: ["", "", ""],
+      blockchain_site: ["", "", "", "", "", "", "", "", "", ""],
+      official_forum_url: ["", "", ""],
+      chat_url: ["", "", ""],
+      announcement_url: ["", ""],
+      twitter_screen_name: "",
+      facebook_username: "",
+      bitcointalk_thread_identifier: null,
+      telegram_channel_identifier: "",
+      subreddit_url: "",
+      repos_url: {
+        github: [],
+        bitbucket: []
+      }
+    }
   };
 }
 
@@ -73,39 +119,66 @@ const hydrateCryptoPortfolioItemsV2 = async (portfolio: Portfolio): Promise<Cryp
     throw new Error("InvalidPortfolioItem");
   }
 
-  const { items } = portfolio as { items : CryptoPortfolioItem[] };
-  const queryOptions: YahooFinanceQueryOptions  = { period1: "2024-01-01", interval: "1d", return: "object" };
+  const { items } = portfolio as { items: CryptoPortfolioItem[] };
+  const queryOptions: YahooFinanceQueryOptions = {
+    period1: "2025-01-01",
+    interval: "1d",
+    return: "object"
+  };
 
-  const portfolioConfigChartPromises = items.map((item: CryptoPortfolioItem) =>
-    api.yahooFinanceQuery({ ticker: item.token, queryOptions })
-  );
+  // const portfolioConfigChartPromises = items.map((item: CryptoPortfolioItem) =>
+  //   api.yahooFinanceQuery({ ticker: item.token, queryOptions })
+  // );
 
-  const datav2 = await Promise.allSettled(portfolioConfigChartPromises);
+  // const datav2 = await Promise.allSettled(portfolioConfigChartPromises);
+
+  const data = (
+    await Promise.allSettled(
+      items.map(
+        rateLimit(async (item: CryptoPortfolioItem, index) => {
+          const result = await fetchCoinInfo(item.token);
+          const { meta, quotes, coinGeckoAsset } = result;
+          const asset = { ...items[index], meta, quotes, coinGeckoAsset };
+          const cryptoAssetDTO = convertYahooFinanceCoinInfoObjectToDTO(asset);
+          return cryptoAssetDTO;
+        }, 5)
+      )
+    )
+  ).map((result, index) => {
+    if (result.status === "fulfilled") {
+      return result.value;
+    }
+    console.error(
+      `Failed to fetch data for ${(items[index] as CryptoPortfolioItem).token}:`,
+      result.reason
+    );
+    return { ...items[index], meta: null, quotes: null };
+  });
 
   // Process settled promises and combine data
-  const combinedData = datav2.map((result, index) => {
-    if (result.status === "fulfilled") {
-      const {
-        data: { meta, quotes }
-      } = result.value;
-      return { ...items[index], meta, quotes };
-    } else {
-      console.error(
-        `Failed to fetch data for ${(items[index] as CryptoPortfolioItem).token}:`,
-        result.reason
-      );
-      return { ...items[index], meta: null, quotes: null };
-    }
-  });
+  // const combinedData = datav2.map((result, index) => {
+  //   if (result.status === "fulfilled") {
+  //     const {
+  //       data: { meta, quotes }
+  //     } = result.value;
+  //     const asset = { ...items[index], meta, quotes };
+  //     const cryptoAssetDTO = convertYahooFinanceCoinInfoObjectToDTO(asset);
+  //     return cryptoAssetDTO;
+  //   }
+  //   console.error(
+  //     `Failed to fetch data for ${(items[index] as CryptoPortfolioItem).token}:`,
+  //     result.reason
+  //   );
+  //   return { ...items[index], meta: null, quotes: null };
+  // });
 
   // console.log(combinedData);
 
   // const data = MockCryptoPortfolio as any as CryptoAssetDTO[];
   // return data;
 
-  return combinedData;
+  return data;
 };
-
 
 const calculateCrptoPortfolioValue = (portfolioItems: CryptoAssetDTOV2[]): CrptoPortfolioValue => {
   const meta = {
@@ -116,11 +189,13 @@ const calculateCrptoPortfolioValue = (portfolioItems: CryptoAssetDTOV2[]): Crpto
     }))
   };
 
-  const quotesMap: { [date: string]: { totalValue: number; breakdown: { item: string; value: number }[] } } = {};
+  const quotesMap: {
+    [date: string]: { totalValue: number; breakdown: { item: string; value: number }[] };
+  } = {};
 
   portfolioItems.forEach(item => {
     item.quotes.forEach(quote => {
-      const date = quote.date.split('T')[0]; // Extract the date part, ignoring the time
+      const date = quote.date.split("T")[0]; // Extract the date part, ignoring the time
       const value = quote.close * item.holdings;
       if (quotesMap[date]) {
         quotesMap[date].totalValue += value;

@@ -143,26 +143,25 @@ export function convertToCombinedFormat(
 export function convertToCombinedFormat2(
   investments: InvestmentData[][],
   benchmark: InvestmentData[]
-): Array<{time: string, value:number, ticker: string}> {
-  
+): Array<{ time: string; value: number; ticker: string }> {
   const combinedResult = [];
 
-  investments.forEach((investment,index) => {
-    combinedResult.push(investment.map(a => {
-      return {
+  investments.forEach((investment, index) => {
+    combinedResult.push(
+      investment.map(a => ({
         ticker: `portfolio${index + 1}`,
         time: `${a.year}-01-01`,
         value: a.investment
-      };
-    }));
-  })
-  combinedResult.push(benchmark.map(a => {
-    return {
+      }))
+    );
+  });
+  combinedResult.push(
+    benchmark.map(a => ({
       ticker: "benchmark",
       time: `${a.year}-01-01`,
       value: a.investment
-    };
-  }));
+    }))
+  );
   return combinedResult;
 }
 

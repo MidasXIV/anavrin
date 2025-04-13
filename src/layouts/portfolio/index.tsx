@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import PortfolioLayoutSecondaryPanel from "@/components/portfolio-secondary-panel/portfolio-secondary-panel";
 import SecondaryPanel from "@/components/secondary-panel";
 import { isMobileUI } from "lib/viewport";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { createUrl } from "@/utils/helper";
 import useModal from "../../hooks/useModal";
 import PortfolioOptions from "../../components/portfolio-options";
 import PortfolioTable from "../../components/portfolio-table";
@@ -23,6 +26,7 @@ import {
   convertCryptoPortfolioItemToPersistence,
   convertDividendPortfolioItemToPersistence,
   hydrateCryptoPortfolioItems,
+  hydrateCryptoPortfolioItemsV2,
   hydrateDividendPortfolioItems
 } from "../../lib/portfolio-asset-utils";
 import EditAssetModal from "../../components/edit-asset-modal";
@@ -37,7 +41,7 @@ const portfolioHydrationFnMapper = new Map<
   AssetType,
   (portfolio: Portfolio) => Promise<unknown[]>
 >();
-portfolioHydrationFnMapper.set(AssetType.CRYPTO, hydrateCryptoPortfolioItems);
+portfolioHydrationFnMapper.set(AssetType.CRYPTO, hydrateCryptoPortfolioItemsV2);
 portfolioHydrationFnMapper.set(AssetType.STOCK, hydrateDividendPortfolioItems);
 
 const portfolioSaveFnMapper = new Map<AssetType, (portfolioItem) => Promise<PortfolioItem[]>>();
@@ -50,6 +54,22 @@ portfolioSaveFnMapper.set(AssetType.STOCK, data =>
 );
 
 const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const setIsPanelOpen = isPanelOpen => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (isPanelOpen) {
+      newParams.set("panelOpen", isPanelOpen);
+    } else {
+      newParams.delete("panelOpen");
+    }
+
+    router.push(createUrl("portfolio", newParams));
+  };
+
+  const isPanelOpen = Boolean(searchParams.get("panelOpen")) || false;
+
   // Extract the portfolioType and items.
   const { assetType: portfolioType } = portfolio;
   const [portfolioDomainObject, setPortfolioDomainObject] = useState<Portfolio>({
@@ -58,7 +78,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
   });
   const { isShowing, toggle } = useModal(false);
   const { isShowing: isEditModalShowing, toggle: toggleEditModal } = useModal(false);
-  const [hideSecondaryPanel, setHideSecondaryPanel] = useState(true);
+  const [hideSecondaryPanel, setHideSecondaryPanel] = useState(!isPanelOpen);
   const [opened, setOpened] = useState(false);
 
   const [portfolioData, setPortfolioData] = useState([]);
@@ -214,6 +234,12 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
     setPortfolioDomainObject(portfolio);
   }, [portfolio]);
 
+  useEffect(() => {
+    console.log("useEffect Opened changed");
+    setIsPanelOpen(!hideSecondaryPanel);
+    return () => {};
+  }, [hideSecondaryPanel]);
+
   console.log("layouts/Portfolio -> render");
   return (
     <>
@@ -328,6 +354,7 @@ const PortfolioLayout: FC<PortfolioLayoutProps> = ({ portfolio }) => {
               assetsComparisionGrowthChartData={assetsComparisionGrowthChartData}
               dividendDistributionRingChartData={dividendDistributionRingChartData}
               dividendYieldOnCostData={dividendYieldOnCostData}
+              portfolioData={portfolioData}
             />
           </SecondaryPanel>
           {/* <Drawer.Portal>

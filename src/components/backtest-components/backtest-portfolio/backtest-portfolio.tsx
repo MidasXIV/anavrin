@@ -37,7 +37,9 @@ const BacktestPortfolio = () => {
           numberOfPortfolios={numberOfPortfolios}
         />
       ))}
-      <Button type="button" onClick={addRow}>Add Row</Button>
+      <Button type="button" onClick={addRow}>
+        Add Row
+      </Button>
     </div>
   );
 };

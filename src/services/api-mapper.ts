@@ -47,6 +47,14 @@ type yahooFinanceQueryRequest = {
   };
 };
 
+type aiChatRequest = {
+  modelId: string;
+  options: {
+    stream?: boolean;
+    messages: Array<any>;
+  };
+};
+
 type postBacktestAnalyzeRequest = {
   benchmark: string;
   initialInvestment: number;
@@ -67,6 +75,7 @@ export interface ApiRequests {
   triggerPushSubscriptionRequest: triggerPushSubscriptionRequest;
   postBacktestAnalyzeRequest: postBacktestAnalyzeRequest;
   yahooFinanceQueryRequest: yahooFinanceQueryRequest;
+  aiChatRequest: aiChatRequest;
 }
 
 // type postSubscribeUserRequest2 = Pick< ApiRequests, "postSubscribeUserRequest" >["postSubscribeUserRequest"];
@@ -137,6 +146,13 @@ export const apiMapper = {
     url: "/api/services/yahoo-finance-query",
     method: "post",
     requestType: "yahooFinanceQueryRequest",
+    doNotLimit: true
+  },
+  // ai/chat.ts
+  aiChat: {
+    url: "/api/ai/chat",
+    method: "post",
+    requestType: "aiChatRequest",
     doNotLimit: true
   }
 } as const;

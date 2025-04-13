@@ -22,11 +22,22 @@ interface CryptoAssetDTO {
   holdings: number;
   marketPrice: number;
   marketValue: number; // marketPrice * holdings
+  pnl: number;
   fiat: number;
   change: number;
   iconSrc: string;
   categories: Array<string>;
   links: LinksData;
+  meta?: object;
+  quotes?: Array<{
+    adjclose: number;
+    close: number;
+    date: string;
+    high: number;
+    low: number;
+    open: number;
+    volume: number;
+  }>;
 }
 
 interface DividendAssetDTO {

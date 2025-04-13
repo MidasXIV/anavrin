@@ -8,6 +8,9 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { createUrl } from "@/utils/helper";
 import Card from "../portfolio-widgets/Card/card";
 import InfoIcon from "../icons/InfoIcon";
 import RingChart from "../charting/ring-chart/ring-chart";
@@ -20,6 +23,7 @@ import AssetsDividendYieldChart from "../portfolio-widgets/assets-dividend-yield
 import DividendBreakdownAnalysisCard from "../portfolio-widgets/dividend-breakdown-analysis-card/dividend-breakdown-analysis-card";
 import DividendAnalysisCard from "../portfolio-widgets/dividend-analysis-card/dividend-analysis-card";
 import RingChartWithListCard from "../portfolio-widgets/ring-chart-with-list/ring-chart-with-list-card";
+import ChatLayout from "../chat-ui/chat-layout";
 
 const PortfolioLayoutSecondaryPanel = ({
   portfolioType,
@@ -30,15 +34,32 @@ const PortfolioLayoutSecondaryPanel = ({
   assetsComparisionGrowthChartData,
   portfolioDividendEfficiency,
   dividendDistributionRingChartData,
-  dividendYieldOnCostData
+  dividendYieldOnCostData,
+  portfolioData
 }) => {
-  const ad = 3 + 5;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const handleTabChange = selectedTab => {
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    if (selectedTab) {
+      newParams.set("panel", selectedTab);
+    } else {
+      newParams.delete("panel");
+    }
+
+    router.push(createUrl("portfolio", newParams));
+  };
+
+  const selectedTab = searchParams.get("panel") || undefined;
+  console.log(`selectedTab :: ${selectedTab}`);
   return (
     <section className="flex h-full w-full flex-col">
       <Tabs
         defaultValue="analytics"
-        // onValueChange={handleTabChange}
+        onValueChange={handleTabChange}
         className="flex h-full flex-col"
+        value={selectedTab}
       >
         <TabsList className="w-full bg-charcoal-900">
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
@@ -301,7 +322,8 @@ const PortfolioLayoutSecondaryPanel = ({
           Notes{" "}
         </TabsContent>
         <TabsContent key="chat-panel" value="chat" className="flex-1">
-          Chat{" "}
+          {/* <ChatBar /> */}
+          <ChatLayout portfolioData={portfolioData} />
         </TabsContent>
       </Tabs>
     </section>

@@ -1,6 +1,6 @@
-import { Code, LoadingOverlay } from "@mantine/core";
 import { Separator } from "@/components/ui/separator";
-
+import { CodeBlock, CodeBlockCode } from "@/components/ui/code-block";
+import { spinner } from "@/components/loading/spinner";
 import { FC, useEffect, useState } from "react";
 import { BellIcon } from "@radix-ui/react-icons";
 import {
@@ -18,10 +18,8 @@ import { Switch } from "../ui/switch";
 import Card from "../portfolio-widgets/Card/card";
 import DoubleClickButton from "../double-click-button";
 import CrossIconSVG from "../icons/crossIconSVG";
-import TooltipWrapper from "../tooltip-wrapper";
 
 const WebpushSubscription: FC<unknown> = () => {
-  const [isIndeterminate, setIsIndeterminate] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription>();
   const [isDenied, setDenied] = useState(false);
@@ -73,7 +71,6 @@ const WebpushSubscription: FC<unknown> = () => {
         setSubscribed(false);
         setSubscription(undefined);
       }
-      setIsIndeterminate(false);
     });
 
     api.fetchPushSubscription().then(({ status, data }) => {
@@ -107,16 +104,20 @@ const WebpushSubscription: FC<unknown> = () => {
           </>
         }
       >
-        <Code block>{JSON.stringify(pushSubscription, null, 2)}</Code>
+        <CodeBlock>
+          <CodeBlockCode code={JSON.stringify(pushSubscription, null, 2)} language="json" />
+        </CodeBlock>
       </Card>
     </div>
   );
+
   return (
     <>
-      <LoadingOverlay
-        visible={isLoading}
-        loaderProps={{ size: "lg", color: "dark", variant: "bars" }}
-      />
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="flex items-center justify-center rounded-lg bg-white p-4">{spinner}</div>
+        </div>
+      )}
       <div className="flex items-center space-x-4 rounded-md border border-charcoal-400 p-4">
         <BellIcon />
         <div className="flex-1 space-y-1">
@@ -125,16 +126,11 @@ const WebpushSubscription: FC<unknown> = () => {
             Allow Anavrin to send push notifications on this device.
           </p>
         </div>
-        {/* <TooltipWrapper
-          label={subscribed ? "Unsubscribe this device." : "Subscribe this device!"}
-          color="orange"
-        > */}
         <Switch
           disabled={isDenied}
           checked={subscribed}
           onCheckedChange={isSubscribed => notificationSubscriptionChanged(isSubscribed)}
         />
-        {/* </TooltipWrapper> */}
       </div>
       {isDenied ? (
         <p className="text-xs text-red-500">Permission to send webpush is blocked on this device</p>
@@ -158,4 +154,5 @@ const WebpushSubscription: FC<unknown> = () => {
     </>
   );
 };
+
 export default WebpushSubscription;

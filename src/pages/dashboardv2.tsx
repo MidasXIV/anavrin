@@ -20,6 +20,12 @@ import { valueFormatter } from "@/utils/timeAndDateHelpers";
 import TrackerBlock from "@/components/portfolio-widgets/tracker-block/tracker-block";
 import GoalsTrackerCard from "@/components/portfolio-widgets/goals-tracker-card/goal-tracker-card";
 import CostMarketValueChart from "@/components/portfolio-widgets/cost-market-value-chart/cost-market-value-chart";
+import DashboardCalendarChart from "@/components/dashboard-portfolio-section/calendar-chart";
+import {
+  calculateCrptoPortfolioValue,
+  hydrateCryptoPortfolioItemsV2
+} from "lib/portfolio-asset-utils";
+import { StockLineChart } from "@/components/charting/stock-line-chart/stock-line-chart";
 import DefaultLayout from "../layouts/default";
 import api from "../services/create-service";
 import DashboardPortfolioSection from "../components/dashboard-portfolio-section/dashboard-portfolio-section";
@@ -27,12 +33,13 @@ import DashboardPortfolioSectionLoading from "../components/dashboard-portfolio-
 import EconomicEventsPanel from "../components/economic-events-panel";
 import { createUrl } from "../utils/helper";
 import mockFetchUserPortfolioData from "../tests/mocks/mock-crypto-portfolio-2";
-import DashboardCalendarChart from "@/components/dashboard-portfolio-section/calendar-chart";
-import {
-  calculateCrptoPortfolioValue,
-  hydrateCryptoPortfolioItemsV2
-} from "lib/portfolio-asset-utils";
-import { StockLineChart } from "@/components/charting/stock-line-chart/stock-line-chart";
+
+enum CalendarMode {
+  OneMonth = "1-month",
+  SixMonths = "6-months",
+  EntireYear = "entire-year",
+  YearToMonth = "year-to-month"
+}
 
 const Dashboard: FC = () => {
   const { data: session, status } = useSession();
@@ -40,8 +47,7 @@ const Dashboard: FC = () => {
   const [opened, setOpened] = useState(false);
   const [portfolioPerformanceStockLineChartData, setPortfolioPerformanceStockLineChartData] =
     useState([]);
-  const [portfolioPerformance, setPortfolioPerformance] =
-    useState<CrptoPortfolioValue>(undefined);
+  const [portfolioPerformance, setPortfolioPerformance] = useState<CrptoPortfolioValue>(undefined);
   const [portfolios, setPortfolios] = useState<Array<Portfolio>>([]);
   const [isPortfolioFetched, setIsPortfolioFetched] = useState(false);
 
@@ -71,13 +77,13 @@ const Dashboard: FC = () => {
         for (const userPortfolio of userPortfolios) {
           const data = await hydrateCryptoPortfolioItemsV2(userPortfolio);
           const portfolioPerformance = calculateCrptoPortfolioValue(data);
-          const portfolioPerformanceStockLineChartData = portfolioPerformance?.quotes.map((a,index) => {
-            return {
+          const portfolioPerformanceStockLineChartData = portfolioPerformance?.quotes.map(
+            (a, index) => ({
               value: a.value,
               time: a.date,
-              ticker: `Portfolio-${index+1}`
-            };
-          });
+              ticker: `Portfolio-${index + 1}`
+            })
+          );
           setPortfolioPerformance(portfolioPerformance);
           setPortfolioPerformanceStockLineChartData(portfolioPerformanceStockLineChartData);
           console.log(portfolioPerformance);
@@ -102,7 +108,7 @@ const Dashboard: FC = () => {
   } else if (portfolios?.length > 0) {
     Content = (
       <section className="h-full w-full">
-        <DashboardCalendarChart data={portfolioPerformance} mode='year-to-month' />
+        <DashboardCalendarChart data={portfolioPerformance} mode={CalendarMode.YearToMonth} />
         <StockLineChart data={[portfolioPerformanceStockLineChartData]} />
       </section>
     );
@@ -125,9 +131,9 @@ const Dashboard: FC = () => {
         <div className="flex h-full w-full flex-1 flex-row overflow-auto rounded-xl bg-gray-300 sm:mb-1 sm:rounded-lg">
           <div
             className={clsx("dashboard-primary-panel overflow-y-auto", {
-              "sm:w-full": hide,
+              "sm:w-full": hide
               // "sm:w-2/5": !hide
-              "sm:w-full": !hide
+              // "sm:w-full": !hide
             })}
           >
             {Content}

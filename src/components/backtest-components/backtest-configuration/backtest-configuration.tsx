@@ -260,7 +260,7 @@ const BacktestConfiguration = ({
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <section className="flex flex-col border-b-2 border-gray-300 md:flex-row max-w-full max-h-full">
+          <section className="flex max-h-full max-w-full flex-col border-b-2 border-gray-300 md:flex-row">
             <div className="w-full space-y-4 border-gray-300 p-4 md:border-r-2">
               <FormField
                 control={form.control}
@@ -460,7 +460,7 @@ const BacktestConfiguration = ({
                   }`}</span>
                   <div
                     key={index.toString()}
-                    className="flex w-full items-center justify-center border-l-2 border-gray-300 px-2 md:px-1 text-center"
+                    className="flex w-full items-center justify-center border-l-2 border-gray-300 px-2 text-center md:px-1"
                   >
                     <span className="flex w-full items-center border-gray-300 px-2 font-medium text-black">
                       <Input
