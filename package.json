@@ -55,7 +55,7 @@
     "@tremor/react": "^3.11.1",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
-    "ai": "^3.2.5",
+    "ai": "^5.0.52",
     "axios": "^1.8.2",
     "cheerio": "^1.0.0-rc.10",
     "class-variance-authority": "^0.7.0",
